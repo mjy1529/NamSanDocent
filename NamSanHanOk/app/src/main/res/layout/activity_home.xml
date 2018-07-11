@@ -92,11 +92,12 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="180dp"
+                android:layout_height="230dp"
                 android:layout_below="@+id/watchVOD">
 
                 <com.google.android.exoplayer2.ui.PlayerView
                     android:id="@+id/playerView"
+                    app:resize_mode="fill"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
 

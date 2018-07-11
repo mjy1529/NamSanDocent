@@ -87,7 +87,7 @@ public class HomeActivity extends AppCompatActivity {
                 Toast.makeText(HomeActivity.this, "location", Toast.LENGTH_SHORT).show();
             }
         });
-
-
     }
+
+
 }
