@@ -6,6 +6,7 @@
 
     <ImageButton
         android:id="@+id/homeBtn"
+        android:onClick="onClick"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_centerVertical="true"
