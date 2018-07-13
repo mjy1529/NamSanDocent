@@ -1,14 +1,19 @@
 package docent.namsanhanok;
 
+import android.annotation.SuppressLint;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.View;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,6 +32,10 @@ import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 import com.google.android.exoplayer2.video.VideoListener;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
+
 public class HomeActivity extends AppCompatActivity {
 
     SimpleExoPlayer videoPlayer;
@@ -41,6 +50,15 @@ public class HomeActivity extends AppCompatActivity {
     LinearLayout bottom_audio_layout;
     ImageButton playBtn;
 
+    LinearLayout specific_layout;
+    HorizontalScrollView horizontalScrollView;
+    int[] imageId={R.drawable.bae, R.drawable.jipshin};
+
+    public HomeActivity() {
+
+    }
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,7 +66,9 @@ public class HomeActivity extends AppCompatActivity {
 
         init();
         setVideoPlayer();
+        setSpecificList(imageId);
         setAudioPlayer();
+
     }
 
     public void setVideoPlayer() {
@@ -81,6 +101,35 @@ public class HomeActivity extends AppCompatActivity {
         audioPlayer.setLooping(true); //무한 반복
     }
 
+    //dp변환 함수
+    public int convertPixToDP(int px) {
+        int dp = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, px, getResources().getDisplayMetrics());
+
+        return dp;
+    }
+
+
+
+    public void setSpecificList(int imgID[]) {
+
+        for(int i = 0; i<imgID.length; i++) {
+            ImageView iv = new ImageView(this);
+
+            LinearLayout LLlayout= new LinearLayout(this);
+            LinearLayout.LayoutParams LLParam = new LinearLayout.LayoutParams(convertPixToDP(100), convertPixToDP(100));
+            LLParam.setMargins(convertPixToDP(5),convertPixToDP(5),convertPixToDP(0),convertPixToDP(5));
+            LLlayout.setGravity(Gravity.CENTER);
+
+            iv.setBackgroundResource(imgID[i]);
+
+            LLlayout.addView(iv);
+            iv.setLayoutParams(LLParam);
+
+            specific_layout.addView(LLlayout);
+        }
+
+    }
+
     public void onClick(View v) {
         if (audioPlayer.isPlaying()) {
             audioPlayer.pause();
@@ -91,6 +140,7 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
+    @SuppressLint("WrongViewCast")
     public void init() {
         playerView = (PlayerView) findViewById(R.id.playerView);
         homeBtn = (ImageButton)findViewById(R.id.homeBtn);
@@ -103,6 +153,10 @@ public class HomeActivity extends AppCompatActivity {
         playBtn = (ImageButton) findViewById(R.id.playBtn);
         Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        horizontalScrollView = (HorizontalScrollView) findViewById(R.id.horizontalView);
+        specific_layout = (LinearLayout) findViewById(R.id.specific_layout);
+
 
         audioBtn.setOnClickListener(new View.OnClickListener() { //오디오버튼 클릭했을 때
             @Override

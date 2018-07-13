@@ -30,4 +30,7 @@ dependencies {
 
     //exoPlayer
     implementation 'com.google.android.exoplayer:exoplayer:2.7.0'
+
+    //recyclerview
+    implementation 'com.android.support:recyclerview-v7:26.1.0'
 }

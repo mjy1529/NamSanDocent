@@ -57,11 +57,17 @@
                 android:id="@+id/horizontalView"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
+                android:layout_marginBottom="10dp"
+                android:scrollbars="none"
                 android:layout_below="@+id/docentDetails">
 
                 <LinearLayout
+                    android:id="@+id/specific_layout"
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="5dp"
+                    android:orientation="horizontal">
+
 
                 </LinearLayout>
 
