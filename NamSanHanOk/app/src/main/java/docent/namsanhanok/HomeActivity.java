@@ -37,6 +37,8 @@ import com.google.android.exoplayer2.upstream.RawResourceDataSource;
 import com.google.android.exoplayer2.util.Util;
 import com.google.android.exoplayer2.video.VideoListener;
 
+import org.w3c.dom.Text;
+
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
@@ -50,6 +52,9 @@ public class HomeActivity extends AppCompatActivity {
     ImageButton audioBtn;
     ImageButton locationBtn;
     LinearLayout bottom_audio_layout;
+    LinearLayout audioBtn_layout;
+    TextView audioTxt;
+    TextView locaTxt;
 
     //videoPlayer
     SimpleExoPlayer videoPlayer;
@@ -230,6 +235,7 @@ public class HomeActivity extends AppCompatActivity {
                 }
                 break;
             case R.id.audioBtn : //오디오 이미지버튼을 클릭했을 때 오디오 레이아웃 보이기
+            case R.id.audioTxt :
                 if (bottom_audio_layout.getVisibility() == View.GONE) {
                     bottom_audio_layout.setVisibility(View.VISIBLE);
                 } else {
@@ -237,6 +243,7 @@ public class HomeActivity extends AppCompatActivity {
                 }
                 break;
             case R.id.locationBtn :
+            case R.id.locationTxt :
                 Toast.makeText(HomeActivity.this, "location", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.homeBtn :
@@ -250,7 +257,6 @@ public class HomeActivity extends AppCompatActivity {
         public void handleMessage(Message msg)
 
         {
-            int current_time = audioPlayer.getCurrentPosition()+1000;
             String currentTime = String.format("%d:%02d", (audioPlayer.getCurrentPosition()/1000/60)%60, (audioPlayer.getCurrentPosition()/1000) % 60);
             audioCurrentTime.setText(currentTime);
         }
@@ -300,7 +306,8 @@ public class HomeActivity extends AppCompatActivity {
 
         horizontalScrollView = (HorizontalScrollView) findViewById(R.id.horizontalView);
         specific_layout = (LinearLayout) findViewById(R.id.specific_layout);
-        
+        audioTxt = (TextView) findViewById(R.id.audioTxt);
+        locaTxt = (TextView) findViewById(R.id.locationTxt);
 
     }
 
