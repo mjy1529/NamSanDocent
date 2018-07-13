@@ -10,25 +10,12 @@
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:background="#ffffff">
+        android:layout_height="45dp">
 
-        <ImageButton
-            android:id="@+id/homeBtn"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_gravity="start"
-            android:background="@drawable/home" />
-
-        <TextView
-            android:id="@+id/docentTitle"
+        <include
+            layout="@layout/toolbar_include"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="삼각동 도편수(都片手) 이승업(李承業) 가옥"
-            android:textColor="#000000"
-            android:textSize="14sp"
-            android:textStyle="bold" />
+            android:layout_height="match_parent" />
 
     </android.support.v7.widget.Toolbar>
 
@@ -68,9 +55,9 @@
 
             <HorizontalScrollView
                 android:id="@+id/horizontalView"
-                android:layout_below="@+id/docentDetails"
                 android:layout_width="match_parent"
-                android:layout_height="100dp">
+                android:layout_height="100dp"
+                android:layout_below="@+id/docentDetails">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -97,9 +84,9 @@
 
                 <com.google.android.exoplayer2.ui.PlayerView
                     android:id="@+id/playerView"
-                    app:resize_mode="fill"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent"
+                    app:resize_mode="fill" />
 
             </LinearLayout>
 
@@ -108,17 +95,27 @@
     </ScrollView>
 
     <LinearLayout
+        android:id="@+id/bottom_audio_layout"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:visibility="gone">
+
+        <include layout="@layout/bottom_audio" />
+
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="#ffffff"
         android:orientation="horizontal">
 
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:gravity="center">
+            android:gravity="center"
+            android:orientation="vertical">
 
             <ImageButton
                 android:id="@+id/audioBtn"
@@ -127,19 +124,19 @@
                 android:background="@drawable/headphones" />
 
             <TextView
-                android:text="Audio"
-                android:gravity="center"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Audio" />
 
         </LinearLayout>
 
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:gravity="center">
+            android:gravity="center"
+            android:orientation="vertical">
 
             <ImageButton
                 android:id="@+id/locationBtn"
@@ -148,10 +145,10 @@
                 android:background="@drawable/placeholder" />
 
             <TextView
-                android:text="Location"
-                android:gravity="center"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Location" />
 
         </LinearLayout>
 
