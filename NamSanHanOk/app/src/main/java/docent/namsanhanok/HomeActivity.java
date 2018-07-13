@@ -3,6 +3,8 @@ package docent.namsanhanok;
 import android.annotation.SuppressLint;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -27,8 +29,11 @@ import com.google.android.exoplayer2.trackselection.TrackSelection;
 import com.google.android.exoplayer2.trackselection.TrackSelector;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.upstream.BandwidthMeter;
+import com.google.android.exoplayer2.upstream.DataSource;
+import com.google.android.exoplayer2.upstream.DataSpec;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
+import com.google.android.exoplayer2.upstream.RawResourceDataSource;
 import com.google.android.exoplayer2.util.Util;
 import com.google.android.exoplayer2.video.VideoListener;
 
@@ -46,9 +51,11 @@ public class HomeActivity extends AppCompatActivity {
     ImageButton locationBtn;
     LinearLayout bottom_audio_layout;
 
+    //videoPlayer
     SimpleExoPlayer videoPlayer;
     PlayerView playerView;
 
+    //audioPlayer
     MediaPlayer audioPlayer;
     ImageButton playAudioBtn;
     SeekBar seekbar;
@@ -70,10 +77,10 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
 
         init();
-        setVideoPlayer();
+
         setSpecificList(imageId);
         setAudioPlayer();
-
+        setVideoPlayer();
     }
 
     public void setVideoPlayer() {
@@ -92,16 +99,41 @@ public class HomeActivity extends AppCompatActivity {
         String videoUrl = "http://192.168.0.6:8070/hot.mp4";
         DefaultBandwidthMeter defaultBandwidthMeter = new DefaultBandwidthMeter();
 
-        MediaSource videoSource = new ExtractorMediaSource.Factory(
-                new DefaultHttpDataSourceFactory(Util.getUserAgent(getApplicationContext(), "DOCENT"), defaultBandwidthMeter)
-        ).createMediaSource(Uri.parse(videoUrl));
+        //서버에서 가져올 때
+//        MediaSource videoSource = new ExtractorMediaSource.Factory(
+//                new DefaultHttpDataSourceFactory(Util.getUserAgent(getApplicationContext(), "DOCENT"), defaultBandwidthMeter)
+//        ).createMediaSource(Uri.parse(videoUrl));
+//        videoPlayer.prepare(videoSource);
 
-        videoPlayer.prepare(videoSource);
+        //raw 폴더에서 가져올 때
+        final RawResourceDataSource rawResourceDataSource = new RawResourceDataSource(this);
+        DataSpec dataSpec = new DataSpec(RawResourceDataSource.buildRawResourceUri(R.raw.hot));
+        try {
+            rawResourceDataSource.open(dataSpec);
+            DataSource.Factory factory = new DataSource.Factory() {
+                @Override
+                public DataSource createDataSource() {
+                    return rawResourceDataSource;
+                }
+            };
+            MediaSource videoSource = new ExtractorMediaSource.Factory(factory).createMediaSource(rawResourceDataSource.getUri());
+            videoPlayer.prepare(videoSource);
+        } catch (RawResourceDataSource.RawResourceDataSourceException e) {
+            e.printStackTrace();
+        }
+
+        if(audioPlayer.isPlaying() && videoPlayer.getPlayWhenReady()) {
+            audioPlayer.pause();
+        }
+
     }
 
     public void setAudioPlayer() {
-        audioPlayer = MediaPlayer.create(this, R.raw.konan); //임시로
-        //audioPlayer = MediaPlayer.create(this, Uri.parse("http://192.168.0.6:8070/kkk.mp3")); //서버에서 가져올 경우
+        //raw 폴더에서 가져올 때
+        audioPlayer = MediaPlayer.create(this, R.raw.konan);
+
+        //서버에서 가져올 경우
+        //audioPlayer = MediaPlayer.create(this, Uri.parse("http://192.168.0.6:8070/kkk.mp3"));
 
         audioPlayer.setLooping(true); //무한 반복
 
@@ -111,19 +143,29 @@ public class HomeActivity extends AppCompatActivity {
                 String minute = String.format("%2d", ((music.getDuration())/1000/60)%60);
                 String second = String.format("%2d", ((music.getDuration())/1000)%60);
                 audioTotalTime.setText(minute +":" + second); //총 재생시간
+                String CT_time = String.format("%2d", ((music.getCurrentPosition())));;
                 audioCurrentTime.setText("0:00"); //현재 재생시간
+
+
             }
         });
 
-        seekbar.setMax(audioPlayer.getDuration()); //seekbar의 총길이를 music의 총길이로 설정
+
+        seekbar.setMax(audioPlayer.getDuration()); //seekbar의 총길이를 audioPlayer의 총길이로 설정
         seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 //사용자가 seekbar를 움직여서 값이 변했다면 true, 재생위치를 바꿈(seekTo)
-                if(fromUser) audioPlayer.seekTo(progress);
+                if(fromUser) {
+                    audioPlayer.seekTo(progress);
+                    String currentTime = String.format("%d:%02d", (audioPlayer.getCurrentPosition()/1000/60)%60, (audioPlayer.getCurrentPosition()/1000) % 60);
+                    audioCurrentTime.setText(currentTime);
+                }
+
             }
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
+
             }
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
@@ -160,17 +202,34 @@ public class HomeActivity extends AppCompatActivity {
 
     }
 
-    public void onClick(View v) {
+
+    public void onClick(View v) { //playAudioBtn이 클릭되었을 때의 event
         if (audioPlayer.isPlaying()) {
             audioPlayer.pause();
             playAudioBtn.setBackgroundResource(R.drawable.ic_play_arrow_black_48dp);
         } else {
             audioPlayer.start();
             playAudioBtn.setBackgroundResource(R.drawable.ic_pause_black_24dp);
+
+            if(videoPlayer.getPlayWhenReady()) { //영상이 play 상태라면
+                pauseVideoPlayer(); //영상 일시정지
+            }
+
             Thread();
         }
     }
 
+    final Handler handler = new Handler()
+    {
+        public void handleMessage(Message msg)
+
+        {
+            int current_time = audioPlayer.getCurrentPosition()+1000;
+            String currentTime = String.format("%d:%02d", (audioPlayer.getCurrentPosition()/1000/60)%60, (audioPlayer.getCurrentPosition()/1000) % 60);
+            audioCurrentTime.setText(currentTime);
+        }
+
+    };
 
     public void Thread() {
         Runnable task = new Runnable() {
@@ -179,16 +238,21 @@ public class HomeActivity extends AppCompatActivity {
                 while(audioPlayer.isPlaying()) {
                     try {
                         Thread.sleep(1000);
+                        Message msg = handler.obtainMessage();
+
+                        handler.sendMessage(msg);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
                     //현재 음악 재생 위치 가져오기
                     seekbar.setProgress(audioPlayer.getCurrentPosition());
+
                 }
             }
         };
         Thread thread = new Thread(task);
         thread.start();
+
     }
 
     public void init() {
@@ -242,5 +306,15 @@ public class HomeActivity extends AppCompatActivity {
         super.onBackPressed();
         videoPlayer.stop();
         audioPlayer.stop();
+    }
+
+    private void pauseVideoPlayer() {
+        videoPlayer.setPlayWhenReady(false);
+        videoPlayer.getPlaybackState();
+    }
+
+    private void startVideoPlayer() {
+        videoPlayer.setPlayWhenReady(true);
+        videoPlayer.getPlaybackState();
     }
 }
