@@ -13,7 +13,7 @@ import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,17 +38,22 @@ import java.util.List;
 
 public class HomeActivity extends AppCompatActivity {
 
-    SimpleExoPlayer videoPlayer;
-    PlayerView playerView;
     ImageButton homeBtn;
     TextView docentTitle;
     ImageView docentImage;
     TextView docentExplanation;
     ImageButton audioBtn;
     ImageButton locationBtn;
-    MediaPlayer audioPlayer;
     LinearLayout bottom_audio_layout;
-    ImageButton playBtn;
+
+    SimpleExoPlayer videoPlayer;
+    PlayerView playerView;
+
+    MediaPlayer audioPlayer;
+    ImageButton playAudioBtn;
+    SeekBar seekbar;
+    TextView audioTotalTime;
+    TextView audioCurrentTime;
 
     LinearLayout specific_layout;
     HorizontalScrollView horizontalScrollView;
@@ -99,6 +104,31 @@ public class HomeActivity extends AppCompatActivity {
         //audioPlayer = MediaPlayer.create(this, Uri.parse("http://192.168.0.6:8070/kkk.mp3")); //서버에서 가져올 경우
 
         audioPlayer.setLooping(true); //무한 반복
+
+        audioPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() { //총길이 세팅
+            @Override
+            public void onPrepared(MediaPlayer music) {
+                String minute = String.format("%2d", ((music.getDuration())/1000/60)%60);
+                String second = String.format("%2d", ((music.getDuration())/1000)%60);
+                audioTotalTime.setText(minute +":" + second); //총 재생시간
+                audioCurrentTime.setText("0:00"); //현재 재생시간
+            }
+        });
+
+        seekbar.setMax(audioPlayer.getDuration()); //seekbar의 총길이를 music의 총길이로 설정
+        seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                //사용자가 seekbar를 움직여서 값이 변했다면 true, 재생위치를 바꿈(seekTo)
+                if(fromUser) audioPlayer.seekTo(progress);
+            }
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+            }
+        });
     }
 
     //dp변환 함수
@@ -133,24 +163,47 @@ public class HomeActivity extends AppCompatActivity {
     public void onClick(View v) {
         if (audioPlayer.isPlaying()) {
             audioPlayer.pause();
-            playBtn.setBackgroundResource(R.drawable.ic_play_arrow_black_48dp);
+            playAudioBtn.setBackgroundResource(R.drawable.ic_play_arrow_black_48dp);
         } else {
             audioPlayer.start();
-            playBtn.setBackgroundResource(R.drawable.ic_pause_black_24dp);
+            playAudioBtn.setBackgroundResource(R.drawable.ic_pause_black_24dp);
+            Thread();
         }
     }
 
-    @SuppressLint("WrongViewCast")
+
+    public void Thread() {
+        Runnable task = new Runnable() {
+            @Override
+            public void run() {
+                while(audioPlayer.isPlaying()) {
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    //현재 음악 재생 위치 가져오기
+                    seekbar.setProgress(audioPlayer.getCurrentPosition());
+                }
+            }
+        };
+        Thread thread = new Thread(task);
+        thread.start();
+    }
+
     public void init() {
-        playerView = (PlayerView) findViewById(R.id.playerView);
         homeBtn = (ImageButton)findViewById(R.id.homeBtn);
         docentTitle = (TextView)findViewById(R.id.docentTitle);
         docentImage = (ImageView)findViewById(R.id.docentImage);
         docentExplanation = (TextView)findViewById(R.id.docentExplanation);
         audioBtn = (ImageButton)findViewById(R.id.audioBtn);
         locationBtn = (ImageButton)findViewById(R.id.locationBtn);
+        playerView = (PlayerView) findViewById(R.id.playerView);
         bottom_audio_layout = (LinearLayout) findViewById(R.id.bottom_audio_layout);
-        playBtn = (ImageButton) findViewById(R.id.playBtn);
+        playAudioBtn = (ImageButton) findViewById(R.id.playAudioBtn);
+        seekbar = (SeekBar)findViewById(R.id.seekbar);
+        audioTotalTime = (TextView)findViewById(R.id.audioTotalTime);
+        audioCurrentTime = (TextView)findViewById(R.id.audioCurrentTime);
         Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
