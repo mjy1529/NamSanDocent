@@ -1,16 +1,22 @@
 package docent.namsanhanok;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
+import android.content.Context;
+import android.media.AudioPlaybackConfiguration;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -27,7 +33,9 @@ import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
 import com.google.android.exoplayer2.trackselection.TrackSelector;
+import com.google.android.exoplayer2.ui.PlaybackControlView;
 import com.google.android.exoplayer2.ui.PlayerView;
+import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.BandwidthMeter;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DataSpec;
@@ -50,11 +58,18 @@ public class HomeActivity extends AppCompatActivity {
     ImageButton audioBtn;
     ImageButton locationBtn;
     LinearLayout bottom_audio_layout;
+    TextView audioTxt;
 
     //videoPlayer
     SimpleExoPlayer videoPlayer;
-    PlayerView playerView;
+    SimpleExoPlayerView playerView;
+    //PlayerView playerView;
     ImageButton exo_play;
+
+    Dialog fullscreenDialog;
+    boolean isPlayerFullscreen = false;
+    ImageView fullscreenIcon;
+    FrameLayout fullscreenButton;
 
     //audioPlayer
     MediaPlayer audioPlayer;
@@ -63,14 +78,15 @@ public class HomeActivity extends AppCompatActivity {
     TextView audioTotalTime;
     TextView audioCurrentTime;
 
+    //상세보기
     LinearLayout specific_layout;
     HorizontalScrollView horizontalScrollView;
-    int[] imageId={R.drawable.bae, R.drawable.jipshin};
+
+    int[] imageId = {R.drawable.bae, R.drawable.jipshin};
 
     public HomeActivity() {
 
     }
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +97,8 @@ public class HomeActivity extends AppCompatActivity {
         setSpecificList(imageId);
         setAudioPlayer();
         setVideoPlayer();
+        initFullscreenDialog();
+        initFullscreenButton();
     }
 
     public void setVideoPlayer() {
@@ -146,25 +164,21 @@ public class HomeActivity extends AppCompatActivity {
         audioPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() { //총길이 세팅
             @Override
             public void onPrepared(MediaPlayer music) {
-
                 String minute = String.format("%2d", ((music.getDuration()) / 1000 / 60) % 60);
                 String second = String.format("%2d", ((music.getDuration()) / 1000) % 60);
                 audioTotalTime.setText(minute + ":" + second); //총 재생시간
                 audioCurrentTime.setText("0:00"); //현재 재생시간
-
-
             }
         });
-
 
         seekbar.setMax(audioPlayer.getDuration()); //seekbar의 총길이를 audioPlayer의 총길이로 설정
         seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 //사용자가 seekbar를 움직여서 값이 변했다면 true, 재생위치를 바꿈(seekTo)
-                if(fromUser) {
+                if (fromUser) {
                     audioPlayer.seekTo(progress);
-                    String currentTime = String.format("%d:%02d", (audioPlayer.getCurrentPosition()/1000/60)%60, (audioPlayer.getCurrentPosition()/1000) % 60);
+                    String currentTime = String.format("%d:%02d", (audioPlayer.getCurrentPosition() / 1000 / 60) % 60, (audioPlayer.getCurrentPosition() / 1000) % 60);
                     audioCurrentTime.setText(currentTime);
                 }
             }
@@ -187,16 +201,13 @@ public class HomeActivity extends AppCompatActivity {
         return dp;
     }
 
-
-
     public void setSpecificList(int imgID[]) {
-
-        for(int i = 0; i<imgID.length; i++) {
+        for (int i = 0; i < imgID.length; i++) {
             ImageView iv = new ImageView(this);
 
-            LinearLayout LLlayout= new LinearLayout(this);
+            LinearLayout LLlayout = new LinearLayout(this);
             LinearLayout.LayoutParams LLParam = new LinearLayout.LayoutParams(convertPixToDP(100), convertPixToDP(100));
-            LLParam.setMargins(convertPixToDP(5),convertPixToDP(5),convertPixToDP(0),convertPixToDP(5));
+            LLParam.setMargins(convertPixToDP(5), convertPixToDP(5), convertPixToDP(0), convertPixToDP(5));
             LLlayout.setGravity(Gravity.CENTER);
 
             iv.setBackgroundResource(imgID[i]);
@@ -208,8 +219,6 @@ public class HomeActivity extends AppCompatActivity {
         }
 
     }
-
-
 
     public void onClick(View v) {
         switch (v.getId()) {
@@ -229,32 +238,28 @@ public class HomeActivity extends AppCompatActivity {
                     Thread();
                 }
                 break;
-            case R.id.audioBtn : //오디오 이미지버튼을 클릭했을 때 오디오 레이아웃 보이기
+            case R.id.audioBtn://오디오 버튼을 클릭했을 때 오디오 레이아웃 보이기
+            case R.id.audioTxt:
                 if (bottom_audio_layout.getVisibility() == View.GONE) {
                     bottom_audio_layout.setVisibility(View.VISIBLE);
                 } else {
                     bottom_audio_layout.setVisibility(View.GONE);
                 }
                 break;
-            case R.id.locationBtn :
+            case R.id.locationBtn:
                 Toast.makeText(HomeActivity.this, "location", Toast.LENGTH_SHORT).show();
                 break;
-            case R.id.homeBtn :
+            case R.id.homeBtn:
                 Toast.makeText(HomeActivity.this, "home", Toast.LENGTH_SHORT).show();
                 break;
         }
     }
 
-    final Handler handler = new Handler()
-    {
-        public void handleMessage(Message msg)
-
-        {
-            int current_time = audioPlayer.getCurrentPosition()+1000;
-            String currentTime = String.format("%d:%02d", (audioPlayer.getCurrentPosition()/1000/60)%60, (audioPlayer.getCurrentPosition()/1000) % 60);
+    final Handler handler = new Handler() {
+        public void handleMessage(Message msg) {
+            String currentTime = String.format("%d:%02d", (audioPlayer.getCurrentPosition() / 1000 / 60) % 60, (audioPlayer.getCurrentPosition() / 1000) % 60);
             audioCurrentTime.setText(currentTime);
         }
-
     };
 
     public void Thread() {
@@ -265,42 +270,40 @@ public class HomeActivity extends AppCompatActivity {
                     try {
                         Thread.sleep(1000);
                         Message msg = handler.obtainMessage();
-
                         handler.sendMessage(msg);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
                     //현재 음악 재생 위치 가져오기
                     seekbar.setProgress(audioPlayer.getCurrentPosition());
-
                 }
             }
         };
         Thread thread = new Thread(task);
         thread.start();
-
     }
 
     public void init() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
         homeBtn = (ImageButton) findViewById(R.id.homeBtn);
         docentTitle = (TextView) findViewById(R.id.docentTitle);
         docentImage = (ImageView) findViewById(R.id.docentImage);
         docentExplanation = (TextView) findViewById(R.id.docentExplanation);
         audioBtn = (ImageButton) findViewById(R.id.audioBtn);
         locationBtn = (ImageButton) findViewById(R.id.locationBtn);
-        playerView = (PlayerView) findViewById(R.id.playerView);
+//        playerView = (PlayerView) findViewById(R.id.playerView);
+        playerView = (SimpleExoPlayerView) findViewById(R.id.playerView);
         bottom_audio_layout = (LinearLayout) findViewById(R.id.bottom_audio_layout);
         playAudioBtn = (ImageButton) findViewById(R.id.playAudioBtn);
         exo_play = (ImageButton) findViewById(R.id.exo_play);
         seekbar = (SeekBar) findViewById(R.id.seekbar);
         audioTotalTime = (TextView) findViewById(R.id.audioTotalTime);
         audioCurrentTime = (TextView) findViewById(R.id.audioCurrentTime);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
         horizontalScrollView = (HorizontalScrollView) findViewById(R.id.horizontalView);
         specific_layout = (LinearLayout) findViewById(R.id.specific_layout);
-        
+        audioTxt = (TextView)findViewById(R.id.audioTxt);
 
     }
 
@@ -309,6 +312,46 @@ public class HomeActivity extends AppCompatActivity {
         super.onBackPressed();
         videoPlayer.stop();
         audioPlayer.stop();
+    }
+
+    private void initFullscreenDialog() {
+        fullscreenDialog = new Dialog(this, android.R.style.Theme_Black_NoTitleBar_Fullscreen) {
+            @Override
+            public void onBackPressed() {
+                if (isPlayerFullscreen)
+                    closeFullscreenDialog();
+                super.onBackPressed();
+            }
+        };
+    }
+
+    private void openFullscreenDialog() {
+        ((ViewGroup)playerView.getParent()).removeView(playerView);
+        fullscreenDialog.addContentView(playerView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        fullscreenIcon.setImageDrawable(ContextCompat.getDrawable(HomeActivity.this, R.drawable.ic_fullscreen_skrink));
+        isPlayerFullscreen = true;
+        fullscreenDialog.show();
+    }
+
+    private void closeFullscreenDialog() {
+        ((ViewGroup)playerView.getParent()).removeView(playerView);
+        ((FrameLayout)findViewById(R.id.main_media_frame)).addView(playerView);
+        isPlayerFullscreen = false;
+        fullscreenDialog.dismiss();
+        fullscreenIcon.setImageDrawable(ContextCompat.getDrawable(HomeActivity.this, R.drawable.ic_fullscreen_expand));
+    }
+
+    private void initFullscreenButton() {
+        PlaybackControlView controlView = playerView.findViewById(R.id.exo_controller);
+        fullscreenIcon = controlView.findViewById(R.id.exo_fullscreen_icon);
+        fullscreenButton = controlView.findViewById(R.id.exo_fullscreen_button);
+        fullscreenButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!isPlayerFullscreen) openFullscreenDialog();
+                else closeFullscreenDialog();
+            }
+        });
     }
 
 }

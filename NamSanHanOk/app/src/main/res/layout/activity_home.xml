@@ -83,18 +83,19 @@
                 android:text="영상보기"
                 android:textStyle="bold" />
 
-            <LinearLayout
+            <FrameLayout
+                android:id="@+id/main_media_frame"
                 android:layout_width="match_parent"
                 android:layout_height="230dp"
                 android:layout_below="@+id/watchVOD">
 
-                <com.google.android.exoplayer2.ui.PlayerView
+                <com.google.android.exoplayer2.ui.SimpleExoPlayerView
                     android:id="@+id/playerView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     app:resize_mode="fill" />
 
-            </LinearLayout>
+            </FrameLayout>
 
         </RelativeLayout>
 
@@ -131,9 +132,11 @@
                 android:background="@drawable/headphones" />
 
             <TextView
+                android:id="@+id/audioTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
+                android:onClick="onClick"
                 android:text="Audio" />
 
         </LinearLayout>
