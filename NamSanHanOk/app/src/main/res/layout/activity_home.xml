@@ -125,6 +125,7 @@
 
             <ImageButton
                 android:id="@+id/audioBtn"
+                android:onClick="onClick"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:background="@drawable/headphones" />
@@ -146,6 +147,7 @@
 
             <ImageButton
                 android:id="@+id/locationBtn"
+                android:onClick="onClick"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:background="@drawable/placeholder" />

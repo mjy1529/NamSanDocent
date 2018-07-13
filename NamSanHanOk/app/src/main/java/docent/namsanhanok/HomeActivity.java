@@ -54,6 +54,7 @@ public class HomeActivity extends AppCompatActivity {
     //videoPlayer
     SimpleExoPlayer videoPlayer;
     PlayerView playerView;
+    ImageButton exo_play;
 
     //audioPlayer
     MediaPlayer audioPlayer;
@@ -77,7 +78,6 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
 
         init();
-
         setSpecificList(imageId);
         setAudioPlayer();
         setVideoPlayer();
@@ -122,10 +122,16 @@ public class HomeActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        if(audioPlayer.isPlaying() && videoPlayer.getPlayWhenReady()) {
-            audioPlayer.pause();
-        }
-
+        exo_play.setOnClickListener(new View.OnClickListener() { //영상의 재생버튼 클릭했을 때 오디오 일시정지
+            @Override
+            public void onClick(View view) {
+                videoPlayer.setPlayWhenReady(true);
+                if (audioPlayer.isPlaying()) {
+                    audioPlayer.pause();
+                    playAudioBtn.setBackgroundResource(R.drawable.ic_play_arrow_black_48dp);
+                }
+            }
+        });
     }
 
     public void setAudioPlayer() {
@@ -140,10 +146,10 @@ public class HomeActivity extends AppCompatActivity {
         audioPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() { //총길이 세팅
             @Override
             public void onPrepared(MediaPlayer music) {
-                String minute = String.format("%2d", ((music.getDuration())/1000/60)%60);
-                String second = String.format("%2d", ((music.getDuration())/1000)%60);
-                audioTotalTime.setText(minute +":" + second); //총 재생시간
-                String CT_time = String.format("%2d", ((music.getCurrentPosition())));;
+
+                String minute = String.format("%2d", ((music.getDuration()) / 1000 / 60) % 60);
+                String second = String.format("%2d", ((music.getDuration()) / 1000) % 60);
+                audioTotalTime.setText(minute + ":" + second); //총 재생시간
                 audioCurrentTime.setText("0:00"); //현재 재생시간
 
 
@@ -161,12 +167,13 @@ public class HomeActivity extends AppCompatActivity {
                     String currentTime = String.format("%d:%02d", (audioPlayer.getCurrentPosition()/1000/60)%60, (audioPlayer.getCurrentPosition()/1000) % 60);
                     audioCurrentTime.setText(currentTime);
                 }
-
             }
+
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
 
             }
+
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
             }
@@ -203,19 +210,38 @@ public class HomeActivity extends AppCompatActivity {
     }
 
 
-    public void onClick(View v) { //playAudioBtn이 클릭되었을 때의 event
-        if (audioPlayer.isPlaying()) {
-            audioPlayer.pause();
-            playAudioBtn.setBackgroundResource(R.drawable.ic_play_arrow_black_48dp);
-        } else {
-            audioPlayer.start();
-            playAudioBtn.setBackgroundResource(R.drawable.ic_pause_black_24dp);
 
-            if(videoPlayer.getPlayWhenReady()) { //영상이 play 상태라면
-                pauseVideoPlayer(); //영상 일시정지
-            }
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.playAudioBtn: //오디오 play버튼을 클릭했을 때 재생/일시정지
+                if (audioPlayer.isPlaying()) {
+                    audioPlayer.pause();
+                    playAudioBtn.setBackgroundResource(R.drawable.ic_play_arrow_black_48dp);
 
-            Thread();
+                } else {
+                    audioPlayer.start();
+                    playAudioBtn.setBackgroundResource(R.drawable.ic_pause_black_24dp);
+
+                    if (videoPlayer.getPlayWhenReady()) { //영상이 play 상태라면
+                        videoPlayer.setPlayWhenReady(false); //영상 일시정지
+                    }
+
+                    Thread();
+                }
+                break;
+            case R.id.audioBtn : //오디오 이미지버튼을 클릭했을 때 오디오 레이아웃 보이기
+                if (bottom_audio_layout.getVisibility() == View.GONE) {
+                    bottom_audio_layout.setVisibility(View.VISIBLE);
+                } else {
+                    bottom_audio_layout.setVisibility(View.GONE);
+                }
+                break;
+            case R.id.locationBtn :
+                Toast.makeText(HomeActivity.this, "location", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.homeBtn :
+                Toast.makeText(HomeActivity.this, "home", Toast.LENGTH_SHORT).show();
+                break;
         }
     }
 
@@ -235,7 +261,7 @@ public class HomeActivity extends AppCompatActivity {
         Runnable task = new Runnable() {
             @Override
             public void run() {
-                while(audioPlayer.isPlaying()) {
+                while (audioPlayer.isPlaying()) {
                     try {
                         Thread.sleep(1000);
                         Message msg = handler.obtainMessage();
@@ -256,49 +282,26 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void init() {
-        homeBtn = (ImageButton)findViewById(R.id.homeBtn);
-        docentTitle = (TextView)findViewById(R.id.docentTitle);
-        docentImage = (ImageView)findViewById(R.id.docentImage);
-        docentExplanation = (TextView)findViewById(R.id.docentExplanation);
-        audioBtn = (ImageButton)findViewById(R.id.audioBtn);
-        locationBtn = (ImageButton)findViewById(R.id.locationBtn);
+        homeBtn = (ImageButton) findViewById(R.id.homeBtn);
+        docentTitle = (TextView) findViewById(R.id.docentTitle);
+        docentImage = (ImageView) findViewById(R.id.docentImage);
+        docentExplanation = (TextView) findViewById(R.id.docentExplanation);
+        audioBtn = (ImageButton) findViewById(R.id.audioBtn);
+        locationBtn = (ImageButton) findViewById(R.id.locationBtn);
         playerView = (PlayerView) findViewById(R.id.playerView);
         bottom_audio_layout = (LinearLayout) findViewById(R.id.bottom_audio_layout);
         playAudioBtn = (ImageButton) findViewById(R.id.playAudioBtn);
-        seekbar = (SeekBar)findViewById(R.id.seekbar);
-        audioTotalTime = (TextView)findViewById(R.id.audioTotalTime);
-        audioCurrentTime = (TextView)findViewById(R.id.audioCurrentTime);
-        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
+        exo_play = (ImageButton) findViewById(R.id.exo_play);
+        seekbar = (SeekBar) findViewById(R.id.seekbar);
+        audioTotalTime = (TextView) findViewById(R.id.audioTotalTime);
+        audioCurrentTime = (TextView) findViewById(R.id.audioCurrentTime);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         horizontalScrollView = (HorizontalScrollView) findViewById(R.id.horizontalView);
         specific_layout = (LinearLayout) findViewById(R.id.specific_layout);
+        
 
-
-        audioBtn.setOnClickListener(new View.OnClickListener() { //오디오버튼 클릭했을 때
-            @Override
-            public void onClick(View view) {
-                if (bottom_audio_layout.getVisibility() == View.GONE) {
-                    bottom_audio_layout.setVisibility(View.VISIBLE);
-                } else {
-                    bottom_audio_layout.setVisibility(View.GONE);
-                }
-            }
-        });
-
-        locationBtn.setOnClickListener(new View.OnClickListener() { //위치버튼 클릭했을 때
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(HomeActivity.this, "location", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        homeBtn.setOnClickListener(new View.OnClickListener() { //home버튼 클릭했을 때
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(HomeActivity.this, "home", Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 
     @Override
@@ -308,13 +311,4 @@ public class HomeActivity extends AppCompatActivity {
         audioPlayer.stop();
     }
 
-    private void pauseVideoPlayer() {
-        videoPlayer.setPlayWhenReady(false);
-        videoPlayer.getPlaybackState();
-    }
-
-    private void startVideoPlayer() {
-        videoPlayer.setPlayWhenReady(true);
-        videoPlayer.getPlaybackState();
-    }
 }
