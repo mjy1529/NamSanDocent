@@ -3,6 +3,9 @@ package docent.namsanhanok;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.media.AudioPlaybackConfiguration;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -45,6 +48,8 @@ import com.google.android.exoplayer2.upstream.RawResourceDataSource;
 import com.google.android.exoplayer2.util.Util;
 import com.google.android.exoplayer2.video.VideoListener;
 
+import org.w3c.dom.Text;
+
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
@@ -59,6 +64,7 @@ public class HomeActivity extends AppCompatActivity {
     ImageButton locationBtn;
     LinearLayout bottom_audio_layout;
     TextView audioTxt;
+    TextView locaTxt;
 
     //videoPlayer
     SimpleExoPlayer videoPlayer;
@@ -197,7 +203,6 @@ public class HomeActivity extends AppCompatActivity {
     //dp변환 함수
     public int convertPixToDP(int px) {
         int dp = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, px, getResources().getDisplayMetrics());
-
         return dp;
     }
 
@@ -217,7 +222,6 @@ public class HomeActivity extends AppCompatActivity {
 
             specific_layout.addView(LLlayout);
         }
-
     }
 
     public void onClick(View v) {
@@ -238,7 +242,7 @@ public class HomeActivity extends AppCompatActivity {
                     Thread();
                 }
                 break;
-            case R.id.audioBtn://오디오 버튼을 클릭했을 때 오디오 레이아웃 보이기
+            case R.id.audioBtn: //오디오 이미지버튼을 클릭했을 때 오디오 레이아웃 보이기
             case R.id.audioTxt:
                 if (bottom_audio_layout.getVisibility() == View.GONE) {
                     bottom_audio_layout.setVisibility(View.VISIBLE);
@@ -247,6 +251,7 @@ public class HomeActivity extends AppCompatActivity {
                 }
                 break;
             case R.id.locationBtn:
+            case R.id.locationTxt:
                 Toast.makeText(HomeActivity.this, "location", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.homeBtn:
@@ -303,7 +308,8 @@ public class HomeActivity extends AppCompatActivity {
         audioCurrentTime = (TextView) findViewById(R.id.audioCurrentTime);
         horizontalScrollView = (HorizontalScrollView) findViewById(R.id.horizontalView);
         specific_layout = (LinearLayout) findViewById(R.id.specific_layout);
-        audioTxt = (TextView)findViewById(R.id.audioTxt);
+        audioTxt = (TextView) findViewById(R.id.audioTxt);
+        locaTxt = (TextView) findViewById(R.id.locationTxt);
 
     }
 
@@ -326,7 +332,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void openFullscreenDialog() {
-        ((ViewGroup)playerView.getParent()).removeView(playerView);
+        ((ViewGroup) playerView.getParent()).removeView(playerView);
         fullscreenDialog.addContentView(playerView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         fullscreenIcon.setImageDrawable(ContextCompat.getDrawable(HomeActivity.this, R.drawable.ic_fullscreen_skrink));
         isPlayerFullscreen = true;
@@ -334,8 +340,8 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void closeFullscreenDialog() {
-        ((ViewGroup)playerView.getParent()).removeView(playerView);
-        ((FrameLayout)findViewById(R.id.main_media_frame)).addView(playerView);
+        ((ViewGroup) playerView.getParent()).removeView(playerView);
+        ((FrameLayout) findViewById(R.id.main_media_frame)).addView(playerView);
         isPlayerFullscreen = false;
         fullscreenDialog.dismiss();
         fullscreenIcon.setImageDrawable(ContextCompat.getDrawable(HomeActivity.this, R.drawable.ic_fullscreen_expand));
@@ -348,7 +354,7 @@ public class HomeActivity extends AppCompatActivity {
         fullscreenButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(!isPlayerFullscreen) openFullscreenDialog();
+                if (!isPlayerFullscreen) openFullscreenDialog();
                 else closeFullscreenDialog();
             }
         });
