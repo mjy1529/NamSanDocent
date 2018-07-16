@@ -6,12 +6,23 @@
     android:layout_height="match_parent"
     tools:context=".Home.HomeActivity">
 
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/homeToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="45dp">
+
+        <include
+            layout="@layout/home_toolbar_include"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </android.support.v7.widget.Toolbar>
+
     <ImageView
         android:id="@+id/homeImage"
         android:layout_width="match_parent"
-        android:layout_height="350dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
+        android:layout_height="300dp"
+        android:layout_below="@+id/homeToolbar"
         android:scaleType="fitXY"
         android:src="@drawable/namsan1" />
 
@@ -37,7 +48,7 @@
 
         <com.github.angads25.toggle.LabeledSwitch
             android:id="@+id/toggleBtn"
-            android:layout_width="55dp"
+            android:layout_width="50dp"
             android:layout_height="20dp"
             android:layout_marginRight="10dp"
             android:layout_toRightOf="@+id/autoPlayText"

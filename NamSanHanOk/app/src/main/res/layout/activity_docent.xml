@@ -8,12 +8,12 @@
     tools:context=".Docent.DocentActivity">
 
     <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
+        android:id="@+id/docentToolbar"
         android:layout_width="match_parent"
         android:layout_height="45dp">
 
         <include
-            layout="@layout/toolbar_include"
+            layout="@layout/docent_toolbar_include"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
@@ -33,8 +33,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:scaleType="fitXY"
-                android:src="@drawable/namsan1"
-                />
+                android:src="@drawable/namsan1" />
 
             <TextView
                 android:id="@+id/docentExplanation"
@@ -42,8 +41,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/docentImage"
                 android:padding="15dp"
-                android:text="@string/docent_explanation"
-                />
+                android:text="@string/docent_explanation" />
 
             <TextView
                 android:id="@+id/docentDetails"
@@ -52,18 +50,17 @@
                 android:layout_below="@+id/docentExplanation"
                 android:layout_marginBottom="10dp"
                 android:layout_marginLeft="15dp"
+                android:layout_marginTop="20dp"
                 android:text="상세보기"
                 android:textStyle="bold" />
 
             <android.support.v7.widget.RecyclerView
-                android:layout_below="@id/docentDetails"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="10dp"
+                android:id="@+id/docent_recyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/docent_recyclerView">
-            </android.support.v7.widget.RecyclerView>
-
+                android:layout_below="@id/docentDetails"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp" />
 
             <TextView
                 android:id="@+id/watchVOD"
@@ -72,6 +69,7 @@
                 android:layout_below="@+id/docent_recyclerView"
                 android:layout_marginBottom="10dp"
                 android:layout_marginLeft="15dp"
+                android:layout_marginTop="35dp"
                 android:text="영상보기"
                 android:textStyle="bold" />
 
@@ -118,10 +116,10 @@
 
             <ImageButton
                 android:id="@+id/audioBtn"
-                android:onClick="onClick"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
-                android:background="@drawable/headphones" />
+                android:background="@drawable/headphones"
+                android:onClick="onClick" />
 
             <TextView
                 android:id="@+id/audioTxt"
@@ -142,10 +140,10 @@
 
             <ImageButton
                 android:id="@+id/locationBtn"
-                android:onClick="onClick"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
-                android:background="@drawable/placeholder" />
+                android:background="@drawable/placeholder"
+                android:onClick="onClick" />
 
             <TextView
                 android:id="@+id/locationTxt"

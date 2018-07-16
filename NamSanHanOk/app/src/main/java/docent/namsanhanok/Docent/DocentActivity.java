@@ -300,7 +300,7 @@ public class DocentActivity extends AppCompatActivity {
     }
 
     public void init() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.docentToolbar);
         setSupportActionBar(toolbar);
 
         homeBtn = (ImageButton) findViewById(R.id.homeBtn);
