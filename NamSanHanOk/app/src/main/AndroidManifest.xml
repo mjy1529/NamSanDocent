@@ -13,16 +13,17 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".HomeActivity">
+        <activity android:name=".Home.HomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
+        <activity android:name=".Docent.DocentPopUpActivity" android:theme="@android:style/Theme.DeviceDefault.Light.Dialog">
+        </activity>
         <activity
-            android:name=".DocentActivity"
+            android:name=".Docent.DocentActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"/>
 
     </application>

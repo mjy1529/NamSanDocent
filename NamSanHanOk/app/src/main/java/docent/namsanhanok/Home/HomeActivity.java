@@ -1,8 +1,11 @@
-package docent.namsanhanok;
+package docent.namsanhanok.Home;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import docent.namsanhanok.Docent.DocentActivity;
+import docent.namsanhanok.R;
 
 public class HomeActivity extends AppCompatActivity {
 

@@ -1,4 +1,4 @@
-package docent.namsanhanok;
+package docent.namsanhanok.Docent;
 
 import android.app.Dialog;
 import android.media.MediaPlayer;
@@ -7,6 +7,8 @@ import android.os.Message;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -36,6 +38,10 @@ import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DataSpec;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.RawResourceDataSource;
+
+import java.util.ArrayList;
+
+import docent.namsanhanok.R;
 
 public class DocentActivity extends AppCompatActivity {
 
@@ -69,10 +75,12 @@ public class DocentActivity extends AppCompatActivity {
     TextView audioCurrentTime;
 
     //상세보기
-    LinearLayout specific_layout;
-    HorizontalScrollView horizontalScrollView;
+    private RecyclerView recyclerView;
+    private LinearLayoutManager linearLayoutManager;
+    private DocentAdapter docentAdapter;
+    private ArrayList<DocentActivityItem> docentActivityItem;
 
-    int[] imageId = {R.drawable.bae, R.drawable.jipshin};
+
 
     public DocentActivity() {
 
@@ -84,10 +92,39 @@ public class DocentActivity extends AppCompatActivity {
         setContentView(R.layout.activity_docent);
 
         init();
-        setSpecificList(imageId);
+        setRecyclerView();
         setAudioPlayer();
         setVideoPlayer();
     }
+
+    private void initDataset() {
+        docentActivityItem = new ArrayList<>();
+        docentActivityItem.add(new DocentActivityItem("베", R.drawable.bae));
+        docentActivityItem.add(new DocentActivityItem("짚신", R.drawable.jipshin));
+        docentActivityItem.add(new DocentActivityItem("베", R.drawable.bae));
+        docentActivityItem.add(new DocentActivityItem("짚신", R.drawable.jipshin));
+        docentActivityItem.add(new DocentActivityItem("베", R.drawable.bae));
+        docentActivityItem.add(new DocentActivityItem("짚신", R.drawable.jipshin));
+        docentActivityItem.add(new DocentActivityItem("베", R.drawable.bae));
+        docentActivityItem.add(new DocentActivityItem("짚신", R.drawable.jipshin));
+
+    }
+
+    public void setRecyclerView(){
+        initDataset();
+        recyclerView = (RecyclerView) findViewById(R.id.docent_recyclerView);
+        linearLayoutManager = new LinearLayoutManager(this);
+        linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+
+        recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.setHasFixedSize(true);
+
+        docentAdapter = new DocentAdapter(this, docentActivityItem);
+
+        recyclerView.setAdapter(docentAdapter);
+    }
+
+
 
     public void setVideoPlayer() {
         //Create a default TrackSelector
@@ -193,29 +230,6 @@ public class DocentActivity extends AppCompatActivity {
         });
     }
 
-    //dp변환 함수
-    public int convertPixToDP(int px) {
-        int dp = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, px, getResources().getDisplayMetrics());
-        return dp;
-    }
-
-    public void setSpecificList(int imgID[]) {
-        for (int i = 0; i < imgID.length; i++) {
-            ImageView iv = new ImageView(this);
-
-            LinearLayout LLlayout = new LinearLayout(this);
-            LinearLayout.LayoutParams LLParam = new LinearLayout.LayoutParams(convertPixToDP(100), convertPixToDP(100));
-            LLParam.setMargins(convertPixToDP(5), convertPixToDP(5), convertPixToDP(0), convertPixToDP(5));
-            LLlayout.setGravity(Gravity.CENTER);
-
-            iv.setBackgroundResource(imgID[i]);
-
-            LLlayout.addView(iv);
-            iv.setLayoutParams(LLParam);
-
-            specific_layout.addView(LLlayout);
-        }
-    }
 
     public void onClick(View v) {
         switch (v.getId()) {
@@ -300,8 +314,7 @@ public class DocentActivity extends AppCompatActivity {
         seekbar = (SeekBar) findViewById(R.id.seekbar);
         audioTotalTime = (TextView) findViewById(R.id.audioTotalTime);
         audioCurrentTime = (TextView) findViewById(R.id.audioCurrentTime);
-        horizontalScrollView = (HorizontalScrollView) findViewById(R.id.horizontalView);
-        specific_layout = (LinearLayout) findViewById(R.id.specific_layout);
+
         audioTxt = (TextView) findViewById(R.id.audioTxt);
         locaTxt = (TextView) findViewById(R.id.locationTxt);
     }
