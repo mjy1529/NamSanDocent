@@ -1,15 +1,14 @@
 package docent.namsanhanok;
 
-import android.annotation.SuppressLint;
 import android.media.MediaPlayer;
-import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.TypedValue;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
@@ -32,18 +31,11 @@ import com.google.android.exoplayer2.upstream.BandwidthMeter;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DataSpec;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
-import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
 import com.google.android.exoplayer2.upstream.RawResourceDataSource;
-import com.google.android.exoplayer2.util.Util;
-import com.google.android.exoplayer2.video.VideoListener;
 
-import org.w3c.dom.Text;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.List;
 
-public class HomeActivity extends AppCompatActivity {
+public class DocentActivity extends AppCompatActivity {
 
     ImageButton homeBtn;
     TextView docentTitle;
@@ -52,7 +44,6 @@ public class HomeActivity extends AppCompatActivity {
     ImageButton audioBtn;
     ImageButton locationBtn;
     LinearLayout bottom_audio_layout;
-    LinearLayout audioBtn_layout;
     TextView audioTxt;
     TextView locaTxt;
 
@@ -72,7 +63,15 @@ public class HomeActivity extends AppCompatActivity {
     HorizontalScrollView horizontalScrollView;
     int[] imageId={R.drawable.bae, R.drawable.jipshin};
 
-    public HomeActivity() {
+
+
+    private RecyclerView recyclerView;
+    private LinearLayoutManager linearLayoutManager;
+    private DocentAdapter docentAdapter;
+    private ArrayList<DocentActivityItem> docentActivityItem;
+
+
+    public DocentActivity() {
 
     }
 
@@ -80,13 +79,46 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
+        setContentView(R.layout.activity_docent);
 
         init();
-        setSpecificList(imageId);
+//        setSpecificList(imageId);
+        setRecyclerView();
         setAudioPlayer();
         setVideoPlayer();
+
+
+
     }
+
+    private void initDataset() {
+        docentActivityItem = new ArrayList<>();
+        docentActivityItem.add(new DocentActivityItem("베", R.drawable.bae));
+        docentActivityItem.add(new DocentActivityItem("짚신", R.drawable.jipshin));
+        docentActivityItem.add(new DocentActivityItem("베", R.drawable.bae));
+        docentActivityItem.add(new DocentActivityItem("짚신", R.drawable.jipshin));
+        docentActivityItem.add(new DocentActivityItem("베", R.drawable.bae));
+        docentActivityItem.add(new DocentActivityItem("짚신", R.drawable.jipshin));
+        docentActivityItem.add(new DocentActivityItem("베", R.drawable.bae));
+        docentActivityItem.add(new DocentActivityItem("짚신", R.drawable.jipshin));
+
+    }
+
+
+    public void setRecyclerView(){
+        initDataset();
+        recyclerView = (RecyclerView) findViewById(R.id.docent_recyclerView);
+        linearLayoutManager = new LinearLayoutManager(this);
+        linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+
+        recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.setHasFixedSize(true);
+
+        docentAdapter = new DocentAdapter(this, docentActivityItem);
+
+        recyclerView.setAdapter(docentAdapter);
+    }
+
 
     public void setVideoPlayer() {
         //Create a default TrackSelector
@@ -194,25 +226,25 @@ public class HomeActivity extends AppCompatActivity {
 
 
 
-    public void setSpecificList(int imgID[]) {
-
-        for(int i = 0; i<imgID.length; i++) {
-            ImageView iv = new ImageView(this);
-
-            LinearLayout LLlayout= new LinearLayout(this);
-            LinearLayout.LayoutParams LLParam = new LinearLayout.LayoutParams(convertPixToDP(100), convertPixToDP(100));
-            LLParam.setMargins(convertPixToDP(5),convertPixToDP(5),convertPixToDP(0),convertPixToDP(5));
-            LLlayout.setGravity(Gravity.CENTER);
-
-            iv.setBackgroundResource(imgID[i]);
-
-            LLlayout.addView(iv);
-            iv.setLayoutParams(LLParam);
-
-            specific_layout.addView(LLlayout);
-        }
-
-    }
+//    public void setSpecificList(int imgID[]) {
+//
+//        for(int i = 0; i<imgID.length; i++) {
+//            ImageView iv = new ImageView(this);
+//
+//            LinearLayout LLlayout= new LinearLayout(this);
+//            LinearLayout.LayoutParams LLParam = new LinearLayout.LayoutParams(convertPixToDP(100), convertPixToDP(100));
+//            LLParam.setMargins(convertPixToDP(5),convertPixToDP(5),convertPixToDP(0),convertPixToDP(5));
+//            LLlayout.setGravity(Gravity.CENTER);
+//
+//            iv.setBackgroundResource(imgID[i]);
+//
+//            LLlayout.addView(iv);
+//            iv.setLayoutParams(LLParam);
+//
+//            specific_layout.addView(LLlayout);
+//        }
+//
+//    }
 
 
 
@@ -244,10 +276,10 @@ public class HomeActivity extends AppCompatActivity {
                 break;
             case R.id.locationBtn :
             case R.id.locationTxt :
-                Toast.makeText(HomeActivity.this, "location", Toast.LENGTH_SHORT).show();
+                Toast.makeText(DocentActivity.this, "location", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.homeBtn :
-                Toast.makeText(HomeActivity.this, "home", Toast.LENGTH_SHORT).show();
+                Toast.makeText(DocentActivity.this, "home", Toast.LENGTH_SHORT).show();
                 break;
         }
     }
@@ -304,8 +336,8 @@ public class HomeActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        horizontalScrollView = (HorizontalScrollView) findViewById(R.id.horizontalView);
-        specific_layout = (LinearLayout) findViewById(R.id.specific_layout);
+//        horizontalScrollView = (HorizontalScrollView) findViewById(R.id.horizontalView);
+//        specific_layout = (LinearLayout) findViewById(R.id.specific_layout);
         audioTxt = (TextView) findViewById(R.id.audioTxt);
         locaTxt = (TextView) findViewById(R.id.locationTxt);
 
