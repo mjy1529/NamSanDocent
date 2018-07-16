@@ -8,9 +8,11 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.media.AudioPlaybackConfiguration;
 import android.media.MediaPlayer;
+import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.MediaStore;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -71,6 +73,7 @@ public class HomeActivity extends AppCompatActivity {
     SimpleExoPlayerView playerView;
     //PlayerView playerView;
     ImageButton exo_play;
+    ImageView exo_artwork;
 
     Dialog fullscreenDialog;
     boolean isPlayerFullscreen = false;
@@ -103,8 +106,6 @@ public class HomeActivity extends AppCompatActivity {
         setSpecificList(imageId);
         setAudioPlayer();
         setVideoPlayer();
-        initFullscreenDialog();
-        initFullscreenButton();
     }
 
     public void setVideoPlayer() {
@@ -140,6 +141,7 @@ public class HomeActivity extends AppCompatActivity {
                     return rawResourceDataSource;
                 }
             };
+
             MediaSource videoSource = new ExtractorMediaSource.Factory(factory).createMediaSource(rawResourceDataSource.getUri());
             videoPlayer.prepare(videoSource);
         } catch (RawResourceDataSource.RawResourceDataSourceException e) {
@@ -156,6 +158,17 @@ public class HomeActivity extends AppCompatActivity {
                 }
             }
         });
+
+        //Thumbnail
+        //1)
+        videoPlayer.seekTo(500);
+        //2)
+//        Bitmap thumbnail = ThumbnailUtils.createVideoThumbnail(videoUrl, MediaStore.Images.Thumbnails.MINI_KIND);
+//        BitmapDrawable bitmapDrawable = new BitmapDrawable(thumbnail);
+//        playerView.setBackgroundDrawable(bitmapDrawable);
+
+        initFullscreenDialog();
+        initFullscreenButton();
     }
 
     public void setAudioPlayer() {
@@ -163,10 +176,9 @@ public class HomeActivity extends AppCompatActivity {
         audioPlayer = MediaPlayer.create(this, R.raw.konan);
 
         //서버에서 가져올 경우
-        //audioPlayer = MediaPlayer.create(this, Uri.parse("http://192.168.0.6:8070/kkk.mp3"));
+//        audioPlayer = MediaPlayer.create(this, Uri.parse("http://192.168.0.6:8070/kkk.mp3"));
 
         audioPlayer.setLooping(true); //무한 반복
-
         audioPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() { //총길이 세팅
             @Override
             public void onPrepared(MediaPlayer music) {
@@ -303,6 +315,7 @@ public class HomeActivity extends AppCompatActivity {
         bottom_audio_layout = (LinearLayout) findViewById(R.id.bottom_audio_layout);
         playAudioBtn = (ImageButton) findViewById(R.id.playAudioBtn);
         exo_play = (ImageButton) findViewById(R.id.exo_play);
+        exo_artwork = (ImageView) findViewById(R.id.exo_artwork);
         seekbar = (SeekBar) findViewById(R.id.seekbar);
         audioTotalTime = (TextView) findViewById(R.id.audioTotalTime);
         audioCurrentTime = (TextView) findViewById(R.id.audioCurrentTime);
@@ -310,7 +323,6 @@ public class HomeActivity extends AppCompatActivity {
         specific_layout = (LinearLayout) findViewById(R.id.specific_layout);
         audioTxt = (TextView) findViewById(R.id.audioTxt);
         locaTxt = (TextView) findViewById(R.id.locationTxt);
-
     }
 
     @Override

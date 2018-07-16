@@ -68,7 +68,6 @@
                     android:layout_marginRight="5dp"
                     android:orientation="horizontal">
 
-
                 </LinearLayout>
 
             </HorizontalScrollView>
@@ -123,7 +122,6 @@
             android:layout_weight="1"
             android:gravity="center"
             android:orientation="vertical">
-
 
             <ImageButton
                 android:id="@+id/audioBtn"
