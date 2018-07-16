@@ -30,9 +30,10 @@
 
         <ImageView
             android:id="@id/exo_artwork"
+            android:src="@drawable/namsan1"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scaleType="fitXY" />
+            android:scaleType="fitCenter" />
 
         <com.google.android.exoplayer2.ui.SubtitleView
             android:id="@id/exo_subtitles"
