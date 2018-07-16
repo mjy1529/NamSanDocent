@@ -33,4 +33,7 @@ dependencies {
 
     //recyclerview
     implementation 'com.android.support:recyclerview-v7:26.1.0'
+
+    //toggle button
+    implementation 'com.github.angads25:toggle:1.0.0'
 }
