@@ -12,13 +12,21 @@
         android:layout_height="40dp"
         android:background="#ffc6c6">
 
+        <TextView
+            android:id="@+id/image_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:textSize="20dp"/>
+
         <ImageButton
             android:id="@+id/closed"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
             android:layout_marginRight="5dp"
-            android:layout_marginTop="8dp"
             android:background="@drawable/letter_x"
             android:onClick="onClick"
             />
