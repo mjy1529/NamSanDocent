@@ -95,6 +95,10 @@ public class DocentActivity extends AppCompatActivity {
         setRecyclerView();
         setAudioPlayer();
         setVideoPlayer();
+
+        docentImage.setFocusableInTouchMode(true);
+        docentImage.requestFocus();
+
     }
 
     private void initDataset() {

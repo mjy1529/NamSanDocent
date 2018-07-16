@@ -33,7 +33,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:scaleType="fitXY"
-                android:src="@drawable/namsan1" />
+                android:src="@drawable/namsan1"
+                />
 
             <TextView
                 android:id="@+id/docentExplanation"
@@ -41,7 +42,8 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/docentImage"
                 android:padding="15dp"
-                android:text="@string/docent_explanation" />
+                android:text="@string/docent_explanation"
+                />
 
             <TextView
                 android:id="@+id/docentDetails"
