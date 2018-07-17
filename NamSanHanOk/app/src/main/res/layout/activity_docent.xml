@@ -50,6 +50,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/docentExplanation"
+                android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
                 android:layout_marginLeft="15dp"
                 android:text="상세보기"
@@ -58,7 +59,7 @@
             <android.support.v7.widget.RecyclerView
                 android:layout_below="@id/docentDetails"
                 android:layout_marginLeft="20dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/docent_recyclerView">
@@ -72,6 +73,7 @@
                 android:layout_below="@+id/docent_recyclerView"
                 android:layout_marginBottom="10dp"
                 android:layout_marginLeft="15dp"
+                android:layout_marginTop="25dp"
                 android:text="영상보기"
                 android:textStyle="bold" />
 
@@ -85,6 +87,7 @@
                     android:id="@+id/playerView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_marginBottom="10dp"
                     app:resize_mode="fixed_width" />
 
             </FrameLayout>
