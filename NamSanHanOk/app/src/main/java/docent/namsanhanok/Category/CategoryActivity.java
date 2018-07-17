@@ -35,11 +35,11 @@ public class CategoryActivity extends AppCompatActivity {
         final int blackFilter = getApplication().getResources().getColor(R.color.black_color_filter);
         PorterDuffColorFilter blakcColorFilter = new PorterDuffColorFilter(blackFilter, PorterDuff.Mode.SRC_ATOP);
 
-            Glide.with(getApplicationContext())
-                    .load(R.drawable.namsan2)
-                    .apply(new RequestOptions()
-                            .centerCrop())
-                    .into(holder.VH_docent_image);
+//            Glide.with(getApplicationContext())
+//                    .load(R.drawable.namsan2)
+//                    .apply(new RequestOptions()
+//                            .centerCrop())
+//                    .into(holder.VH_docent_image);
 
     }
 

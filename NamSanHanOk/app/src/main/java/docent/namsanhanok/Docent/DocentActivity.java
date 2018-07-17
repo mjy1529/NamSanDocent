@@ -2,6 +2,7 @@ package docent.namsanhanok.Docent;
 
 import android.app.Dialog;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.content.ContextCompat;
@@ -195,10 +196,10 @@ public class DocentActivity extends AppCompatActivity {
 
     public void setAudioPlayer() {
         //raw 폴더에서 가져올 때
-        audioPlayer = MediaPlayer.create(this, R.raw.konan);
+//        audioPlayer = MediaPlayer.create(this, R.raw.konan);
 
         //서버에서 가져올 경우
-//        audioPlayer = MediaPlayer.create(this, Uri.parse("http://192.168.0.6:8070/kkk.mp3"));
+        audioPlayer = MediaPlayer.create(this, Uri.parse("http://192.168.0.6:8070/kkk.mp3"));
 
         audioPlayer.setLooping(true); //무한 반복
         audioPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() { //총길이 세팅
