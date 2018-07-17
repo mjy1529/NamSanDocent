@@ -14,7 +14,6 @@ import android.widget.Toast;
 import com.github.angads25.toggle.LabeledSwitch;
 import com.github.angads25.toggle.interfaces.OnToggledListener;
 
-<<<<<<< HEAD
 import docent.namsanhanok.Category.CategoryActivity;
 import docent.namsanhanok.Category.CategoryListActivity;
 
