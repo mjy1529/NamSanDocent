@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_above="@+id/event_recycler_layout1"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:background="@drawable/round_shape_complete">
+
+            <TextView
+                android:id="@+id/event_complete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="진행"/>
+
+        </LinearLayout>
+        
+        
+
+        <ImageView
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_width="120dp"
+            android:layout_height="160dp"
+            android:onClick="onClick"
+            android:id="@+id/event_recycler_image"/>
+
+        <LinearLayout
+            android:id="@+id/event_recycler_layout1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:orientation="vertical"
+            android:layout_toRightOf="@id/event_recycler_image">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="title"
+                android:textSize="15dp"
+                android:textColor="#000000"
+                android:textStyle="bold"
+                android:onClick="onClick"
+                android:id="@+id/event_recycler_title" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp">
+
+                <TextView
+                    android:id="@+id/event_recycler_start_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:onClick="onClick"
+                    android:text="start_date"
+                    android:textColor="#000000"
+                    android:textSize="10dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="onClick"
+                    android:text="-"
+                    android:textColor="#000000"
+                    android:textSize="10dp" />
+
+                <TextView
+                    android:id="@+id/event_recycler_end_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:onClick="onClick"
+                    android:text="end_date"
+                    android:textColor="#000000"
+                    android:textSize="10dp" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/event_recycler_place"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="15dp"
+                android:onClick="onClick"
+                android:text="place"
+                android:textColor="#000000"
+                android:textSize="10dp" />
+
+
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#49000000"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp">
+
+    </LinearLayout>
+
+
+</LinearLayout>

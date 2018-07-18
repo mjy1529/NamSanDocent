@@ -17,6 +17,7 @@ import com.github.angads25.toggle.interfaces.OnToggledListener;
 import docent.namsanhanok.Category.CategoryActivity;
 import docent.namsanhanok.Category.CategoryListActivity;
 
+import docent.namsanhanok.Event.EventActivity;
 import docent.namsanhanok.R;
 
 public class HomeActivity extends AppCompatActivity {
@@ -47,18 +48,20 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void onClick(View v) {
+        Intent intent;
         switch (v.getId()) {
             case R.id.settingBtn : //설정 버튼
                 Toast.makeText(this, "setting", Toast.LENGTH_SHORT).show();
                 break;
 
             case R.id.menuBtn1 : //마을 둘러보기
-                Intent intent = new Intent(getApplicationContext(), CategoryActivity.class);
+                intent = new Intent(getApplicationContext(), CategoryActivity.class);
                 startActivity(intent);
                 break;
 
             case R.id.menuBtn2 : //세시/행사
-                Toast.makeText(this, "세시/행사", Toast.LENGTH_SHORT).show();
+                intent = new Intent(getApplicationContext(), EventActivity.class);
+                startActivity(intent);
                 break;
 
             case R.id.menuBtn3 : //질문게시판

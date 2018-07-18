@@ -26,7 +26,8 @@
             android:name=".Docent.DocentActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode" />
         <activity android:name=".Category.CategoryListActivity" />
-        <activity android:name=".Category.CategoryActivity"></activity>
+        <activity android:name=".Category.CategoryActivity" />
+        <activity android:name=".Event.EventActivity"></activity>
     </application>
 
 </manifest>

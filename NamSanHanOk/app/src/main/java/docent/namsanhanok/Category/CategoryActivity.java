@@ -102,8 +102,6 @@ public class CategoryActivity extends AppCompatActivity {
 
 
 
-
-
     }
 
     public void onClick(View v) {
