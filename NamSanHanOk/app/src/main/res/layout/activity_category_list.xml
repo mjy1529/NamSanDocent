@@ -1,10 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".Category.CategoryListActivity">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/category_list_Toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="45dp">
+            <include
+                layout="@layout/include_docent_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </android.support.v7.widget.Toolbar>
+
+    </LinearLayout>
+
+
+
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/category_list_recyclerView"
@@ -13,4 +35,4 @@
         android:layout_height="wrap_content"
         />
 
-</android.support.constraint.ConstraintLayout>
+</LinearLayout>

@@ -1,6 +1,7 @@
 package docent.namsanhanok.Docent;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Handler;
@@ -42,12 +43,13 @@ import com.google.android.exoplayer2.upstream.RawResourceDataSource;
 
 import java.util.ArrayList;
 
+import docent.namsanhanok.Home.HomeActivity;
 import docent.namsanhanok.R;
 
 public class DocentActivity extends AppCompatActivity {
 
     ImageButton homeBtn;
-    TextView docentTitle;
+    TextView docent_toolbar_title;
     ImageView docentImage;
     TextView docentExplanation;
     ImageButton audioBtn;
@@ -81,6 +83,8 @@ public class DocentActivity extends AppCompatActivity {
     private DocentAdapter docentAdapter;
     private ArrayList<DocentActivityItem> docentActivityItem;
 
+    String docent_title;
+
 
 
     public DocentActivity() {
@@ -91,6 +95,9 @@ public class DocentActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_docent);
+
+        Intent secondIntent = getIntent();
+        docent_title = secondIntent.getExtras().getString("docent_title");
 
         init();
         setRecyclerView();
@@ -196,10 +203,10 @@ public class DocentActivity extends AppCompatActivity {
 
     public void setAudioPlayer() {
         //raw 폴더에서 가져올 때
-//        audioPlayer = MediaPlayer.create(this, R.raw.konan);
+        audioPlayer = MediaPlayer.create(this, R.raw.konan);
 
         //서버에서 가져올 경우
-        audioPlayer = MediaPlayer.create(this, Uri.parse("http://192.168.0.6:8070/kkk.mp3"));
+//        audioPlayer = MediaPlayer.create(this, Uri.parse("http://192.168.0.6:8070/kkk.mp3"));
 
         audioPlayer.setLooping(true); //무한 반복
         audioPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() { //총길이 세팅
@@ -254,6 +261,7 @@ public class DocentActivity extends AppCompatActivity {
                     Thread();
                 }
                 break;
+
             case R.id.audioBtn: //오디오 이미지버튼을 클릭했을 때 오디오 레이아웃 보이기
             case R.id.audioTxt:
                 if (bottom_audio_layout.getVisibility() == View.GONE) {
@@ -262,12 +270,15 @@ public class DocentActivity extends AppCompatActivity {
                     bottom_audio_layout.setVisibility(View.GONE);
                 }
                 break;
+
             case R.id.locationBtn:
             case R.id.locationTxt:
                 Toast.makeText(DocentActivity.this, "location", Toast.LENGTH_SHORT).show();
                 break;
+
             case R.id.homeBtn:
-                Toast.makeText(DocentActivity.this, "home", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                startActivity(intent);
                 break;
         }
     }
@@ -305,7 +316,7 @@ public class DocentActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         homeBtn = (ImageButton) findViewById(R.id.homeBtn);
-        docentTitle = (TextView) findViewById(R.id.docentTitle);
+        docent_toolbar_title = (TextView) findViewById(R.id.docentTitle);
         docentImage = (ImageView) findViewById(R.id.docentImage);
         docentExplanation = (TextView) findViewById(R.id.docentExplanation);
         audioBtn = (ImageButton) findViewById(R.id.audioBtn);
@@ -322,6 +333,7 @@ public class DocentActivity extends AppCompatActivity {
 
         audioTxt = (TextView) findViewById(R.id.audioTxt);
         locaTxt = (TextView) findViewById(R.id.locationTxt);
+
     }
 
     @Override

@@ -2,8 +2,7 @@ package docent.namsanhanok.Category;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffColorFilter;
+
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +13,7 @@ import com.bumptech.glide.Glide;
 import java.util.ArrayList;
 
 import docent.namsanhanok.Docent.DocentActivity;
+import docent.namsanhanok.Home.HomeActivity;
 import docent.namsanhanok.R;
 
 public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListViewHolder> {
@@ -57,14 +57,8 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListViewHo
                             .centerCrop())
                     .into(holder.VH_category_list_image);
 
-        final int blackFilter = context.getResources().getColor(R.color.black_color_filter);
-        PorterDuffColorFilter blakcColorFilter = new PorterDuffColorFilter(blackFilter, PorterDuff.Mode.SRC_ATOP);
-
-
-
 //        holder.VH_category_image.setImageResource(categoryActivityItem.get(position).getImage());
         holder.VH_category_list_text_title.setText(categoryListActivityItem.get(position).getTitle());
-        holder.VH_category_list_image.setColorFilter(blakcColorFilter);
 
 
 
@@ -72,8 +66,17 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListViewHo
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, DocentActivity.class);
-                intent.putExtra("title", categoryListActivityItem.get(position).getTitle());
+                intent.putExtra("docent_title", categoryListActivityItem.get(position).getTitle());
 
+                context.startActivity(intent);
+            }
+        });
+
+        holder.VH_category_list_text_title.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, DocentActivity.class);
+                intent.putExtra("docent_title", categoryListActivityItem.get(position).getTitle());
 
                 context.startActivity(intent);
             }

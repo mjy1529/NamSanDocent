@@ -7,11 +7,29 @@
     android:orientation="vertical"
     tools:context=".Category.CategoryActivity">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/categoryToolbar"
+            android:layout_width="match_parent"
+            android:layout_height="45dp">
+            <include
+                layout="@layout/include_docent_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </android.support.v7.widget.Toolbar>
+
+
+    </LinearLayout>
+
+
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/namsan1"
         android:layout_weight="1"
         android:onClick="onClick"
         android:id="@+id/category_layout1"
@@ -19,7 +37,7 @@
 
         <TextView
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="10dp"
+            android:layout_marginLeft="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="한옥"
@@ -36,14 +54,13 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/namsan_lake"
         android:layout_weight="1"
         android:onClick="onClick"
         android:id="@+id/category_layout2">
 
         <TextView
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="10dp"
+            android:layout_marginLeft="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="정원"
@@ -59,14 +76,13 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/timecapsule"
         android:layout_weight="1"
         android:onClick="onClick"
         android:id="@+id/category_layout3">
 
         <TextView
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="10dp"
+            android:layout_marginLeft="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="타임 캡슐"
