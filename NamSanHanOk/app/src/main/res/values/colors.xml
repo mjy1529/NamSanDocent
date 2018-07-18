@@ -4,8 +4,7 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
 
-    <!--toolbar filter-->
-    <color name="toolbar_color_filter">#c1fff6f6</color>
+
     <!--black filter-->
     <color name="black_color_filter">#76000000</color>
 </resources>

@@ -3,8 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="45dp"
-    android:background="@color/toolbar_color_filter">
+    android:layout_height="45dp">
 
     <ImageButton
         android:id="@+id/homeBtn"
