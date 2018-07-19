@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/notice_recyclerLayout"
+    android:layout_width="match_parent"
+    android:layout_height="100dp"
+    android:background="@drawable/notice_item_border"
+    android:gravity="center_vertical"
+    android:orientation="vertical"
+    android:paddingBottom="5dp"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:paddingTop="15dp">
+
+    <TextView
+        android:id="@+id/notice_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:text="[안내] 7월 17일 전통체험프로그램 활만들기 미운영 안내"
+        android:textColor="#272727"
+        android:textSize="15sp"
+        android:textStyle="bold" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/notice_title"
+        android:layout_marginTop="10dp"
+        android:gravity="right"
+        android:orientation="horizontal"
+        android:paddingRight="5dp">
+
+        <TextView
+            android:id="@+id/notice_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2018.7.19" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" | " />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="조회수 " />
+
+        <TextView
+            android:id="@+id/notice_readCnt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="11" />
+
+    </LinearLayout>
+
+</RelativeLayout>
