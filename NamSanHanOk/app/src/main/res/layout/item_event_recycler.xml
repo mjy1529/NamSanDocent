@@ -8,25 +8,33 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        
+
         <LinearLayout
-            android:orientation="vertical"
-            android:layout_above="@+id/event_recycler_layout1"
-            android:layout_alignParentRight="true"
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_width="15dp"
-            android:layout_height="15dp"
-            android:background="@drawable/round_shape_complete">
+            android:id="@+id/event_complete_background"
+            android:layout_alignEnd="@+id/event_recycler_layout1"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:layout_marginRight="7dp"
+            android:gravity="center"
+            android:background="@drawable/round_shape_ing">
 
             <TextView
                 android:id="@+id/event_complete"
+                android:textSize="11dp"
+                android:layout_gravity="center"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="진행"/>
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:paddingTop="2dp"
+                android:paddingBottom="2dp"
+                android:text="진행중"/>
 
         </LinearLayout>
-        
+
+
+
         
 
         <ImageView
