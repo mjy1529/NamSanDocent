@@ -144,11 +144,11 @@
 
                 <ImageView
                     android:id="@+id/menuBtn3"
-                    android:layout_width="45dp"
-                    android:layout_height="45dp"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
                     android:layout_centerHorizontal="true"
                     android:layout_marginBottom="8dp"
-                    android:background="@drawable/question_icon"
+                    android:background="@drawable/speaker_icon"
                     android:onClick="onClick" />
 
                 <TextView
@@ -156,7 +156,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/menuBtn3"
                     android:layout_centerHorizontal="true"
-                    android:text="질문게시판"
+                    android:text="알리는 말씀"
                     android:textColor="#ffffff"
                     android:textStyle="bold" />
 
@@ -174,13 +174,39 @@
                     android:layout_height="45dp"
                     android:layout_centerHorizontal="true"
                     android:layout_marginBottom="8dp"
-                    android:background="@drawable/info_icon"
+                    android:background="@drawable/question_icon"
                     android:onClick="onClick" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/menuBtn4"
+                    android:layout_centerHorizontal="true"
+                    android:text="문의하기"
+                    android:textColor="#ffffff"
+                    android:textStyle="bold" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center">
+
+                <ImageView
+                    android:id="@+id/menuBtn5"
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/info_icon"
+                    android:onClick="onClick" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/menuBtn5"
                     android:layout_centerHorizontal="true"
                     android:text="이용안내"
                     android:textColor="#ffffff"
