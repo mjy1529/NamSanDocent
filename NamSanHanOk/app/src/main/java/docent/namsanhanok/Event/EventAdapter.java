@@ -62,7 +62,14 @@ public class EventAdapter extends RecyclerView.Adapter<EventViewHolder>{
         holder.VH_event_place.setText(eventActivityItem.get(position).getPlace());
         holder.VH_start_date.setText(eventActivityItem.get(position).getStartDate());
         holder.VH_end_date.setText(eventActivityItem.get(position).getEndDate());
-        holder.VH_complete.setText(eventActivityItem.get(position).getComplete());
+        if(eventActivityItem.get(position).getComplete().equals("진행중")){
+            holder.VH_complete.setText(eventActivityItem.get(position).getComplete());
+            holder.VH_complete_background.setBackgroundResource(R.drawable.round_shape_ing);
+        }
+        else{
+            holder.VH_complete.setText(eventActivityItem.get(position).getComplete());
+            holder.VH_complete_background.setBackgroundResource(R.drawable.round_shape_complete);
+        }
 
 
     }

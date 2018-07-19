@@ -3,6 +3,7 @@ package docent.namsanhanok.Event;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import docent.namsanhanok.R;
@@ -15,6 +16,7 @@ public class EventViewHolder extends RecyclerView.ViewHolder {
     public TextView VH_start_date;
     public TextView VH_end_date;
     public TextView VH_complete;
+    public LinearLayout VH_complete_background;
 
     public EventViewHolder(View itemView) {
         super(itemView);
@@ -25,5 +27,7 @@ public class EventViewHolder extends RecyclerView.ViewHolder {
         VH_start_date = (TextView)itemView.findViewById(R.id.event_recycler_start_date);
         VH_end_date = (TextView)itemView.findViewById(R.id.event_recycler_end_date);
         VH_complete = (TextView)itemView.findViewById(R.id.event_complete);
+        VH_complete_background = (LinearLayout)itemView.findViewById(R.id.event_complete_background);
+
     }
 }

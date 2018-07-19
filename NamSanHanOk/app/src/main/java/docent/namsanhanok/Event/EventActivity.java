@@ -64,7 +64,7 @@ public class EventActivity extends AppCompatActivity {
         eventActivityItem.add(new EventActivityItem("삼각동 도편수(都片手) 이승업(李承業) 가옥", R.drawable.homeimage,
                 "2018-07-17", "2018-08-31", "남산한옥마을 정문", "진행중"));
         eventActivityItem.add(new EventActivityItem("삼각동 도편수(都片手) 이승업(李承業) 가옥", R.drawable.homeimage,
-                "2018-07-17", "2018-08-31", "남산한옥마을 정문", "진행중"));
+                "2018-06-17", "2018-06-31", "남산한옥마을 정문", "마감"));
 
 
     }
