@@ -1,8 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Question.QuestionWriteActivity">
 
-</android.support.constraint.ConstraintLayout>
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/question_register_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="45dp">
+
+    <include
+        layout="@layout/include_questionwrite_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+    </android.support.v7.widget.Toolbar>
+
+
+    
+</LinearLayout>
