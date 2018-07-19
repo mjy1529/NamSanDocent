@@ -14,7 +14,7 @@
         android:layout_height="45dp">
 
         <include
-            layout="@layout/home_toolbar_include"
+            layout="@layout/include_home_toolbar"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 

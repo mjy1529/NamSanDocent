@@ -28,7 +28,8 @@
         <activity android:name=".Category.CategoryListActivity" />
         <activity android:name=".Category.CategoryActivity" />
         <activity android:name=".Setting.SettingActivity" />
-        <activity android:name=".Setting.SetLanguageActivity"></activity>
+        <activity android:name=".Setting.SetLanguageActivity"/>
+        <activity android:name=".Event.EventActivity"/>
     </application>
 
 </manifest>

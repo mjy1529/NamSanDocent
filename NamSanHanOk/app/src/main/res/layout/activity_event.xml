@@ -1,11 +1,10 @@
-<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".Category.CategoryListActivity">
+    tools:context=".Event.EventActivity">
 
 
     <LinearLayout
@@ -13,7 +12,7 @@
         android:layout_height="45dp">
 
         <android.support.v7.widget.Toolbar
-            android:id="@+id/category_list_Toolbar"
+            android:id="@+id/event_Toolbar"
             android:layout_width="match_parent"
             android:layout_height="45dp">
             <include
@@ -26,10 +25,8 @@
     </LinearLayout>
 
 
-
-
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/category_list_recyclerView"
+        android:id="@+id/event_recyclerView"
         android:layout_marginTop="5dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

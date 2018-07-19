@@ -15,6 +15,7 @@ import com.github.angads25.toggle.interfaces.OnToggledListener;
 import docent.namsanhanok.Category.CategoryActivity;
 import docent.namsanhanok.Category.CategoryListActivity;
 
+import docent.namsanhanok.Event.EventActivity;
 import docent.namsanhanok.R;
 import docent.namsanhanok.Setting.SettingActivity;
 
@@ -59,7 +60,8 @@ public class HomeActivity extends AppCompatActivity {
                 break;
 
             case R.id.menuBtn2 : //세시/행사
-                Toast.makeText(this, "세시/행사", Toast.LENGTH_SHORT).show();
+                intent = new Intent(getApplicationContext(), EventActivity.class);
+                startActivity(intent);
                 break;
 
             case R.id.menuBtn3 : //질문게시판
