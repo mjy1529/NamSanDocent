@@ -8,8 +8,8 @@
     <ImageButton
         android:id="@+id/cancelBtn"
         android:onClick="onClick"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
         android:layout_centerVertical="true"
         android:layout_gravity="start"
         android:background="@drawable/cancel" />
@@ -34,8 +34,9 @@
             android:paddingLeft="3dp"
             android:paddingRight="3dp"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="5dp"
+            android:layout_marginRight="10dp"
             android:onClick="onClick"
+            android:textSize="14dp"
             android:text="등록"
             android:background="@drawable/question_register_button"
             />
