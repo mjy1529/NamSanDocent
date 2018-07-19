@@ -10,20 +10,17 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
-
 import com.github.angads25.toggle.LabeledSwitch;
 import com.github.angads25.toggle.interfaces.OnToggledListener;
-
-<<<<<<< HEAD
 import docent.namsanhanok.Category.CategoryActivity;
 import docent.namsanhanok.Category.CategoryListActivity;
 
 import docent.namsanhanok.R;
+import docent.namsanhanok.Setting.SettingActivity;
 
 public class HomeActivity extends AppCompatActivity {
 
     ImageButton settingBtn;
-
     ImageView menuBtn1, menuBtn2, menuBtn3, menuBtn4;
 
     @Override
@@ -48,13 +45,16 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void onClick(View v) {
+        Intent intent;
+
         switch (v.getId()) {
             case R.id.settingBtn : //설정 버튼
-                Toast.makeText(this, "setting", Toast.LENGTH_SHORT).show();
+                intent = new Intent(HomeActivity.this, SettingActivity.class);
+                startActivity(intent);
                 break;
 
             case R.id.menuBtn1 : //마을 둘러보기
-                Intent intent = new Intent(getApplicationContext(), CategoryActivity.class);
+                intent = new Intent(HomeActivity.this, CategoryActivity.class);
                 startActivity(intent);
                 break;
 

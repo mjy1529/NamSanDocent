@@ -43,7 +43,7 @@
             android:layout_marginRight="5dp"
             android:layout_marginLeft="10dp"
             android:gravity="center"
-            android:text="자동전시"
+            android:text="자동전시안내"
             android:textColor="#ffffff"
             android:textStyle="bold" />
 
