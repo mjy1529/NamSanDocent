@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="45dp">
+
+    <ImageButton
+        android:id="@+id/cancelBtn"
+        android:onClick="onClick"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_centerVertical="true"
+        android:layout_gravity="start"
+        android:background="@drawable/cancel" />
+
+    <TextView
+        android:id="@+id/docentTitle"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="글쓰기"
+        android:textColor="#000000"
+        android:textSize="14sp"
+        android:textStyle="bold" />
+
+
+        <TextView
+            android:id="@+id/question_register"
+            android:layout_width="45dp"
+            android:layout_height="30dp"
+            android:gravity="center"
+            android:layout_centerVertical="true"
+            android:paddingLeft="3dp"
+            android:paddingRight="3dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="5dp"
+            android:onClick="onClick"
+            android:text="등록"
+            android:background="@drawable/question_register_button"
+            />
+
+</RelativeLayout>
