@@ -122,14 +122,14 @@ public class NoticeRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     }
 
     class NoticeItemViewHolder extends RecyclerView.ViewHolder {
-        private LinearLayout notice_recyclerLayout;
+        private RelativeLayout notice_recyclerLayout;
         private TextView notice_title;
         private TextView notice_date;
         private TextView notice_readCnt;
 
         public NoticeItemViewHolder(View view) {
             super(view);
-            notice_recyclerLayout = (LinearLayout) view.findViewById(R.id.notice_recyclerLayout);
+            notice_recyclerLayout = (RelativeLayout) view.findViewById(R.id.notice_recyclerLayout);
             notice_title = (TextView) view.findViewById(R.id.notice_title);
             notice_date = (TextView) view.findViewById(R.id.notice_date);
             notice_readCnt = (TextView) view.findViewById(R.id.notice_readCnt);
