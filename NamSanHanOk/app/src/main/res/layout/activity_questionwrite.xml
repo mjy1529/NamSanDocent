@@ -1,22 +1,252 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".Question.QuestionWriteActivity">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/question_register_toolbar"
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="45dp">
 
-    <include
-        layout="@layout/include_questionwrite_toolbar"
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/question_register_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="45dp">
+
+            <include
+                layout="@layout/include_questionwrite_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </android.support.v7.widget.Toolbar>
+
+    </LinearLayout>
+
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-    </android.support.v7.widget.Toolbar>
+        android:layout_height="match_parent">
 
 
-    
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="7dp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:gravity="center_vertical"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:gravity="center"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:text="1. 이메일을 입력하세요"
+                    android:textColor="#000000" />
+
+
+                <EditText
+                    android:id="@+id/question_email_first_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="25dp"
+                    android:layout_marginStart="25dp"
+                    android:background="@drawable/rectangle_edge_all"
+                    android:hint="docent@docent.com"
+                    android:inputType="textEmailAddress"
+                    android:paddingEnd="7dp"
+                    android:paddingStart="20dp"
+                    android:textSize="15sp"
+
+                    />
+
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+
+                >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center_vertical"
+                        android:gravity="center"
+                        android:paddingLeft="16dp"
+                        android:paddingRight="16dp"
+                        android:text="2. 전화번호를 입력해주세요(ex.01012345678)"
+                        android:textColor="#000000" />
+
+                    <EditText
+                        android:id="@+id/question_phone_number"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginEnd="25dp"
+                        android:layout_marginStart="25dp"
+                        android:background="@drawable/rectangle_edge_all"
+                        android:hint="01012345678"
+                        android:inputType="phone"
+                        android:paddingEnd="7dp"
+                        android:paddingStart="20dp"
+                        android:textSize="15sp" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="100dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="50dp"
+                        android:gravity="center"
+                        android:paddingLeft="16dp"
+                        android:paddingRight="16dp"
+                        android:text="3. 성함을 입력해 주세요."
+                        android:textColor="#000000" />
+
+                    <EditText
+                        android:id="@+id/question_username"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginEnd="25dp"
+                        android:layout_marginStart="25dp"
+                        android:background="@drawable/rectangle_edge_all"
+                        android:gravity="center_vertical"
+                        android:hint="성  명"
+                        android:inputType="text"
+                        android:paddingEnd="7dp"
+                        android:paddingStart="20dp"
+                        android:textSize="15sp" />
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:gravity="center"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:text="4. 구분"
+                    android:textColor="#000000" />
+
+                <Spinner
+                    android:id="@+id/question_category_Spinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="25dp"
+                    android:layout_marginStart="25dp"
+                    android:paddingStart="10dp"
+                    android:background="@drawable/rectangle_edge_all">
+
+                </Spinner>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:gravity="center"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:text="5. 제목과 내용을 입력해주세요"
+                    android:textColor="#000000" />
+
+                <EditText
+                    android:id="@+id/question_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="25dp"
+                    android:layout_marginStart="25dp"
+                    android:background="@drawable/rectangle_edge_all"
+                    android:gravity="center_vertical"
+                    android:hint="제목"
+                    android:inputType="text"
+                    android:paddingEnd="7dp"
+                    android:paddingStart="20dp"
+                    android:textSize="15sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:layout_marginBottom="15dp"
+                android:layout_marginEnd="25dp"
+                android:layout_marginStart="25dp"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/rectangle_edge_all">
+
+                <android.support.v4.widget.NestedScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="15dp"
+                    android:layout_marginTop="10dp"
+                    android:clipToPadding="false">
+
+                    <EditText
+                        android:focusableInTouchMode="true"
+                        android:id="@+id/question_content"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@null"
+                        android:baselineAligned="false"
+                        android:gravity="top"
+                        android:hint="내용"
+                        android:inputType="textMultiLine"
+                        android:isScrollContainer="true"
+                        android:paddingBottom="5dp"
+                        android:paddingStart="20dp"
+                        android:paddingTop="5dp"
+                        android:textSize="15sp" />
+
+                </android.support.v4.widget.NestedScrollView>
+
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+    </android.support.v4.widget.NestedScrollView>
+
+
+
+
+
 </LinearLayout>
