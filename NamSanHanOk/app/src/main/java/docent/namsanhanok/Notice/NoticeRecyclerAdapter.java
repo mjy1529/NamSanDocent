@@ -1,5 +1,6 @@
 package docent.namsanhanok.Notice;
 
+import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -88,12 +89,27 @@ public class NoticeRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof NoticeItemViewHolder) {
-            NoticeRecyclerItem item = (NoticeRecyclerItem) noticeList.get(position);
+            final NoticeRecyclerItem item = (NoticeRecyclerItem) noticeList.get(position);
             ((NoticeItemViewHolder) holder).notice_title.setText(item.getTitle());
             ((NoticeItemViewHolder) holder).notice_date.setText(item.getDate());
             ((NoticeItemViewHolder) holder).notice_readCnt.setText(String.valueOf(item.getRead_cnt()));
+
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    NoticeRecyclerItem sendObject = new NoticeRecyclerItem();
+                    sendObject.setTitle(item.getTitle());
+                    sendObject.setDate(item.getDate());
+                    sendObject.setRead_cnt(item.getRead_cnt());
+                    sendObject.setContent(item.getContent());
+
+                    Intent intent = new Intent(view.getContext(), NoticeReadActivity.class);
+                    intent.putExtra("object", sendObject);
+                    view.getContext().startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+                }
+            });
         }
     }
 
@@ -122,31 +138,17 @@ public class NoticeRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     }
 
     class NoticeItemViewHolder extends RecyclerView.ViewHolder {
-        private LinearLayout notice_recyclerLayout;
+        private RelativeLayout notice_recyclerLayout;
         private TextView notice_title;
         private TextView notice_date;
         private TextView notice_readCnt;
 
         public NoticeItemViewHolder(View view) {
             super(view);
-            notice_recyclerLayout = (LinearLayout) view.findViewById(R.id.notice_recyclerLayout);
+            notice_recyclerLayout = (RelativeLayout) view.findViewById(R.id.notice_recyclerLayout);
             notice_title = (TextView) view.findViewById(R.id.notice_title);
             notice_date = (TextView) view.findViewById(R.id.notice_date);
             notice_readCnt = (TextView) view.findViewById(R.id.notice_readCnt);
-
-            notice_recyclerLayout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Toast.makeText(view.getContext(), "click", Toast.LENGTH_SHORT).show();
-                }
-            });
-
-            notice_title.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Toast.makeText(view.getContext(), "click", Toast.LENGTH_SHORT).show();
-                }
-            });
         }
     }
 

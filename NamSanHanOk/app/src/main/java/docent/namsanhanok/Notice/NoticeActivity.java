@@ -6,10 +6,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ScrollView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -23,10 +25,13 @@ public class NoticeActivity extends AppCompatActivity implements NoticeRecyclerA
     EditText search_editText;
     ImageButton searchBtn;
     ImageButton notice_postBtn;
+    ImageButton topBtn;
 
     RecyclerView noticeRecyclerView;
     NoticeRecyclerAdapter noticeAdapter;
     private ArrayList<NoticeRecyclerItem> noticeList = new ArrayList<>();
+
+    int loadCount = 15;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +57,9 @@ public class NoticeActivity extends AppCompatActivity implements NoticeRecyclerA
                 intent = new Intent(this, NoticePostActivity.class);
                 startActivity(intent);
                 break;
+            case R.id.topBtn :
+                noticeRecyclerView.smoothScrollToPosition(0);
+                break;
         }
     }
 
@@ -60,6 +68,7 @@ public class NoticeActivity extends AppCompatActivity implements NoticeRecyclerA
         search_editText = (EditText) findViewById(R.id.search_editText);
         searchBtn = (ImageButton) findViewById(R.id.searchBtn);
         notice_postBtn = (ImageButton) findViewById(R.id.notice_postBtn);
+        topBtn = (ImageButton) findViewById(R.id.topBtn);
         noticeRecyclerView = (RecyclerView) findViewById(R.id.noticeRecyclerView);
         noticeAdapter = new NoticeRecyclerAdapter(this);
 
@@ -69,12 +78,14 @@ public class NoticeActivity extends AppCompatActivity implements NoticeRecyclerA
         noticeAdapter.setLinearLayoutManager(layoutManager);
         noticeAdapter.setRecyclerView(noticeRecyclerView);
         noticeRecyclerView.setAdapter(noticeAdapter);
+
     }
 
     private void setData() {
         noticeList.clear();
-        for (int i = 1; i <= 10; i++) { //로드하면 10개만 보여주기
-            noticeList.add(new NoticeRecyclerItem(i + ". [알림] 젊은국악오디션 하반기 참가자 서류심사 결과 안내", "2018.08.12", i));
+        for (int i = 1; i <= loadCount; i++) {
+//            noticeList.add(new NoticeRecyclerItem(i + ". [알림] 젊은국악오디션 하반기 참가자 서류심사 결과 안내", "2018.08.12", i));
+            noticeList.add(new NoticeRecyclerItem(i + ". [알림] 젊은국악오디션 하반기 참가자 서류심사 결과 안내", "2018.08.12", 20, "[알림] 젊은국악오디션 하반기 참가자 서류심사 결과 안내"));
         }
         noticeAdapter.addAll(noticeList);
     }
@@ -89,10 +100,10 @@ public class NoticeActivity extends AppCompatActivity implements NoticeRecyclerA
                 noticeAdapter.setProgressMore(false);
 
                 int start = noticeAdapter.getItemCount();
-                int end = start + 10; //10개씩
+                int end = start + loadCount;
 
                 for (int i = start + 1; i <= end; i++) {
-                    noticeList.add(new NoticeRecyclerItem(i + ". [안내] 7월 17일 전통체험프로그램 활만들기 미운영 안내", "2018.07.19", 11));
+                    noticeList.add(new NoticeRecyclerItem(i + ". [안내] 7월 17일 전통체험프로그램 활만들기 미운영 안내", "2018.07.19", 11, getResources().getString(R.string.notice_content)));
                 }
                 noticeAdapter.addItem(noticeList);
                 noticeAdapter.setMoreLoading(false);

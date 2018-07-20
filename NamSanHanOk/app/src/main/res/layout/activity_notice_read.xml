@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Notice.NoticeReadActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/noticeReadToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="45dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageButton
+                android:id="@+id/listBtn"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_centerVertical="true"
+                android:layout_gravity="start"
+                android:background="@drawable/list"
+                android:onClick="onClick" />
+
+            <TextView
+                android:id="@+id/noticeTitle"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="알리는 말씀"
+                android:textColor="#000000"
+                android:textSize="17sp"
+                android:textStyle="bold" />
+
+            <ImageButton
+                android:id="@+id/moreBtn"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="15dp"
+                android:background="@drawable/ic_more_black_24dp"
+                android:backgroundTint="#000000"
+                android:onClick="onClick" />
+
+        </RelativeLayout>
+
+    </android.support.v7.widget.Toolbar>
+
+    <ScrollView
+        android:layout_below="@+id/noticeReadToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/notice_title_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="15dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="25dp"
+                android:text="[안내] 1890 남산골야시장 재개장 일자 안내"
+                android:textColor="#000000"
+                android:textSize="15sp" />
+
+            <LinearLayout
+                android:id="@+id/clockNeyeLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignEnd="@+id/notice_title_tv"
+                android:layout_alignStart="@+id/notice_title_tv"
+                android:layout_below="@+id/notice_title_tv"
+                android:layout_marginBottom="20dp"
+                android:orientation="horizontal">
+
+                <RelativeLayout
+                    android:id="@+id/clockLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="20dp">
+
+                    <ImageView
+                        android:id="@+id/clock"
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="5dp"
+                        android:background="@drawable/clock"
+                        android:backgroundTint="#919191" />
+
+                    <TextView
+                        android:id="@+id/notice_date_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@+id/clock"
+                        android:text="2018.7.20" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="20dp">
+
+                    <ImageView
+                        android:id="@+id/eye"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginEnd="5dp"
+                        android:background="@drawable/eye"
+                        android:backgroundTint="#919191" />
+
+                    <TextView
+                        android:id="@+id/notice_readCnt_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@+id/eye"
+                        android:text="16" />
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <View
+                android:id="@+id/line"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_alignEnd="@+id/notice_title_tv"
+                android:layout_alignStart="@+id/notice_title_tv"
+                android:layout_below="@+id/clockNeyeLayout"
+                android:layout_marginBottom="20dp"
+                android:background="#c3c3c3" />
+
+            <TextView
+                android:id="@+id/notice_content_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignEnd="@+id/notice_title_tv"
+                android:layout_alignStart="@+id/notice_title_tv"
+                android:layout_below="@+id/line"
+                android:layout_marginBottom="30dp"
+                android:text="@string/notice_content" />
+
+        </RelativeLayout>
+
+    </ScrollView>
+
+</RelativeLayout>

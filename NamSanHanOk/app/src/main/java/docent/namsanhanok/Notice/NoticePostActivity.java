@@ -34,5 +34,6 @@ public class NoticePostActivity extends AppCompatActivity {
         canelBtn = (ImageButton) findViewById(R.id.notice_register_cancelBtn);
         registPost = (Button) findViewById(R.id.notice_register_Btn);
 
+
     }
 }
