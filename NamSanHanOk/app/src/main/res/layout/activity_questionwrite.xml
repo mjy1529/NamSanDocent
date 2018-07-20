@@ -6,7 +6,6 @@
     android:orientation="vertical"
     tools:context=".Question.QuestionWriteActivity">
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="45dp">
@@ -20,6 +19,7 @@
                 layout="@layout/include_questionwrite_toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
+
         </android.support.v7.widget.Toolbar>
 
     </LinearLayout>

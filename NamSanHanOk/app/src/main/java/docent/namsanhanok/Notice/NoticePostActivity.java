@@ -10,5 +10,7 @@ public class NoticePostActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notice_post);
+
+
     }
 }

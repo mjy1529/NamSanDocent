@@ -1,14 +1,28 @@
 package docent.namsanhanok.Notice;
 
-public class NoticeRecyclerItem {
+import java.io.Serializable;
+
+public class NoticeRecyclerItem implements Serializable {
     private String title;
     private String date;
     private int read_cnt;
+    private String content;
+
+    public NoticeRecyclerItem() {
+
+    }
 
     public NoticeRecyclerItem(String title, String date, int read_cnt) {
         this.title = title;
         this.date = date;
         this.read_cnt = read_cnt;
+    }
+
+    public NoticeRecyclerItem(String title, String date, int read_cnt, String content) {
+        this.title = title;
+        this.date = date;
+        this.read_cnt = read_cnt;
+        this.content = content;
     }
 
     public String getTitle() {
@@ -33,5 +47,13 @@ public class NoticeRecyclerItem {
 
     public void setRead_cnt(int read_cnt) {
         this.read_cnt = read_cnt;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 }

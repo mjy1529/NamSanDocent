@@ -78,12 +78,14 @@ public class NoticeActivity extends AppCompatActivity implements NoticeRecyclerA
         noticeAdapter.setLinearLayoutManager(layoutManager);
         noticeAdapter.setRecyclerView(noticeRecyclerView);
         noticeRecyclerView.setAdapter(noticeAdapter);
+
     }
 
     private void setData() {
         noticeList.clear();
         for (int i = 1; i <= loadCount; i++) {
-            noticeList.add(new NoticeRecyclerItem(i + ". [알림] 젊은국악오디션 하반기 참가자 서류심사 결과 안내", "2018.08.12", i));
+//            noticeList.add(new NoticeRecyclerItem(i + ". [알림] 젊은국악오디션 하반기 참가자 서류심사 결과 안내", "2018.08.12", i));
+            noticeList.add(new NoticeRecyclerItem(i + ". [알림] 젊은국악오디션 하반기 참가자 서류심사 결과 안내", "2018.08.12", 20, "[알림] 젊은국악오디션 하반기 참가자 서류심사 결과 안내"));
         }
         noticeAdapter.addAll(noticeList);
     }
@@ -101,7 +103,7 @@ public class NoticeActivity extends AppCompatActivity implements NoticeRecyclerA
                 int end = start + loadCount;
 
                 for (int i = start + 1; i <= end; i++) {
-                    noticeList.add(new NoticeRecyclerItem(i + ". [안내] 7월 17일 전통체험프로그램 활만들기 미운영 안내", "2018.07.19", 11));
+                    noticeList.add(new NoticeRecyclerItem(i + ". [안내] 7월 17일 전통체험프로그램 활만들기 미운영 안내", "2018.07.19", 11, getResources().getString(R.string.notice_content)));
                 }
                 noticeAdapter.addItem(noticeList);
                 noticeAdapter.setMoreLoading(false);
