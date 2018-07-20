@@ -1,69 +1,161 @@
 package docent.namsanhanok.Notice;
 
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import docent.namsanhanok.R;
 
-public class NoticeRecyclerAdapter extends RecyclerView.Adapter<NoticeRecyclerAdapter.ItemViewHolder> {
+public class NoticeRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+
+    private final int VIEW_ITEM = 1;
+    private final int VIEW_PROGRESS = 0;
     ArrayList<NoticeRecyclerItem> noticeList;
 
-    public NoticeRecyclerAdapter(ArrayList<NoticeRecyclerItem> noticeList) {
-        this.noticeList = noticeList;
+    private OnLoadMoreListener onLoadMoreListener;
+    private LinearLayoutManager mLinearLayoutManager;
+
+    private boolean isMoreLoading = false;
+    private int visibleThreshold = 1;
+    private int firstVisibleItem, visibleItemCount, totalItemCount, lastVisibleItem;
+
+    public interface OnLoadMoreListener {
+        void loadMore();
+    }
+
+    public NoticeRecyclerAdapter(OnLoadMoreListener onLoadMoreListener) {
+        this.onLoadMoreListener = onLoadMoreListener;
+        noticeList = new ArrayList<>();
+    }
+
+    public void setLinearLayoutManager(LinearLayoutManager linearLayoutManager) {
+        this.mLinearLayoutManager = linearLayoutManager;
+    }
+
+    public void setRecyclerView(RecyclerView mView) {
+        mView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                visibleItemCount = recyclerView.getChildCount();
+                totalItemCount = mLinearLayoutManager.getItemCount();
+                firstVisibleItem = mLinearLayoutManager.findFirstVisibleItemPosition();
+                lastVisibleItem = mLinearLayoutManager.findLastVisibleItemPosition();
+
+                if (!isMoreLoading && (totalItemCount - visibleItemCount) <= (firstVisibleItem + visibleThreshold)) {
+                    if (onLoadMoreListener != null) {
+                        onLoadMoreListener.loadMore();
+                    }
+                    isMoreLoading = true;
+                }
+            }
+        });
     }
 
     @Override
-    public NoticeRecyclerAdapter.ItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_notice_recycler, parent, false);
-        return new ItemViewHolder(view);
+    public int getItemViewType(int position) {
+        return noticeList.get(position) != null ? VIEW_ITEM : VIEW_PROGRESS;
     }
 
     @Override
-    public void onBindViewHolder(final NoticeRecyclerAdapter.ItemViewHolder holder, int position) {
-        holder.notice_title.setText(noticeList.get(position).getTitle());
-        holder.notice_date.setText(noticeList.get(position).getDate());
-        holder.notice_readCnt.setText(String.valueOf(noticeList.get(position).getRead_cnt()));
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        if (viewType == VIEW_ITEM) {
+            return new NoticeItemViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_notice_recycler, parent, false));
+        } else {
+            return new ProgressViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.notice_item_progress, parent, false));
+        }
+    }
 
-        holder.notice_title.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(view.getContext(), "click!", Toast.LENGTH_SHORT).show();
-            }
-        });
+    public void addAll(ArrayList<NoticeRecyclerItem> noticeList) {
+        this.noticeList.clear();
+        this.noticeList.addAll(noticeList);
+        notifyDataSetChanged();
+    }
 
-        holder.notice_recyclerLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(view.getContext(), "click!", Toast.LENGTH_SHORT).show();
-            }
-        });
+    public void addItem(ArrayList<NoticeRecyclerItem> noticeList) {
+        this.noticeList.addAll(noticeList);
+        notifyItemChanged(0, this.noticeList.size());
+    }
+
+    @Override
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        if (holder instanceof NoticeItemViewHolder) {
+            NoticeRecyclerItem item = (NoticeRecyclerItem) noticeList.get(position);
+            ((NoticeItemViewHolder) holder).notice_title.setText(item.getTitle());
+            ((NoticeItemViewHolder) holder).notice_date.setText(item.getDate());
+            ((NoticeItemViewHolder) holder).notice_readCnt.setText(String.valueOf(item.getRead_cnt()));
+        }
+    }
+
+    public void setMoreLoading(boolean isMoreLoading) {
+        this.isMoreLoading = isMoreLoading;
     }
 
     @Override
     public int getItemCount() {
-        return noticeList.size();
+        return noticeList == null ? 0 : noticeList.size();
     }
 
-    class ItemViewHolder extends RecyclerView.ViewHolder {
-        private RelativeLayout notice_recyclerLayout;
+    public void setProgressMore(final boolean isProgress) {
+        if (isProgress) {
+            new android.os.Handler().post(new Runnable() {
+                @Override
+                public void run() {
+                    noticeList.add(null);
+                    notifyItemInserted(noticeList.size() - 1);
+                }
+            });
+        } else {
+            noticeList.remove(noticeList.size() - 1);
+            notifyItemRemoved(noticeList.size());
+        }
+    }
+
+    class NoticeItemViewHolder extends RecyclerView.ViewHolder {
+        private LinearLayout notice_recyclerLayout;
         private TextView notice_title;
         private TextView notice_date;
         private TextView notice_readCnt;
 
-        public ItemViewHolder(View view) {
+        public NoticeItemViewHolder(View view) {
             super(view);
-            notice_recyclerLayout = (RelativeLayout) view.findViewById(R.id.notice_recyclerLayout);
+            notice_recyclerLayout = (LinearLayout) view.findViewById(R.id.notice_recyclerLayout);
             notice_title = (TextView) view.findViewById(R.id.notice_title);
             notice_date = (TextView) view.findViewById(R.id.notice_date);
             notice_readCnt = (TextView) view.findViewById(R.id.notice_readCnt);
+
+            notice_recyclerLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Toast.makeText(view.getContext(), "click", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+            notice_title.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Toast.makeText(view.getContext(), "click", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+    }
+
+    class ProgressViewHolder extends RecyclerView.ViewHolder {
+        public ProgressBar pBar;
+
+        public ProgressViewHolder(View v) {
+            super(v);
+            pBar = (ProgressBar) v.findViewById(R.id.pBar);
         }
     }
 }
