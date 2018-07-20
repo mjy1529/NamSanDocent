@@ -32,7 +32,8 @@
         <activity android:name=".Event.EventActivity" />
         <activity android:name=".Question.QuestionWriteActivity" />
         <activity android:name=".Notice.NoticeActivity" />
-        <activity android:name=".Notice.NoticePostActivity"></activity>
+        <activity android:name=".Notice.NoticePostActivity" />
+        <activity android:name=".Question.QuestionWriteDoneActivity"></activity>
     </application>
 
 </manifest>

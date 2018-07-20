@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:id="@+id/qusetion_write_LLlayout"
     tools:context=".Question.QuestionWriteActivity">
 
 
@@ -135,7 +136,7 @@
                         android:layout_marginStart="25dp"
                         android:background="@drawable/rectangle_edge_all"
                         android:gravity="center_vertical"
-                        android:hint="성  명"
+                        android:hint="홍길동"
                         android:inputType="text"
                         android:paddingEnd="7dp"
                         android:paddingStart="20dp"
