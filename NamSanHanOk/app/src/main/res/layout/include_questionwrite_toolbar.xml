@@ -6,7 +6,7 @@
     android:layout_height="45dp">
 
     <ImageButton
-        android:id="@+id/cancelBtn"
+        android:id="@+id/question_register_cancelBtn"
         android:onClick="onClick"
         android:layout_width="25dp"
         android:layout_height="25dp"
@@ -15,19 +15,19 @@
         android:background="@drawable/cancel" />
 
     <TextView
-        android:id="@+id/docentTitle"
+        android:id="@+id/question_register_title"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:text="글쓰기"
+        android:text="문의하기"
         android:textColor="#000000"
         android:textSize="14sp"
         android:textStyle="bold" />
 
 
-        <TextView
-            android:id="@+id/question_register"
-            android:layout_width="45dp"
+        <Button
+            android:id="@+id/question_register_Btn"
+            android:layout_width="60dp"
             android:layout_height="30dp"
             android:gravity="center"
             android:layout_centerVertical="true"
@@ -37,8 +37,10 @@
             android:layout_marginRight="10dp"
             android:onClick="onClick"
             android:textSize="14dp"
-            android:text="등록"
+            android:text="보내기"
             android:background="@drawable/question_register_button"
             />
+
+
 
 </RelativeLayout>
