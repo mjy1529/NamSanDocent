@@ -14,6 +14,8 @@ import android.widget.ImageButton;
 import android.widget.ScrollView;
 import android.widget.Toast;
 
+import com.melnykov.fab.FloatingActionButton;
+
 import java.util.ArrayList;
 
 import docent.namsanhanok.Home.HomeActivity;
@@ -25,7 +27,8 @@ public class NoticeActivity extends AppCompatActivity implements NoticeRecyclerA
     EditText search_editText;
     ImageButton searchBtn;
     ImageButton notice_postBtn;
-    ImageButton topBtn;
+    //ImageButton topBtn;
+    FloatingActionButton topBtn;
 
     RecyclerView noticeRecyclerView;
     NoticeRecyclerAdapter noticeAdapter;
@@ -50,6 +53,7 @@ public class NoticeActivity extends AppCompatActivity implements NoticeRecyclerA
                 intent = new Intent(this, HomeActivity.class);
                 startActivity(intent);
                 finish();
+                break;
             case R.id.searchBtn: //검색 버튼
                 Toast.makeText(this, "검색", android.widget.Toast.LENGTH_SHORT).show();
                 break;
@@ -68,7 +72,10 @@ public class NoticeActivity extends AppCompatActivity implements NoticeRecyclerA
         search_editText = (EditText) findViewById(R.id.search_editText);
         searchBtn = (ImageButton) findViewById(R.id.searchBtn);
         notice_postBtn = (ImageButton) findViewById(R.id.notice_postBtn);
-        topBtn = (ImageButton) findViewById(R.id.topBtn);
+
+        //topBtn = (ImageButton) findViewById(R.id.topBtn);
+        topBtn = (FloatingActionButton) findViewById(R.id.topBtn);
+
         noticeRecyclerView = (RecyclerView) findViewById(R.id.noticeRecyclerView);
         noticeAdapter = new NoticeRecyclerAdapter(this);
 
@@ -79,6 +86,7 @@ public class NoticeActivity extends AppCompatActivity implements NoticeRecyclerA
         noticeAdapter.setRecyclerView(noticeRecyclerView);
         noticeRecyclerView.setAdapter(noticeAdapter);
 
+        topBtn.attachToRecyclerView(noticeRecyclerView);
     }
 
     private void setData() {

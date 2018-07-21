@@ -41,5 +41,6 @@ dependencies {
     implementation 'me.srodrigo:androidhintspinner:1.0.0'
     //alertDialog
     implementation 'com.github.mjn1369:prettydialog:1.0.2'
-
+    //top floatingActionButton
+    implementation 'com.melnykov:floatingactionbutton:1.3.0'
 }
