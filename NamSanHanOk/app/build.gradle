@@ -39,5 +39,7 @@ dependencies {
     }
     //hint_spinner
     implementation 'me.srodrigo:androidhintspinner:1.0.0'
+    //alertDialog
+    implementation 'com.github.mjn1369:prettydialog:1.0.2'
 
 }

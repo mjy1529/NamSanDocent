@@ -4,8 +4,6 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
@@ -13,8 +11,9 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import docent.namsanhanok.Home.HomeActivity;
 import docent.namsanhanok.R;
+import libs.mjn.prettydialog.PrettyDialog;
+import libs.mjn.prettydialog.PrettyDialogCallback;
 
 public class NoticeReadActivity extends AppCompatActivity {
 
@@ -33,45 +32,69 @@ public class NoticeReadActivity extends AppCompatActivity {
         init();
     }
 
-    public void onClick(View v) {
+    public void onClick(View view) {
         Intent intent;
-        switch (v.getId()) {
+        switch (view.getId()) {
             case R.id.listBtn:
                 intent = new Intent(this, NoticeActivity.class);
                 startActivity(intent);
                 finish();
                 break;
             case R.id.moreBtn:
-                Log.d("more", "click");
-                PopupMenu popupMenu = new PopupMenu(getApplicationContext(), v);
-                getMenuInflater().inflate(R.menu.notice_admin_menu, popupMenu.getMenu());
-                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem menuItem) {
-                        switch (menuItem.getItemId()) {
-                            case R.id.modify:
-                                Toast.makeText(NoticeReadActivity.this, "modify", Toast.LENGTH_SHORT).show();
-                                break;
-                            case R.id.remove:
-                                Toast.makeText(NoticeReadActivity.this, "remove", Toast.LENGTH_SHORT).show();
-                                break;
-                        }
-                        return false;
-                    }
-                });
-                popupMenu.show();
+                showPopupMenu(view);
                 break;
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        return super.onCreateOptionsMenu(menu);
+    public void showPopupMenu(View view) {
+        PopupMenu popupMenu = new PopupMenu(getApplicationContext(), view);
+        getMenuInflater().inflate(R.menu.notice_admin_menu, popupMenu.getMenu());
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                switch (menuItem.getItemId()) {
+                    case R.id.modify:
+                        Toast.makeText(NoticeReadActivity.this, "modify", Toast.LENGTH_SHORT).show();
+                        break;
+                    case R.id.remove:
+                        showAlertDialog();
+                        break;
+                }
+                return false;
+            }
+        });
+        popupMenu.show();
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        return super.onOptionsItemSelected(item);
+    public void showAlertDialog() {
+        final PrettyDialog alertDialog = new PrettyDialog(this);
+        alertDialog
+                .setMessage("해당 게시글을 삭제하시겠습니까?")
+                .setIcon(R.drawable.pdlg_icon_info)
+                .setIconTint(R.color.dialog_cancel)
+                .addButton("삭제", // button text
+                        R.color.pdlg_color_white,  // button text color
+                        R.color.dialog_remove,  // button background color
+                        new PrettyDialogCallback() {  // button OnClick listener
+                            @Override
+                            public void onClick() {
+                                Toast.makeText(NoticeReadActivity.this, "삭제!", Toast.LENGTH_SHORT).show();
+                                alertDialog.dismiss();
+                            }
+                        }
+                )
+                .addButton("취소",
+                        R.color.pdlg_color_white,
+                        R.color.dialog_cancel,
+                        new PrettyDialogCallback() {
+                            @Override
+                            public void onClick() {
+                                Toast.makeText(NoticeReadActivity.this, "취소", Toast.LENGTH_SHORT).show();
+                                alertDialog.dismiss();
+                            }
+                        }
+                );
+        alertDialog.show();
     }
 
     public void init() {
