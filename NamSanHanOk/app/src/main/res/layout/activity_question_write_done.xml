@@ -3,10 +3,12 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:layout_gravity="center"
+    android:background="#fefff9"
     android:orientation="vertical"
     tools:context=".Question.QuestionWriteDoneActivity">
-
 
 
     <LinearLayout
@@ -28,29 +30,30 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         android:gravity="center">
 
         <TextView
+            android:layout_marginTop="20dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="30dp"
+            android:textSize="15sp"
             android:gravity="center"
-
-            android:text="문의가 정상적으로
-완료 되었습니다."/>
+            android:textColor="#000000"
+            android:text="문의가 정상적으로 완료 되었습니다."/>
 
         <Button
             android:id="@+id/question_write_done_Btn"
-            android:layout_width="100dp"
-            android:layout_height="40dp"
+            android:layout_width="80dp"
+            android:layout_height="35dp"
             android:gravity="center"
             android:paddingLeft="3dp"
             android:paddingRight="3dp"
+            android:layout_marginBottom="15dp"
             android:layout_marginTop="20dp"
             android:layout_gravity="center"
-            android:textSize="20sp"
+            android:textSize="15sp"
             android:text="확인"
             android:onClick="onClick"
             android:background="@drawable/question_register_button"

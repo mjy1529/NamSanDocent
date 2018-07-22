@@ -3,16 +3,17 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="45dp">
+    android:layout_height="45dp"
+    android:background="#ffc6c6">
 
     <TextView
         android:id="@+id/question_register_title"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:text="문의완료"
+        android:text="문의 완료"
         android:textColor="#000000"
         android:textSize="14sp"
-        android:textStyle="bold" />
+        />
 
 </RelativeLayout>

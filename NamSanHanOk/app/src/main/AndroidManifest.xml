@@ -23,6 +23,9 @@
             android:name=".Docent.DocentPopUpActivity"
             android:theme="@android:style/Theme.DeviceDefault.Light.Dialog" />
         <activity
+            android:name=".Question.QuestionWriteDoneActivity"
+            android:theme="@android:style/Theme.Dialog"/>
+        <activity
             android:name=".Docent.DocentActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode" />
         <activity android:name=".Category.CategoryListActivity" />
@@ -33,8 +36,8 @@
         <activity android:name=".Question.QuestionWriteActivity" />
         <activity android:name=".Notice.NoticeActivity" />
         <activity android:name=".Notice.NoticePostActivity" />
-        <activity android:name=".Question.QuestionWriteDoneActivity"></activity>
-        <activity android:name=".Notice.NoticeReadActivity"></activity>
+        <activity android:name=".Notice.NoticeReadActivity">
+        </activity>
     </application>
 
 </manifest>

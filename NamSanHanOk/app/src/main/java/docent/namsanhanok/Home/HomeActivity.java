@@ -1,6 +1,7 @@
 package docent.namsanhanok.Home;
 
 import android.content.Intent;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -11,6 +12,8 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 import com.github.angads25.toggle.LabeledSwitch;
 import com.github.angads25.toggle.interfaces.OnToggledListener;
+
+import docent.namsanhanok.BackPressCloseHandler;
 import docent.namsanhanok.Category.CategoryActivity;
 
 import docent.namsanhanok.Event.EventActivity;
@@ -23,11 +26,15 @@ public class HomeActivity extends AppCompatActivity {
 
     ImageButton settingBtn;
     ImageView menuBtn1, menuBtn2, menuBtn3, menuBtn4, menuBtn5;
+    private BackPressCloseHandler backPressCloseHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        backPressCloseHandler = new BackPressCloseHandler(this);
+
 
         init();
 
@@ -77,6 +84,7 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
+
     public void init() {
         Toolbar homeToolbar = (Toolbar)findViewById(R.id.homeToolbar);
         homeToolbar.bringToFront();
@@ -91,6 +99,15 @@ public class HomeActivity extends AppCompatActivity {
 
         RelativeLayout homeLayout = (RelativeLayout)findViewById(R.id.homeLayout);
         homeLayout.getBackground().setAlpha(220);
+
     }
+
+    @Override
+    public void onBackPressed() {
+        //super.onBackPressed();
+        backPressCloseHandler.onBackPressed();
+
+    }
+
 
 }

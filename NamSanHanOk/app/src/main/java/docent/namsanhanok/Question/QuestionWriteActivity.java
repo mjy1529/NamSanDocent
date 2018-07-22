@@ -1,27 +1,18 @@
 package docent.namsanhanok.Question;
 
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
-import docent.namsanhanok.Home.HomeActivity;
 import docent.namsanhanok.R;
 import me.srodrigo.androidhintspinner.HintAdapter;
 import me.srodrigo.androidhintspinner.HintSpinner;
@@ -34,6 +25,9 @@ public class QuestionWriteActivity extends AppCompatActivity {
     ArrayList<String> question_category_spinner_list;
     Object selected_spinner;
 
+    //WriteDoneAcitivy에서 현재 Activity 종료
+    public static AppCompatActivity writeActivity;
+
     EditText email_first_address;
     EditText phone_number;
     EditText username;
@@ -41,7 +35,6 @@ public class QuestionWriteActivity extends AppCompatActivity {
     EditText content;
 
     ArrayList<String> nullValue;
-    String default_spinner;
 
 
 
@@ -50,6 +43,8 @@ public class QuestionWriteActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_questionwrite);
+
+        writeActivity = QuestionWriteActivity.this;
 
         init();
         setCategorySpinner();
@@ -75,6 +70,7 @@ public class QuestionWriteActivity extends AppCompatActivity {
 
 
     }
+
     public void setCategorySpinner() {
 
         question_category_spinner_list = new ArrayList<>();
@@ -117,53 +113,60 @@ public class QuestionWriteActivity extends AppCompatActivity {
         post_register_Btn = (Button) findViewById(R.id.question_register_Btn);
         cancelBtn = (ImageButton) findViewById(R.id.question_register_cancelBtn);
 
-        question_category_spinner = (Spinner) findViewById(R.id.question_category_Spinner);
-
         email_first_address = (EditText) findViewById(R.id.question_email_first_address);
         phone_number = (EditText) findViewById(R.id.question_phone_number);
         username = (EditText) findViewById(R.id.question_username);
+
+        question_category_spinner = (Spinner) findViewById(R.id.question_category_Spinner);
+//        question_category_spinner.performClick();
+
         title = (EditText) findViewById(R.id.question_title);
         content = (EditText) findViewById(R.id.question_content);
 
     }
 
+//비어잇으면 상자 표시 붉게
     public boolean detectError() {
 
         nullValue = new ArrayList<>();
 
         int i=0;
 
-        if(email_first_address.getText().toString().getBytes().length <= 0){
-            nullValue.add("이메일을 입력해주세요");
-            i++;
-        }
-        if(selected_spinner==null){
-            nullValue.add("구분을 선택해주세요");
-            i++;
-        }
-        if(phone_number.getText().toString().getBytes().length <= 0){
-            nullValue.add("전화번호를 입력해주세요");
-            i++;
-        }
-        if(username.getText().toString().getBytes().length <= 0){
-            nullValue.add("성함을 입력해주세요");
+
+        if(content.getText().toString().getBytes().length <= 0){
+            nullValue.add("내용을 입력해주세요");
+            content.requestFocus();
             i++;
         }
         if(title.getText().toString().getBytes().length <= 0){
             nullValue.add("제목을 입력해주세요");
+            title.requestFocus();
             i++;
         }
-        if(content.getText().toString().getBytes().length <= 0){
-            nullValue.add("내용을 입력해주세요");
+        if(username.getText().toString().getBytes().length <= 0){
+            nullValue.add("성함을 입력해주세요");
+            username.requestFocus();
             i++;
+        }
+        if(phone_number.getText().toString().getBytes().length <= 0){
+            nullValue.add("전화번호를 입력해주세요");
+            phone_number.requestFocus();
+            i++;
+        }
+        if(email_first_address.getText().toString().getBytes().length <= 0){
+
+//            nullValue.add("이메일을 입력해주세요");
+            email_first_address.requestFocus();
+            i++;
+        }
+        if(nullValue.size() <=0 ){
+            if(selected_spinner==null){
+                nullValue.add("구분을 선택해주세요");
+                question_category_spinner.requestFocus();
+                question_category_spinner.performClick();
+            }
         }
 
-//        email_first_address.getText().toString()
-//                , selected_spinner.toString()
-//                , phone_number.getText().toString()
-//                , username.getText().toString()
-//                , title.getText().toString()
-//                , content.getText().toString()
 
 
         if(nullValue.size() <= 0 ){ //빈칸이 없음
@@ -175,12 +178,10 @@ public class QuestionWriteActivity extends AppCompatActivity {
 
     }
 
-
-
     public void onClick(View v) throws InterruptedException {
         switch (v.getId()) {
             case  R.id.question_register_Btn :
-                //제목 and 내용 DB에 저장해야함
+                //제목 and 내용 DB에 저장해야함, 값은 이렇게 갖고옴
 //                Toast.makeText(this, "결과값" + "\n" + email_first_address.getText().toString()
 //                        + "\n" + selected_spinner.toString()
 //                        + "\n" + phone_number.getText().toString()
@@ -188,29 +189,35 @@ public class QuestionWriteActivity extends AppCompatActivity {
 //                        + "\n"+ title.getText().toString()
 //                        + "\n" + content.getText().toString(), Toast.LENGTH_SHORT).show();
 
+
+                //에러 탐지
+                detectError();
+
+                //DB저장
+                //내용
+
+                //에러 유무에 따라 activity 넘김
                 if(!detectError()){//빈칸이 없으면
                     //그 다음, Question Board Activity로
                     Intent intent = new Intent(getApplicationContext(), QuestionWriteDoneActivity.class);
                     startActivity(intent);
-                    finish();
                     break;
                 }
                 else{ //빈칸이 있으면
-
-//                }
-                    String nullStrings = "";
-                    for (int i = 0; i < nullValue.size() ; i++) {
-                        if(i == nullValue.size()-1){
-                            nullStrings += nullValue.get(i).toString();
-                        }
-                        else{
-                            nullStrings += nullValue.get(i).toString() + "\n";
-                        }
-
-                    }
-                    Toast.makeText(this, nullStrings, Toast.LENGTH_LONG).show();
-
-
+//
+////                    String nullStrings = "";
+////                    for (int i = 0; i < nullValue.size() ; i++) {
+////                        if(i == nullValue.size()-1){
+////                            nullStrings += nullValue.get(i).toString();
+////                        }
+////                        else{
+////                            nullStrings += nullValue.get(i).toString() + "\n";
+////                        }
+////
+////                    }
+////                    Toast.makeText(this, nullStrings, Toast.LENGTH_LONG).show();
+//
+//
                     break;
                 }
 
