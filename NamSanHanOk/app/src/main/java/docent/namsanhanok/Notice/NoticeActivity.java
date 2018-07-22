@@ -27,12 +27,12 @@ public class NoticeActivity extends AppCompatActivity implements NoticeRecyclerA
     EditText search_editText;
     ImageButton searchBtn;
     ImageButton notice_postBtn;
-    //ImageButton topBtn;
     FloatingActionButton topBtn;
 
     RecyclerView noticeRecyclerView;
     NoticeRecyclerAdapter noticeAdapter;
     private ArrayList<NoticeRecyclerItem> noticeList = new ArrayList<>();
+    private ArrayList<NoticeRecyclerItem> allNoticeList = new ArrayList<>();
 
     int loadCount = 15;
 
@@ -44,6 +44,12 @@ public class NoticeActivity extends AppCompatActivity implements NoticeRecyclerA
         init();
 
         String search_word = search_editText.getText().toString(); //검색어
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        setData();
     }
 
     public void onClick(View v) {
@@ -72,10 +78,7 @@ public class NoticeActivity extends AppCompatActivity implements NoticeRecyclerA
         search_editText = (EditText) findViewById(R.id.search_editText);
         searchBtn = (ImageButton) findViewById(R.id.searchBtn);
         notice_postBtn = (ImageButton) findViewById(R.id.notice_postBtn);
-
-        //topBtn = (ImageButton) findViewById(R.id.topBtn);
         topBtn = (FloatingActionButton) findViewById(R.id.topBtn);
-
         noticeRecyclerView = (RecyclerView) findViewById(R.id.noticeRecyclerView);
         noticeAdapter = new NoticeRecyclerAdapter(this);
 
@@ -90,10 +93,15 @@ public class NoticeActivity extends AppCompatActivity implements NoticeRecyclerA
     }
 
     private void setData() {
+        //전체 공지사항 리스트(allNoticeList) 받아오기
+        for (int i = 1; i <= 50; i++) {
+            allNoticeList.add(new NoticeRecyclerItem(i + ". [알림] 젊은국악오디션 하반기 참가자 서류심사 결과 안내", "2018.08.12", 20, "[알림] 젊은국악오디션 하반기 참가자 서류심사 결과 안내"));
+        }
+
+        //allNoticeList에서 loadCount만큼 받아오기
         noticeList.clear();
-        for (int i = 1; i <= loadCount; i++) {
-//            noticeList.add(new NoticeRecyclerItem(i + ". [알림] 젊은국악오디션 하반기 참가자 서류심사 결과 안내", "2018.08.12", i));
-            noticeList.add(new NoticeRecyclerItem(i + ". [알림] 젊은국악오디션 하반기 참가자 서류심사 결과 안내", "2018.08.12", 20, "[알림] 젊은국악오디션 하반기 참가자 서류심사 결과 안내"));
+        for(int i=0; i<loadCount; i++) {
+            noticeList.add(allNoticeList.get(i));
         }
         noticeAdapter.addAll(noticeList);
     }
@@ -110,19 +118,13 @@ public class NoticeActivity extends AppCompatActivity implements NoticeRecyclerA
                 int start = noticeAdapter.getItemCount();
                 int end = start + loadCount;
 
-                for (int i = start + 1; i <= end; i++) {
-                    noticeList.add(new NoticeRecyclerItem(i + ". [안내] 7월 17일 전통체험프로그램 활만들기 미운영 안내", "2018.07.19", 11, getResources().getString(R.string.notice_content)));
+                for (int i = start; i < end; i++) {
+                    noticeList.add(allNoticeList.get(i));
                 }
                 noticeAdapter.addItem(noticeList);
                 noticeAdapter.setMoreLoading(false);
             }
         }, 2500);
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        setData();
     }
 
 }
