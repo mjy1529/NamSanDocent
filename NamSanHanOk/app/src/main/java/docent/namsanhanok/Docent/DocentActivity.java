@@ -44,6 +44,7 @@ import com.google.android.exoplayer2.upstream.RawResourceDataSource;
 import java.util.ArrayList;
 
 import docent.namsanhanok.Home.HomeActivity;
+import docent.namsanhanok.Location.LocationActivity;
 import docent.namsanhanok.R;
 
 public class DocentActivity extends AppCompatActivity {
@@ -273,6 +274,9 @@ public class DocentActivity extends AppCompatActivity {
 
             case R.id.locationBtn:
             case R.id.locationTxt:
+                Intent intent2 = new Intent(getApplicationContext(), LocationActivity.class);
+                intent2.putExtra("title", docent_toolbar_title.getText().toString());
+                startActivity(intent2);
                 Toast.makeText(DocentActivity.this, "location", Toast.LENGTH_SHORT).show();
                 break;
 

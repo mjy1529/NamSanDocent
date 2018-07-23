@@ -2,6 +2,7 @@ package docent.namsanhanok.Question;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -46,7 +47,8 @@ public class QuestionWriteActivity extends AppCompatActivity implements EditText
 
     ArrayList<String> nullValue;
 
-    InputMethodManager imm;
+    InputMethodManager imm; //spinner 선택시, 키보드 안나오게
+    NestedScrollView scrollView;
 
 
     @Override
@@ -63,24 +65,6 @@ public class QuestionWriteActivity extends AppCompatActivity implements EditText
 
     }
 
-
-//    public void getFocus(){
-//        if(getCurrentFocus() == email_first_address){
-//            // your view is in focus
-//            email_first_address.setBackgroundResource(R.drawable.rectangle_edge_all_selected);
-//        }else{
-//            // not in the focus
-//            email_first_address.setBackgroundResource(R.drawable.rectangle_edge_all);
-//        }
-//
-//        if(getCurrentFocus() == phone_number){
-//            // your view is in focus
-//            phone_number.setBackgroundResource(R.drawable.rectangle_edge_all_selected);
-//        }else{
-//            // not in the focus
-//            phone_number.setBackgroundResource(R.drawable.rectangle_edge_all);
-//        }
-//    }
 
     //spinner hint 설정
     public void setSpinner(final Spinner spinner, final String hint, ArrayList<String> spinner_list) {
@@ -172,7 +156,7 @@ public class QuestionWriteActivity extends AppCompatActivity implements EditText
 
 
         imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
-
+        scrollView = (NestedScrollView) findViewById(R.id.getScroll_location);
 
 
     }
@@ -225,6 +209,7 @@ public class QuestionWriteActivity extends AppCompatActivity implements EditText
         if(content.getText().toString().getBytes().length <= 0){
             nullValue.add("내용을 입력해주세요");
             content.requestFocus();
+
         }
         if(title.getText().toString().getBytes().length <= 0){
             nullValue.add("제목을 입력해주세요");
@@ -247,6 +232,7 @@ public class QuestionWriteActivity extends AppCompatActivity implements EditText
 
             nullValue.add("이메일을 입력해주세요");
             email_first_address.requestFocus();
+
         }
 
 
@@ -286,16 +272,14 @@ public class QuestionWriteActivity extends AppCompatActivity implements EditText
                 }
                 else{ //빈칸이 있으면
 
-//                    String nullStrings = "";
-//                    for (int i = 0; i < nullValue.size() ; i++) {
-//                        if(i == nullValue.size()-1){
-//                            nullStrings += nullValue.get(i).toString();
-//                        }
-//                        else{
-//                            nullStrings += nullValue.get(i).toString() + "\n";
-//                        }
-//
-//                    }
+                    if(getCurrentFocus()==content){
+                        scrollView.setScrollY(scrollView.getScrollY());
+
+                    }
+                    else{
+                        scrollView.setScrollY(scrollView.getScrollY()-200);
+
+                    }
                     Toast.makeText(this, nullValue.get(nullValue.size()-1).toString(), Toast.LENGTH_SHORT).show();
 
                     break;
