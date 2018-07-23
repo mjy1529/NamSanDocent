@@ -12,10 +12,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyDqI8Nb1EO3PuTxKgY03Ki9SS5HseNxURQ"/>
+            android:value="AIzaSyDqI8Nb1EO3PuTxKgY03Ki9SS5HseNxURQ" />
 
         <activity android:name=".Home.HomeActivity">
             <intent-filter>
@@ -29,7 +28,7 @@
             android:theme="@android:style/Theme.DeviceDefault.Light.Dialog" />
         <activity
             android:name=".Docent.DocentActivity"
-            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode" />
+            android:configChanges="orientation|screenSize" />
         <activity android:name=".Category.CategoryListActivity" />
         <activity android:name=".Category.CategoryActivity" />
         <activity android:name=".Setting.SettingActivity" />
@@ -40,7 +39,8 @@
         <activity android:name=".Notice.NoticePostActivity" />
         <activity android:name=".Question.QuestionWriteDoneActivity" />
         <activity android:name=".Notice.NoticeReadActivity" />
-        <activity android:name=".Info.InfoActivity"></activity>
+        <activity android:name=".Info.InfoActivity" />
+        <activity android:name=".Setting.AdminLoginActivity"></activity>
     </application>
 
 </manifest>

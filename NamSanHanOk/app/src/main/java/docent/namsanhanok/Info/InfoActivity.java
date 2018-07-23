@@ -52,8 +52,7 @@ public class InfoActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void onMapReady(GoogleMap googleMap) {
         LatLng NamsanHanok = new LatLng(37.55883879999999, 126.99407270000006);
         MarkerOptions markerOptions = new MarkerOptions();
-        markerOptions.position(NamsanHanok)
-                .title("남산골 한옥마을");
+        markerOptions.position(NamsanHanok).title("남산골 한옥마을");
 
         Marker marker = googleMap.addMarker(markerOptions);
         marker.showInfoWindow();
@@ -61,7 +60,6 @@ public class InfoActivity extends AppCompatActivity implements OnMapReadyCallbac
         googleMap.getUiSettings().setZoomControlsEnabled(true);
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(NamsanHanok));
         googleMap.animateCamera(CameraUpdateFactory.newLatLng(NamsanHanok));
-        googleMap.setMinZoomPreference(15.0f);
-
+        googleMap.setMinZoomPreference(13.0f);
     }
 }
