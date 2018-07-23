@@ -86,8 +86,6 @@ public class DocentActivity extends AppCompatActivity {
 
     String docent_title;
 
-
-
     public DocentActivity() {
 
     }

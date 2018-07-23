@@ -89,6 +89,7 @@ public class NoticeActivity extends AppCompatActivity implements NoticeRecyclerA
         noticeAdapter.setLinearLayoutManager(layoutManager);
         noticeAdapter.setRecyclerView(noticeRecyclerView);
         noticeRecyclerView.setAdapter(noticeAdapter);
+        noticeRecyclerView.setNestedScrollingEnabled(true);
 
         topBtn.attachToRecyclerView(noticeRecyclerView);
     }
@@ -116,14 +117,14 @@ public class NoticeActivity extends AppCompatActivity implements NoticeRecyclerA
                 noticeList.clear();
                 noticeAdapter.setProgressMore(false);
 
-                int start = noticeAdapter.getItemCount(); //noticeList의 사이즈
+                int start = noticeAdapter.getItemCount();
                 int end = start + loadCount;
 
-                if (end >= allNoticeList.size()) {
+                if (end >= allNoticeList.size()) { //loadCount보다 리스트 수가 적을 때
                     for (int i = start; i < allNoticeList.size(); i++) {
                         noticeList.add(allNoticeList.get(i));
                     }
-                } else {
+                } else { //loadCount 이상일 때
                     for (int i = start; i < end; i++) {
                         noticeList.add(allNoticeList.get(i));
                     }
@@ -131,7 +132,6 @@ public class NoticeActivity extends AppCompatActivity implements NoticeRecyclerA
 
                 noticeAdapter.addItem(noticeList);
                 noticeAdapter.setMoreLoading(false);
-
             }
         }, 2500);
     }
