@@ -17,6 +17,7 @@ import docent.namsanhanok.BackPressCloseHandler;
 import docent.namsanhanok.Category.CategoryActivity;
 
 import docent.namsanhanok.Event.EventActivity;
+import docent.namsanhanok.Info.InfoActivity;
 import docent.namsanhanok.Notice.NoticeActivity;
 import docent.namsanhanok.Question.QuestionWriteActivity;
 import docent.namsanhanok.R;
@@ -78,8 +79,9 @@ public class HomeActivity extends AppCompatActivity {
                 startActivity(intent);
                 break;
 
-            case R.id.menuBtn5 : //안내
-                Toast.makeText(this, "이용안내", Toast.LENGTH_SHORT).show();
+            case R.id.menuBtn5 : //이용안내
+                intent = new Intent(HomeActivity.this, InfoActivity.class);
+                startActivity(intent);
                 break;
         }
     }
