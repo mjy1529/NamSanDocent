@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -67,7 +68,7 @@ public class NoticeActivity extends AppCompatActivity implements NoticeRecyclerA
                 intent = new Intent(this, NoticePostActivity.class);
                 startActivity(intent);
                 break;
-            case R.id.topBtn :
+            case R.id.topBtn:
                 noticeRecyclerView.smoothScrollToPosition(0);
                 break;
         }
@@ -100,7 +101,7 @@ public class NoticeActivity extends AppCompatActivity implements NoticeRecyclerA
 
         //allNoticeList에서 loadCount만큼 받아오기
         noticeList.clear();
-        for(int i=0; i<loadCount; i++) {
+        for (int i = 0; i < loadCount; i++) {
             noticeList.add(allNoticeList.get(i));
         }
         noticeAdapter.addAll(noticeList);
@@ -115,14 +116,22 @@ public class NoticeActivity extends AppCompatActivity implements NoticeRecyclerA
                 noticeList.clear();
                 noticeAdapter.setProgressMore(false);
 
-                int start = noticeAdapter.getItemCount();
+                int start = noticeAdapter.getItemCount(); //noticeList의 사이즈
                 int end = start + loadCount;
 
-                for (int i = start; i < end; i++) {
-                    noticeList.add(allNoticeList.get(i));
+                if (end >= allNoticeList.size()) {
+                    for (int i = start; i < allNoticeList.size(); i++) {
+                        noticeList.add(allNoticeList.get(i));
+                    }
+                } else {
+                    for (int i = start; i < end; i++) {
+                        noticeList.add(allNoticeList.get(i));
+                    }
                 }
+
                 noticeAdapter.addItem(noticeList);
                 noticeAdapter.setMoreLoading(false);
+
             }
         }, 2500);
     }

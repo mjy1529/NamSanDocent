@@ -221,18 +221,14 @@ public class QuestionWriteActivity extends AppCompatActivity implements EditText
 
         nullValue = new ArrayList<>();
 
-        int i=0;
-
 
         if(content.getText().toString().getBytes().length <= 0){
             nullValue.add("내용을 입력해주세요");
             content.requestFocus();
-            i++;
         }
         if(title.getText().toString().getBytes().length <= 0){
             nullValue.add("제목을 입력해주세요");
             title.requestFocus();
-            i++;
         }
         if(selected_spinner==null){
             nullValue.add("구분을 선택해주세요");
@@ -242,18 +238,15 @@ public class QuestionWriteActivity extends AppCompatActivity implements EditText
         if(username.getText().toString().getBytes().length <= 0){
             nullValue.add("성함을 입력해주세요");
             username.requestFocus();
-            i++;
         }
         if(phone_number.getText().toString().getBytes().length <= 0){
             nullValue.add("전화번호를 입력해주세요");
             phone_number.requestFocus();
-            i++;
         }
         if(email_first_address.getText().toString().getBytes().length <= 0){
 
             nullValue.add("이메일을 입력해주세요");
             email_first_address.requestFocus();
-            i++;
         }
 
 
