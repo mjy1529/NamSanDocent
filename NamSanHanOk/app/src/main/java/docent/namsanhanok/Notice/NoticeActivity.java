@@ -64,10 +64,6 @@ public class NoticeActivity extends AppCompatActivity implements NoticeRecyclerA
             case R.id.searchBtn: //검색 버튼
                 Toast.makeText(this, "검색", android.widget.Toast.LENGTH_SHORT).show();
                 break;
-            case R.id.notice_postBtn: //글쓰기 버튼
-                intent = new Intent(this, NoticePostActivity.class);
-                startActivity(intent);
-                break;
             case R.id.topBtn:
                 noticeRecyclerView.smoothScrollToPosition(0);
                 break;

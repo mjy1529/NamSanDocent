@@ -94,7 +94,6 @@ public class NoticeRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             final NoticeRecyclerItem item = (NoticeRecyclerItem) noticeList.get(position);
             ((NoticeItemViewHolder) holder).notice_title.setText(item.getTitle());
             ((NoticeItemViewHolder) holder).notice_date.setText(item.getDate());
-            ((NoticeItemViewHolder) holder).notice_readCnt.setText(String.valueOf(item.getRead_cnt()));
 
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -102,7 +101,6 @@ public class NoticeRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                     NoticeRecyclerItem sendObject = new NoticeRecyclerItem();
                     sendObject.setTitle(item.getTitle());
                     sendObject.setDate(item.getDate());
-                    sendObject.setRead_cnt(item.getRead_cnt());
                     sendObject.setContent(item.getContent());
 
                     Intent intent = new Intent(view.getContext(), NoticeReadActivity.class);
@@ -141,14 +139,12 @@ public class NoticeRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         private RelativeLayout notice_recyclerLayout;
         private TextView notice_title;
         private TextView notice_date;
-        private TextView notice_readCnt;
 
         public NoticeItemViewHolder(View view) {
             super(view);
             notice_recyclerLayout = (RelativeLayout) view.findViewById(R.id.notice_recyclerLayout);
             notice_title = (TextView) view.findViewById(R.id.notice_title);
             notice_date = (TextView) view.findViewById(R.id.notice_date);
-            notice_readCnt = (TextView) view.findViewById(R.id.notice_readCnt);
         }
     }
 

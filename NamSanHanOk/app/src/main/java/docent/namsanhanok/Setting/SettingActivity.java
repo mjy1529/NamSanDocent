@@ -17,7 +17,7 @@ import docent.namsanhanok.R;
 public class SettingActivity extends AppCompatActivity {
 
     ListView settingListview;
-    static final String[] settingMenu = {"언어 설정(Language)", "관리자 로그인"};
+    static final String[] settingMenu = {"언어 설정(Language)"};
     Intent intent;
 
     @Override
@@ -41,10 +41,7 @@ public class SettingActivity extends AppCompatActivity {
                         intent = new Intent(SettingActivity.this, SetLanguageActivity.class);
                         startActivity(intent);
                         break;
-                    case 1 : //관리자 로그인
-                        intent = new Intent(SettingActivity.this, AdminLoginActivity.class);
-                        startActivity(intent);
-                        break;
+
                 }
             }
         });

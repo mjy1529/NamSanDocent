@@ -10,8 +10,17 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
+
+import com.estimote.coresdk.common.requirements.SystemRequirementsChecker;
 import com.github.angads25.toggle.LabeledSwitch;
 import com.github.angads25.toggle.interfaces.OnToggledListener;
+import com.minew.beacon.BeaconValueIndex;
+import com.minew.beacon.BluetoothState;
+import com.minew.beacon.MinewBeacon;
+import com.minew.beacon.MinewBeaconManager;
+import com.minew.beacon.MinewBeaconManagerListener;
+
+import java.util.List;
 
 import docent.namsanhanok.BackPressCloseHandler;
 import docent.namsanhanok.Category.CategoryActivity;
@@ -23,11 +32,17 @@ import docent.namsanhanok.Question.QuestionWriteActivity;
 import docent.namsanhanok.R;
 import docent.namsanhanok.Setting.SettingActivity;
 
+import static com.minew.beacon.BeaconValueIndex.MinewBeaconValueIndex_Minor;
+import static com.minew.beacon.BluetoothState.BluetoothStateNotSupported;
+import static com.minew.beacon.BluetoothState.BluetoothStatePowerOff;
+import static com.minew.beacon.BluetoothState.BluetoothStatePowerOn;
+
 public class HomeActivity extends AppCompatActivity {
 
     ImageButton settingBtn;
     ImageView menuBtn1, menuBtn2, menuBtn3, menuBtn4, menuBtn5;
     private BackPressCloseHandler backPressCloseHandler;
+    
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,10 +60,17 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onSwitched(LabeledSwitch labeledSwitch, boolean isOn) {
                 Toast.makeText(HomeActivity.this, "ON", Toast.LENGTH_SHORT).show();
+//                //블루투스 확인 - 근데 위치 받아옴
+//                SystemRequirementsChecker.checkWithDefaultDialogs(HomeActivity.this);
+
+
             }
         });
 
     }
+
+
+
 
     public void onClick(View v) {
         Intent intent;

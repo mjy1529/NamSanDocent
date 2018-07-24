@@ -37,21 +37,6 @@
             android:layout_height="wrap_content"
             android:text="2018.7.19" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=" | " />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="조회수 " />
-
-        <TextView
-            android:id="@+id/notice_readCnt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="11" />
 
     </LinearLayout>
 
