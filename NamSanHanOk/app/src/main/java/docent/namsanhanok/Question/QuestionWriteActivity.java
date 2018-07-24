@@ -205,34 +205,39 @@ public class QuestionWriteActivity extends AppCompatActivity implements EditText
 
         nullValue = new ArrayList<>();
 
-
-        if(content.getText().toString().getBytes().length <= 0){
+        //입력된 것이 없거나, 빈칸일 때
+        if(content.getText().toString().replace(" ", "").equals("")
+                || content.getText().toString().replace("\n", "").equals("")){
             nullValue.add("내용을 입력해주세요");
             content.requestFocus();
+            content.setText(null);//공백이 여러개 있을시, 처음으로
 
         }
-        if(title.getText().toString().getBytes().length <= 0){
+        if(title.getText().toString().replace(" ", "").equals("")){
             nullValue.add("제목을 입력해주세요");
             title.requestFocus();
+            title.setText(null);
         }
         if(selected_spinner==null){
             nullValue.add("구분을 선택해주세요");
             question_category_spinner.requestFocus();
 //            question_category_spinner.performClick();
         }
-        if(username.getText().toString().getBytes().length <= 0){
+        if(username.getText().toString().replace(" ", "").equals("")){
             nullValue.add("성함을 입력해주세요");
             username.requestFocus();
+            username.setText(null);
         }
-        if(phone_number.getText().toString().getBytes().length <= 0){
+        if(phone_number.getText().toString().replace(" ", "").equals("")){
             nullValue.add("전화번호를 입력해주세요");
             phone_number.requestFocus();
+            phone_number.setText(null);
         }
-        if(email_first_address.getText().toString().getBytes().length <= 0){
+        if(email_first_address.getText().toString().replace(" ", "").equals("")){
 
             nullValue.add("이메일을 입력해주세요");
             email_first_address.requestFocus();
-
+            email_first_address.setText(null);
         }
 
 
@@ -249,7 +254,8 @@ public class QuestionWriteActivity extends AppCompatActivity implements EditText
         switch (v.getId()) {
             case  R.id.question_register_Btn :
                 //제목 and 내용 DB에 저장해야함, 값은 이렇게 갖고옴
-//                Toast.makeText(this, "결과값" + "\n" + email_first_address.getText().toString()
+//                Toast.makeText(this, "결과값"
+//                        + "\n" + email_first_address.getText().toString()
 //                        + "\n" + selected_spinner.toString()
 //                        + "\n" + phone_number.getText().toString()
 //                        + "\n" + username.getText().toString()
@@ -257,8 +263,6 @@ public class QuestionWriteActivity extends AppCompatActivity implements EditText
 //                        + "\n" + content.getText().toString(), Toast.LENGTH_SHORT).show();
 
 
-                //에러 탐지
-                detectError();
 
                 //DB저장
                 //내용
@@ -277,10 +281,10 @@ public class QuestionWriteActivity extends AppCompatActivity implements EditText
 
                     }
                     else{
-                        scrollView.setScrollY(scrollView.getScrollY()-200);
+                        scrollView.setScrollY(scrollView.getScrollY()-250);
 
                     }
-                    Toast.makeText(this, nullValue.get(nullValue.size()-1).toString(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, nullValue.get(nullValue.size()-1) , Toast.LENGTH_SHORT).show();
 
                     break;
                 }
@@ -293,4 +297,6 @@ public class QuestionWriteActivity extends AppCompatActivity implements EditText
 
         }
     }
+
+
 }

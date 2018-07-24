@@ -41,22 +41,51 @@ public class NoticePostActivity extends AppCompatActivity {
 
     }
 
+    public boolean detectError() {
+        int i = 0;
+
+        if(content.getText().toString().replace(" ", "").equals("")
+                || content.getText().toString().replace("\n", "").equals("")){
+            content.requestFocus();
+            content.setText(null);//공백이 여러개 있을시, 처음으로
+            i++;
+        }
+        if(title.getText().toString().replace("", "").equals("")){
+            title.requestFocus();
+            title.setText(null);
+            i++;
+        }
+
+        if(i == 0 ){
+            return false;
+        }
+        else{
+            return true;
+        }
+
+    }
+
 
     public void onClick(View v) {
         Intent intent;
 
         switch (v.getId()) {
             case R.id.notice_register_Btn:
-                //게시글 내용 넘겨줘야함
-                Toast.makeText(this, "결과값"
-                        + "\n"+ title.getText().toString()
-                        + "\n" + content.getText().toString(), Toast.LENGTH_LONG).show();
-
-//                Thread.sleep(3500);
+                if(!detectError()){
+                    //게시글 내용 넘겨줘야함
+                    Toast.makeText(this, "결과값"
+                            + "\n"+ title.getText().toString()
+                            + "\n" + content.getText().toString(), Toast.LENGTH_LONG).show();
 //                intent = new Intent(getApplicationContext(), NoticeActivity.class);
 //                startActivity(intent);
-                finish();
-                break;
+                    finish();
+                    break;
+                }
+                else{
+                    Toast.makeText(this, "빈칸을 채워주세요", Toast.LENGTH_SHORT).show();
+                    break;
+                }
+
 
             case R.id.notice_register_cancelBtn :
 //                intent = new Intent(getApplicationContext(), NoticeActivity.class);
