@@ -28,9 +28,12 @@ import docent.namsanhanok.Category.CategoryActivity;
 import docent.namsanhanok.Event.EventActivity;
 import docent.namsanhanok.Info.InfoActivity;
 import docent.namsanhanok.Notice.NoticeActivity;
+import docent.namsanhanok.Notice.NoticeReadActivity;
 import docent.namsanhanok.Question.QuestionWriteActivity;
 import docent.namsanhanok.R;
 import docent.namsanhanok.Setting.SettingActivity;
+import libs.mjn.prettydialog.PrettyDialog;
+import libs.mjn.prettydialog.PrettyDialogCallback;
 
 import static com.minew.beacon.BeaconValueIndex.MinewBeaconValueIndex_Minor;
 import static com.minew.beacon.BluetoothState.BluetoothStateNotSupported;
@@ -41,10 +44,10 @@ public class HomeActivity extends AppCompatActivity {
 
     ImageButton settingBtn;
     ImageView menuBtn1, menuBtn2, menuBtn3, menuBtn4, menuBtn5;
-    private BackPressCloseHandler backPressCloseHandler;
-
-    private MinewBeaconManager mMinewBeaconManager;
     LabeledSwitch toggleBtn;
+
+    private BackPressCloseHandler backPressCloseHandler;
+    private MinewBeaconManager mMinewBeaconManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,24 +58,62 @@ public class HomeActivity extends AppCompatActivity {
         mMinewBeaconManager = MinewBeaconManager.getInstance(this);
 
         init();
+        initBeaconManager();
+    }
 
-        toggleBtn.setOnClickListener(new View.OnClickListener() {
+    public void initBeaconManager() {
+        mMinewBeaconManager.setDeviceManagerDelegateListener(new MinewBeaconManagerListener() {
             @Override
-            public void onClick(View view) {
-                if(!checkBluetooth()) {
-                    toggleBtn.setOn(true);
+            public void onAppearBeacons(List<MinewBeacon> list) {
+
+            }
+
+            @Override
+            public void onDisappearBeacons(List<MinewBeacon> list) {
+
+            }
+
+            @Override
+            public void onRangeBeacons(List<MinewBeacon> list) {
+
+            }
+
+            @Override
+            public void onUpdateState(BluetoothState bluetoothState) {
+                Log.d("check", "isOn : " + toggleBtn.isOn());
+                if(!isOnBluetooth() && toggleBtn.isOn()) {
+                    toggleBtn.setOn(false);
                 }
             }
         });
     }
 
-    private boolean checkBluetooth() {
+    private boolean isOnBluetooth() {
         BluetoothState bluetoothState = mMinewBeaconManager.checkBluetoothState();
-        if (bluetoothState == BluetoothStatePowerOn) { //BluetoothStatePowerOn일 때
+        if (bluetoothState == BluetoothStatePowerOn) {
             return true;
-        } else { //BluetoothStatePowerOff or BluetoothStateNotSupported일 때
+        } else {
             return false;
         }
+    }
+
+    public void showAlertDialog() {
+        final PrettyDialog alertDialog = new PrettyDialog(this);
+        alertDialog
+                .setMessage("자동전시안내를 이용하시려면 Bluetooth를 켜 주세요.")
+                .setIcon(R.drawable.pdlg_icon_info)
+                .setIconTint(R.color.pdlg_color_blue)
+                .addButton("확인", // button text
+                        R.color.pdlg_color_white,  // button text color
+                        R.color.pdlg_color_blue,  // button background color
+                        new PrettyDialogCallback() {  // button OnClick listener
+                            @Override
+                            public void onClick() {
+                                alertDialog.dismiss();
+                            }
+                        }
+                );
+        alertDialog.show();
     }
 
     public void onClick(View v) {
@@ -117,18 +158,25 @@ public class HomeActivity extends AppCompatActivity {
         homeToolbar.bringToFront();
 
         settingBtn = (ImageButton) findViewById(R.id.settingBtn);
-
         menuBtn1 = (ImageView) findViewById(R.id.menuBtn1);
         menuBtn2 = (ImageView) findViewById(R.id.menuBtn2);
         menuBtn3 = (ImageView) findViewById(R.id.menuBtn3);
         menuBtn4 = (ImageView) findViewById(R.id.menuBtn4);
         menuBtn5 = (ImageView) findViewById(R.id.menuBtn5);
+        toggleBtn = (LabeledSwitch) findViewById(R.id.toggleBtn);
 
-        toggleBtn = findViewById(R.id.toggleBtn);
-
-        RelativeLayout homeLayout = (RelativeLayout) findViewById(R.id.homeLayout);
-        homeLayout.getBackground().setAlpha(220);
-
+        toggleBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!isOnBluetooth()) {
+                    toggleBtn.setOn(true);
+                    showAlertDialog();
+                } else if (isOnBluetooth() && !toggleBtn.isOn()) {
+                    mMinewBeaconManager.startScan();
+                    Toast.makeText(HomeActivity.this, "scanning...", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     @Override
