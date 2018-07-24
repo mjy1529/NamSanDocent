@@ -5,13 +5,13 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import com.estimote.coresdk.common.requirements.SystemRequirementsChecker;
 import com.github.angads25.toggle.LabeledSwitch;
 import com.github.angads25.toggle.interfaces.OnToggledListener;
 import com.minew.beacon.BeaconValueIndex;
@@ -42,7 +42,9 @@ public class HomeActivity extends AppCompatActivity {
     ImageButton settingBtn;
     ImageView menuBtn1, menuBtn2, menuBtn3, menuBtn4, menuBtn5;
     private BackPressCloseHandler backPressCloseHandler;
-    
+
+    private MinewBeaconManager mMinewBeaconManager;
+    LabeledSwitch toggleBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,58 +52,59 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
 
         backPressCloseHandler = new BackPressCloseHandler(this);
-
+        mMinewBeaconManager = MinewBeaconManager.getInstance(this);
 
         init();
 
-        //Toggle Button
-        LabeledSwitch toggleBtn = findViewById(R.id.toggleBtn);
-        toggleBtn.setOnToggledListener(new OnToggledListener() {
+        toggleBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onSwitched(LabeledSwitch labeledSwitch, boolean isOn) {
-                Toast.makeText(HomeActivity.this, "ON", Toast.LENGTH_SHORT).show();
-//                //블루투스 확인 - 근데 위치 받아옴
-//                SystemRequirementsChecker.checkWithDefaultDialogs(HomeActivity.this);
-
-
+            public void onClick(View view) {
+                if(!checkBluetooth()) {
+                    toggleBtn.setOn(true);
+                }
             }
         });
-
     }
 
-
-
+    private boolean checkBluetooth() {
+        BluetoothState bluetoothState = mMinewBeaconManager.checkBluetoothState();
+        if (bluetoothState == BluetoothStatePowerOn) { //BluetoothStatePowerOn일 때
+            return true;
+        } else { //BluetoothStatePowerOff or BluetoothStateNotSupported일 때
+            return false;
+        }
+    }
 
     public void onClick(View v) {
         Intent intent;
 
         switch (v.getId()) {
-            case R.id.settingBtn : //설정 버튼
+            case R.id.settingBtn: //설정 버튼
                 intent = new Intent(HomeActivity.this, SettingActivity.class);
                 startActivity(intent);
                 break;
 
-            case R.id.menuBtn1 : //마을 둘러보기
+            case R.id.menuBtn1: //마을 둘러보기
                 intent = new Intent(HomeActivity.this, CategoryActivity.class);
                 startActivity(intent);
                 break;
 
-            case R.id.menuBtn2 : //세시/행사
+            case R.id.menuBtn2: //세시/행사
                 intent = new Intent(getApplicationContext(), EventActivity.class);
                 startActivity(intent);
                 break;
 
-            case R.id.menuBtn3 : //알리는 말씀
+            case R.id.menuBtn3: //알리는 말씀
                 intent = new Intent(HomeActivity.this, NoticeActivity.class);
                 startActivity(intent);
                 break;
 
-            case R.id.menuBtn4 : //문의하기
+            case R.id.menuBtn4: //문의하기
                 intent = new Intent(HomeActivity.this, QuestionWriteActivity.class);
                 startActivity(intent);
                 break;
 
-            case R.id.menuBtn5 : //이용안내
+            case R.id.menuBtn5: //이용안내
                 intent = new Intent(HomeActivity.this, InfoActivity.class);
                 startActivity(intent);
                 break;
@@ -110,18 +113,20 @@ public class HomeActivity extends AppCompatActivity {
 
 
     public void init() {
-        Toolbar homeToolbar = (Toolbar)findViewById(R.id.homeToolbar);
+        Toolbar homeToolbar = (Toolbar) findViewById(R.id.homeToolbar);
         homeToolbar.bringToFront();
 
-        settingBtn = (ImageButton)findViewById(R.id.settingBtn);
+        settingBtn = (ImageButton) findViewById(R.id.settingBtn);
 
-        menuBtn1 = (ImageView)findViewById(R.id.menuBtn1);
-        menuBtn2 = (ImageView)findViewById(R.id.menuBtn2);
-        menuBtn3 = (ImageView)findViewById(R.id.menuBtn3);
-        menuBtn4 = (ImageView)findViewById(R.id.menuBtn4);
-        menuBtn5 = (ImageView)findViewById(R.id.menuBtn5);
+        menuBtn1 = (ImageView) findViewById(R.id.menuBtn1);
+        menuBtn2 = (ImageView) findViewById(R.id.menuBtn2);
+        menuBtn3 = (ImageView) findViewById(R.id.menuBtn3);
+        menuBtn4 = (ImageView) findViewById(R.id.menuBtn4);
+        menuBtn5 = (ImageView) findViewById(R.id.menuBtn5);
 
-        RelativeLayout homeLayout = (RelativeLayout)findViewById(R.id.homeLayout);
+        toggleBtn = findViewById(R.id.toggleBtn);
+
+        RelativeLayout homeLayout = (RelativeLayout) findViewById(R.id.homeLayout);
         homeLayout.getBackground().setAlpha(220);
 
     }
