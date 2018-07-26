@@ -1,20 +1,16 @@
 package docent.namsanhanok.Home;
 
 import android.content.Intent;
-import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.github.angads25.toggle.LabeledSwitch;
-import com.github.angads25.toggle.interfaces.OnToggledListener;
-import com.minew.beacon.BeaconValueIndex;
 import com.minew.beacon.BluetoothState;
 import com.minew.beacon.MinewBeacon;
 import com.minew.beacon.MinewBeaconManager;
@@ -24,20 +20,15 @@ import java.util.List;
 
 import docent.namsanhanok.BackPressCloseHandler;
 import docent.namsanhanok.Category.CategoryActivity;
-
 import docent.namsanhanok.Event.EventActivity;
 import docent.namsanhanok.Info.InfoActivity;
 import docent.namsanhanok.Notice.NoticeActivity;
-import docent.namsanhanok.Notice.NoticeReadActivity;
 import docent.namsanhanok.Question.QuestionWriteActivity;
 import docent.namsanhanok.R;
 import docent.namsanhanok.Setting.SettingActivity;
 import libs.mjn.prettydialog.PrettyDialog;
 import libs.mjn.prettydialog.PrettyDialogCallback;
 
-import static com.minew.beacon.BeaconValueIndex.MinewBeaconValueIndex_Minor;
-import static com.minew.beacon.BluetoothState.BluetoothStateNotSupported;
-import static com.minew.beacon.BluetoothState.BluetoothStatePowerOff;
 import static com.minew.beacon.BluetoothState.BluetoothStatePowerOn;
 
 public class HomeActivity extends AppCompatActivity {
@@ -48,6 +39,14 @@ public class HomeActivity extends AppCompatActivity {
 
     private BackPressCloseHandler backPressCloseHandler;
     private MinewBeaconManager mMinewBeaconManager;
+    private MinewBeacon mMinewBeacon;
+    private static final int REQUEST_ENABLE_BT = 2;
+
+//    private BeaconListAdapter mAdapter;
+    UserRssi comp = new UserRssi();
+//    private boolean mIsRefreshing;
+    private int state;
+    private boolean isScanning;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,38 +54,116 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
 
         backPressCloseHandler = new BackPressCloseHandler(this);
+
         mMinewBeaconManager = MinewBeaconManager.getInstance(this);
 
         init();
         initBeaconManager();
+        initBeaconListenerManager();
     }
 
-    public void initBeaconManager() {
-        mMinewBeaconManager.setDeviceManagerDelegateListener(new MinewBeaconManagerListener() {
+    public void initBeaconManager() {mMinewBeaconManager = MinewBeaconManager.getInstance(this);}
+
+    public void initBeaconListenerManager() {
+
+        toggleBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onAppearBeacons(List<MinewBeacon> list) {
+            public void onClick(View v) {
 
-            }
+                if (mMinewBeaconManager != null) {
+                    BluetoothState bluetoothState = mMinewBeaconManager.checkBluetoothState();
+                    switch (bluetoothState) {
+                        case BluetoothStateNotSupported:
+                            Toast.makeText(getApplicationContext(), "Not Support BLE", Toast.LENGTH_SHORT).show();
+                            finish();
+                            break;
+                        case BluetoothStatePowerOff:
+//                            toggleBtn.setOn(true);
+                            Toast.makeText(getApplicationContext(), "블루투스가 꺼져있습니다", Toast.LENGTH_SHORT).show();
+//                            showAlertDialog();
+                            return;
+                        case BluetoothStatePowerOn:
+                            Log.d("check1", "bluetoothStatePowerOn");
+                            break;
+                    }
 
-            @Override
-            public void onDisappearBeacons(List<MinewBeacon> list) {
+                    if (isScanning) {
+                        Log.d("check1", "isScanning==true");
 
-            }
+                        isScanning = false;
+//                    toggleBtn.setOn(true);
+                        if (mMinewBeaconManager != null) {
+                            Log.d("check1", "stopScan()");
 
-            @Override
-            public void onRangeBeacons(List<MinewBeacon> list) {
+                            mMinewBeaconManager.stopScan();
+                        }
+                    } else {
+                        Log.d("check1", "isScanning==false");
+                        isScanning = true;
+//                    toggleBtn.setOn(false);
+                        try {
+                            Log.d("check1", "startScan()");
+                            mMinewBeaconManager.startScan();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
 
-            }
-
-            @Override
-            public void onUpdateState(BluetoothState bluetoothState) {
-                Log.d("check", "isOn : " + toggleBtn.isOn());
-                if(!isOnBluetooth() && toggleBtn.isOn()) {
-                    toggleBtn.setOn(false);
                 }
+
+                mMinewBeaconManager.setDeviceManagerDelegateListener(new MinewBeaconManagerListener() {
+                    @Override
+                    public void onAppearBeacons(List<MinewBeacon> minewBeacons) {
+                        Log.d("check1", "onAppearBeacons() : " + minewBeacons.get(0));
+
+                    }
+
+                    @Override
+                    public void onDisappearBeacons(List<MinewBeacon> minewBeacons) {
+
+                    }
+
+                    @Override
+                    public void onRangeBeacons(final List<MinewBeacon> minewBeacons) {
+                        Log.d("check1", "onRangeBeaons : " + minewBeacons.size());
+//                       Collections.sort(list, comp);
+//                Toast.makeText(HomeActivity.this, "비콘", Toast.LENGTH_SHORT).show();
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+//                        Collections.sort(minewBeacons, comp);
+//                        Log.e("tag", state + "");
+//                        if (state == 1 || state == 2) {
+//                        } else {
+//                            mAdapter.setItems(minewBeacons);
+//                        }
+                                Log.d("check1", "onRanges2 : "+minewBeacons.size());
+
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onUpdateState(BluetoothState bluetoothState) {
+
+                        Log.d("check", "isOn : " + toggleBtn.isOn());
+                        if (!isOnBluetooth() && toggleBtn.isOn()) {
+//                          toggleBtn.setOn(false);
+                            Log.d("check1", "onUpdateState()");
+//                            Toast.makeText(getApplicationContext(), "비콘 off", Toast.LENGTH_SHORT).show();
+
+                        }
+//                          else if(!isOnBluetooth())
+                    }
+
+                });
+
             }
+
         });
+
     }
+
 
     private boolean isOnBluetooth() {
         BluetoothState bluetoothState = mMinewBeaconManager.checkBluetoothState();
@@ -95,10 +172,11 @@ public class HomeActivity extends AppCompatActivity {
         } else {
             return false;
         }
+
     }
 
     public void showAlertDialog() {
-        final PrettyDialog alertDialog = new PrettyDialog(this);
+        final PrettyDialog alertDialog = new PrettyDialog(getApplicationContext());
         alertDialog
                 .setMessage("자동전시안내를 이용하시려면 Bluetooth를 켜 주세요.")
                 .setIcon(R.drawable.pdlg_icon_info)
@@ -165,18 +243,26 @@ public class HomeActivity extends AppCompatActivity {
         menuBtn5 = (ImageView) findViewById(R.id.menuBtn5);
         toggleBtn = (LabeledSwitch) findViewById(R.id.toggleBtn);
 
-        toggleBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (!isOnBluetooth()) {
-                    toggleBtn.setOn(true);
-                    showAlertDialog();
-                } else if (isOnBluetooth() && !toggleBtn.isOn()) {
-                    mMinewBeaconManager.startScan();
-                    Toast.makeText(HomeActivity.this, "scanning...", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
+//        toggleBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                if (!isOnBluetooth()) {
+//                    toggleBtn.setOn(true);
+//
+//                    showAlertDialog();
+//                } else if (isOnBluetooth() && !toggleBtn.isOn()) {
+//                    mMinewBeaconManager.startScan();
+////                    Toast.makeText(HomeActivity.this, "scanning...", Toast.LENGTH_SHORT).show();
+//                }
+//                else if (isOnBluetooth() && toggleBtn.isOn()) {
+//                    isScanning = false;
+//                    if (mMinewBeaconManager != null) {
+//                        mMinewBeaconManager.stopScan();
+//                        Toast.makeText(HomeActivity.this, "scanning stop!", Toast.LENGTH_SHORT).show();
+//                    }
+//                }
+//            }
+//        });
     }
 
     @Override
@@ -187,4 +273,26 @@ public class HomeActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        //stop scan
+        if (isScanning) {
+            mMinewBeaconManager.stopScan();
+        }
+    }
+
+//    private void showBLEDialog() {
+//        Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+//        startActivityForResult(enableIntent, REQUEST_ENABLE_BT);
+//    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case REQUEST_ENABLE_BT:
+                break;
+        }
+    }
 }
