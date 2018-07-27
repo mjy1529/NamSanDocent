@@ -3,6 +3,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_gravity="center_horizontal"
     android:background="#00000000"
     >
     <LinearLayout
@@ -17,21 +18,26 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="0.3"
             android:textColor="#b5000000"
             android:text="새로 검색된 작품을 보시겠습니까?"
             android:textSize="15sp"
-            android:gravity="center"/>
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="10dp"
+            android:gravity="center"
+            android:layout_weight="1"
+            />
 
         <TextView
             android:id="@+id/confirm_go_new_docent"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_gravity="center_vertical"
+            android:layout_marginEnd="15dp"
             android:gravity="center"
             android:textSize="15sp"
-            android:layout_weight="1"
             android:onClick="onClick"
+            android:text="확인하기"
+            android:layout_weight="3"
             />
     </LinearLayout>
 </LinearLayout>

@@ -205,14 +205,13 @@ public class HomeActivity extends AppCompatActivity {
                     toggleBtn.setOn(true);
                     applicationclass.setToggleState(false);
                     showBluetoothDialog();
-                    vibrator.vibrate(1000);
+
                 } else if (isOnBluetooth() && !toggleBtn.isOn()) { // bluetooth==true, toggle버튼 on
-//                    isScanning = true;
                     applicationclass.setScanning(true);
                     applicationclass.setToggleState(true);
                     mMinewBeaconManager.startScan();
+
                 } else if (isOnBluetooth() && toggleBtn.isOn()) { // bluetooth==true, toggle버튼 off
-//                    isScanning = false;
                     applicationclass.setToggleState(false);
                     applicationclass.setScanning(false);
                     if (mMinewBeaconManager != null) {
@@ -271,6 +270,7 @@ public class HomeActivity extends AppCompatActivity {
         newItemDialog.show();
     }
 
+
     @Override
     public void onBackPressed() {
         //super.onBackPressed();
@@ -280,9 +280,7 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-//        if (isScanning) {
-//            mMinewBeaconManager.stopScan();
-//        }
+
         if(applicationclass.getScanning()){
             mMinewBeaconManager.startScan();
         }

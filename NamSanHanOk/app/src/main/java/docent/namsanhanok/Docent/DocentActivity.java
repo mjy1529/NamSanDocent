@@ -41,12 +41,15 @@ import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DataSpec;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.RawResourceDataSource;
+import com.minew.beacon.BeaconValueIndex;
 import com.minew.beacon.BluetoothState;
 import com.minew.beacon.MinewBeacon;
 import com.minew.beacon.MinewBeaconManager;
 import com.minew.beacon.MinewBeaconManagerListener;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import docent.namsanhanok.Application;
@@ -176,7 +179,7 @@ public class DocentActivity extends AppCompatActivity {
 
             @Override
             public void onAppearBeacons(List<MinewBeacon> minewBeacons) {
-                vibrator.vibrate(1000);
+                vibrator.vibrate(500);
                 Log.d("check1", "onAppearBeacons");
                 go_new_docent_layout.setVisibility(View.VISIBLE);
                 final Handler handler = new Handler();
@@ -186,7 +189,7 @@ public class DocentActivity extends AppCompatActivity {
                         //지연시키길 원하는 밀리초 뒤에 동작
                         go_new_docent_layout.setVisibility(View.GONE);
                     }
-                }, 9000 ); // delayMills == 지연원하는 밀리초
+                }, 10000 ); // delayMills == 지연원하는 밀리초
             }
 
             @Override
@@ -196,39 +199,37 @@ public class DocentActivity extends AppCompatActivity {
 
             @Override
             public void onRangeBeacons(final List<MinewBeacon> minewBeacons) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Collections.sort(minewBeacons, comp);
+                        Log.e("tag", state + "");
+                        if (state == 1 || state == 2) {
+                        } else {
+                            Log.d("check1", "onRangeBeacons : " + minewBeacons.size());
+                            if (minewBeacons.size() > 0) {
+                                ArrayList<String> beaconList = new ArrayList<>();
 
-//                runOnUiThread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        Collections.sort(minewBeacons, comp);
-//                        Log.e("tag", state + "");
-//                        if (state == 1 || state == 2) {
-//                        } else {
-//                            Log.d("check1", "onRangeBeacons : " + minewBeacons.size());
-//                            if (minewBeacons.size() > 0) {
-//                                ArrayList<String> beaconList = new ArrayList<>();
+                                for (int i = 0; i < minewBeacons.size(); i++) {
+//                                    if (minewBeacons.get(i) != null) {
+//                                        beaconList.add(minewBeacons.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue());
 //
-//                                for (int i = 0; i < minewBeacons.size(); i++) {
-////                                    if (minewBeacons.get(i) != null) {
-////                                        beaconList.add(minewBeacons.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue());
-////
-////
-////                                    }
-//                                    if (minewBeacons.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue().equals("15282")) {
-//                                        int power = minewBeacons.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_TxPower).getIntValue();
-//                                        int rssi = minewBeacons.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_RSSI).getIntValue();
-//                                        float distance = (float) Math.pow(10, ((power - rssi) / 10));
-//                                        Log.d("distance", "" + distance);
-//                                        Log.d("power", "" + power);
 //                                    }
-//                                }
-//
-//                                Log.d("check1", "onRangeBeacons : " + "\n" +
-//                                        beaconList.toString());
-//                            }
-//                        }
-//                    }
-//                });
+                                    if (minewBeacons.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue().equals("15282")) {
+                                        int power = minewBeacons.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_TxPower).getIntValue();
+                                        int rssi = minewBeacons.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_RSSI).getIntValue();
+                                        float distance = (float) Math.pow(10, ((power - rssi) / 10));
+                                        Log.d("distance", "" + distance);
+                                        Log.d("power", "" + power);
+                                    }
+                                }
+
+                                Log.d("check1", "onRangeBeacons : " + "\n" +
+                                        beaconList.toString());
+                            }
+                        }
+                    }
+                });
 
             }
 
@@ -260,6 +261,13 @@ public class DocentActivity extends AppCompatActivity {
             }
 
         });
+    }
+
+    public void beaconInDB() {
+        //가정 : 15282와 15290이 DB안에 있다.
+        ArrayList<String> existBeacon = new ArrayList<>(Arrays.asList("15282", "15290"));
+
+
     }
 
 
@@ -436,8 +444,6 @@ public class DocentActivity extends AppCompatActivity {
 
             case R.id.homeBtn:
                 Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
-                Log.d("check2", "docent에서 scanning : " + applicationclass.getScanning());
-                Log.d("check2", "docent에서 scanning : " + applicationclass.getToggleState());
 
                 startActivity(intent);
                 break;
