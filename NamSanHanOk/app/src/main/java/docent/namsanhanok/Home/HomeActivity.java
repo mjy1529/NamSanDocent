@@ -8,7 +8,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.github.angads25.toggle.LabeledSwitch;
 import com.minew.beacon.BeaconValueIndex;
@@ -66,51 +65,6 @@ public class HomeActivity extends AppCompatActivity {
 
     public void initBeaconListenerManager() {
 
-//        mMinewBeaconManager.setDeviceManagerDelegateListener(new MinewBeaconManagerListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//                if (mMinewBeaconManager != null) {
-//                    BluetoothState bluetoothState = mMinewBeaconManager.checkBluetoothState();
-//                    switch (bluetoothState) {
-//                        case BluetoothStateNotSupported:
-//                            Toast.makeText(getApplicationContext(), "Not Support BLE", Toast.LENGTH_SHORT).show();
-//                            finish();
-//                            break;
-//                        case BluetoothStatePowerOff:
-//                            toggleBtn.setOn(true);
-//                            Toast.makeText(getApplicationContext(), "블루투스가 꺼져있습니다", Toast.LENGTH_SHORT).show();
-//                            showAlertDialog();
-//                            return;
-//                        case BluetoothStatePowerOn:
-//                            Log.d("check1", "bluetoothStatePowerOn");
-//                            break;
-//                    }
-//
-//                    if (isScanning) {
-//                        Log.d("check1", "isScanning==true");
-//
-//                        isScanning = false;
-//                        toggleBtn.setOn(true);
-//                        if (mMinewBeaconManager != null) {
-//                            Log.d("check1", "stopScan()");
-//
-//                            mMinewBeaconManager.stopScan();
-//                        }
-//                    } else {
-//                        Log.d("check1", "isScanning==false");
-//                        isScanning = true;
-//                        toggleBtn.setOn(false);
-//                        try {
-//                            Log.d("check1", "startScan()");
-//                            mMinewBeaconManager.startScan();
-//                        } catch (Exception e) {
-//                            e.printStackTrace();
-//                        }
-//                    }
-//
-//                }
-
                 mMinewBeaconManager.setDeviceManagerDelegateListener(new MinewBeaconManagerListener() {
                 @Override
                 public void onAppearBeacons (List < MinewBeacon > minewBeacons) {
@@ -133,15 +87,44 @@ public class HomeActivity extends AppCompatActivity {
                             Log.e("tag", state + "");
                             if (state == 1 || state == 2) {
                             } else {
-                                Log.d("check1", "onRangeBeacons : " + minewBeacons.size());
+//                                Log.d("check1", "onRangeBeacons : " + minewBeacons.size());
                                 if (minewBeacons.size() > 0) {
                                     ArrayList<String> beaconList = new ArrayList<>();
 
                                     for (int i = 0; i < minewBeacons.size(); i++) {
                                         if (minewBeacons.get(i) != null) {
-                                            beaconList.add(minewBeacons.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue());
+                                            if(minewBeacons.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue().equals("15290")){
+                                                boolean range;
+                                                range = minewBeacons.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_InRage).isBool();
+                                                int txPower = minewBeacons.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_TxPower).getIntValue();
+                                                int rssi = minewBeacons.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_RSSI).getIntValue();
+                                                String name = minewBeacons.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue();
+
+                                                Log.d("check1", "15290 minor : " + name);
+
+                                                Log.d("check1", "15290 range : " + range);
+                                                Log.d("check1", "15290 txPower : " + txPower);
+                                                Log.d("check1", "15290 rssi : " + rssi);
+
+                                            }
+                                            if(minewBeacons.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue().equals("15282")){
+                                                boolean range;
+                                                range = minewBeacons.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_InRage).isBool();
+                                                int txPower = minewBeacons.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_TxPower).getIntValue();
+                                                int rssi = minewBeacons.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_RSSI).getIntValue();
+                                                String name = minewBeacons.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue();
+
+                                                Log.d("check1", "15282 minor : " + name);
+
+                                                Log.d("check1", "15282 range : " + range);
+                                                Log.d("check1", "15282 txPower: " + txPower);
+                                                Log.d("check1", "15282 rssi : " + rssi);
+
+                                            }
 
                                         }
+//                                        beaconList.add(minewBeacons.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue());
+
                                     }
 
                                     Log.d("check1", "onRangeBeacons : " + "\n" +
@@ -155,7 +138,7 @@ public class HomeActivity extends AppCompatActivity {
 
             @Override
             public void onUpdateState(BluetoothState bluetoothState) {
-                if (!isOnBluetooth() && toggleBtn.isOn()) {
+                if (!isOnBluetooth() && toggleBtn.isOn()) { // bluetooth==flase, toggle버튼 off
                     toggleBtn.setOn(false);
                 }
             }
@@ -244,17 +227,17 @@ public class HomeActivity extends AppCompatActivity {
         toggleBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!isOnBluetooth() && !toggleBtn.isOn()) {
-                    toggleBtn.setOn(true);
+                if (!isOnBluetooth() && !toggleBtn.isOn()) { //bluetooth==false, toggle버튼 on
+                    toggleBtn.setOn(true); // toggle버튼을 off으로
                     showAlertDialog();
-                } else if (isOnBluetooth() && !toggleBtn.isOn()) {
+                } else if (isOnBluetooth() && !toggleBtn.isOn()) { // bluetooth==true, toggle버튼 on
                     isScanning = true;
                     mMinewBeaconManager.startScan();
-                } else if (isOnBluetooth() && toggleBtn.isOn()) {
+                } else if (isOnBluetooth() && toggleBtn.isOn()) { // bluetooth==true, toggle버튼 off
                     isScanning = false;
                     if (mMinewBeaconManager != null) {
                         mMinewBeaconManager.stopScan();
-                        Toast.makeText(HomeActivity.this, "scanning stop!", Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(HomeActivity.this, "scanning stop!", Toast.LENGTH_SHORT).show();
                     }
                 }
             }

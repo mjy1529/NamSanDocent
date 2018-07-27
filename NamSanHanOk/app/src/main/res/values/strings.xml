@@ -10,6 +10,9 @@
         <item>中文</item>
     </string-array>
 
+
+    <string name="confirm"><u>확  인</u></string>
+
     <string name="notice_content">8월 4일(토)로 예정되었던 하반기 1890 남산골야시장 재개장 일자가 연일 폭염으로 인하여 8월 18일(토)로 연기되었음을 안내드립니다.\n\n방문 일정에 참고하여 착오 없으시길 바라며, 더욱 즐거운 남산골야시장으로 찾아뵙도록 하겠습니다. \n\n\n
 감사합니다.\n\n\n남산골한옥마을 드림</string>
 </resources>

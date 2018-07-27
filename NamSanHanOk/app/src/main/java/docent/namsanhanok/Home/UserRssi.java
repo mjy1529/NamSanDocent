@@ -3,8 +3,8 @@ package docent.namsanhanok.Home;
 
 import com.minew.beacon.BeaconValueIndex;
 import com.minew.beacon.MinewBeacon;
-
 import java.util.Comparator;
+
 
 public class UserRssi implements Comparator<MinewBeacon> {
 
@@ -20,4 +20,5 @@ public class UserRssi implements Comparator<MinewBeacon> {
             return -1;
         }
     }
+
 }
