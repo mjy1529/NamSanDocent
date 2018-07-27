@@ -105,7 +105,6 @@ public class DocentActivity extends AppCompatActivity {
 
         docentImage.setFocusableInTouchMode(true);
         docentImage.requestFocus();
-
     }
 
     private void initDataset() {

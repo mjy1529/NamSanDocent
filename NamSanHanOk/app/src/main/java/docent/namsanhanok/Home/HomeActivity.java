@@ -1,7 +1,9 @@
 package docent.namsanhanok.Home;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -23,6 +25,7 @@ import java.util.List;
 
 import docent.namsanhanok.BackPressCloseHandler;
 import docent.namsanhanok.Category.CategoryActivity;
+import docent.namsanhanok.Docent.DocentActivity;
 import docent.namsanhanok.Event.EventActivity;
 import docent.namsanhanok.Info.InfoActivity;
 import docent.namsanhanok.Notice.NoticeActivity;
@@ -43,6 +46,7 @@ public class HomeActivity extends AppCompatActivity {
     private BackPressCloseHandler backPressCloseHandler;
     private MinewBeaconManager mMinewBeaconManager;
     private boolean isScanning;
+    private Vibrator vibrator;
 
     UserRssi comp = new UserRssi();
     private int state;
@@ -54,6 +58,7 @@ public class HomeActivity extends AppCompatActivity {
 
         backPressCloseHandler = new BackPressCloseHandler(this);
         mMinewBeaconManager = MinewBeaconManager.getInstance(this);
+        vibrator = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
 
         init();
         initBeaconManager();
@@ -65,93 +70,56 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void initBeaconListenerManager() {
+        mMinewBeaconManager.setDeviceManagerDelegateListener(new MinewBeaconManagerListener() {
+            @Override
+            public void onAppearBeacons(List<MinewBeacon> minewBeacons) {
+                vibrator.vibrate(1000);
+                showNewItemDialog();
+            }
 
-//        mMinewBeaconManager.setDeviceManagerDelegateListener(new MinewBeaconManagerListener() {
-//            @Override
-//            public void onClick(View v) {
+            @Override
+            public void onDisappearBeacons(List<MinewBeacon> minewBeacons) {
+
+            }
+
+            @Override
+            public void onRangeBeacons(final List<MinewBeacon> minewBeacons) {
+
+//                runOnUiThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        Collections.sort(minewBeacons, comp);
+//                        Log.e("tag", state + "");
+//                        if (state == 1 || state == 2) {
+//                        } else {
+//                            Log.d("check1", "onRangeBeacons : " + minewBeacons.size());
+//                            if (minewBeacons.size() > 0) {
+//                                ArrayList<String> beaconList = new ArrayList<>();
 //
-//                if (mMinewBeaconManager != null) {
-//                    BluetoothState bluetoothState = mMinewBeaconManager.checkBluetoothState();
-//                    switch (bluetoothState) {
-//                        case BluetoothStateNotSupported:
-//                            Toast.makeText(getApplicationContext(), "Not Support BLE", Toast.LENGTH_SHORT).show();
-//                            finish();
-//                            break;
-//                        case BluetoothStatePowerOff:
-//                            toggleBtn.setOn(true);
-//                            Toast.makeText(getApplicationContext(), "블루투스가 꺼져있습니다", Toast.LENGTH_SHORT).show();
-//                            showAlertDialog();
-//                            return;
-//                        case BluetoothStatePowerOn:
-//                            Log.d("check1", "bluetoothStatePowerOn");
-//                            break;
-//                    }
+//                                for (int i = 0; i < minewBeacons.size(); i++) {
+////                                    if (minewBeacons.get(i) != null) {
+////                                        beaconList.add(minewBeacons.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue());
+////
+////
+////                                    }
+//                                    if (minewBeacons.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue().equals("15282")) {
+//                                        int power = minewBeacons.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_TxPower).getIntValue();
+//                                        int rssi = minewBeacons.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_RSSI).getIntValue();
+//                                        float distance = (float) Math.pow(10, ((power - rssi) / 10));
+//                                        Log.d("distance", "" + distance);
+//                                        Log.d("power", "" + power);
+//                                    }
+//                                }
 //
-//                    if (isScanning) {
-//                        Log.d("check1", "isScanning==true");
-//
-//                        isScanning = false;
-//                        toggleBtn.setOn(true);
-//                        if (mMinewBeaconManager != null) {
-//                            Log.d("check1", "stopScan()");
-//
-//                            mMinewBeaconManager.stopScan();
+//                                Log.d("check1", "onRangeBeacons : " + "\n" +
+//                                        beaconList.toString());
+//                            }
 //                        }
-//                    } else {
-//                        Log.d("check1", "isScanning==false");
-//                        isScanning = true;
-//                        toggleBtn.setOn(false);
-//                        try {
-//                            Log.d("check1", "startScan()");
-//                            mMinewBeaconManager.startScan();
-//                        } catch (Exception e) {
-//                            e.printStackTrace();
-//                        }
 //                    }
-//
-//                }
+//                });
 
-                mMinewBeaconManager.setDeviceManagerDelegateListener(new MinewBeaconManagerListener() {
-                @Override
-                public void onAppearBeacons (List < MinewBeacon > minewBeacons) {
-                    Log.d("check1", "onAppearBeacons() : " + minewBeacons.get(0));
-
-                }
-
-                @Override
-                public void onDisappearBeacons (List < MinewBeacon > minewBeacons) {
-
-                }
-
-                @Override
-                public void onRangeBeacons ( final List<MinewBeacon> minewBeacons){
-                    Log.d("check1", "onRangeBeaons : " + minewBeacons.size());
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Collections.sort(minewBeacons, comp);
-                            Log.e("tag", state + "");
-                            if (state == 1 || state == 2) {
-                            } else {
-                                Log.d("check1", "onRangeBeacons : " + minewBeacons.size());
-                                if (minewBeacons.size() > 0) {
-                                    ArrayList<String> beaconList = new ArrayList<>();
-
-                                    for (int i = 0; i < minewBeacons.size(); i++) {
-                                        if (minewBeacons.get(i) != null) {
-                                            beaconList.add(minewBeacons.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue());
-
-                                        }
-                                    }
-
-                                    Log.d("check1", "onRangeBeacons : " + "\n" +
-                                            beaconList.toString());
-                                }
-                            }
-                        }
-                    });
-                }
-
+                
+            }
 
             @Override
             public void onUpdateState(BluetoothState bluetoothState) {
@@ -170,25 +138,6 @@ public class HomeActivity extends AppCompatActivity {
         } else {
             return false;
         }
-    }
-
-    public void showAlertDialog() {
-        final PrettyDialog alertDialog = new PrettyDialog(HomeActivity.this);
-        alertDialog
-                .setMessage("자동전시안내를 이용하시려면 Bluetooth를 켜 주세요.")
-                .setIcon(R.drawable.pdlg_icon_info)
-                .setIconTint(R.color.pdlg_color_blue)
-                .addButton("확인", // button text
-                        R.color.pdlg_color_white,  // button text color
-                        R.color.pdlg_color_blue,  // button background color
-                        new PrettyDialogCallback() {  // button OnClick listener
-                            @Override
-                            public void onClick() {
-                                alertDialog.dismiss();
-                            }
-                        }
-                );
-        alertDialog.show();
     }
 
     public void onClick(View v) {
@@ -240,13 +189,13 @@ public class HomeActivity extends AppCompatActivity {
         menuBtn5 = (ImageView) findViewById(R.id.menuBtn5);
         toggleBtn = (LabeledSwitch) findViewById(R.id.toggleBtn);
 
-
         toggleBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (!isOnBluetooth() && !toggleBtn.isOn()) {
                     toggleBtn.setOn(true);
-                    showAlertDialog();
+                    showBluetoothDialog();
+                    vibrator.vibrate(1000);
                 } else if (isOnBluetooth() && !toggleBtn.isOn()) {
                     isScanning = true;
                     mMinewBeaconManager.startScan();
@@ -254,36 +203,70 @@ public class HomeActivity extends AppCompatActivity {
                     isScanning = false;
                     if (mMinewBeaconManager != null) {
                         mMinewBeaconManager.stopScan();
-                        Toast.makeText(HomeActivity.this, "scanning stop!", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
         });
     }
 
+    public void showBluetoothDialog() {
+        final PrettyDialog bluetoothDialog = new PrettyDialog(HomeActivity.this);
+        bluetoothDialog.setMessage("자동전시안내를 이용하시려면 Bluetooth를 켜 주세요.")
+                .setIcon(R.drawable.pdlg_icon_info)
+                .setIconTint(R.color.pdlg_color_blue)
+                .addButton("확인", // button text
+                        R.color.pdlg_color_white,  // button text color
+                        R.color.pdlg_color_blue,  // button background color
+                        new PrettyDialogCallback() {  // button OnClick listener
+                            @Override
+                            public void onClick() {
+                                bluetoothDialog.dismiss();
+                            }
+                        }
+                ).show();
+    }
+
+    public void showNewItemDialog() {
+        final PrettyDialog newItemDialog = new PrettyDialog(HomeActivity.this);
+        newItemDialog.setMessage("새로운 전시품이 발견되었습니다.\n확인하시겠습니까?")
+                .setIcon(R.drawable.pdlg_icon_info)
+                .setIconTint(R.color.pdlg_color_blue)
+                .addButton("확인", // button text
+                        R.color.pdlg_color_white,  // button text color
+                        R.color.pdlg_color_blue,  // button background color
+                        new PrettyDialogCallback() {  // button OnClick listener
+                            @Override
+                            public void onClick() {
+                                Intent intent = new Intent(HomeActivity.this, DocentActivity.class);
+                                startActivity(intent);
+                            }
+                        }
+                )
+                .addButton("취소", // button text
+                        R.color.pdlg_color_white,  // button text color
+                        R.color.dialog_cancel,  // button background color
+                        new PrettyDialogCallback() {  // button OnClick listener
+                            @Override
+                            public void onClick() {
+                                newItemDialog.dismiss();
+                            }
+                        }
+                );
+        newItemDialog.show();
+    }
+
     @Override
     public void onBackPressed() {
         //super.onBackPressed();
         backPressCloseHandler.onBackPressed();
-
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    protected void onStop() {
+        super.onStop();
         if (isScanning) {
             mMinewBeaconManager.stopScan();
         }
     }
-
-
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        switch (requestCode) {
-//            case REQUEST_ENABLE_BT:
-//                break;
-//        }
-//    }
 
 }

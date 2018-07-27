@@ -6,7 +6,7 @@ import com.minew.beacon.MinewBeacon;
 
 import java.util.Comparator;
 
-public class UserRssi implements Comparator<MinewBeacon> {
+public class  UserRssi implements Comparator<MinewBeacon> {
 
     @Override
     public int compare(MinewBeacon minewBeacon, MinewBeacon t1) {
