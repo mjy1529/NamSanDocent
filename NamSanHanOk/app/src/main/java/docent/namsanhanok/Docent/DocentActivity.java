@@ -3,21 +3,17 @@ package docent.namsanhanok.Docent;
 import android.app.Dialog;
 import android.content.Intent;
 import android.media.MediaPlayer;
-import android.net.Uri;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.TypedValue;
-import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -86,6 +82,8 @@ public class DocentActivity extends AppCompatActivity {
 
     String docent_title;
 
+    LinearLayout go_new_docent;
+    TextView confirm_go_new_docent;
     public DocentActivity() {
 
     }
@@ -281,6 +279,9 @@ public class DocentActivity extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
                 startActivity(intent);
                 break;
+
+            case R.id.confirm_go_new_docent :
+
         }
     }
 
@@ -334,6 +335,9 @@ public class DocentActivity extends AppCompatActivity {
 
         audioTxt = (TextView) findViewById(R.id.audioTxt);
         locaTxt = (TextView) findViewById(R.id.locationTxt);
+
+        go_new_docent = (LinearLayout) findViewById(R.id.go_new_docent);
+        confirm_go_new_docent = (TextView) findViewById(R.id.confirm_go_new_docent);
 
     }
 

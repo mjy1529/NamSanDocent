@@ -10,8 +10,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.Toast;
 
+import com.estimote.coresdk.repackaged.retrofit_v1_9_0.retrofit.http.HEAD;
 import com.github.angads25.toggle.LabeledSwitch;
 import com.minew.beacon.BeaconValueIndex;
 import com.minew.beacon.BluetoothState;
@@ -117,13 +117,12 @@ public class HomeActivity extends AppCompatActivity {
 //                        }
 //                    }
 //                });
-
                 
             }
 
             @Override
             public void onUpdateState(BluetoothState bluetoothState) {
-                if (!isOnBluetooth() && toggleBtn.isOn()) {
+                if (!isOnBluetooth() && toggleBtn.isOn()) { // bluetooth==flase, toggle버튼 off
                     toggleBtn.setOn(false);
                 }
             }
@@ -196,10 +195,10 @@ public class HomeActivity extends AppCompatActivity {
                     toggleBtn.setOn(true);
                     showBluetoothDialog();
                     vibrator.vibrate(1000);
-                } else if (isOnBluetooth() && !toggleBtn.isOn()) {
+                } else if (isOnBluetooth() && !toggleBtn.isOn()) { // bluetooth==true, toggle버튼 on
                     isScanning = true;
                     mMinewBeaconManager.startScan();
-                } else if (isOnBluetooth() && toggleBtn.isOn()) {
+                } else if (isOnBluetooth() && toggleBtn.isOn()) { // bluetooth==true, toggle버튼 off
                     isScanning = false;
                     if (mMinewBeaconManager != null) {
                         mMinewBeaconManager.stopScan();

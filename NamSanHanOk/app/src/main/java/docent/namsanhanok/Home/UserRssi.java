@@ -3,10 +3,9 @@ package docent.namsanhanok.Home;
 
 import com.minew.beacon.BeaconValueIndex;
 import com.minew.beacon.MinewBeacon;
-
 import java.util.Comparator;
 
-public class  UserRssi implements Comparator<MinewBeacon> {
+public class UserRssi implements Comparator<MinewBeacon> {
 
     @Override
     public int compare(MinewBeacon minewBeacon, MinewBeacon t1) {
@@ -20,4 +19,5 @@ public class  UserRssi implements Comparator<MinewBeacon> {
             return -1;
         }
     }
+
 }
