@@ -1,16 +1,21 @@
 package docent.namsanhanok.Docent;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.Vibrator;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.SpannableString;
+import android.text.style.UnderlineSpan;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -36,12 +41,21 @@ import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DataSpec;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.RawResourceDataSource;
+import com.minew.beacon.BluetoothState;
+import com.minew.beacon.MinewBeacon;
+import com.minew.beacon.MinewBeaconManager;
+import com.minew.beacon.MinewBeaconManagerListener;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import docent.namsanhanok.Application;
 import docent.namsanhanok.Home.HomeActivity;
+import docent.namsanhanok.Home.UserRssi;
 import docent.namsanhanok.Location.LocationActivity;
 import docent.namsanhanok.R;
+
+import static com.minew.beacon.BluetoothState.BluetoothStatePowerOn;
 
 public class DocentActivity extends AppCompatActivity {
 
@@ -82,8 +96,16 @@ public class DocentActivity extends AppCompatActivity {
 
     String docent_title;
 
-    LinearLayout go_new_docent;
+    LinearLayout go_new_docent_layout;
     TextView confirm_go_new_docent;
+    private Vibrator vibrator;
+    private MinewBeaconManager mMinewBeaconManager;
+    private boolean isScanning;
+    UserRssi comp = new UserRssi();
+    private int state;
+    Application applicationclass;
+
+
     public DocentActivity() {
 
     }
@@ -96,6 +118,13 @@ public class DocentActivity extends AppCompatActivity {
         Intent secondIntent = getIntent();
         docent_title = secondIntent.getExtras().getString("docent_title");
 
+        Log.d("check1", "isScanning docent start");
+        mMinewBeaconManager = MinewBeaconManager.getInstance(this);
+        applicationclass = (Application)getApplicationContext();
+
+        initBeaconManager();
+        initBeaconListenerManager();
+
         init();
         setRecyclerView();
         setAudioPlayer();
@@ -104,6 +133,136 @@ public class DocentActivity extends AppCompatActivity {
         docentImage.setFocusableInTouchMode(true);
         docentImage.requestFocus();
     }
+
+    private boolean isOnBluetooth() {
+        BluetoothState bluetoothState = mMinewBeaconManager.checkBluetoothState();
+        if (bluetoothState == BluetoothStatePowerOn) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public void initBeaconManager() {
+        mMinewBeaconManager = MinewBeaconManager.getInstance(this);
+    }
+
+    public void initBeaconListenerManager() {
+        if(isOnBluetooth()){
+            if(applicationclass.getScanning()){ // scan중
+                Log.d("check1", "onUpdateState_ble_on_isScanning");
+            }
+            else if(!applicationclass.getScanning()){ //bluetooth는 on인데 Scanning이 안되고 있다
+                applicationclass.setScanning(false);
+                try {
+                    Log.d("check1", "onUpdateState_ble_on_startScan");
+
+                    mMinewBeaconManager.startScan();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        else if (!isOnBluetooth()) { // bluetooth==flase
+//            isScanning = false;
+                applicationclass.setScanning(false);
+            if (mMinewBeaconManager != null) {
+                Log.d("check1", "onUpdateState_ble_off");
+                mMinewBeaconManager.stopScan();
+            }
+        }
+
+        mMinewBeaconManager.setDeviceManagerDelegateListener(new MinewBeaconManagerListener() {
+
+            @Override
+            public void onAppearBeacons(List<MinewBeacon> minewBeacons) {
+                vibrator.vibrate(1000);
+                Log.d("check1", "onAppearBeacons");
+                go_new_docent_layout.setVisibility(View.VISIBLE);
+                final Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        //지연시키길 원하는 밀리초 뒤에 동작
+                        go_new_docent_layout.setVisibility(View.GONE);
+                    }
+                }, 9000 ); // delayMills == 지연원하는 밀리초
+            }
+
+            @Override
+            public void onDisappearBeacons(List<MinewBeacon> minewBeacons) {
+
+            }
+
+            @Override
+            public void onRangeBeacons(final List<MinewBeacon> minewBeacons) {
+
+//                runOnUiThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        Collections.sort(minewBeacons, comp);
+//                        Log.e("tag", state + "");
+//                        if (state == 1 || state == 2) {
+//                        } else {
+//                            Log.d("check1", "onRangeBeacons : " + minewBeacons.size());
+//                            if (minewBeacons.size() > 0) {
+//                                ArrayList<String> beaconList = new ArrayList<>();
+//
+//                                for (int i = 0; i < minewBeacons.size(); i++) {
+////                                    if (minewBeacons.get(i) != null) {
+////                                        beaconList.add(minewBeacons.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue());
+////
+////
+////                                    }
+//                                    if (minewBeacons.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue().equals("15282")) {
+//                                        int power = minewBeacons.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_TxPower).getIntValue();
+//                                        int rssi = minewBeacons.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_RSSI).getIntValue();
+//                                        float distance = (float) Math.pow(10, ((power - rssi) / 10));
+//                                        Log.d("distance", "" + distance);
+//                                        Log.d("power", "" + power);
+//                                    }
+//                                }
+//
+//                                Log.d("check1", "onRangeBeacons : " + "\n" +
+//                                        beaconList.toString());
+//                            }
+//                        }
+//                    }
+//                });
+
+            }
+
+            @Override
+            public void onUpdateState(BluetoothState bluetoothState) {
+                if (!isOnBluetooth()) { // bluetooth==flase
+//                    isScanning = false;
+                      applicationclass.setScanning(false);
+                    if (mMinewBeaconManager != null) {
+                        Log.d("check1", "onUpdateState_ble_off");
+                        mMinewBeaconManager.stopScan();
+                    }
+                }
+                else if(isOnBluetooth()){
+                    if(applicationclass.getScanning()){ // scan중
+                        Log.d("check1", "onUpdateState_ble_on_isScanning");
+                    }
+                    else if(!applicationclass.getScanning()){ //bluetooth는 on인데 Scanning이 안되고 있다
+                        isScanning = true;
+                        try {
+                            Log.d("check1", "onUpdateState_ble_on_startScan");
+
+                            mMinewBeaconManager.startScan();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+
+        });
+    }
+
+
 
     private void initDataset() {
         docentActivityItem = new ArrayList<>();
@@ -277,10 +436,20 @@ public class DocentActivity extends AppCompatActivity {
 
             case R.id.homeBtn:
                 Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                Log.d("check2", "docent에서 scanning : " + applicationclass.getScanning());
+                Log.d("check2", "docent에서 scanning : " + applicationclass.getToggleState());
+
                 startActivity(intent);
                 break;
 
             case R.id.confirm_go_new_docent :
+                //새로운 내용으로 내용 업데이트
+
+                //확인버튼을 눌렀으니 사라짐
+                go_new_docent_layout.setVisibility(View.GONE);
+                bottom_audio_layout.setVisibility(View.GONE);
+                break;
+
 
         }
     }
@@ -336,8 +505,12 @@ public class DocentActivity extends AppCompatActivity {
         audioTxt = (TextView) findViewById(R.id.audioTxt);
         locaTxt = (TextView) findViewById(R.id.locationTxt);
 
-        go_new_docent = (LinearLayout) findViewById(R.id.go_new_docent);
+        go_new_docent_layout = (LinearLayout) findViewById(R.id.go_new_docent);
         confirm_go_new_docent = (TextView) findViewById(R.id.confirm_go_new_docent);
+        vibrator = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
+        SpannableString content = new SpannableString("확  인");
+        content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
+        confirm_go_new_docent.setText(content);
 
     }
 

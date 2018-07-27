@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#00000000"
+    >
     <LinearLayout
-        android:id="@+id/go_new_docent"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_gravity="center_vertical"
-        android:background="@drawable/notice_postbutton_border"
+        android:background="@drawable/new_docent_layout_border"
         android:orientation="horizontal"
         android:padding="9dp"
         android:backgroundTint="#d6d6d6">
@@ -18,7 +20,7 @@
             android:layout_weight="0.3"
             android:textColor="#b5000000"
             android:text="새로 검색된 작품을 보시겠습니까?"
-            android:textSize="18sp"
+            android:textSize="15sp"
             android:gravity="center"/>
 
         <TextView
@@ -27,9 +29,8 @@
             android:layout_height="40dp"
             android:layout_gravity="center_vertical"
             android:gravity="center"
-            android:textSize="18sp"
+            android:textSize="15sp"
             android:layout_weight="1"
-            android:text="@string/confirm"
             android:onClick="onClick"
             />
     </LinearLayout>

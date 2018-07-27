@@ -11,18 +11,15 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
-import com.estimote.coresdk.repackaged.retrofit_v1_9_0.retrofit.http.HEAD;
 import com.github.angads25.toggle.LabeledSwitch;
-import com.minew.beacon.BeaconValueIndex;
 import com.minew.beacon.BluetoothState;
 import com.minew.beacon.MinewBeacon;
 import com.minew.beacon.MinewBeaconManager;
 import com.minew.beacon.MinewBeaconManagerListener;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
+import docent.namsanhanok.Application;
 import docent.namsanhanok.BackPressCloseHandler;
 import docent.namsanhanok.Category.CategoryActivity;
 import docent.namsanhanok.Docent.DocentActivity;
@@ -45,11 +42,13 @@ public class HomeActivity extends AppCompatActivity {
 
     private BackPressCloseHandler backPressCloseHandler;
     private MinewBeaconManager mMinewBeaconManager;
-    private boolean isScanning;
+//    private boolean isScanning;
     private Vibrator vibrator;
 
     UserRssi comp = new UserRssi();
     private int state;
+
+    private Application applicationclass;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,9 +59,16 @@ public class HomeActivity extends AppCompatActivity {
         mMinewBeaconManager = MinewBeaconManager.getInstance(this);
         vibrator = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
 
+        applicationclass = (Application)getApplicationContext();
+
+        Log.d("check2", "home : docent에서 scanning 후: " + applicationclass.getScanning());
+        Log.d("check2", "home : docent에서 scanning 후: " + applicationclass.getToggleState());
+
+
         init();
         initBeaconManager();
         initBeaconListenerManager();
+
     }
 
     public void initBeaconManager() {
@@ -74,6 +80,7 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onAppearBeacons(List<MinewBeacon> minewBeacons) {
                 vibrator.vibrate(1000);
+                Log.d("check2", "docent에서 scanning 후 홈 : " + applicationclass.getScanning());
                 showNewItemDialog();
             }
 
@@ -122,7 +129,7 @@ public class HomeActivity extends AppCompatActivity {
 
             @Override
             public void onUpdateState(BluetoothState bluetoothState) {
-                if (!isOnBluetooth() && toggleBtn.isOn()) { // bluetooth==flase, toggle버튼 off
+                if (!isOnBluetooth() && !toggleBtn.isOn()) { // bluetooth==flase, toggle버튼 off
                     toggleBtn.setOn(false);
                 }
             }
@@ -188,24 +195,34 @@ public class HomeActivity extends AppCompatActivity {
         menuBtn5 = (ImageView) findViewById(R.id.menuBtn5);
         toggleBtn = (LabeledSwitch) findViewById(R.id.toggleBtn);
 
+        Log.d("check2", "home 초기 toggleBtn 셋팅 : " + applicationclass.getToggleState());
+        toggleBtn.setOn(applicationclass.getToggleState());
+
         toggleBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (!isOnBluetooth() && !toggleBtn.isOn()) {
                     toggleBtn.setOn(true);
+                    applicationclass.setToggleState(false);
                     showBluetoothDialog();
                     vibrator.vibrate(1000);
                 } else if (isOnBluetooth() && !toggleBtn.isOn()) { // bluetooth==true, toggle버튼 on
-                    isScanning = true;
+//                    isScanning = true;
+                    applicationclass.setScanning(true);
+                    applicationclass.setToggleState(true);
                     mMinewBeaconManager.startScan();
                 } else if (isOnBluetooth() && toggleBtn.isOn()) { // bluetooth==true, toggle버튼 off
-                    isScanning = false;
+//                    isScanning = false;
+                    applicationclass.setToggleState(false);
+                    applicationclass.setScanning(false);
                     if (mMinewBeaconManager != null) {
                         mMinewBeaconManager.stopScan();
                     }
                 }
             }
         });
+
+
     }
 
     public void showBluetoothDialog() {
@@ -263,9 +280,16 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        if (isScanning) {
-            mMinewBeaconManager.stopScan();
+//        if (isScanning) {
+//            mMinewBeaconManager.stopScan();
+//        }
+        if(applicationclass.getScanning()){
+            mMinewBeaconManager.startScan();
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
 }
