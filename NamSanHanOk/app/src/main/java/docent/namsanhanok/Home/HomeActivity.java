@@ -88,25 +88,30 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onAppearBeacons(final List<MinewBeacon> minewBeacons) {
 
-                if (minewBeacons.size() != 0) {
+                if (!minewBeacons.isEmpty()) {
                     Collections.sort(minewBeacons, comp);
+
+                    Log.d("check", ""+minewBeacons.toString());
 
                     for (int i = 0; i < minewBeacons.size(); i++) {
                         String beacon_minor = minewBeacons.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue();
-                        //String beacon_UUID = minewBeacons.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_UUID).getStringValue();
                         int beacon_rssi = minewBeacons.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_RSSI).getIntValue();
 
                         if (-80 < beacon_rssi && beacon_rssi < -30) { //rssi 범위 설정
                             for (String beacon_number : beaconNumbers) {
                                 if (beacon_minor.equals(beacon_number)) {
+                                    Log.d("check", beacon_minor +", " + beacon_rssi);
+
                                     vibrator.vibrate(1000);
                                     showNewItemDialog();
-                                    return;
+                                    minewBeacons.removeAll(minewBeacons);
+//                                    return;
                                 }
-
+                                break;
                             }
                         }
                     }
+
                 }
             }
 
@@ -118,11 +123,11 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onRangeBeacons(final List<MinewBeacon> minewBeacons) {
 
+
             }
 
             @Override
             public void onUpdateState(BluetoothState bluetoothState) {
-
                 if (!isOnBluetooth() && toggleBtn.isOn()) {
                     toggleBtn.setOn(false);
                 }
@@ -155,7 +160,7 @@ public class HomeActivity extends AppCompatActivity {
                 break;
 
             case R.id.menuBtn2: //세시/행사
-                intent = new Intent(getApplicationContext(), EventActivity.class);
+                intent = new Intent(HomeActivity.this, EventActivity.class);
                 startActivity(intent);
                 break;
 

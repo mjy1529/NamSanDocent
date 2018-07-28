@@ -342,7 +342,6 @@ public class DocentActivity extends AppCompatActivity {
         });
 
         //Thumbnail
-        //1)
         videoPlayer.seekTo(500);
         //2)
 //        Bitmap thumbnail = ThumbnailUtils.createVideoThumbnail(videoUrl, MediaStore.Images.Thumbnails.MINI_KIND);
@@ -433,9 +432,6 @@ public class DocentActivity extends AppCompatActivity {
 
             case R.id.homeBtn:
                 Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
-                Log.d("check2", "docent에서 scanning : " + applicationclass.getScanning());
-                Log.d("check2", "docent에서 scanning : " + applicationclass.getToggleState());
-
                 startActivity(intent);
                 break;
 
@@ -446,8 +442,6 @@ public class DocentActivity extends AppCompatActivity {
                 go_new_docent_layout.setVisibility(View.GONE);
                 bottom_audio_layout.setVisibility(View.GONE);
                 break;
-
-
         }
     }
 
@@ -558,4 +552,12 @@ public class DocentActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (videoPlayer.getPlayWhenReady() || audioPlayer.isPlaying()) {
+            videoPlayer.setPlayWhenReady(false);
+            audioPlayer.stop();
+        }
+    }
 }
