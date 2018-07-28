@@ -96,6 +96,8 @@ public class HomeActivity extends AppCompatActivity {
                         //String beacon_UUID = minewBeacons.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_UUID).getStringValue();
                         int beacon_rssi = minewBeacons.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_RSSI).getIntValue();
 
+                        Log.d("check", beacon_minor);
+
                         if (-80 < beacon_rssi && beacon_rssi < -30) { //rssi 범위 설정
                             for (String beacon_number : beaconNumbers) {
                                 if (beacon_minor.equals(beacon_number)) {
