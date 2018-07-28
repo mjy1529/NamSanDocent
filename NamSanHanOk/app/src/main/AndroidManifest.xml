@@ -55,7 +55,7 @@
         <activity android:name=".Notice.NoticeActivity" />
         <activity android:name=".Notice.NoticeReadActivity" />
         <activity android:name=".Info.InfoActivity" />
-        <activity android:name=".Location.LocationActivity"></activity>
+        <activity android:name=".Location.LocationActivity"/>
 
         <!-- 서비스와 리시버 -->
         <service android:name="com.minew.beacon.ScanService"/>

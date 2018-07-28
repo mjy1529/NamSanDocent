@@ -67,8 +67,6 @@ public class CategoryActivity extends AppCompatActivity {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                     lake_img.setBackground(resource);
                     resource.setColorFilter(blakcColorFilter);
-
-
                 }
             }
         });
@@ -99,9 +97,6 @@ public class CategoryActivity extends AppCompatActivity {
         category_toolbar_title = (TextView) findViewById(R.id.docentTitle);
 
         category_toolbar_title.setText("마을 둘러보기");
-
-
-
     }
 
     public void onClick(View v) {
@@ -126,11 +121,12 @@ public class CategoryActivity extends AppCompatActivity {
                 break;
 
             case  R.id.homeBtn :
-                Intent intent2 = new Intent(getApplicationContext(), HomeActivity.class);
+                Intent intent2 = new Intent(CategoryActivity.this, HomeActivity.class);
+                intent2.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                intent2.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent2);
+                finish();
                 break;
-
-
         }
     }
 }

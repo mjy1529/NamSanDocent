@@ -74,6 +74,7 @@ public class EventActivity extends AppCompatActivity {
             case  R.id.homeBtn :
                 Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
                 startActivity(intent);
+                finish();
                 break;
 
         }

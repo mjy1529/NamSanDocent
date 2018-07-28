@@ -152,13 +152,12 @@ public class DocentActivity extends AppCompatActivity {
             } else if (!applicationclass.getScanning()) { //bluetooth는 on인데 Scanning이 안되고 있다
                 applicationclass.setScanning(false);
                 try {
-                    mMinewBeaconManager.startScan();
+                    mMinewBeaconManager.stopScan(); //********* 07/28 수정 (start->stop) ********//
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
-        } else if (!isOnBluetooth()) { // bluetooth==flase
-//            isScanning = false;
+        } else if (!isOnBluetooth()) { // bluetooth == false
             applicationclass.setScanning(false);
             if (mMinewBeaconManager != null) {
                 mMinewBeaconManager.stopScan();
@@ -417,8 +416,11 @@ public class DocentActivity extends AppCompatActivity {
                 break;
 
             case R.id.homeBtn:
-                Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                Intent intent = new Intent(DocentActivity.this, HomeActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
+                finish();
                 break;
 
             case R.id.confirm_go_new_docent:
