@@ -52,7 +52,7 @@ public class HomeActivity extends AppCompatActivity {
 
     UserRssi comp = new UserRssi();
     ArrayList<String> beaconNumbers = new ArrayList<>(); //임의의 저장된 비콘넘버
-    List<MinewBeacon> appearBeaconList = new ArrayList<>();
+    List<MinewBeacon> appearBeaconList = new ArrayList<>(); //인식된 비콘 리스트
     private Handler handler;
     String prev_beacon = "";
 
@@ -96,7 +96,7 @@ public class HomeActivity extends AppCompatActivity {
                 for (int i = 0; i < minewBeacons.size(); i++) {
                     String disappearBeacon_minor = minewBeacons.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue();
                     appearBeaconList.remove(minewBeacons.get(i));
-                    if(disappearBeacon_minor.equals(prev_beacon))
+                    if (disappearBeacon_minor.equals(prev_beacon))
                         prev_beacon = "";
                 }
             }
@@ -128,8 +128,8 @@ public class HomeActivity extends AppCompatActivity {
 
                         Log.d("list", "핸들러 작동중...");
 
-                        if (!beacon_minor.equals(prev_beacon)) {
-                            if (-80 < beacon_rssi && beacon_rssi < -30) {
+                        if (-70 < beacon_rssi && beacon_rssi < -30) { // *** 7/30 추가 *** //
+                            if (!beacon_minor.equals(prev_beacon)) {
                                 if (newItemDialog != null && newItemDialog.isShowing()) {
                                     newItemDialog.dismiss();
                                 }
@@ -138,6 +138,8 @@ public class HomeActivity extends AppCompatActivity {
                                 prev_beacon = beacon_minor;
                                 break;
                             }
+                        } else {
+                            appearBeaconList.remove(appearBeaconList.get(i)); // *** 7/30 추가 *** //
                         }
                     }
                 }
@@ -238,7 +240,7 @@ public class HomeActivity extends AppCompatActivity {
                     applicationclass.setScanning(true);
                     applicationclass.setToggleState(true);
                     mMinewBeaconManager.startScan();
-                    handler.sendEmptyMessage(0);
+                    handler.sendEmptyMessage(0); // *** 7/28 추가 *** //
 
                 } else if (isOnBluetooth() && toggleBtn.isOn()) { // bluetooth==true, toggle버튼 off
                     applicationclass.setToggleState(false);
@@ -246,7 +248,9 @@ public class HomeActivity extends AppCompatActivity {
                     if (mMinewBeaconManager != null) {
                         mMinewBeaconManager.stopScan();
                     }
-                    handler.removeMessages(0);
+                    handler.removeMessages(0); // *** 7/28 추가 *** //
+                    appearBeaconList.clear();
+                    prev_beacon = "";
                 }
             }
         });
