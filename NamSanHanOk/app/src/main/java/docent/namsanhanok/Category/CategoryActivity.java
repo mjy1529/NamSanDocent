@@ -34,7 +34,6 @@ public class CategoryActivity extends AppCompatActivity {
     ImageButton homeBtn;
     TextView category_toolbar_title;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -116,8 +115,9 @@ public class CategoryActivity extends AppCompatActivity {
 
             case R.id.category_layout3 :
             case R.id.category_title3 :
-                intent.putExtra("cate_title", "타임 캡슐");
-                startActivity(intent);
+                Intent docentIntent = new Intent(CategoryActivity.this, DocentActivity.class);
+                docentIntent.putExtra("docent_title", "타임 캡슐");
+                startActivity(docentIntent);
                 break;
 
             case  R.id.homeBtn :

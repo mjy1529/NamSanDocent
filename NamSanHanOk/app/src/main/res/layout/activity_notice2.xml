@@ -36,7 +36,6 @@
                 android:textSize="17sp"
                 android:textStyle="bold" />
 
-
         </RelativeLayout>
 
     </android.support.v7.widget.Toolbar>
@@ -64,6 +63,8 @@
                 android:layout_marginRight="10dp"
                 android:layout_weight=".9"
                 android:background="@null"
+                android:inputType="text"
+                android:maxLines="1"
                 android:paddingBottom="10dp"
                 android:paddingTop="10dp"
                 android:textSize="15sp" />

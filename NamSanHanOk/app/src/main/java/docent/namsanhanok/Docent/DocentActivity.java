@@ -193,7 +193,6 @@ public class DocentActivity extends AppCompatActivity {
 
             @Override
             public void onAppearBeacons(List<MinewBeacon> minewBeacons) {
-
             }
 
             @Override
@@ -321,8 +320,8 @@ public class DocentActivity extends AppCompatActivity {
             }
         }, 8000); // delayMills == 지연원하는 밀리초
 
-
     }
+
 
     private void initDataset() {
         docentActivityItem = new ArrayList<>();
@@ -363,10 +362,9 @@ public class DocentActivity extends AppCompatActivity {
         playerView.setPlayer(videoPlayer);
 
         //Preparing the player
-        String videoUrl = "http://192.168.0.6:8070/hot.mp4";
-        DefaultBandwidthMeter defaultBandwidthMeter = new DefaultBandwidthMeter();
-
         //서버에서 가져올 때
+//        String videoUrl = "http://192.168.0.6:8070/hot.mp4";
+//        DefaultBandwidthMeter defaultBandwidthMeter = new DefaultBandwidthMeter();
 //        MediaSource videoSource = new ExtractorMediaSource.Factory(
 //                new DefaultHttpDataSourceFactory(Util.getUserAgent(getApplicationContext(), "DOCENT"), defaultBandwidthMeter)
 //        ).createMediaSource(Uri.parse(videoUrl));
@@ -431,11 +429,13 @@ public class DocentActivity extends AppCompatActivity {
             }
         });
 
+
+
         seekbar.setMax(audioPlayer.getDuration()); //seekbar의 총길이를 audioPlayer의 총길이로 설정
         seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                //사용자가 seekbar를 움직여서 값이 변했다면 true, 재생위치를 바꿈(seekTo)
+                //사용자가 seekbar를 움직여서 값이 변했다면 true, 재생위치를 바꿈 (seekTo)
                 if (fromUser) {
                     audioPlayer.seekTo(progress);
                     String currentTime = String.format("%d:%02d", (audioPlayer.getCurrentPosition() / 1000 / 60) % 60, (audioPlayer.getCurrentPosition() / 1000) % 60);
@@ -506,8 +506,6 @@ public class DocentActivity extends AppCompatActivity {
                 go_new_docent_layout.setVisibility(View.GONE);
                 bottom_audio_layout.setVisibility(View.GONE);
                 break;
-
-
         }
     }
 
@@ -573,7 +571,6 @@ public class DocentActivity extends AppCompatActivity {
 
         //지울 것
         go_new_docent_content = (TextView) findViewById(R.id.go_new_docent_content);
-
     }
 
     @Override
