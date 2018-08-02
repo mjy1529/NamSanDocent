@@ -3,7 +3,9 @@ package docent.namsanhanok.Docent;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -40,13 +42,16 @@ import com.google.android.exoplayer2.upstream.BandwidthMeter;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DataSpec;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
+import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
 import com.google.android.exoplayer2.upstream.RawResourceDataSource;
+import com.google.android.exoplayer2.util.Util;
 import com.minew.beacon.BeaconValueIndex;
 import com.minew.beacon.BluetoothState;
 import com.minew.beacon.MinewBeacon;
 import com.minew.beacon.MinewBeaconManager;
 import com.minew.beacon.MinewBeaconManagerListener;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -191,7 +196,7 @@ public class DocentActivity extends AppCompatActivity {
                         //지연시키길 원하는 밀리초 뒤에 동작
                         go_new_docent_layout.setVisibility(View.GONE);
                     }
-                    }, 9000); // delayMills == 지연원하는 밀리초
+                }, 9000); // delayMills == 지연원하는 밀리초
             }
 
             @Override
@@ -229,9 +234,8 @@ public class DocentActivity extends AppCompatActivity {
                                         closeBeacon = minewBeacons.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue();
 
                                         j = minewBeacons.size();
-                                    }
-                                    else if(minewBeacons.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue().equals("15290")
-                                            && j != minewBeacons.size()){
+                                    } else if (minewBeacons.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue().equals("15290")
+                                            && j != minewBeacons.size()) {
                                         closeBeacon = minewBeacons.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue();
                                         j = minewBeacons.size();
                                     }
@@ -274,8 +278,6 @@ public class DocentActivity extends AppCompatActivity {
     public void beaconInDB() {
         //가정 : 15282와 15290이 DB안에 있다.
         ArrayList<String> existBeacon = new ArrayList<>(Arrays.asList("15282", "15290"));
-
-
     }
 
     private void initDataset() {
@@ -317,10 +319,9 @@ public class DocentActivity extends AppCompatActivity {
         playerView.setPlayer(videoPlayer);
 
         //Preparing the player
-        String videoUrl = "http://192.168.0.6:8070/hot.mp4";
-        DefaultBandwidthMeter defaultBandwidthMeter = new DefaultBandwidthMeter();
-
         //서버에서 가져올 때
+//        String videoUrl = "http://192.168.0.6:8070/hot.mp4";
+//        DefaultBandwidthMeter defaultBandwidthMeter = new DefaultBandwidthMeter();
 //        MediaSource videoSource = new ExtractorMediaSource.Factory(
 //                new DefaultHttpDataSourceFactory(Util.getUserAgent(getApplicationContext(), "DOCENT"), defaultBandwidthMeter)
 //        ).createMediaSource(Uri.parse(videoUrl));
@@ -372,24 +373,24 @@ public class DocentActivity extends AppCompatActivity {
         audioPlayer = MediaPlayer.create(this, R.raw.konan);
 
         //서버에서 가져올 경우
-//        audioPlayer = MediaPlayer.create(this, Uri.parse("http://192.168.0.6:8070/kkk.mp3"));
-
-        audioPlayer.setLooping(true); //무한 반복
-        audioPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() { //총길이 세팅
-            @Override
-            public void onPrepared(MediaPlayer music) {
-                String minute = String.format("%2d", ((music.getDuration()) / 1000 / 60) % 60);
-                String second = String.format("%2d", ((music.getDuration()) / 1000) % 60);
-                audioTotalTime.setText(minute + ":" + second); //총 재생시간
-                audioCurrentTime.setText("0:00"); //현재 재생시간
-            }
-        });
+//        String audioUrl = "http://192.168.0.6:8070/kkk.mp3";
+//        audioPlayer = MediaPlayer.create(this, Uri.parse(audioUrl));
+//        audioPlayer.setLooping(true); //무한 반복
+//        audioPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() { //총길이 세팅
+//            @Override
+//            public void onPrepared(MediaPlayer music) {
+//                String minute = String.format("%2d", ((music.getDuration()) / 1000 / 60) % 60);
+//                String second = String.format("%2d", ((music.getDuration()) / 1000) % 60);
+//                audioTotalTime.setText(minute + ":" + second); //총 재생시간
+//                audioCurrentTime.setText("0:00"); //현재 재생시간
+//            }
+//        });
 
         seekbar.setMax(audioPlayer.getDuration()); //seekbar의 총길이를 audioPlayer의 총길이로 설정
         seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                //사용자가 seekbar를 움직여서 값이 변했다면 true, 재생위치를 바꿈(seekTo)
+                //사용자가 seekbar를 움직여서 값이 변했다면 true, 재생위치를 바꿈 (seekTo)
                 if (fromUser) {
                     audioPlayer.seekTo(progress);
                     String currentTime = String.format("%d:%02d", (audioPlayer.getCurrentPosition() / 1000 / 60) % 60, (audioPlayer.getCurrentPosition() / 1000) % 60);
