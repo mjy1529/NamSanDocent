@@ -125,10 +125,8 @@ public class DocentActivity extends AppCompatActivity {
 
         Intent secondIntent = getIntent();
         docent_title = secondIntent.getExtras().getString("docent_title");
-
-        Log.d("check1", "isScanning docent start");
         mMinewBeaconManager = MinewBeaconManager.getInstance(this);
-        applicationclass = (Application)getApplicationContext();
+        applicationclass = (Application) getApplicationContext();
 
         initBeaconManager();
         initBeaconListenerManager();
@@ -156,22 +154,19 @@ public class DocentActivity extends AppCompatActivity {
     }
 
     public void initBeaconListenerManager() {
-        if(isOnBluetooth()){
-            if(applicationclass.getScanning()){ // scan중
+        if (isOnBluetooth()) {
+            if (applicationclass.getScanning()) { // scan중
 
-            }
-            else if(!applicationclass.getScanning()){ //bluetooth는 on인데 Scanning이 안되고 있다
+            } else if (!applicationclass.getScanning()) { //bluetooth는 on인데 Scanning이 안되고 있다
                 applicationclass.setScanning(false);
                 try {
-                    mMinewBeaconManager.startScan();
+                    mMinewBeaconManager.stopScan(); //********* 07/28 수정 (start->stop) ********//
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
-        }
-        else if (!isOnBluetooth()) { // bluetooth==flase
-//            isScanning = false;
-                applicationclass.setScanning(false);
+        } else if (!isOnBluetooth()) { // bluetooth == false
+            applicationclass.setScanning(false);
             if (mMinewBeaconManager != null) {
                 mMinewBeaconManager.stopScan();
             }
@@ -196,7 +191,7 @@ public class DocentActivity extends AppCompatActivity {
                         //지연시키길 원하는 밀리초 뒤에 동작
                         go_new_docent_layout.setVisibility(View.GONE);
                     }
-                }, 15000 ); // delayMills == 지연원하는 밀리초
+                    }, 9000); // delayMills == 지연원하는 밀리초
             }
 
             @Override
@@ -256,21 +251,15 @@ public class DocentActivity extends AppCompatActivity {
             public void onUpdateState(BluetoothState bluetoothState) {
                 if (!isOnBluetooth()) { // bluetooth==flase
 //                    isScanning = false;
-                      applicationclass.setScanning(false);
+                    applicationclass.setScanning(false);
                     if (mMinewBeaconManager != null) {
-                        Log.d("check1", "onUpdateState_ble_off");
                         mMinewBeaconManager.stopScan();
                     }
-                }
-                else if(isOnBluetooth()){
-                    if(applicationclass.getScanning()){ // scan중
-                        Log.d("check1", "onUpdateState_ble_on_isScanning");
-                    }
-                    else if(!applicationclass.getScanning()){ //bluetooth는 on인데 Scanning이 안되고 있다
+                } else if (isOnBluetooth()) {
+                    if (applicationclass.getScanning()) { // scan중
+                    } else if (!applicationclass.getScanning()) { //bluetooth는 on인데 Scanning이 안되고 있다
                         isScanning = true;
                         try {
-                            Log.d("check1", "onUpdateState_ble_on_startScan");
-
                             mMinewBeaconManager.startScan();
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -289,8 +278,6 @@ public class DocentActivity extends AppCompatActivity {
 
     }
 
-
-
     private void initDataset() {
         docentActivityItem = new ArrayList<>();
         docentActivityItem.add(new DocentActivityItem("베", R.drawable.bae));
@@ -301,10 +288,9 @@ public class DocentActivity extends AppCompatActivity {
         docentActivityItem.add(new DocentActivityItem("짚신", R.drawable.jipshin));
         docentActivityItem.add(new DocentActivityItem("베", R.drawable.bae));
         docentActivityItem.add(new DocentActivityItem("짚신", R.drawable.jipshin));
-
     }
 
-    public void setRecyclerView(){
+    public void setRecyclerView() {
         initDataset();
         recyclerView = (RecyclerView) findViewById(R.id.docent_recyclerView);
         linearLayoutManager = new LinearLayoutManager(this);
@@ -317,8 +303,6 @@ public class DocentActivity extends AppCompatActivity {
 
         recyclerView.setAdapter(docentAdapter);
     }
-
-
 
     public void setVideoPlayer() {
         //Create a default TrackSelector
@@ -462,12 +446,14 @@ public class DocentActivity extends AppCompatActivity {
                 break;
 
             case R.id.homeBtn:
-                Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
-
+                Intent intent = new Intent(DocentActivity.this, HomeActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
+                finish();
                 break;
 
-            case R.id.confirm_go_new_docent :
+            case R.id.confirm_go_new_docent:
                 //새로운 내용으로 내용 업데이트
 
                 //확인버튼을 눌렀으니 사라짐
@@ -532,9 +518,9 @@ public class DocentActivity extends AppCompatActivity {
 
         go_new_docent_layout = (LinearLayout) findViewById(R.id.go_new_docent);
         confirm_go_new_docent = (TextView) findViewById(R.id.confirm_go_new_docent);
-        vibrator = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
 
         SpannableString content = new SpannableString("확인하기");
+        vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
         confirm_go_new_docent.setText(content);
 
@@ -590,4 +576,12 @@ public class DocentActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (videoPlayer.getPlayWhenReady() || audioPlayer.isPlaying()) {
+            videoPlayer.setPlayWhenReady(false);
+            audioPlayer.stop();
+        }
+    }
 }

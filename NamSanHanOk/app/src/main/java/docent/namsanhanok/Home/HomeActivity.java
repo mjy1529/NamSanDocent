@@ -3,9 +3,12 @@ package docent.namsanhanok.Home;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -41,14 +44,17 @@ public class HomeActivity extends AppCompatActivity {
     ImageButton settingBtn;
     ImageView menuBtn1, menuBtn2, menuBtn3, menuBtn4, menuBtn5;
     LabeledSwitch toggleBtn;
+    PrettyDialog newItemDialog;
 
     private BackPressCloseHandler backPressCloseHandler;
     private MinewBeaconManager mMinewBeaconManager;
     private Vibrator vibrator;
 
     UserRssi comp = new UserRssi();
-    private int state;
     ArrayList<String> beaconNumbers = new ArrayList<>(); //임의의 저장된 비콘넘버
+    List<MinewBeacon> appearBeaconList = new ArrayList<>(); //인식된 비콘 리스트
+    private Handler handler;
+    String prev_beacon = "";
 
     private Application applicationclass;
 
@@ -64,12 +70,13 @@ public class HomeActivity extends AppCompatActivity {
         beaconNumbers.add("15290");
         beaconNumbers.add("15282");
 
-        applicationclass = (Application)getApplicationContext();
+        applicationclass = (Application) getApplicationContext();
 
         init();
         initBeaconManager();
         initBeaconListenerManager();
 
+        showBeaconAlarm(); // *** 7/28 추가 *** //
     }
 
     public void initBeaconManager() {
@@ -79,51 +86,87 @@ public class HomeActivity extends AppCompatActivity {
     public void initBeaconListenerManager() {
 
         mMinewBeaconManager.setDeviceManagerDelegateListener(new MinewBeaconManagerListener() {
-
             @Override
-            public void onAppearBeacons(final List<MinewBeacon> minewBeacons) {
+            public void onAppearBeacons(List<MinewBeacon> minewBeacons) {
 
-                if (minewBeacons.size() != 0) {
-                    Collections.sort(minewBeacons, comp);
-
-                    for (int i = 0; i < minewBeacons.size(); i++) {
-                        String beacon_minor = minewBeacons.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue();
-                        //String beacon_UUID = minewBeacons.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_UUID).getStringValue();
-                        int beacon_rssi = minewBeacons.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_RSSI).getIntValue();
-
-                        if (-80 < beacon_rssi && beacon_rssi < -30) { //rssi 범위 설정
-                            for (String beacon_number : beaconNumbers) {
-                                if (beacon_minor.equals(beacon_number)) {
-                                    vibrator.vibrate(1000);
-                                    showNewItemDialog();
-                                    return;
-                                }
-
-                            }
-                        }
-                    }
-                }
             }
 
             @Override
             public void onDisappearBeacons(List<MinewBeacon> minewBeacons) {
-
+                for (int i = 0; i < minewBeacons.size(); i++) {
+                    String disappearBeacon_minor = minewBeacons.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue();
+                    appearBeaconList.remove(minewBeacons.get(i));
+                    if (disappearBeacon_minor.equals(prev_beacon))
+                        prev_beacon = "";
+                }
             }
 
             @Override
             public void onRangeBeacons(final List<MinewBeacon> minewBeacons) {
-
+                addAppearBeacon(minewBeacons);
             }
 
             @Override
             public void onUpdateState(BluetoothState bluetoothState) {
-
                 if (!isOnBluetooth() && toggleBtn.isOn()) {
                     toggleBtn.setOn(false);
                 }
             }
         });
+    }
 
+    private void showBeaconAlarm() { 
+        handler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                super.handleMessage(msg);
+                if (!appearBeaconList.isEmpty()) {
+                    Collections.sort(appearBeaconList, comp);
+                    for (int i = 0; i < appearBeaconList.size(); i++) {
+                        int beacon_rssi = appearBeaconList.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_RSSI).getIntValue();
+                        String beacon_minor = appearBeaconList.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue();
+
+                        Log.d("list", "핸들러 작동중...");
+
+                        if (-70 < beacon_rssi && beacon_rssi < -30) {
+                            if (!beacon_minor.equals(prev_beacon)) {
+                                if (newItemDialog != null && newItemDialog.isShowing()) {
+                                    newItemDialog.dismiss();
+                                }
+                                vibrator.vibrate(1000);
+                                showNewItemDialog();
+                                prev_beacon = beacon_minor;
+                                break;
+                            }
+                        } else {
+                            appearBeaconList.remove(appearBeaconList.get(i));
+                        }
+                    }
+                }
+                this.sendEmptyMessageDelayed(0, 3000);
+            }
+        };
+    }
+
+    private void addAppearBeacon(List<MinewBeacon> minewBeacons) { // *** 7/28 추가 *** //
+        if (!minewBeacons.isEmpty()) {
+            Collections.sort(minewBeacons, comp);
+
+            for (int i = 0; i < minewBeacons.size(); i++) {
+                String beacon_minor = minewBeacons.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue();
+                int beacon_rssi = minewBeacons.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_RSSI).getIntValue();
+
+                for (String beacon_number : beaconNumbers) {
+                    if (beacon_minor.equals(beacon_number)) {
+                        if (!appearBeaconList.contains(minewBeacons.get(i))) { // 중복 제거
+                            appearBeaconList.add(minewBeacons.get(i));
+                        }
+                        Log.d("list", beacon_minor + ", " + beacon_rssi);
+                    }
+
+                }
+            }
+        }
     }
 
     private boolean isOnBluetooth() {
@@ -188,7 +231,7 @@ public class HomeActivity extends AppCompatActivity {
         toggleBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!isOnBluetooth() && !toggleBtn.isOn()) {
+                if (!isOnBluetooth() && !toggleBtn.isOn()) { // bluethooth == false, toggle버튼 on
                     toggleBtn.setOn(true);
                     applicationclass.setToggleState(false);
                     showBluetoothDialog();
@@ -197,6 +240,7 @@ public class HomeActivity extends AppCompatActivity {
                     applicationclass.setScanning(true);
                     applicationclass.setToggleState(true);
                     mMinewBeaconManager.startScan();
+                    handler.sendEmptyMessage(0); // *** 7/28 추가 *** //
 
                 } else if (isOnBluetooth() && toggleBtn.isOn()) { // bluetooth==true, toggle버튼 off
                     applicationclass.setToggleState(false);
@@ -204,6 +248,9 @@ public class HomeActivity extends AppCompatActivity {
                     if (mMinewBeaconManager != null) {
                         mMinewBeaconManager.stopScan();
                     }
+                    handler.removeMessages(0); // *** 7/28 추가 *** //
+                    appearBeaconList.clear();
+                    prev_beacon = "";
                 }
             }
         });
@@ -228,7 +275,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void showNewItemDialog() {
-        final PrettyDialog newItemDialog = new PrettyDialog(HomeActivity.this);
+        newItemDialog = new PrettyDialog(HomeActivity.this);
         newItemDialog.setMessage("새로운 전시품이 발견되었습니다.\n확인하시겠습니까?")
                 .setIcon(R.drawable.pdlg_icon_info)
                 .setIconTint(R.color.pdlg_color_blue)
@@ -239,7 +286,9 @@ public class HomeActivity extends AppCompatActivity {
                             @Override
                             public void onClick() {
                                 Intent intent = new Intent(HomeActivity.this, DocentActivity.class);
+                                intent.putExtra("docent_title", "temp");
                                 startActivity(intent);
+                                newItemDialog.dismiss();
                             }
                         }
                 )
@@ -266,13 +315,20 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        if(applicationclass.getScanning()){
-            mMinewBeaconManager.startScan();
+        if (applicationclass.getScanning()) {
+            mMinewBeaconManager.stopScan();
         }
+        handler.removeMessages(0);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        appearBeaconList.clear();
     }
 }

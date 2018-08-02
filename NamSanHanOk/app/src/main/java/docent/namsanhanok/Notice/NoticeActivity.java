@@ -74,7 +74,6 @@ public class NoticeActivity extends AppCompatActivity implements NoticeRecyclerA
         homeBtn = (ImageButton) findViewById(R.id.homeBtn);
         search_editText = (EditText) findViewById(R.id.search_editText);
         searchBtn = (ImageButton) findViewById(R.id.searchBtn);
-        notice_postBtn = (ImageButton) findViewById(R.id.notice_postBtn);
         topBtn = (FloatingActionButton) findViewById(R.id.topBtn);
         noticeRecyclerView = (RecyclerView) findViewById(R.id.noticeRecyclerView);
         noticeAdapter = new NoticeRecyclerAdapter(this);

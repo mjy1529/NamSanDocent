@@ -35,8 +35,6 @@ public class CategoryListActivity extends Activity {
         category_title = secondIntent.getExtras().getString("cate_title");
 
         init();
-
-
     }
 
 
@@ -79,10 +77,12 @@ public class CategoryListActivity extends Activity {
     public void onClick(View v) {
         switch (v.getId()) {
             case  R.id.homeBtn :
-                Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                Intent intent = new Intent(CategoryListActivity.this, HomeActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
+                finish();
                 break;
-
         }
     }
 }
