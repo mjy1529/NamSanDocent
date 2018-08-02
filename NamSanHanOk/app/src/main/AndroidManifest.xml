@@ -31,11 +31,7 @@
             android:value="AIzaSyDqI8Nb1EO3PuTxKgY03Ki9SS5HseNxURQ" />
 
         <activity android:name=".Home.HomeActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".Docent.DocentPopUpActivity"
@@ -56,7 +52,13 @@
         <activity android:name=".Notice.NoticeReadActivity" />
         <activity android:name=".Info.InfoActivity" />
         <activity android:name=".Location.LocationActivity" />
-        <activity android:name=".Home.SplashActivity"/>
+        <activity android:name=".Home.SplashActivity">
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
+        </activity>
 
         <!-- 서비스와 리시버 -->
         <service android:name="com.minew.beacon.ScanService" />
@@ -67,6 +69,7 @@
             </intent-filter>
         </receiver>
 
+        <activity android:name=".Home.TutorialActivity"></activity>
     </application>
 
 </manifest>
