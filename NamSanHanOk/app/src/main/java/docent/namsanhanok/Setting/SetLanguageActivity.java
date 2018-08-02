@@ -32,6 +32,8 @@ public class SetLanguageActivity extends AppCompatActivity {
 
     public void onClick(View v) {
         intent = new Intent(SetLanguageActivity.this, HomeActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
         finish();
     }
