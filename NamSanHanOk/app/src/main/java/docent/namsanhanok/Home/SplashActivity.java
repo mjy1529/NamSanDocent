@@ -16,11 +16,7 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        TextView splash_title = (TextView) findViewById(R.id.splash_title);
-        TextView splash_title2 = (TextView) findViewById(R.id.splash_title2);
-        Typeface typeface = Typeface.createFromAsset(getAssets(), "NanumMyeongjo.otf");
-        splash_title.setTypeface(typeface);
-        splash_title2.setTypeface(typeface);
+        setFont();
 
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
@@ -33,4 +29,11 @@ public class SplashActivity extends AppCompatActivity {
         }, 3000);
     }
 
+    public void setFont() {
+        TextView splash_title = (TextView) findViewById(R.id.splash_title);
+        TextView splash_title2 = (TextView) findViewById(R.id.splash_title2);
+        Typeface typeface = Typeface.createFromAsset(getAssets(), "NanumMyeongjo.otf");
+        splash_title.setTypeface(typeface);
+        splash_title2.setTypeface(typeface);
+    }
 }
