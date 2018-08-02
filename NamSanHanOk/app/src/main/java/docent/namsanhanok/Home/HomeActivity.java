@@ -115,7 +115,7 @@ public class HomeActivity extends AppCompatActivity {
         });
     }
 
-    private void showBeaconAlarm() { 
+    private void showBeaconAlarm() {
         handler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
@@ -162,6 +162,7 @@ public class HomeActivity extends AppCompatActivity {
                             appearBeaconList.add(minewBeacons.get(i));
                         }
                         Log.d("list", beacon_minor + ", " + beacon_rssi);
+
                     }
 
                 }
