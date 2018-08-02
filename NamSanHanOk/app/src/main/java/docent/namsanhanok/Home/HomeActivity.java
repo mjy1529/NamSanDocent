@@ -76,7 +76,7 @@ public class HomeActivity extends AppCompatActivity {
         initBeaconManager();
         initBeaconListenerManager();
 
-        showBeaconAlarm(); // *** 7/28 추가 *** //
+        showBeaconAlarm();
     }
 
     public void initBeaconManager() {
@@ -148,7 +148,7 @@ public class HomeActivity extends AppCompatActivity {
         };
     }
 
-    private void addAppearBeacon(List<MinewBeacon> minewBeacons) { // *** 7/28 추가 *** //
+    private void addAppearBeacon(List<MinewBeacon> minewBeacons) {
         if (!minewBeacons.isEmpty()) {
             Collections.sort(minewBeacons, comp);
 
@@ -240,7 +240,7 @@ public class HomeActivity extends AppCompatActivity {
                     applicationclass.setScanning(true);
                     applicationclass.setToggleState(true);
                     mMinewBeaconManager.startScan();
-                    handler.sendEmptyMessage(0); // *** 7/28 추가 *** //
+                    handler.sendEmptyMessage(0);
 
                 } else if (isOnBluetooth() && toggleBtn.isOn()) { // bluetooth==true, toggle버튼 off
                     applicationclass.setToggleState(false);
@@ -248,7 +248,7 @@ public class HomeActivity extends AppCompatActivity {
                     if (mMinewBeaconManager != null) {
                         mMinewBeaconManager.stopScan();
                     }
-                    handler.removeMessages(0); // *** 7/28 추가 *** //
+                    handler.removeMessages(0);
                     appearBeaconList.clear();
                     prev_beacon = "";
                 }

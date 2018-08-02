@@ -9,9 +9,13 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.ArrayList;
+import java.util.Locale;
 
 import docent.namsanhanok.Home.HomeActivity;
 import docent.namsanhanok.R;
@@ -25,6 +29,7 @@ public class CategoryListActivity extends Activity {
     ImageButton homeBtn;
     TextView category_list_toolbar_title;
     String category_title;
+    ImageView simple_image;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -37,27 +42,29 @@ public class CategoryListActivity extends Activity {
         init();
     }
 
-
     public void init() {
-            initDataset();
+        initDataset();
 
-            category_list_toolbar_title = (TextView) findViewById(R.id.docentTitle);
-            Toolbar categoryListToolbar = (Toolbar)findViewById(R.id.category_list_Toolbar);
-            categoryListToolbar.bringToFront();
+        category_list_toolbar_title = (TextView) findViewById(R.id.docentTitle);
+        Toolbar categoryListToolbar = (Toolbar) findViewById(R.id.category_list_Toolbar);
+        categoryListToolbar.bringToFront();
 
-            homeBtn = (ImageButton) findViewById(R.id.homeBtn);
-            category_list_toolbar_title.setText(category_title);
+        homeBtn = (ImageButton) findViewById(R.id.homeBtn);
+        category_list_toolbar_title.setText(category_title);
 
-            recyclerView = (RecyclerView) findViewById(R.id.category_list_recyclerView);
-            linearLayoutManager = new LinearLayoutManager(this);
-            linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        recyclerView = (RecyclerView) findViewById(R.id.category_list_recyclerView);
+        linearLayoutManager = new LinearLayoutManager(this);
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
 
-            recyclerView.setLayoutManager(linearLayoutManager);
-            recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.setHasFixedSize(true);
 
-            categoryListAdapter = new CategoryListAdapter(this, categoryListActivityItem);
+        categoryListAdapter = new CategoryListAdapter(this, categoryListActivityItem);
 
-            recyclerView.setAdapter(categoryListAdapter);
+        recyclerView.setAdapter(categoryListAdapter);
+
+        simple_image = (ImageView)findViewById(R.id.simple_image);
+        Glide.with(CategoryListActivity.this).load(R.drawable.namsan2).into(simple_image);
     }
 
 
@@ -76,7 +83,7 @@ public class CategoryListActivity extends Activity {
 
     public void onClick(View v) {
         switch (v.getId()) {
-            case  R.id.homeBtn :
+            case R.id.homeBtn:
                 Intent intent = new Intent(CategoryListActivity.this, HomeActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

@@ -460,8 +460,6 @@ public class DocentActivity extends AppCompatActivity {
                 go_new_docent_layout.setVisibility(View.GONE);
                 bottom_audio_layout.setVisibility(View.GONE);
                 break;
-
-
         }
     }
 
@@ -526,7 +524,6 @@ public class DocentActivity extends AppCompatActivity {
 
         //지울 것
         go_new_docent_content = (TextView) findViewById(R.id.go_new_docent_content);
-
     }
 
     @Override

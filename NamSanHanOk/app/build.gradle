@@ -60,7 +60,4 @@ dependencies {
     implementation 'com.estimote:sdk:1.0.3@aar'
     //beacon library
     implementation files('libs/minewBeaconScan.jar')
-
-
-
 }
