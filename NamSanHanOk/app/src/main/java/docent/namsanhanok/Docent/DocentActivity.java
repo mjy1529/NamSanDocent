@@ -108,6 +108,11 @@ public class DocentActivity extends AppCompatActivity {
     private int state;
     Application applicationclass;
 
+    String closeBeacon;
+
+    //지울 것
+    TextView go_new_docent_content;
+
 
     public DocentActivity() {
 
@@ -153,13 +158,11 @@ public class DocentActivity extends AppCompatActivity {
     public void initBeaconListenerManager() {
         if(isOnBluetooth()){
             if(applicationclass.getScanning()){ // scan중
-                Log.d("check1", "onUpdateState_ble_on_isScanning");
+
             }
             else if(!applicationclass.getScanning()){ //bluetooth는 on인데 Scanning이 안되고 있다
                 applicationclass.setScanning(false);
                 try {
-                    Log.d("check1", "onUpdateState_ble_on_startScan");
-
                     mMinewBeaconManager.startScan();
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -170,7 +173,6 @@ public class DocentActivity extends AppCompatActivity {
 //            isScanning = false;
                 applicationclass.setScanning(false);
             if (mMinewBeaconManager != null) {
-                Log.d("check1", "onUpdateState_ble_off");
                 mMinewBeaconManager.stopScan();
             }
         }
@@ -180,8 +182,13 @@ public class DocentActivity extends AppCompatActivity {
             @Override
             public void onAppearBeacons(List<MinewBeacon> minewBeacons) {
                 vibrator.vibrate(500);
-                Log.d("check1", "onAppearBeacons");
+                Log.d("check1", "onAppearBeacons : ");
+//                go_new_docent_layout.setVisibility(View.VISIBLE);
+
                 go_new_docent_layout.setVisibility(View.VISIBLE);
+                go_new_docent_content.setText(closeBeacon);
+
+
                 final Handler handler = new Handler();
                 handler.postDelayed(new Runnable() {
                     @Override
@@ -189,11 +196,12 @@ public class DocentActivity extends AppCompatActivity {
                         //지연시키길 원하는 밀리초 뒤에 동작
                         go_new_docent_layout.setVisibility(View.GONE);
                     }
-                }, 10000 ); // delayMills == 지연원하는 밀리초
+                }, 15000 ); // delayMills == 지연원하는 밀리초
             }
 
             @Override
             public void onDisappearBeacons(List<MinewBeacon> minewBeacons) {
+                Log.d("check1", "onDisappearStart");
 
             }
 
@@ -211,18 +219,29 @@ public class DocentActivity extends AppCompatActivity {
                                 ArrayList<String> beaconList = new ArrayList<>();
 
                                 for (int i = 0; i < minewBeacons.size(); i++) {
-//                                    if (minewBeacons.get(i) != null) {
-//                                        beaconList.add(minewBeacons.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue());
-//
-//                                    }
-                                    if (minewBeacons.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue().equals("15282")) {
+                                    int j = 0;
+                                    if (minewBeacons.get(i) != null) {
+                                        beaconList.add(minewBeacons.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue());
+
+                                    }
+                                    if (minewBeacons.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue().equals("15282")
+                                            && j != minewBeacons.size()) {
                                         int power = minewBeacons.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_TxPower).getIntValue();
                                         int rssi = minewBeacons.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_RSSI).getIntValue();
                                         float distance = (float) Math.pow(10, ((power - rssi) / 10));
                                         Log.d("distance", "" + distance);
                                         Log.d("power", "" + power);
+                                        closeBeacon = minewBeacons.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue();
+
+                                        j = minewBeacons.size();
+                                    }
+                                    else if(minewBeacons.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue().equals("15290")
+                                            && j != minewBeacons.size()){
+                                        closeBeacon = minewBeacons.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue();
+                                        j = minewBeacons.size();
                                     }
                                 }
+                                Log.d("check1", "onRangeBeacons : " + closeBeacon);
 
                                 Log.d("check1", "onRangeBeacons : " + "\n" +
                                         beaconList.toString());
@@ -514,9 +533,13 @@ public class DocentActivity extends AppCompatActivity {
         go_new_docent_layout = (LinearLayout) findViewById(R.id.go_new_docent);
         confirm_go_new_docent = (TextView) findViewById(R.id.confirm_go_new_docent);
         vibrator = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
-        SpannableString content = new SpannableString("확  인");
+
+        SpannableString content = new SpannableString("확인하기");
         content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
         confirm_go_new_docent.setText(content);
+
+        //지울 것
+        go_new_docent_content = (TextView) findViewById(R.id.go_new_docent_content);
 
     }
 
