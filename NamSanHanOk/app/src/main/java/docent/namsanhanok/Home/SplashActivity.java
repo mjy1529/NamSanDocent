@@ -1,16 +1,18 @@
 package docent.namsanhanok.Home;
 
 import android.content.Intent;
+
 import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.TextView;
 
 import docent.namsanhanok.R;
 
 public class SplashActivity extends AppCompatActivity {
     SharedPreferences prefs; //메모리에 값을 저장해두기 위해 사용하는 클래스 // 첫 실행 여부 확인
-    boolean isFirstRun;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,22 +20,31 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
 
         prefs = getSharedPreferences("Pref", MODE_PRIVATE);
-        isFirstRun = prefs.getBoolean("isFirstRun", true); // isFirstRun이 null값이면 true를 가져옴.
+
+        TextView splash_title = (TextView) findViewById(R.id.splash_title);
+        TextView splash_title2 = (TextView) findViewById(R.id.splash_title2);
+        Typeface typeface = Typeface.createFromAsset(getAssets(), "NanumMyeongjo.otf");
+        splash_title.setTypeface(typeface);
+        splash_title2.setTypeface(typeface);
+
+
+
 
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                finish();
+                checkFirstRun();
             }
         }, 3000);
 
-        checkFirstRun();
+
 
     }
 
 
     public void checkFirstRun() {
+        
         boolean isFirstRun = prefs.getBoolean("isFirstRun", true); // isFirstRun이 null값이면 true를 가져옴.
         Intent intent;
         if (isFirstRun) {
@@ -50,4 +61,5 @@ public class SplashActivity extends AppCompatActivity {
         }
 
     }
+
 }
