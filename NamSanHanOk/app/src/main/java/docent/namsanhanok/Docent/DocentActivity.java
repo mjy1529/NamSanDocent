@@ -480,7 +480,6 @@ public class DocentActivity extends AppCompatActivity {
                 Intent intent2 = new Intent(getApplicationContext(), LocationActivity.class);
                 intent2.putExtra("title", docentName.getText().toString());
                 startActivity(intent2);
-                Toast.makeText(DocentActivity.this, "location", Toast.LENGTH_SHORT).show();
                 break;
 
             case R.id.homeBtn:
