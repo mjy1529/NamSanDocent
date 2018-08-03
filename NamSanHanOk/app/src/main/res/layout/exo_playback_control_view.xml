@@ -20,21 +20,19 @@
 
     <ImageButton
         android:id="@id/exo_play"
-        style="@style/ExoMediaButton.Play"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
         android:layout_centerInParent="true"
         android:layout_gravity="center"
-        android:background="#CC000000" />
+        android:background="@drawable/ic_play_circle_outline_black_24dp" />
 
     <ImageButton
         android:id="@id/exo_pause"
-        style="@style/ExoMediaButton.Pause"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
         android:layout_centerInParent="true"
         android:layout_gravity="center"
-        android:background="#CC000000" />
+        android:background="@drawable/ic_pause_circle_outline_black_24dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
