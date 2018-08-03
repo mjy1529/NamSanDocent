@@ -21,6 +21,6 @@
         android:text="남산골 한옥마을"
         android:textColor="#000000"
         android:textSize="17sp"
-        android:textStyle="italic" />
+        android:textStyle="bold" />
 
 </RelativeLayout>

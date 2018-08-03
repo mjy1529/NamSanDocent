@@ -25,10 +25,13 @@ public class Application extends android.app.Application {
         isScanning = scanState.getScanning();
         isToggleOn = scanState.getToggleState();
 
+//        Typekit.getInstance()
+//                .addNormal(Typekit.createFromAsset(this, "NanumMyeongjo.otf"))
+//                .addBold(Typekit.createFromAsset(this, "NanumMyeongjoBold.otf"))
+//                .addItalic(Typekit.createFromAsset(this, "NanumMyeongjoExtraBold.otf"));
         Typekit.getInstance()
-                .addNormal(Typekit.createFromAsset(this, "NanumMyeongjo.otf"))
-                .addBold(Typekit.createFromAsset(this, "NanumMyeongjoBold.otf"))
-                .addItalic(Typekit.createFromAsset(this, "NanumMyeongjoExtraBold.otf"));
+                .addNormal(Typekit.createFromAsset(this, "SeoulHangangB.ttf"))
+                .addBold(Typekit.createFromAsset(this, "SeoulHangangEB.ttf"));
     }
 
     public void setScanning(boolean isScanning) {

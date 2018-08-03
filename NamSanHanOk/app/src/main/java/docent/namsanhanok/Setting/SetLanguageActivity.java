@@ -70,8 +70,10 @@ public class SetLanguageActivity extends AppCompatActivity {
             }
         });
 
-        TextView setLanguageTitle = (TextView) findViewById(R.id.setLanguageTitle);
-        Typeface typeface = Typeface.createFromAsset(getAssets(), "NanumMyeongjoBold.otf");
-        setLanguageTitle.setTypeface(typeface);
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(TypekitContextWrapper.wrap(newBase));
     }
 }
