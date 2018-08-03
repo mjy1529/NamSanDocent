@@ -63,7 +63,7 @@
                 android:layout_marginStart="10dp"
                 android:background="#919191" />
 
-            <TextView
+            <com.codesgood.views.JustifiedTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="10dp"

@@ -402,14 +402,6 @@ public class DocentActivity extends AppCompatActivity {
             }
         });
 
-        //Thumbnail
-        //1)
-        videoPlayer.seekTo(500);
-        //2)
-//        Bitmap thumbnail = ThumbnailUtils.createVideoThumbnail(videoUrl, MediaStore.Images.Thumbnails.MINI_KIND);
-//        BitmapDrawable bitmapDrawable = new BitmapDrawable(thumbnail);
-//        playerView.setBackgroundDrawable(bitmapDrawable);
-
         initFullscreenDialog();
         initFullscreenButton();
     }
