@@ -3,6 +3,8 @@ package docent.namsanhanok.Docent;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.hardware.SensorManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
@@ -17,6 +19,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.SpannableString;
 import android.text.style.UnderlineSpan;
 import android.util.Log;
+import android.view.OrientationEventListener;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -117,15 +120,14 @@ public class DocentActivity extends AppCompatActivity {
     //지울 것
     TextView go_new_docent_content;
 
-//    ArrayList<String> beaconNumbers = new ArrayList<>(); //임의의 저장된 비콘넘버
 
     List<MinewBeacon> appearBeaconList = new ArrayList<>(); //인식된 비콘 리스트
     private Handler handler1;
     private Handler handler2;
     String prev_beacon = "";
     ArrayList<String> existBeacon = new ArrayList<>();
-    long time;
 
+    OrientationEventListener orientationEventListener;
 
     public DocentActivity() {
 
@@ -157,6 +159,7 @@ public class DocentActivity extends AppCompatActivity {
         docentImage.setFocusableInTouchMode(true);
         docentImage.requestFocus();
     }
+
 
     private boolean isOnBluetooth() {
         BluetoothState bluetoothState = mMinewBeaconManager.checkBluetoothState();
@@ -566,6 +569,8 @@ public class DocentActivity extends AppCompatActivity {
         content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
         confirm_go_new_docent.setText(content);
 
+
+
         //지울 것
         go_new_docent_content = (TextView) findViewById(R.id.go_new_docent_content);
     }
@@ -595,6 +600,8 @@ public class DocentActivity extends AppCompatActivity {
         fullscreenIcon.setImageDrawable(ContextCompat.getDrawable(DocentActivity.this, R.drawable.ic_fullscreen_skrink));
         isPlayerFullscreen = true;
         fullscreenDialog.show();
+
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
     }
 
     private void closeFullscreenDialog() {
@@ -603,6 +610,8 @@ public class DocentActivity extends AppCompatActivity {
         isPlayerFullscreen = false;
         fullscreenDialog.dismiss();
         fullscreenIcon.setImageDrawable(ContextCompat.getDrawable(DocentActivity.this, R.drawable.ic_fullscreen_expand));
+
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
 
     private void initFullscreenButton() {
