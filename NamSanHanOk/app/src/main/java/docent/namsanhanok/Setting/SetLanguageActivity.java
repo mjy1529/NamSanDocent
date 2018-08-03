@@ -1,7 +1,9 @@
 package docent.namsanhanok.Setting;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -12,6 +14,8 @@ import android.widget.Checkable;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.tsengvn.typekit.TypekitContextWrapper;
 
 import java.util.List;
 
@@ -65,5 +69,11 @@ public class SetLanguageActivity extends AppCompatActivity {
                 }
             }
         });
+
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(TypekitContextWrapper.wrap(newBase));
     }
 }

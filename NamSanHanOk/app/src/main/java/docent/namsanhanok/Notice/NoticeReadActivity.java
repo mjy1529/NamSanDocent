@@ -1,5 +1,6 @@
 package docent.namsanhanok.Notice;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,6 +11,8 @@ import android.widget.ImageButton;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.tsengvn.typekit.TypekitContextWrapper;
 
 import docent.namsanhanok.R;
 import libs.mjn.prettydialog.PrettyDialog;
@@ -57,5 +60,10 @@ public class NoticeReadActivity extends AppCompatActivity {
         notice_title_tv.setText(object.getTitle());
         notice_date_tv.setText(object.getDate());
         notice_content_tv.setText(object.getContent());
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(TypekitContextWrapper.wrap(newBase));
     }
 }

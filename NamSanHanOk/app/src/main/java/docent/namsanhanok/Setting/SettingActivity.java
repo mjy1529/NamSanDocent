@@ -1,5 +1,6 @@
 package docent.namsanhanok.Setting;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -8,6 +9,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import com.tsengvn.typekit.TypekitContextWrapper;
 
 import java.util.List;
 
@@ -51,5 +54,10 @@ public class SettingActivity extends AppCompatActivity {
         intent = new Intent(SettingActivity.this, HomeActivity.class);
         startActivity(intent);
         finish();
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(TypekitContextWrapper.wrap(newBase));
     }
 }

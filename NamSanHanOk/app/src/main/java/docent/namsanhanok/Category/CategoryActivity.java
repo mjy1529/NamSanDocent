@@ -1,5 +1,6 @@
 package docent.namsanhanok.Category;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
@@ -19,6 +20,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
+import com.tsengvn.typekit.TypekitContextWrapper;
 
 import org.w3c.dom.Text;
 
@@ -128,5 +130,10 @@ public class CategoryActivity extends AppCompatActivity {
                 finish();
                 break;
         }
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(TypekitContextWrapper.wrap(newBase));
     }
 }

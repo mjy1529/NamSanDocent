@@ -54,14 +54,10 @@ dependencies {
     dependencies {
         implementation 'com.github.chrisbanes.photoview:library:1.2.3'
     }
-    //textInputLayout
-    implementation 'com.android.support:design:28.0.0-alpha1'
-    //beacon
-    implementation 'com.estimote:sdk:1.0.3@aar'
     //beacon library
     implementation files('libs/minewBeaconScan.jar')
     //tutorial
     implementation 'com.github.deano2390:MaterialShowcaseView:1.2.0'
-
-
+    //fonts
+    implementation 'com.github.katoro:typekit:1.0.1'
 }

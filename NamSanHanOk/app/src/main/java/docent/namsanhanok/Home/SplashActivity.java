@@ -1,5 +1,6 @@
 package docent.namsanhanok.Home;
 
+import android.content.Context;
 import android.content.Intent;
 
 import android.content.SharedPreferences;
@@ -8,6 +9,8 @@ import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
+
+import com.tsengvn.typekit.TypekitContextWrapper;
 
 import docent.namsanhanok.R;
 
@@ -21,15 +24,6 @@ public class SplashActivity extends AppCompatActivity {
 
         prefs = getSharedPreferences("Pref", MODE_PRIVATE);
 
-        TextView splash_title = (TextView) findViewById(R.id.splash_title);
-        TextView splash_title2 = (TextView) findViewById(R.id.splash_title2);
-        Typeface typeface = Typeface.createFromAsset(getAssets(), "NanumMyeongjo.otf");
-        splash_title.setTypeface(typeface);
-        splash_title2.setTypeface(typeface);
-
-
-
-
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
@@ -38,11 +32,7 @@ public class SplashActivity extends AppCompatActivity {
                 finish();
             }
         }, 3000);
-
-
-
     }
-
 
     public void checkFirstRun() {
 
@@ -65,4 +55,8 @@ public class SplashActivity extends AppCompatActivity {
 //        finish();
     }
 
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(TypekitContextWrapper.wrap(newBase));
+    }
 }

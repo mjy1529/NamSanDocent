@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="45dp">
+    android:layout_height="45dp"
+    android:orientation="horizontal">
 
     <ImageButton
         android:id="@+id/homeBtn"
-        android:onClick="onClick"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_centerVertical="true"
         android:layout_gravity="start"
-        android:background="@drawable/home" />
+        android:background="@drawable/home"
+        android:onClick="onClick" />
 
     <TextView
         android:id="@+id/docentTitle"

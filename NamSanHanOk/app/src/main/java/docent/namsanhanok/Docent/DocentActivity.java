@@ -49,7 +49,9 @@ import com.minew.beacon.BluetoothState;
 import com.minew.beacon.MinewBeacon;
 import com.minew.beacon.MinewBeaconManager;
 import com.minew.beacon.MinewBeaconManagerListener;
+import com.tsengvn.typekit.TypekitContextWrapper;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -65,7 +67,7 @@ import static com.minew.beacon.BluetoothState.BluetoothStatePowerOn;
 public class DocentActivity extends AppCompatActivity {
 
     ImageButton homeBtn;
-    TextView docent_toolbar_title;
+    TextView docentName;
     ImageView docentImage;
     TextView docentExplanation;
     ImageButton audioBtn;
@@ -73,6 +75,7 @@ public class DocentActivity extends AppCompatActivity {
     LinearLayout bottom_audio_layout;
     TextView audioTxt;
     TextView locaTxt;
+    TextView docentTitle;
 
     //videoPlayer
     SimpleExoPlayer videoPlayer;
@@ -134,10 +137,10 @@ public class DocentActivity extends AppCompatActivity {
         setContentView(R.layout.activity_docent);
 
         Intent secondIntent = getIntent();
-        docent_title = secondIntent.getExtras().getString("docent_title");
+        //docent_title = secondIntent.getExtras().getString("docent_title");
+        docent_title = "한옥";
         mMinewBeaconManager = MinewBeaconManager.getInstance(this);
         applicationclass = (Application) getApplicationContext();
-
 
         existBeacon.add("15290");
         existBeacon.add("15282");
@@ -145,7 +148,6 @@ public class DocentActivity extends AppCompatActivity {
         showBeaconAlarm();
         initBeaconManager();
         initBeaconListenerManager();
-
 
         init();
         setRecyclerView();
@@ -172,8 +174,8 @@ public class DocentActivity extends AppCompatActivity {
     public void initBeaconListenerManager() {
         if (isOnBluetooth()) {
             if (applicationclass.getScanning()) { // scan중
-                    mMinewBeaconManager.startScan();
-                    handler1.sendEmptyMessageDelayed(0, 2200);
+                mMinewBeaconManager.startScan();
+                handler1.sendEmptyMessageDelayed(0, 2200);
             } else if (!applicationclass.getScanning()) { //bluetooth는 on인데 Scanning이 안되고 있다
                 applicationclass.setScanning(false);
                 try {
@@ -292,7 +294,7 @@ public class DocentActivity extends AppCompatActivity {
                         if (!appearBeaconList.contains(minewBeacons.get(i))) { // 중복 제거
                             appearBeaconList.add(minewBeacons.get(i));
                         }
-                        Log.d("check1", "list : "+ beacon_minor + ", " + beacon_rssi);
+                        Log.d("check1", "list : " + beacon_minor + ", " + beacon_rssi);
                     }
 
                 }
@@ -323,7 +325,6 @@ public class DocentActivity extends AppCompatActivity {
         }, 8000); // delayMills == 지연원하는 밀리초
 
     }
-
 
     private void initDataset() {
         docentActivityItem = new ArrayList<>();
@@ -414,8 +415,8 @@ public class DocentActivity extends AppCompatActivity {
     }
 
     public void setAudioPlayer() {
-//        //raw 폴더에서 가져올 때
-//        audioPlayer = MediaPlayer.create(this, R.raw.konan);
+        //raw 폴더에서 가져올 때
+        //audioPlayer = MediaPlayer.create(this, R.raw.konan);
 
         //서버에서 가져올 경우
         audioPlayer = MediaPlayer.create(this, Uri.parse("http://175.123.138.125:8070/kkk.mp3"));
@@ -431,8 +432,6 @@ public class DocentActivity extends AppCompatActivity {
             }
         });
 
-
-
         seekbar.setMax(audioPlayer.getDuration()); //seekbar의 총길이를 audioPlayer의 총길이로 설정
         seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -447,7 +446,6 @@ public class DocentActivity extends AppCompatActivity {
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-
             }
 
             @Override
@@ -488,7 +486,7 @@ public class DocentActivity extends AppCompatActivity {
             case R.id.locationBtn:
             case R.id.locationTxt:
                 Intent intent2 = new Intent(getApplicationContext(), LocationActivity.class);
-                intent2.putExtra("title", docent_toolbar_title.getText().toString());
+                intent2.putExtra("title", docentName.getText().toString());
                 startActivity(intent2);
                 Toast.makeText(DocentActivity.this, "location", Toast.LENGTH_SHORT).show();
                 break;
@@ -545,7 +543,7 @@ public class DocentActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         homeBtn = (ImageButton) findViewById(R.id.homeBtn);
-        docent_toolbar_title = (TextView) findViewById(R.id.docentTitle);
+        docentName = (TextView) findViewById(R.id.docentName);
         docentImage = (ImageView) findViewById(R.id.docentImage);
         docentExplanation = (TextView) findViewById(R.id.docentExplanation);
         audioBtn = (ImageButton) findViewById(R.id.audioBtn);
@@ -559,6 +557,8 @@ public class DocentActivity extends AppCompatActivity {
         seekbar = (SeekBar) findViewById(R.id.seekbar);
         audioTotalTime = (TextView) findViewById(R.id.audioTotalTime);
         audioCurrentTime = (TextView) findViewById(R.id.audioCurrentTime);
+        docentTitle = (TextView) findViewById(R.id.docentTitle);
+        docentTitle.setText(docent_title);
 
         audioTxt = (TextView) findViewById(R.id.audioTxt);
         locaTxt = (TextView) findViewById(R.id.locationTxt);
@@ -641,5 +641,10 @@ public class DocentActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         appearBeaconList.clear();
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(TypekitContextWrapper.wrap(newBase));
     }
 }

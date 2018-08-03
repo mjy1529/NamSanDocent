@@ -20,6 +20,7 @@ import com.minew.beacon.BluetoothState;
 import com.minew.beacon.MinewBeacon;
 import com.minew.beacon.MinewBeaconManager;
 import com.minew.beacon.MinewBeaconManagerListener;
+import com.tsengvn.typekit.TypekitContextWrapper;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -336,5 +337,10 @@ public class HomeActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         appearBeaconList.clear();
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(TypekitContextWrapper.wrap(newBase));
     }
 }
