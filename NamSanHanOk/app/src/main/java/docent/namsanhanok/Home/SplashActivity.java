@@ -29,26 +29,30 @@ public class SplashActivity extends AppCompatActivity {
             @Override
             public void run() {
                 checkFirstRun();
+                finish();
             }
         }, 3000);
     }
 
     public void checkFirstRun() {
+
         boolean isFirstRun = prefs.getBoolean("isFirstRun", true); // isFirstRun이 null값이면 true를 가져옴.
         Intent intent;
         if (isFirstRun) {
             intent = new Intent(getApplicationContext(), TutorialActivity.class);
             startActivity(intent);
-
             prefs.edit().putBoolean("isFirstRun", false).apply();
-            finish();
+
         }
         else {
             intent = new Intent(getApplicationContext(), HomeActivity.class);
             startActivity(intent);
-            finish();
         }
 
+//
+//        Intent intent = new Intent(getApplicationContext(), TutorialActivity.class);
+//        startActivity(intent);
+//        finish();
     }
 
     @Override
