@@ -82,7 +82,7 @@ public class DocentActivity extends AppCompatActivity {
     SimpleExoPlayerView playerView;
     //PlayerView playerView;
     ImageButton exo_play;
-    ImageView exo_artwork;
+    ImageView exo_thumbnail;
 
     Dialog fullscreenDialog;
     boolean isPlayerFullscreen = false;
@@ -391,11 +391,14 @@ public class DocentActivity extends AppCompatActivity {
 //            e.printStackTrace();
 //        }
 
-        exo_play.setOnClickListener(new View.OnClickListener() { //영상의 재생버튼 클릭했을 때 오디오 일시정지
+        exo_play.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(videoPlayer.getCurrentPosition() == 0 && !videoPlayer.getPlayWhenReady()) { //썸네일
+                    exo_thumbnail.setVisibility(View.GONE);
+                }
                 videoPlayer.setPlayWhenReady(true);
-                if (audioPlayer.isPlaying()) {
+                if (audioPlayer.isPlaying()) { //비디오 재생시 오디오 일시정지
                     audioPlayer.pause();
                     playAudioBtn.setBackgroundResource(R.drawable.ic_play_arrow_black_48dp);
                 }
@@ -544,12 +547,13 @@ public class DocentActivity extends AppCompatActivity {
         bottom_audio_layout = (LinearLayout) findViewById(R.id.bottom_audio_layout);
         playAudioBtn = (ImageButton) findViewById(R.id.playAudioBtn);
         exo_play = (ImageButton) findViewById(R.id.exo_play);
-        exo_artwork = (ImageView) findViewById(R.id.exo_artwork);
         seekbar = (SeekBar) findViewById(R.id.seekbar);
         audioTotalTime = (TextView) findViewById(R.id.audioTotalTime);
         audioCurrentTime = (TextView) findViewById(R.id.audioCurrentTime);
         docentTitle = (TextView) findViewById(R.id.docentTitle);
         docentTitle.setText(docent_title);
+
+        exo_thumbnail = (ImageView) findViewById(R.id.exo_thumbnail);
 
         audioTxt = (TextView) findViewById(R.id.audioTxt);
         locaTxt = (TextView) findViewById(R.id.locationTxt);

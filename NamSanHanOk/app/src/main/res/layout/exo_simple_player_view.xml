@@ -29,7 +29,7 @@
             android:background="@android:color/black" />
 
         <ImageView
-            android:id="@id/exo_artwork"
+            android:id="@+id/exo_thumbnail"
             android:src="@drawable/namsan1"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
