@@ -58,4 +58,6 @@ dependencies {
     implementation files('libs/minewBeaconScan.jar')
     //fonts
     implementation 'com.github.katoro:typekit:1.0.1'
+    //justifiedTextView
+    implementation 'com.codesgood:justifiedtextview:1.0.2'
 }
