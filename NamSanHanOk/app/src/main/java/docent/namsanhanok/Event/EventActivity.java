@@ -1,5 +1,6 @@
 package docent.namsanhanok.Event;
 
+import android.content.Context;
 import android.content.Intent;
 import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
@@ -10,6 +11,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
+
+import com.tsengvn.typekit.TypekitContextWrapper;
 
 import java.util.ArrayList;
 
@@ -78,5 +81,10 @@ public class EventActivity extends AppCompatActivity {
                 break;
 
         }
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(TypekitContextWrapper.wrap(newBase));
     }
 }

@@ -1,5 +1,6 @@
 package docent.namsanhanok.Info;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
@@ -14,6 +15,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.tsengvn.typekit.TypekitContextWrapper;
 
 import docent.namsanhanok.Home.HomeActivity;
 import docent.namsanhanok.R;
@@ -61,5 +63,10 @@ public class InfoActivity extends AppCompatActivity implements OnMapReadyCallbac
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(NamsanHanok));
         googleMap.animateCamera(CameraUpdateFactory.newLatLng(NamsanHanok));
         googleMap.setMinZoomPreference(13.0f);
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(TypekitContextWrapper.wrap(newBase));
     }
 }

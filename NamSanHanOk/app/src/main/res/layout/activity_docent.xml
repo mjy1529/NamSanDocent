@@ -13,7 +13,7 @@
         android:layout_height="45dp">
 
         <include
-            layout="@layout/include_docent_toolbar"
+            layout="@layout/include_docent_toolbar2"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
@@ -36,11 +36,34 @@
                 android:src="@drawable/namsan1" />
 
             <TextView
-                android:id="@+id/docentExplanation"
+                android:id="@+id/docentName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/docentImage"
-                android:padding="15dp"
+                android:paddingBottom="5dp"
+                android:paddingEnd="15dp"
+                android:paddingStart="15dp"
+                android:paddingTop="15dp"
+                android:text="삼각동 도편수(都片手) 이승업(李承業) 가옥"
+                android:textStyle="italic" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/docentName"
+                android:layout_marginEnd="15dp"
+                android:layout_marginStart="15dp"
+                android:background="#919191" />
+
+            <TextView
+                android:id="@+id/docentExplanation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/docentName"
+                android:paddingBottom="10dp"
+                android:paddingEnd="15dp"
+                android:paddingStart="15dp"
+                android:paddingTop="10dp"
                 android:text="@string/docent_explanation" />
 
             <TextView
@@ -55,13 +78,12 @@
                 android:textStyle="bold" />
 
             <android.support.v7.widget.RecyclerView
-                android:layout_below="@id/docentDetails"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="5dp"
                 android:id="@+id/docent_recyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                />
+                android:layout_below="@id/docentDetails"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="5dp" />
 
             <TextView
                 android:id="@+id/watchVOD"
@@ -97,12 +119,12 @@
         android:id="@+id/go_new_docent"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="@android:color/transparent"
-        android:layout_marginStart="5dp"
-        android:layout_marginEnd="5dp"
         android:layout_marginBottom="5dp"
-        android:visibility="gone"
-        android:gravity="center_horizontal">
+        android:layout_marginEnd="5dp"
+        android:layout_marginStart="5dp"
+        android:background="@android:color/transparent"
+        android:gravity="center_horizontal"
+        android:visibility="gone">
 
         <include layout="@layout/bottom_get_new_docent" />
 

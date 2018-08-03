@@ -1,7 +1,9 @@
 package docent.namsanhanok.Setting;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -12,6 +14,8 @@ import android.widget.Checkable;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.tsengvn.typekit.TypekitContextWrapper;
 
 import java.util.List;
 
@@ -65,5 +69,9 @@ public class SetLanguageActivity extends AppCompatActivity {
                 }
             }
         });
+
+        TextView setLanguageTitle = (TextView) findViewById(R.id.setLanguageTitle);
+        Typeface typeface = Typeface.createFromAsset(getAssets(), "NanumMyeongjoBold.otf");
+        setLanguageTitle.setTypeface(typeface);
     }
 }

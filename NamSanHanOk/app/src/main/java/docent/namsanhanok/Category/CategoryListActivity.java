@@ -1,6 +1,7 @@
 package docent.namsanhanok.Category;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -13,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.tsengvn.typekit.TypekitContextWrapper;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -30,6 +32,7 @@ public class CategoryListActivity extends Activity {
     TextView category_list_toolbar_title;
     String category_title;
     ImageView simple_image;
+    TextView category_list_title;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -65,6 +68,9 @@ public class CategoryListActivity extends Activity {
 
         simple_image = (ImageView)findViewById(R.id.simple_image);
         Glide.with(CategoryListActivity.this).load(R.drawable.namsan2).into(simple_image);
+
+        category_list_title = (TextView) findViewById(R.id.category_list_title);
+        category_list_title.setText(category_title + " 소개");
     }
 
 
@@ -91,5 +97,10 @@ public class CategoryListActivity extends Activity {
                 finish();
                 break;
         }
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(TypekitContextWrapper.wrap(newBase));
     }
 }

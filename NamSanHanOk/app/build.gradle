@@ -57,5 +57,5 @@ dependencies {
     //beacon library
     implementation files('libs/minewBeaconScan.jar')
     //fonts
-    //implementation 'com.tsengvn:Typekit:1.0.1'
+    implementation 'com.github.katoro:typekit:1.0.1'
 }

@@ -1,5 +1,6 @@
 package docent.namsanhanok.Location;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -8,6 +9,9 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.tsengvn.typekit.TypekitContextWrapper;
+
 import uk.co.senab.photoview.PhotoViewAttacher;
 
 import docent.namsanhanok.R;
@@ -61,5 +65,10 @@ public class LocationActivity extends AppCompatActivity {
                 break;
 
         }
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(TypekitContextWrapper.wrap(newBase));
     }
 }

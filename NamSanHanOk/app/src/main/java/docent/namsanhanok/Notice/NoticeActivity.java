@@ -1,5 +1,6 @@
 package docent.namsanhanok.Notice;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -16,6 +17,7 @@ import android.widget.ScrollView;
 import android.widget.Toast;
 
 import com.melnykov.fab.FloatingActionButton;
+import com.tsengvn.typekit.TypekitContextWrapper;
 
 import java.util.ArrayList;
 
@@ -129,6 +131,11 @@ public class NoticeActivity extends AppCompatActivity implements NoticeRecyclerA
                 noticeAdapter.setMoreLoading(false);
             }
         }, 2500);
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(TypekitContextWrapper.wrap(newBase));
     }
 
 }

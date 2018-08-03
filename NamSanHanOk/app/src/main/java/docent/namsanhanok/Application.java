@@ -1,6 +1,11 @@
 package docent.namsanhanok;
 
+import android.graphics.Typeface;
+
 import com.github.angads25.toggle.LabeledSwitch;
+import com.tsengvn.typekit.Typekit;
+
+import java.lang.reflect.Type;
 
 public class Application extends android.app.Application {
     public boolean isScanning;
@@ -19,6 +24,11 @@ public class Application extends android.app.Application {
         Application scanState = ((Application) getApplicationContext());
         isScanning = scanState.getScanning();
         isToggleOn = scanState.getToggleState();
+
+        Typekit.getInstance()
+                .addNormal(Typekit.createFromAsset(this, "NanumMyeongjo.otf"))
+                .addBold(Typekit.createFromAsset(this, "NanumMyeongjoBold.otf"))
+                .addItalic(Typekit.createFromAsset(this, "NanumMyeongjoExtraBold.otf"));
     }
 
     public void setScanning(boolean isScanning) {
@@ -36,6 +46,5 @@ public class Application extends android.app.Application {
     public boolean getToggleState() {
         return isToggleOn;
     }
-
 
 }

@@ -1,5 +1,6 @@
 package docent.namsanhanok.Question;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.NestedScrollView;
@@ -12,6 +13,8 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Toast;
+
+import com.tsengvn.typekit.TypekitContextWrapper;
 
 import java.util.ArrayList;
 
@@ -50,15 +53,8 @@ public class QuestionWriteActivity extends AppCompatActivity implements EditText
 
     }
 
-
-
-
-
-
-
-
     public void init() {
-        Toolbar questionRegisterToolbar = (Toolbar)findViewById(R.id.question_register_toolbar);
+        Toolbar questionRegisterToolbar = (Toolbar) findViewById(R.id.question_register_toolbar);
         questionRegisterToolbar.bringToFront();
 
         post_register_Btn = (Button) findViewById(R.id.question_register_Btn);
@@ -68,12 +64,9 @@ public class QuestionWriteActivity extends AppCompatActivity implements EditText
         phone_number = (EditText) findViewById(R.id.question_phone_number);
         username = (EditText) findViewById(R.id.question_username);
 
-
         title = (EditText) findViewById(R.id.question_title);
         content = (EditText) findViewById(R.id.question_content);
         content_layout = (LinearLayout) findViewById(R.id.question_content_layout);
-
-
 
         //Focus가 변할 때, line color 변경
         email_first_address.setOnFocusChangeListener(this);
@@ -82,76 +75,84 @@ public class QuestionWriteActivity extends AppCompatActivity implements EditText
         title.setOnFocusChangeListener(this);
         content.setOnFocusChangeListener(this);
 
-
-        imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
+        imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
         scrollView = (NestedScrollView) findViewById(R.id.getScroll_location);
-
 
     }
 
     @Override
     public void onFocusChange(View v, boolean hasFocus) {
-        switch(v.getId()){
-            case R.id.question_email_first_address :
+        switch (v.getId()) {
+            case R.id.question_email_first_address:
                 email_first_address.setBackgroundResource(R.drawable.rectangle_edge_all_selected);
-                if(getCurrentFocus()!=email_first_address){email_first_address.setBackgroundResource(R.drawable.rectangle_edge_all);}
+                if (getCurrentFocus() != email_first_address) {
+                    email_first_address.setBackgroundResource(R.drawable.rectangle_edge_all);
+                }
                 break;
 
-            case R.id.question_phone_number :
+            case R.id.question_phone_number:
                 phone_number.setBackgroundResource(R.drawable.rectangle_edge_all_selected);
-                if(getCurrentFocus()!=phone_number){phone_number.setBackgroundResource(R.drawable.rectangle_edge_all);}
+                if (getCurrentFocus() != phone_number) {
+                    phone_number.setBackgroundResource(R.drawable.rectangle_edge_all);
+                }
 
                 break;
 
-            case R.id.question_username :
+            case R.id.question_username:
                 username.setBackgroundResource(R.drawable.rectangle_edge_all_selected);
-                if(getCurrentFocus()!=username){username.setBackgroundResource(R.drawable.rectangle_edge_all);}
+                if (getCurrentFocus() != username) {
+                    username.setBackgroundResource(R.drawable.rectangle_edge_all);
+                }
                 break;
 
-            case R.id.question_title :
+            case R.id.question_title:
                 title.setBackgroundResource(R.drawable.rectangle_edge_all_selected);
-                if(getCurrentFocus()!=title){title.setBackgroundResource(R.drawable.rectangle_edge_all);}
+                if (getCurrentFocus() != title) {
+                    title.setBackgroundResource(R.drawable.rectangle_edge_all);
+                }
                 break;
 
-            case R.id.question_content :
+            case R.id.question_content:
                 content_layout.setBackgroundResource(R.drawable.rectangle_edge_all_selected);
-                if(getCurrentFocus()!=content){content_layout.setBackgroundResource(R.drawable.rectangle_edge_all);}
+                if (getCurrentFocus() != content) {
+                    content_layout.setBackgroundResource(R.drawable.rectangle_edge_all);
+                }
                 break;
 
         }
     }
 
 
-//비어잇으면 상자 표시 붉게
+    //비어잇으면 상자 표시 붉게
     public boolean detectError() {
 
         nullValue = new ArrayList<>();
 
         //입력된 것이 없거나, 빈칸일 때
-        if(content.getText().toString().replace(" ", "").equals("")
-                || content.getText().toString().replace("\n", "").equals("")){
+        if (content.getText().toString().replace(" ", "").equals("")
+                || content.getText().toString().replace("\n", "").equals("")) {
             nullValue.add("내용을 입력해주세요");
             content.requestFocus();
             content.setText(null);//공백이 여러개 있을시, 처음으로
 
         }
-        if(title.getText().toString().replace(" ", "").equals("")){
+        if (title.getText().toString().replace(" ", "").equals("")) {
             nullValue.add("제목을 입력해주세요");
             title.requestFocus();
             title.setText(null);
         }
 
-        if(username.getText().toString().replace(" ", "").equals("")){
+        if (username.getText().toString().replace(" ", "").equals("")) {
             nullValue.add("성함을 입력해주세요");
             username.requestFocus();
             username.setText(null);
         }
-        if(phone_number.getText().toString().replace(" ", "").equals("")){
+        if (phone_number.getText().toString().replace(" ", "").equals("")) {
             nullValue.add("전화번호를 입력해주세요");
             phone_number.requestFocus();
             phone_number.setText(null);
         }
-        if(email_first_address.getText().toString().replace(" ", "").equals("")){
+        if (email_first_address.getText().toString().replace(" ", "").equals("")) {
 
             nullValue.add("이메일을 입력해주세요");
             email_first_address.requestFocus();
@@ -159,18 +160,17 @@ public class QuestionWriteActivity extends AppCompatActivity implements EditText
         }
 
 
-        if(nullValue.size() <= 0 ){ //빈칸이 없음
+        if (nullValue.size() <= 0) { //빈칸이 없음
             return false;
-        }
-        else{
-            return  true;
+        } else {
+            return true;
         }
 
     }
 
     public void onClick(View v) throws InterruptedException {
         switch (v.getId()) {
-            case  R.id.question_register_Btn :
+            case R.id.question_register_Btn:
                 //제목 and 내용 DB에 저장해야함, 값은 이렇게 갖고옴
 //                Toast.makeText(this, "결과값"
 //                        + "\n" + email_first_address.getText().toString()
@@ -180,28 +180,25 @@ public class QuestionWriteActivity extends AppCompatActivity implements EditText
 //                        + "\n" + content.getText().toString(), Toast.LENGTH_SHORT).show();
 
 
-
                 //DB저장
                 //내용
 
                 //에러 유무에 따라 activity 넘김
-                if(!detectError()){//빈칸이 없으면
+                if (!detectError()) {//빈칸이 없으면
                     //그 다음, Question Board Activity로
                     Intent intent = new Intent(getApplicationContext(), QuestionWriteDoneActivity.class);
                     startActivity(intent);
                     break;
-                }
-                else{ //빈칸이 있으면
+                } else { //빈칸이 있으면
 
-                    if(getCurrentFocus()==content){
+                    if (getCurrentFocus() == content) {
                         scrollView.setScrollY(scrollView.getScrollY());
 
-                    }
-                    else{
-                        scrollView.setScrollY(scrollView.getScrollY()-250);
+                    } else {
+                        scrollView.setScrollY(scrollView.getScrollY() - 250);
 
                     }
-                    Toast.makeText(this, nullValue.get(nullValue.size()-1) , Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, nullValue.get(nullValue.size() - 1), Toast.LENGTH_SHORT).show();
 
                     break;
                 }
@@ -213,6 +210,11 @@ public class QuestionWriteActivity extends AppCompatActivity implements EditText
 
 
         }
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(TypekitContextWrapper.wrap(newBase));
     }
 
 

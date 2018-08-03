@@ -25,7 +25,7 @@
                 android:onClick="onClick" />
 
             <TextView
-                android:id="@+id/docentTitle"
+                android:id="@+id/setLanguageTitle"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
