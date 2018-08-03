@@ -60,5 +60,8 @@ dependencies {
     implementation 'com.estimote:sdk:1.0.3@aar'
     //beacon library
     implementation files('libs/minewBeaconScan.jar')
+    //tutorial
+    implementation 'com.github.deano2390:MaterialShowcaseView:1.2.0'
+
 
 }

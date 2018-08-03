@@ -10,5 +10,6 @@
     <color name="dialog_cancel">#919191</color>
     <color name="dialog_remove">#ff4444</color>
 
-
+    <color name="light_green">#d38de69b</color>
+    <color name="purple">#c6d971ff</color>
 </resources>

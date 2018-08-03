@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
@@ -57,6 +58,8 @@ public class HomeActivity extends AppCompatActivity {
     String prev_beacon = "";
 
     private Application applicationclass;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -212,6 +215,8 @@ public class HomeActivity extends AppCompatActivity {
                 intent = new Intent(HomeActivity.this, InfoActivity.class);
                 startActivity(intent);
                 break;
+
+
         }
     }
 

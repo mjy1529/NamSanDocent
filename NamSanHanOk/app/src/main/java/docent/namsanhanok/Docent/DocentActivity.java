@@ -41,7 +41,9 @@ import com.google.android.exoplayer2.upstream.BandwidthMeter;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DataSpec;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
+import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
 import com.google.android.exoplayer2.upstream.RawResourceDataSource;
+import com.google.android.exoplayer2.util.Util;
 import com.minew.beacon.BeaconValueIndex;
 import com.minew.beacon.BluetoothState;
 import com.minew.beacon.MinewBeacon;
@@ -363,30 +365,30 @@ public class DocentActivity extends AppCompatActivity {
 
         //Preparing the player
         //서버에서 가져올 때
-//        String videoUrl = "http://192.168.0.6:8070/hot.mp4";
-//        DefaultBandwidthMeter defaultBandwidthMeter = new DefaultBandwidthMeter();
-//        MediaSource videoSource = new ExtractorMediaSource.Factory(
-//                new DefaultHttpDataSourceFactory(Util.getUserAgent(getApplicationContext(), "DOCENT"), defaultBandwidthMeter)
-//        ).createMediaSource(Uri.parse(videoUrl));
-//        videoPlayer.prepare(videoSource);
+        String videoUrl = "http://175.123.138.125:8070/hot.mp4";
+        DefaultBandwidthMeter defaultBandwidthMeter = new DefaultBandwidthMeter();
+        MediaSource videoSource = new ExtractorMediaSource.Factory(
+                new DefaultHttpDataSourceFactory(Util.getUserAgent(getApplicationContext(), "DOCENT"), defaultBandwidthMeter)
+        ).createMediaSource(Uri.parse(videoUrl));
+        videoPlayer.prepare(videoSource);
 
         //raw 폴더에서 가져올 때
-        final RawResourceDataSource rawResourceDataSource = new RawResourceDataSource(this);
-        DataSpec dataSpec = new DataSpec(RawResourceDataSource.buildRawResourceUri(R.raw.hot));
-        try {
-            rawResourceDataSource.open(dataSpec);
-            DataSource.Factory factory = new DataSource.Factory() {
-                @Override
-                public DataSource createDataSource() {
-                    return rawResourceDataSource;
-                }
-            };
-
-            MediaSource videoSource = new ExtractorMediaSource.Factory(factory).createMediaSource(rawResourceDataSource.getUri());
-            videoPlayer.prepare(videoSource);
-        } catch (RawResourceDataSource.RawResourceDataSourceException e) {
-            e.printStackTrace();
-        }
+//        final RawResourceDataSource rawResourceDataSource = new RawResourceDataSource(this);
+//        DataSpec dataSpec = new DataSpec(RawResourceDataSource.buildRawResourceUri(R.raw.hot));
+//        try {
+//            rawResourceDataSource.open(dataSpec);
+//            DataSource.Factory factory = new DataSource.Factory() {
+//                @Override
+//                public DataSource createDataSource() {
+//                    return rawResourceDataSource;
+//                }
+//            };
+//
+//            MediaSource videoSource = new ExtractorMediaSource.Factory(factory).createMediaSource(rawResourceDataSource.getUri());
+//            videoPlayer.prepare(videoSource);
+//        } catch (RawResourceDataSource.RawResourceDataSourceException e) {
+//            e.printStackTrace();
+//        }
 
         exo_play.setOnClickListener(new View.OnClickListener() { //영상의 재생버튼 클릭했을 때 오디오 일시정지
             @Override
@@ -416,7 +418,7 @@ public class DocentActivity extends AppCompatActivity {
 //        audioPlayer = MediaPlayer.create(this, R.raw.konan);
 
         //서버에서 가져올 경우
-        audioPlayer = MediaPlayer.create(this, Uri.parse("http://192.168.0.6:8070/kkk.mp3"));
+        audioPlayer = MediaPlayer.create(this, Uri.parse("http://175.123.138.125:8070/kkk.mp3"));
 
         audioPlayer.setLooping(true); //무한 반복
         audioPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() { //총길이 세팅
