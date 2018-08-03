@@ -73,6 +73,7 @@
         <activity android:name=".Home.HomeActivity"
             android:screenOrientation="portrait"/>
 
+
         <!-- 서비스와 리시버 -->
         <service android:name="com.minew.beacon.ScanService" />
 

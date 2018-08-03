@@ -600,7 +600,6 @@ public class DocentActivity extends AppCompatActivity {
         fullscreenIcon.setImageDrawable(ContextCompat.getDrawable(DocentActivity.this, R.drawable.ic_fullscreen_skrink));
         isPlayerFullscreen = true;
         fullscreenDialog.show();
-
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
     }
 
@@ -610,7 +609,6 @@ public class DocentActivity extends AppCompatActivity {
         isPlayerFullscreen = false;
         fullscreenDialog.dismiss();
         fullscreenIcon.setImageDrawable(ContextCompat.getDrawable(DocentActivity.this, R.drawable.ic_fullscreen_expand));
-
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
 
