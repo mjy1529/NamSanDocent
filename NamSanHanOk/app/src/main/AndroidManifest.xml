@@ -30,7 +30,9 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDqI8Nb1EO3PuTxKgY03Ki9SS5HseNxURQ" />
 
-        <activity android:name=".Home.SplashActivity">
+        <activity
+            android:name=".Home.SplashActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -39,24 +41,27 @@
         </activity>
         <activity
             android:name=".Docent.DocentPopUpActivity"
+            android:screenOrientation="portrait"
             android:theme="@android:style/Theme.DeviceDefault.Light.Dialog" />
         <activity
             android:name=".Question.QuestionWriteDoneActivity"
+            android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Dialog" />
         <activity
             android:name=".Docent.DocentActivity"
+            android:screenOrientation="portrait"
             android:configChanges="orientation|screenSize" />
-        <activity android:name=".Category.CategoryListActivity" />
-        <activity android:name=".Category.CategoryActivity" />
-        <activity android:name=".Setting.SettingActivity" />
-        <activity android:name=".Setting.SetLanguageActivity" />
-        <activity android:name=".Event.EventActivity" />
-        <activity android:name=".Question.QuestionWriteActivity" />
-        <activity android:name=".Notice.NoticeActivity" />
-        <activity android:name=".Notice.NoticeReadActivity" />
-        <activity android:name=".Info.InfoActivity" />
-        <activity android:name=".Location.LocationActivity" />
-        <activity android:name=".Home.HomeActivity" />
+        <activity android:name=".Category.CategoryListActivity" android:screenOrientation="portrait" />
+        <activity android:name=".Category.CategoryActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".Setting.SettingActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".Setting.SetLanguageActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".Event.EventActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".Question.QuestionWriteActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".Notice.NoticeActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".Notice.NoticeReadActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".Info.InfoActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".Location.LocationActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".Home.HomeActivity" android:screenOrientation="portrait"/>
 
         <!-- 서비스와 리시버 -->
         <service android:name="com.minew.beacon.ScanService" />
