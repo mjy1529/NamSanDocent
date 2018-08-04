@@ -79,7 +79,6 @@ public class EventActivity extends AppCompatActivity {
                 startActivity(intent);
                 finish();
                 break;
-
         }
     }
 

@@ -14,5 +14,6 @@
 감사합니다.\n\n\n남산골한옥마을 드림</string>
 
     <string name="simple_text"> 남산 북쪽 기슭 한옥마을이 들어선 필동(筆洞) 지역은 조선시대에는 흐르는 계곡과 천우각이 있어서 여름철 피서를 겸한 놀이터로 이름 있던 곳입니다. 이들 한옥들에는 집의 규모와 살았던 사람의 신분에 걸맞은 가구들을 예스럽게 배치하여 선조들의 생활모습을 직접 보고 알 수 있게 하였습니다.</string>
-
+    <string name="bluetoothAlertMessage">자동전시안내를 이용하시려면 Bluetooth를 켜 주세요.</string>
+    <string name="newItemAlertMessage">새로운 전시품이 발견되었습니다.\n확인하시겠습니까?</string>
 </resources>

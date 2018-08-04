@@ -32,8 +32,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/menuLayout"
-        android:layout_marginBottom="5dp"
         android:layout_alignParentEnd="true"
+        android:layout_marginBottom="5dp"
         android:gravity="end|center_vertical"
         android:orientation="horizontal">
 
@@ -51,11 +51,11 @@
 
         <com.github.angads25.toggle.LabeledSwitch
             android:id="@+id/toggleBtn"
-            android:layout_width="50dp"
-            android:layout_height="25dp"
+            android:textSize="10sp"
+            android:layout_width="40dp"
+            android:layout_height="20dp"
             android:layout_marginRight="10dp"
             android:layout_toRightOf="@+id/autoPlayText"
-            android:textSize="12sp"
             app:colorBorder="#18adff"
             app:colorOn="#18adff"
             app:on="false" />
@@ -218,7 +218,6 @@
             </RelativeLayout>
 
         </LinearLayout>
-
 
     </LinearLayout>
 

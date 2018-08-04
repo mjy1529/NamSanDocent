@@ -266,7 +266,7 @@ public class HomeActivity extends AppCompatActivity {
 
     public void showBluetoothDialog() {
         final PrettyDialog bluetoothDialog = new PrettyDialog(HomeActivity.this);
-        bluetoothDialog.setMessage("자동전시안내를 이용하시려면 Bluetooth를 켜 주세요.")
+        bluetoothDialog.setMessage(getResources().getString(R.string.bluetoothAlertMessage))
                 .setIcon(R.drawable.pdlg_icon_info)
                 .setIconTint(R.color.pdlg_color_blue)
                 .addButton("확인", // button text
@@ -283,7 +283,7 @@ public class HomeActivity extends AppCompatActivity {
 
     public void showNewItemDialog() {
         newItemDialog = new PrettyDialog(HomeActivity.this);
-        newItemDialog.setMessage("새로운 전시품이 발견되었습니다.\n확인하시겠습니까?")
+        newItemDialog.setMessage(getResources().getString(R.string.newItemAlertMessage))
                 .setIcon(R.drawable.pdlg_icon_info)
                 .setIconTint(R.color.pdlg_color_blue)
                 .addButton("확인", // button text
