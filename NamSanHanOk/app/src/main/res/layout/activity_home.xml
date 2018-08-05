@@ -42,10 +42,10 @@
             android:layout_width="wrap_content"
             android:layout_height="30dp"
             android:layout_alignBottom="@+id/toggleBtn"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="5dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="5dp"
             android:gravity="center"
-            android:text="자동전시안내"
+            android:text="@string/autoPlay"
             android:textColor="#ffffff"
             android:textStyle="bold" />
 
@@ -54,8 +54,8 @@
             android:textSize="10sp"
             android:layout_width="40dp"
             android:layout_height="20dp"
-            android:layout_marginRight="10dp"
-            android:layout_toRightOf="@+id/autoPlayText"
+            android:layout_marginEnd="10dp"
+            android:layout_toEndtOf="@+id/autoPlayText"
             app:colorBorder="#18adff"
             app:colorOn="#18adff"
             app:on="false" />
@@ -98,7 +98,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/menuBtn1"
                     android:layout_centerHorizontal="true"
-                    android:text="마을 둘러보기"
+                    android:text="@string/category"
                     android:textColor="#ffffff"
                     android:textStyle="bold" />
 
@@ -124,7 +124,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/menuBtn2"
                     android:layout_centerHorizontal="true"
-                    android:text="세시/행사"
+                    android:text="@string/event"
                     android:textColor="#ffffff"
                     android:textStyle="bold" />
 
@@ -159,7 +159,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/menuBtn3"
                     android:layout_centerHorizontal="true"
-                    android:text="알리는 말씀"
+                    android:text="@string/notice"
                     android:textColor="#ffffff"
                     android:textStyle="bold" />
 
@@ -185,7 +185,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/menuBtn4"
                     android:layout_centerHorizontal="true"
-                    android:text="문의하기"
+                    android:text="@string/question"
                     android:textColor="#ffffff"
                     android:textStyle="bold" />
 
@@ -211,7 +211,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/menuBtn5"
                     android:layout_centerHorizontal="true"
-                    android:text="이용안내"
+                    android:text="@string/information"
                     android:textColor="#ffffff"
                     android:textStyle="bold" />
 

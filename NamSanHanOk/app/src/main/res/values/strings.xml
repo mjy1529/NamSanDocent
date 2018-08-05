@@ -1,7 +1,5 @@
 <resources>
     <string name="app_name">NamSanHanOk</string>
-    <string name="docent_explanation">이 가옥은 조선말기 흥선대원군(興宣大院君)에 의하여 경복궁이 중건될 때 도편수(목수의 우두머리)였던 이승업이 1860년대 지은 집으로 중구 삼각동 32-6번지에 있던 것을 이곳 남산골한옥마을에 이전, 복원하였습니다. 대문간채와 행랑채가 안채와 사랑채를 둘러싸고 있었다고 하는데, 지금은 안채와 사랑채만 남아 있습니다.</string>
-    <string name="audio">audio</string>
 
     <string-array name="languages_array">
         <item>한국어</item>
@@ -16,4 +14,49 @@
     <string name="simple_text"> 남산 북쪽 기슭 한옥마을이 들어선 필동(筆洞) 지역은 조선시대에는 흐르는 계곡과 천우각이 있어서 여름철 피서를 겸한 놀이터로 이름 있던 곳입니다. 이들 한옥들에는 집의 규모와 살았던 사람의 신분에 걸맞은 가구들을 예스럽게 배치하여 선조들의 생활모습을 직접 보고 알 수 있게 하였습니다.</string>
     <string name="bluetoothAlertMessage">자동전시안내를 이용하시려면 Bluetooth를 켜 주세요.</string>
     <string name="newItemAlertMessage">새로운 전시품이 발견되었습니다.\n확인하시겠습니까?</string>
+
+
+    <!-- docent -->
+    <string name="detail">상세보기</string>
+    <string name="video">영상보기</string>
+    <string name="audio">Audio</string>
+    <string name="location">Location</string>
+
+    <!-- home -->
+    <string name="autoPlay">자동전시안내</string>
+    <string name="category">마을 둘러보기</string>
+    <string name="event">세시/행사</string>
+    <string name="notice">알리는 말씀</string>
+    <string name="question">문의하기</string>
+    <string name="information">이용안내</string>
+
+    <!-- question -->
+    <string name="inputEmail">1. 이메일을 입력해주세요.</string>
+    <string name="hintEmail">docent@docent.com</string>
+    <string name="inputPhone">2. 전화번호를 입력해주세요.(ex.01012345678)</string>
+    <string name="hintPhone">01012345678</string>
+    <string name="inputName">3. 성함을 입력해주세요.</string>
+    <string name="hintName">홍길동</string>
+    <string name="inputTitleContent">4. 제목과 내용을 입력해주세요.</string>
+    <string name="hintTitle">제목</string>
+    <string name="hintContent">내용</string>
+
+    <!-- questionWriteDone -->
+    <string name="quesPopTitle">문의완료</string>
+    <string name="quesContent">문의가 정상적으로 완료되었습니다.</string>
+    <string name="quesDone">확인</string>
+
+    <!-- category -->
+    <string name="cateHanok">한옥</string>
+    <string name="cateLake">정원</string>
+    <string name="cateTimecapsule">타임 캡슐</string>
+
+
+    <!-- info -->
+    <!-- title을 넣어야할지말지 교수님이랑 -->
+    <string name="guide">관람안내</string>
+    <string name="feeFree">- 입장료 : 무료</string>
+    <string name="openningHours">- 한옥 관람시간</string>
+    <!-- 2018-08-06 더해야함..너무 많당ㅠㅠ-->
+
 </resources>
