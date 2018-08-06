@@ -29,15 +29,20 @@ import java.util.List;
 import docent.namsanhanok.Application;
 import docent.namsanhanok.BackPressCloseHandler;
 import docent.namsanhanok.Category.CategoryActivity;
+import docent.namsanhanok.Category.CategoryResult;
 import docent.namsanhanok.Docent.DocentActivity;
 import docent.namsanhanok.Event.EventActivity;
 import docent.namsanhanok.Info.InfoActivity;
+import docent.namsanhanok.NetworkService;
 import docent.namsanhanok.Notice.NoticeActivity;
 import docent.namsanhanok.Question.QuestionWriteActivity;
 import docent.namsanhanok.R;
 import docent.namsanhanok.Setting.SettingActivity;
 import libs.mjn.prettydialog.PrettyDialog;
 import libs.mjn.prettydialog.PrettyDialogCallback;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import static com.minew.beacon.BluetoothState.BluetoothStatePowerOn;
 
@@ -59,6 +64,8 @@ public class HomeActivity extends AppCompatActivity {
     String prev_beacon = "";
 
     private Application applicationclass;
+
+    NetworkService service;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

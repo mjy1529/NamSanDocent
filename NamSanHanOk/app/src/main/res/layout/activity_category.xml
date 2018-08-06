@@ -38,7 +38,6 @@
             android:layout_gravity="center_vertical"
             android:layout_marginStart="20dp"
             android:onClick="onClick"
-            android:text="한옥"
             android:textColor="#ffffff"
             android:textSize="30sp"
             android:textStyle="bold" />
@@ -59,7 +58,6 @@
             android:layout_gravity="center_vertical"
             android:layout_marginStart="20dp"
             android:onClick="onClick"
-            android:text="정원"
             android:textColor="#ffffff"
             android:textSize="30sp"
             android:textStyle="bold" />
@@ -80,7 +78,6 @@
             android:layout_gravity="center_vertical"
             android:layout_marginStart="20dp"
             android:onClick="onClick"
-            android:text="타임 캡슐"
             android:textColor="#ffffff"
             android:textSize="30sp"
             android:textStyle="bold" />

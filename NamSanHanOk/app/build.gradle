@@ -62,4 +62,11 @@ dependencies {
     implementation 'com.github.katoro:typekit:1.0.1'
     //justifiedTextView
     implementation 'com.codesgood:justifiedtextview:1.0.2'
+
+    // 서버 통신 retrofit2
+    implementation 'com.squareup.retrofit2:retrofit:2.0.2'
+    //json parsing
+    implementation 'com.squareup.retrofit2:converter-gson:2.0.2'
+    //json scalar
+    implementation 'com.squareup.retrofit2:converter-scalars:2.0.2'
 }
