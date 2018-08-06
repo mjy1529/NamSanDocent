@@ -36,11 +36,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="20dp"
+            android:layout_marginStart="20dp"
             android:onClick="onClick"
-            android:text="한옥"
+            android:text="@string/cateHanok"
             android:textColor="#ffffff"
-            android:textSize="30dp"
+            android:textSize="30sp"
             android:textStyle="bold" />
 
     </LinearLayout>
@@ -57,11 +57,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="20dp"
+            android:layout_marginStart="20dp"
             android:onClick="onClick"
-            android:text="정원"
+            android:text="@string/cateLake"
             android:textColor="#ffffff"
-            android:textSize="30dp"
+            android:textSize="30sp"
             android:textStyle="bold" />
 
     </LinearLayout>
@@ -78,11 +78,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="20dp"
+            android:layout_marginStart="20dp"
             android:onClick="onClick"
-            android:text="타임 캡슐"
+            android:text="@string/cateTimecapsule"
             android:textColor="#ffffff"
-            android:textSize="30dp"
+            android:textSize="30sp"
             android:textStyle="bold" />
 
     </LinearLayout>

@@ -49,7 +49,7 @@
                     android:gravity="center"
                     android:paddingLeft="16dp"
                     android:paddingRight="16dp"
-                    android:text="1. 이메일을 입력하세요"
+                    android:text="@string/inputEmail"
                     android:textColor="#000000" />
 
 
@@ -60,7 +60,7 @@
                     android:layout_marginEnd="25dp"
                     android:layout_marginStart="25dp"
                     android:background="@drawable/rectangle_edge_all"
-                    android:hint="docent@docent.com"
+                    android:hint="@string/hintEmail"
                     android:inputType="textEmailAddress"
                     android:paddingEnd="7dp"
                     android:paddingStart="20dp"
@@ -91,7 +91,7 @@
                         android:gravity="center"
                         android:paddingLeft="16dp"
                         android:paddingRight="16dp"
-                        android:text="2. 전화번호를 입력해주세요(ex.01012345678)"
+                        android:text="@string/inputPhone"
                         android:textColor="#000000" />
 
                     <EditText
@@ -101,7 +101,7 @@
                         android:layout_marginEnd="25dp"
                         android:layout_marginStart="25dp"
                         android:background="@drawable/rectangle_edge_all"
-                        android:hint="01012345678"
+                        android:hint="@string/hintPhone"
                         android:inputType="phone"
                         android:paddingEnd="7dp"
                         android:paddingStart="20dp"
@@ -126,7 +126,7 @@
                         android:gravity="center"
                         android:paddingLeft="16dp"
                         android:paddingRight="16dp"
-                        android:text="3. 성함을 입력해 주세요."
+                        android:text="@string/inputName"
                         android:textColor="#000000" />
 
                     <EditText
@@ -137,7 +137,7 @@
                         android:layout_marginStart="25dp"
                         android:background="@drawable/rectangle_edge_all"
                         android:gravity="center_vertical"
-                        android:hint="홍길동"
+                        android:hint="@string/hintName"
                         android:inputType="text"
                         android:paddingEnd="7dp"
                         android:paddingStart="20dp"
@@ -159,7 +159,7 @@
                     android:gravity="center"
                     android:paddingLeft="16dp"
                     android:paddingRight="16dp"
-                    android:text="4. 제목과 내용을 입력해주세요"
+                    android:text="@string/inputTitleContent"
                     android:textColor="#000000" />
 
                 <EditText
@@ -170,7 +170,7 @@
                     android:layout_marginStart="25dp"
                     android:background="@drawable/rectangle_edge_all"
                     android:gravity="center_vertical"
-                    android:hint="제목"
+                    android:hint="@string/hintTitle"
                     android:inputType="text"
                     android:paddingEnd="7dp"
                     android:paddingStart="20dp"
@@ -203,7 +203,7 @@
                         android:background="@null"
                         android:baselineAligned="false"
                         android:gravity="top"
-                        android:hint="내용"
+                        android:hint="@string/hintContent"
                         android:inputType="textMultiLine"
                         android:isScrollContainer="true"
                         android:paddingBottom="5dp"

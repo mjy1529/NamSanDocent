@@ -26,7 +26,7 @@
                 android:onClick="onClick" />
 
             <TextView
-                android:id="@+id/noticeTitle"
+                android:id="@+id/infoTitle"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
@@ -61,7 +61,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
-                    android:text="관람안내"
+                    android:text="@string/guide"
                     android:textColor="#000000" />
 
                 <View
@@ -74,13 +74,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="15dp"
-                    android:text="- 입장료 : 무료" />
+                    android:text="@string/feeFree" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"
-                    android:text="- 한옥 관람시간" />
+                    android:text="@string/openningHours" />
 
                 <TextView
                     android:layout_width="wrap_content"
