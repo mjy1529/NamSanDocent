@@ -69,8 +69,8 @@ public class CategoryActivity extends AppCompatActivity {
         init();
         setImg();
         Networking();
-        Networking2();
-        Networking3();
+//        Networking2();
+//        Networking3();
     }
 
     public void setImg() {
@@ -165,63 +165,22 @@ public class CategoryActivity extends AppCompatActivity {
             public void onResponse(Call<CategoryResult> call, Response<CategoryResult> response) {
                 if (response.isSuccessful()) {
                         Log.d("Log", "Category network ok");
-                        categoryData = response.body().category_info;
-                        category_title1.setText(categoryData.get(0).category_title);
-
-
-                        Log.d("Log", response.body().category_info.get(0).category_title);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<CategoryResult> call, Throwable t) {
-                Log.d("Log", "실패 : " + t.getMessage());            }
-        });
-    }
-
-    public void Networking2() {
-        Call<CategoryResult> categoryResultCall = service.getCategoryResult(getCategoryInfo("category_list"));
-        categoryResultCall.enqueue(new Callback<CategoryResult>() {
-            @Override
-            public void onResponse(Call<CategoryResult> call, Response<CategoryResult> response) {
-                if (response.isSuccessful()) {
-                        Log.d("Log", "Category network ok");
                         categoryDataList = response.body().category_info;
+                        category_title1.setText(categoryDataList.get(0).category_title);
                         category_title2.setText(categoryDataList.get(1).category_title);
-
-
-                        Log.d("Log", response.body().category_info.get(1).category_title);
-
-                }
-            }
-
-            @Override
-            public void onFailure(Call<CategoryResult> call, Throwable t) {
-                Log.d("Log", "실패 : " + t.getMessage());            }
-        });
-    }
-
-    public void Networking3() {
-        Call<CategoryResult> categoryResultCall = service.getCategoryResult(getCategoryInfo("category_list"));
-        categoryResultCall.enqueue(new Callback<CategoryResult>() {
-            @Override
-            public void onResponse(Call<CategoryResult> call, Response<CategoryResult> response) {
-                if (response.isSuccessful()) {
-                        Log.d("Log", "Category network ok");
-                        categoryDataList = response.body().category_info;
                         category_title3.setText(categoryDataList.get(0).category_title);
 
 
-                        Log.d("Log", response.body().category_info.get(0).category_title);
-                    }
+                    Log.d("Log", response.body().category_info.get(0).category_title);
                 }
+            }
 
             @Override
             public void onFailure(Call<CategoryResult> call, Throwable t) {
-                Log.d("Log", "실패 : " + t.getMessage());
-            }
+                Log.d("Log", "실패 : " + t.getMessage());            }
         });
     }
+
 
     public void onClick(View v) {
         Intent intent = new Intent(getApplicationContext(), CategoryListActivity.class);
@@ -265,7 +224,6 @@ public class CategoryActivity extends AppCompatActivity {
         super.onResume();
 
         Networking();
-        Networking2();
-        Networking3();
+
     }
 }
