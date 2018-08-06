@@ -41,7 +41,6 @@
             android:id="@+id/autoPlayText"
             android:layout_width="wrap_content"
             android:layout_height="30dp"
-            android:layout_alignBottom="@+id/toggleBtn"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="5dp"
             android:gravity="center"
@@ -55,7 +54,6 @@
             android:layout_width="40dp"
             android:layout_height="20dp"
             android:layout_marginEnd="10dp"
-            android:layout_toEndtOf="@+id/autoPlayText"
             app:colorBorder="#18adff"
             app:colorOn="#18adff"
             app:on="false" />
