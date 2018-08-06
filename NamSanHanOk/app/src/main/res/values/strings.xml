@@ -46,17 +46,5 @@
     <string name="quesContent">문의가 정상적으로 완료되었습니다.</string>
     <string name="quesDone">확인</string>
 
-    <!-- category -->
-    <string name="cateHanok">한옥</string>
-    <string name="cateLake">정원</string>
-    <string name="cateTimecapsule">타임 캡슐</string>
-
-
-    <!-- info -->
-    <!-- title을 넣어야할지말지 교수님이랑 -->
-    <string name="guide">관람안내</string>
-    <string name="feeFree">- 입장료 : 무료</string>
-    <string name="openningHours">- 한옥 관람시간</string>
-    <!-- 2018-08-06 더해야함..너무 많당ㅠㅠ-->
 
 </resources>
