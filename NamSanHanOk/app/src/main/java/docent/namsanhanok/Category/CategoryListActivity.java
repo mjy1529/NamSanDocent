@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -119,13 +120,8 @@ public class CategoryListActivity extends Activity {
 
                     Glide.with(CategoryListActivity.this).load(categoryDataList.get(category_id-1).category_image_url).into(simple_image);
 
-//                    String text_info = categoryDataList.get(category_id-1).category_detail_info;
                     CharSequence cs = categoryDataList.get(category_id-1).category_detail_info;
                     category_text_info.setText(cs);
-
-                    Log.d("check1", "cate_detail_info : " + categoryDataList.get(category_id-1).category_detail_info);
-                    Log.d("check1", "cate_detail_info자체 : " + category_text_info);
-
                 }
             }
 
@@ -133,8 +129,6 @@ public class CategoryListActivity extends Activity {
             public void onFailure(Call<CategoryResult> call, Throwable t) {
                 Log.d("check1", "실패 : " + t.getMessage());            }
         });
-
-
     }
 
 
@@ -145,15 +139,13 @@ public class CategoryListActivity extends Activity {
             @Override
             public void onResponse(Call<DocentResult> call, Response<DocentResult> response) {
                 if (response.isSuccessful()) {
-                    Log.d("check1", "Docent List network ok");
+
                     docentDataList = response.body().docent_info;
-                    Log.d("check1", "docentDataList : " + docentDataList);
 
                     categoryListAdapter.setAdapter(docentDataList);
                     String count = "전시품 총 " + String.valueOf(docentDataList.size()) + "개";
                     countText.setText(count);
 
-                    Log.d("check1", response.body().docent_info.get(0).toString());
 
                 }
             }
@@ -219,5 +211,20 @@ public class CategoryListActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
+    }
+
+    public void onPause() {
+
+        super.onPause();
+
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+
+            }
+
+        }, 100);
     }
 }

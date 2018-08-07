@@ -7,17 +7,26 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+
 import java.util.ArrayList;
+import docent.namsanhanok.Docent.DocentDetailData;
 
 import docent.namsanhanok.R;
 
 public class DocentAdapter extends RecyclerView.Adapter<DocentViewHolder> {
     private Context context;
-    public ArrayList<DocentActivityItem> docentActivityItem;
+    public ArrayList<DocentDetailData> docentDetailData;
 
-    public DocentAdapter(Context context, ArrayList<DocentActivityItem> docentActivityItem) {
+    public DocentAdapter(Context context, ArrayList<DocentDetailData> docentDetailData) {
         this.context = context;
-        this.docentActivityItem = docentActivityItem;
+        this.docentDetailData = docentDetailData;
+    }
+
+    public void setAdapter(ArrayList<DocentDetailData> docentDetailData) {
+        this.docentDetailData = docentDetailData;
+        notifyDataSetChanged();
     }
 
 
@@ -31,30 +40,23 @@ public class DocentAdapter extends RecyclerView.Adapter<DocentViewHolder> {
 
     @Override
     public void onBindViewHolder(DocentViewHolder holder, final int position) {
-//        if (homeActivityItem.get(position).getImage() == null) {
-//            Glide.with(context)
-//                    .load(R.drawable.bae)
-//                    .apply(new RequestOptions()
-//                            .centerCrop())
-//                    .into(holder.VH_docent_image);
-//        }
-//        else {
-//            Glide.with(context)
-//                    .load(homeActivityItem.get(position).getImage())
-//                    .apply(new RequestOptions()
-//                            .centerCrop())
-//                    .into(holder.VH_docent_image);
-//        }
 
-        holder.VH_docent_image.setImageResource(docentActivityItem.get(position).getImage());
-        holder.VH_docent_text_title.setText(docentActivityItem.get(position).getTitle());
+        //recycler viewholder
+        Glide.with(context)
+                .load(docentDetailData.get(position).docent_detail_image_url)
+                .apply(new RequestOptions()
+                        .centerCrop())
+                .into(holder.VH_docent_image);
+
+        holder.VH_docent_text_title.setText(docentDetailData.get(position).docent_dtail_title);
 
 
         holder.VH_docent_image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, DocentPopUpActivity.class);
-                intent.putExtra("title", docentActivityItem.get(position).getTitle());
+                intent.putExtra("docent_detail_title", docentDetailData.get(position).docent_dtail_title);
+                intent.putExtra("docent_detail_info", docentDetailData.get(position).docent_detail_info);
 
 
                 context.startActivity(intent);
@@ -65,6 +67,6 @@ public class DocentAdapter extends RecyclerView.Adapter<DocentViewHolder> {
 
     @Override
     public int getItemCount() {
-        return docentActivityItem != null ? docentActivityItem.size() : 0;
+        return docentDetailData != null ? docentDetailData.size() : 0;
     }
 }

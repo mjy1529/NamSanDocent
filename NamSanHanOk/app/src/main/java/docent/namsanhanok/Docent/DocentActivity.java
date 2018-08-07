@@ -30,6 +30,8 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.codesgood.views.JustifiedTextView;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
@@ -63,6 +65,9 @@ import java.util.Collections;
 import java.util.List;
 
 import docent.namsanhanok.Application;
+import docent.namsanhanok.Category.CategoryData;
+import docent.namsanhanok.Category.CategoryListActivity;
+import docent.namsanhanok.Category.CategoryResult;
 import docent.namsanhanok.Home.HomeActivity;
 import docent.namsanhanok.Home.UserRssi;
 import docent.namsanhanok.Location.LocationActivity;
@@ -79,7 +84,6 @@ public class DocentActivity extends AppCompatActivity {
     ImageButton homeBtn;
     TextView docentName;
     ImageView docentImage;
-    TextView docentExplanation;
     ImageButton audioBtn;
     ImageButton locationBtn;
     LinearLayout bottom_audio_layout;
@@ -109,7 +113,7 @@ public class DocentActivity extends AppCompatActivity {
     //상세보기
     private RecyclerView recyclerView;
     private LinearLayoutManager linearLayoutManager;
-    private DocentAdapter docentAdapter;
+    private DocentAdapter docentdatailAdpater;
     private ArrayList<DocentActivityItem> docentActivityItem;
 
     String docent_title;
@@ -133,7 +137,14 @@ public class DocentActivity extends AppCompatActivity {
     ArrayList<String> existBeacon = new ArrayList<>();
 
     //서버 네트워크
-    NetworkService service = Application.getInstance().getNetworkService();
+    NetworkService service;
+    int category_id;
+    private  ArrayList<DocentDetailData> docentDetailDataList;
+    private ArrayList<DocentData> docentDataList;
+    private ArrayList<CategoryData> categoryDataList;
+    private JustifiedTextView docentExplanation;
+    int position;
+
 
     public DocentActivity() {
 
@@ -144,9 +155,15 @@ public class DocentActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_docent);
 
-        networking();
+        Intent secondIntent = getIntent();
+        category_id = secondIntent.getExtras().getInt("cate_id");
+        position = secondIntent.getExtras().getInt("position");
 
-        docent_title = "한옥";
+
+        service = Application.getInstance().getNetworkService();
+        networking();
+        networking2();
+
         mMinewBeaconManager = MinewBeaconManager.getInstance(this);
         applicationclass = (Application) getApplicationContext();
 
@@ -166,14 +183,50 @@ public class DocentActivity extends AppCompatActivity {
         docentImage.requestFocus();
     }
 
-    public void networking() {
-        final Call<DocentResult> request = service.getDocentResult(jsonToString());
+    //toolbar title
+    public void networking(){
+        Call<CategoryResult> categoryResultCall = service.getCategoryResult(getCategoryInfo("category_list"));
+        categoryResultCall.enqueue(new Callback<CategoryResult>() {
+            @Override
+            public void onResponse(Call<CategoryResult> call, Response<CategoryResult> response) {
+                if (response.isSuccessful()) {
+                    Log.d("check1", "Category network ok");
+                    categoryDataList = response.body().category_info;
+
+                    docentTitle.setText(categoryDataList.get(category_id-1).category_title);
+
+                    }
+            }
+
+            @Override
+            public void onFailure(Call<CategoryResult> call, Throwable t) {
+                Log.d("check1", "실패 : " + t.getMessage());            }
+        });
+    }
+
+    //docent content
+    public void networking2() {
+        final Call<DocentResult> request = service.getDocentResult(jsonToString("docent_list", category_id));
         request.enqueue(new Callback<DocentResult>() {
             @Override
             public void onResponse(Call<DocentResult> call, Response<DocentResult> response) {
                 if(response.body() != null) {
-                    DocentResult docentResult = response.body();
-                    Log.d("check", docentResult.docent_info.size()+"");
+
+                    docentDataList= response.body().docent_info;
+                    Log.d("check1", "DocentActivity docent_id 제목 : " + docentDataList.get(position).docent_title);
+                    Log.d("check1", "DocentActivity docent_id : " + position);
+
+                    Glide.with(getApplicationContext())
+                            .load(docentDataList.get(position).docent_image_url)
+                            .into(docentImage);
+
+                    docentName.setText(docentDataList.get(position).docent_title);
+                    CharSequence cs = docentDataList.get(position).docent_content_info;
+
+                    docentExplanation.setText(cs);
+
+
+                    Log.d("check", docentDataList.size()+"");
                 }
             }
 
@@ -183,6 +236,25 @@ public class DocentActivity extends AppCompatActivity {
             }
         });
     }
+
+//    public void networking() {
+//        final Call<DocentResult> request = service.getDocentResult(jsonToString("docent_list", category_id));
+//        request.enqueue(new Callback<DocentResult>() {
+//            @Override
+//            public void onResponse(Call<DocentResult> call, Response<DocentResult> response) {
+//                if(response.body() != null) {
+//                    DocentResult docentResult = response.body();
+//
+//                    Log.d("check", docentResult.docent_info.size()+"");
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<DocentResult> call, Throwable t) {
+//                Log.d("check", "fail");
+//            }
+//        });
+//    }
 
     private boolean isOnBluetooth() {
         BluetoothState bluetoothState = mMinewBeaconManager.checkBluetoothState();
@@ -352,20 +424,20 @@ public class DocentActivity extends AppCompatActivity {
 
     }
 
-    private void initDataset() {
-        docentActivityItem = new ArrayList<>();
-        docentActivityItem.add(new DocentActivityItem("베", R.drawable.bae));
-        docentActivityItem.add(new DocentActivityItem("짚신", R.drawable.jipshin));
-        docentActivityItem.add(new DocentActivityItem("베", R.drawable.bae));
-        docentActivityItem.add(new DocentActivityItem("짚신", R.drawable.jipshin));
-        docentActivityItem.add(new DocentActivityItem("베", R.drawable.bae));
-        docentActivityItem.add(new DocentActivityItem("짚신", R.drawable.jipshin));
-        docentActivityItem.add(new DocentActivityItem("베", R.drawable.bae));
-        docentActivityItem.add(new DocentActivityItem("짚신", R.drawable.jipshin));
-    }
+//    private void initDataset() {
+//        docentActivityItem = new ArrayList<>();
+//        docentActivityItem.add(new DocentActivityItem("베", R.drawable.bae));
+//        docentActivityItem.add(new DocentActivityItem("짚신", R.drawable.jipshin));
+//        docentActivityItem.add(new DocentActivityItem("베", R.drawable.bae));
+//        docentActivityItem.add(new DocentActivityItem("짚신", R.drawable.jipshin));
+//        docentActivityItem.add(new DocentActivityItem("베", R.drawable.bae));
+//        docentActivityItem.add(new DocentActivityItem("짚신", R.drawable.jipshin));
+//        docentActivityItem.add(new DocentActivityItem("베", R.drawable.bae));
+//        docentActivityItem.add(new DocentActivityItem("짚신", R.drawable.jipshin));
+//    }
 
     public void setRecyclerView() {
-        initDataset();
+//        initDataset();
         recyclerView = (RecyclerView) findViewById(R.id.docent_recyclerView);
         linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
@@ -373,9 +445,9 @@ public class DocentActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setHasFixedSize(true);
 
-        docentAdapter = new DocentAdapter(this, docentActivityItem);
+        docentdatailAdpater = new DocentAdapter(this, docentDetailDataList);
 
-        recyclerView.setAdapter(docentAdapter);
+        recyclerView.setAdapter(docentdatailAdpater);
     }
 
     public void setVideoPlayer() {
@@ -565,7 +637,6 @@ public class DocentActivity extends AppCompatActivity {
         homeBtn = (ImageButton) findViewById(R.id.homeBtn);
         docentName = (TextView) findViewById(R.id.docentName);
         docentImage = (ImageView) findViewById(R.id.docentImage);
-        docentExplanation = (TextView) findViewById(R.id.docentExplanation);
         audioBtn = (ImageButton) findViewById(R.id.audioBtn);
         locationBtn = (ImageButton) findViewById(R.id.locationBtn);
 //        playerView = (PlayerView) findViewById(R.id.playerView);
@@ -577,7 +648,7 @@ public class DocentActivity extends AppCompatActivity {
         audioTotalTime = (TextView) findViewById(R.id.audioTotalTime);
         audioCurrentTime = (TextView) findViewById(R.id.audioCurrentTime);
         docentTitle = (TextView) findViewById(R.id.docentTitle);
-        docentTitle.setText(docent_title);
+//        docentTitle.setText(docent_title);
 
         exo_thumbnail = (ImageView) findViewById(R.id.exo_thumbnail);
 
@@ -591,6 +662,8 @@ public class DocentActivity extends AppCompatActivity {
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
         confirm_go_new_docent.setText(content);
+        docentExplanation = (JustifiedTextView) findViewById(R.id.docentExplanation);
+
 
 
 
@@ -673,12 +746,12 @@ public class DocentActivity extends AppCompatActivity {
         super.attachBaseContext(TypekitContextWrapper.wrap(newBase));
     }
 
-    public String jsonToString() {
+    public String jsonToString(String cmd, int cate_id) {
         String jsonStr = "";
         try {
             JSONObject data = new JSONObject();
-            data.put("cmd", "docent_list");
-            data.put("category_id", 1);
+            data.put("cmd", cmd);
+            data.put("category_id", cate_id);
 
             JSONObject root = new JSONObject();
             root.put("info", data);
@@ -687,5 +760,21 @@ public class DocentActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         return jsonStr;
+    }
+    private String getCategoryInfo(String cmd) {
+        String json = "";
+        try {
+            JSONObject data = new JSONObject();
+            data.put("cmd",cmd);
+
+
+            JSONObject root = new JSONObject();
+            root.put("info", data);
+            json = root.toString();
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return json;
     }
 }

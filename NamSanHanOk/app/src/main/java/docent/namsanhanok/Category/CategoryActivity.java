@@ -6,6 +6,7 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -175,13 +176,13 @@ public class CategoryActivity extends AppCompatActivity {
             case R.id.category_title1 :
                 intent.putExtra("cate_title", categoryDataList.get(0).category_title);
                 intent.putExtra("cate_id", categoryDataList.get(0).category_id);
-                Log.d("check1", "CA 넘어갈때 () : " +  categoryDataList.get(0).category_id);
-
+                onPause();
                 startActivity(intent);
                 break;
 
             case R.id.category_layout2 :
             case R.id.category_title2 :
+                onPause();
                 intent.putExtra("cate_title", categoryDataList.get(1).category_title);
                 intent.putExtra("cate_id", categoryDataList.get(1).category_id);
                 startActivity(intent);
@@ -189,12 +190,14 @@ public class CategoryActivity extends AppCompatActivity {
 
             case R.id.category_layout3 :
             case R.id.category_title3 :
+                onPause();
                 Intent docentIntent = new Intent(CategoryActivity.this, DocentActivity.class);
                 docentIntent.putExtra("docent_title", categoryDataList.get(2).category_title);
                 startActivity(docentIntent);
                 break;
 
             case  R.id.homeBtn :
+                onPause();
                 Intent intent2 = new Intent(CategoryActivity.this, HomeActivity.class);
                 intent2.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 intent2.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -216,4 +219,21 @@ public class CategoryActivity extends AppCompatActivity {
         networking();
 
     }
+    @Override
+
+    public void onPause() {
+
+        super.onPause();
+
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+
+            }
+
+        }, 100);
+    }
+
 }

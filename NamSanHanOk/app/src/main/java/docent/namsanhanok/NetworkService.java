@@ -25,10 +25,14 @@ public interface NetworkService {
     Call<CategoryResult> getCategoryResult(@Body String cmd);
 
 
-
     // 도슨트
     @Headers("Content-Type: application/json")
     @POST("/docent_info/ko")
     Call<DocentResult> getDocentResult(@Body String cmd);
+
+    // 도슨트 디테일
+    @Headers("Content-Type: application/json")
+    @POST("/docent_detail_info/ko")
+    Call<DocentResult> getDocentDetailResult(@Body String cmd);
 
 }

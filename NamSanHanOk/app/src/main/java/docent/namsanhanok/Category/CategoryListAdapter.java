@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +15,6 @@ import java.util.ArrayList;
 
 import docent.namsanhanok.Docent.DocentActivity;
 import docent.namsanhanok.Docent.DocentData;
-import docent.namsanhanok.Home.HomeActivity;
 import docent.namsanhanok.R;
 
 public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListViewHolder> {
@@ -57,8 +57,10 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListViewHo
         holder.VH_category_list_image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                int docent_postion = position;
                 Intent intent = new Intent(context, DocentActivity.class);
-                intent.putExtra("docent_title", docentData.get(position).docent_title);
+                intent.putExtra("cate_id", docentData.get(position).category_id);
+                intent.putExtra("position", docent_postion);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
             }
@@ -69,7 +71,11 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListViewHo
             public void onClick(View view) {
                 Intent intent = new Intent(context, DocentActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.putExtra("docent_title", docentData.get(position).docent_title);
+                intent.putExtra("cate_id", docentData.get(position).category_id);
+                intent.putExtra("docent_id", docentData.get(position).docent_id);
+
+                Log.d("check1", "CLAdapter category id : " + docentData.get(position).category_id);
+                Log.d("check1", "CLAdapter category id : " + docentData.get(position).docent_id);
 
                 context.startActivity(intent);
             }
@@ -81,6 +87,7 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListViewHo
     public int getItemCount() {
         return docentData != null ? docentData.size() : 0;
     }
+
 
 
 }

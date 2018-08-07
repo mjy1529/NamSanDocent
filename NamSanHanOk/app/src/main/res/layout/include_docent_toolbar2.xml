@@ -19,7 +19,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:text="삼각동 도편수(都片手) 이승업(李承業) 가옥"
         android:textColor="#000000"
         android:textSize="14sp"
         android:textStyle="bold" />
