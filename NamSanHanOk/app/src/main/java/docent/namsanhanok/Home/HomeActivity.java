@@ -52,6 +52,7 @@ import docent.namsanhanok.Category.CategoryResult;
 import docent.namsanhanok.Docent.DocentActivity;
 import docent.namsanhanok.Event.EventActivity;
 import docent.namsanhanok.Info.InfoActivity;
+//import docent.namsanhanok.IntentService;
 import docent.namsanhanok.NetworkService;
 import docent.namsanhanok.Notice.NoticeActivity;
 import docent.namsanhanok.Question.QuestionWriteActivity;
@@ -106,6 +107,7 @@ public class HomeActivity extends AppCompatActivity {
         initBeaconListenerManager();
 
         showBeaconAlarm();
+
     }
 
     public void networking() {

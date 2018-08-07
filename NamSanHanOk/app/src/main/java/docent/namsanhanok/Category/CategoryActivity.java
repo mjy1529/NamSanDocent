@@ -22,6 +22,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.google.gson.JsonObject;
+import com.squareup.picasso.Picasso;
 import com.tsengvn.typekit.TypekitContextWrapper;
 
 import org.json.JSONException;
@@ -61,6 +62,7 @@ public class CategoryActivity extends AppCompatActivity {
         service = Application.getInstance().getNetworkService();
 
         init();
+
         setImg();
         networking();
     }
@@ -69,7 +71,7 @@ public class CategoryActivity extends AppCompatActivity {
         final int blackFilter = getApplication().getResources().getColor(R.color.black_color_filter);
         final PorterDuffColorFilter blakcColorFilter = new PorterDuffColorFilter(blackFilter, PorterDuff.Mode.SRC_ATOP);
 
-        Glide.with(this).load(R.drawable.namsan1).apply(new RequestOptions()
+        Glide.with(this).load(categoryDataList.get(0).category_image_url).apply(new RequestOptions()
                 .centerCrop()).into(new SimpleTarget<Drawable>() {
             @Override
             public void onResourceReady(Drawable resource, Transition<? super Drawable> transition) {
@@ -81,7 +83,7 @@ public class CategoryActivity extends AppCompatActivity {
             }
         });
 
-        Glide.with(this).load(R.drawable.namsan_lake).apply(new RequestOptions()
+        Glide.with(this).load(categoryDataList.get(1).category_image_url).apply(new RequestOptions()
                 .centerCrop()).into(new SimpleTarget<Drawable>() {
             @Override
             public void onResourceReady(Drawable resource, Transition<? super Drawable> transition) {
@@ -92,7 +94,7 @@ public class CategoryActivity extends AppCompatActivity {
             }
         });
 
-        Glide.with(this).load(R.drawable.timecapsule).apply(new RequestOptions()
+        Glide.with(this).load(categoryDataList.get(2).category_image_url).apply(new RequestOptions()
                 .centerCrop()).into(new SimpleTarget<Drawable>() {
             @Override
             public void onResourceReady(Drawable resource3, Transition<? super Drawable> transition) {
@@ -139,7 +141,6 @@ public class CategoryActivity extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        Log.d("Log", "getCategoryInfo : " + json);
         return json;
     }
 
@@ -153,8 +154,9 @@ public class CategoryActivity extends AppCompatActivity {
                         categoryDataList = response.body().category_info;
                         category_title1.setText(categoryDataList.get(0).category_title);
                         category_title2.setText(categoryDataList.get(1).category_title);
-                        category_title3.setText(categoryDataList.get(0).category_title);
+                        category_title3.setText(categoryDataList.get(2).category_title);
 
+                        setImg();
 
                     Log.d("Log", response.body().category_info.get(0).category_title);
                 }
