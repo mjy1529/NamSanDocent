@@ -54,6 +54,9 @@ import com.minew.beacon.MinewBeaconManager;
 import com.minew.beacon.MinewBeaconManagerListener;
 import com.tsengvn.typekit.TypekitContextWrapper;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -63,7 +66,11 @@ import docent.namsanhanok.Application;
 import docent.namsanhanok.Home.HomeActivity;
 import docent.namsanhanok.Home.UserRssi;
 import docent.namsanhanok.Location.LocationActivity;
+import docent.namsanhanok.NetworkService;
 import docent.namsanhanok.R;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import static com.minew.beacon.BluetoothState.BluetoothStatePowerOn;
 
@@ -112,7 +119,6 @@ public class DocentActivity extends AppCompatActivity {
     private Vibrator vibrator;
     private MinewBeaconManager mMinewBeaconManager;
     UserRssi comp = new UserRssi();
-    private int state;
     Application applicationclass;
 
     String closeBeacon;
@@ -120,14 +126,14 @@ public class DocentActivity extends AppCompatActivity {
     //지울 것
     TextView go_new_docent_content;
 
-
     List<MinewBeacon> appearBeaconList = new ArrayList<>(); //인식된 비콘 리스트
     private Handler handler1;
     private Handler handler2;
     String prev_beacon = "";
     ArrayList<String> existBeacon = new ArrayList<>();
 
-    OrientationEventListener orientationEventListener;
+    //서버 네트워크
+    NetworkService service = Application.getInstance().getNetworkService();
 
     public DocentActivity() {
 
@@ -138,8 +144,8 @@ public class DocentActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_docent);
 
-        Intent secondIntent = getIntent();
-        //docent_title = secondIntent.getExtras().getString("docent_title");
+        networking();
+
         docent_title = "한옥";
         mMinewBeaconManager = MinewBeaconManager.getInstance(this);
         applicationclass = (Application) getApplicationContext();
@@ -160,6 +166,23 @@ public class DocentActivity extends AppCompatActivity {
         docentImage.requestFocus();
     }
 
+    public void networking() {
+        final Call<DocentResult> request = service.getDocentResult(jsonToString());
+        request.enqueue(new Callback<DocentResult>() {
+            @Override
+            public void onResponse(Call<DocentResult> call, Response<DocentResult> response) {
+                if(response.body() != null) {
+                    DocentResult docentResult = response.body();
+                    Log.d("check", docentResult.docent_info.size()+"");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<DocentResult> call, Throwable t) {
+                Log.d("check", "fail");
+            }
+        });
+    }
 
     private boolean isOnBluetooth() {
         BluetoothState bluetoothState = mMinewBeaconManager.checkBluetoothState();
@@ -648,5 +671,21 @@ public class DocentActivity extends AppCompatActivity {
     @Override
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(TypekitContextWrapper.wrap(newBase));
+    }
+
+    public String jsonToString() {
+        String jsonStr = "";
+        try {
+            JSONObject data = new JSONObject();
+            data.put("cmd", "docent_list");
+            data.put("category_id", 1);
+
+            JSONObject root = new JSONObject();
+            root.put("info", data);
+            jsonStr = root.toString();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return jsonStr;
     }
 }

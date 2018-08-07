@@ -51,7 +51,6 @@ public class CategoryActivity extends AppCompatActivity {
     TextView category_title3;
 
     private NetworkService service;
-    int category_id;
     private ArrayList<CategoryData> categoryDataList;
 
     @Override
@@ -60,17 +59,10 @@ public class CategoryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_category);
 
         service = Application.getInstance().getNetworkService();
-        category_id = 1;
-
-
-
-
 
         init();
         setImg();
-        Networking();
-//        Networking2();
-//        Networking3();
+        networking();
     }
 
     public void setImg() {
@@ -129,13 +121,8 @@ public class CategoryActivity extends AppCompatActivity {
         category_title2 = (TextView) findViewById(R.id.category_title2);
         category_title3 = (TextView)findViewById(R.id.category_title3);
 
-
-
         //이거 서버에서 갖고오는걸루해야함
         category_toolbar_title.setText("마을 둘러보기");
-
-
-
     }
 
     private String getCategoryInfo(String cmd) {
@@ -154,11 +141,9 @@ public class CategoryActivity extends AppCompatActivity {
         }
         Log.d("Log", "getCategoryInfo : " + json);
         return json;
-
-
     }
 
-    public void Networking() {
+    public void networking() {
         Call<CategoryResult> categoryResultCall = service.getCategoryResult(getCategoryInfo("category_list"));
         categoryResultCall.enqueue(new Callback<CategoryResult>() {
             @Override
@@ -223,7 +208,7 @@ public class CategoryActivity extends AppCompatActivity {
     public void onResume() {
         super.onResume();
 
-        Networking();
+        networking();
 
     }
 }
