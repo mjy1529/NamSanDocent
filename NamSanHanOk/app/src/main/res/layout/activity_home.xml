@@ -5,7 +5,6 @@
     android:id="@+id/homeLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/homeimage"
     tools:context=".Home.HomeActivity">
 
     <android.support.v7.widget.Toolbar

@@ -2,10 +2,16 @@ package docent.namsanhanok.Home;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Vibrator;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -13,7 +19,16 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.Request;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.target.SizeReadyCallback;
+import com.bumptech.glide.request.target.Target;
+import com.bumptech.glide.request.target.ViewTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.github.angads25.toggle.LabeledSwitch;
 import com.minew.beacon.BeaconValueIndex;
 import com.minew.beacon.BluetoothState;
@@ -22,6 +37,9 @@ import com.minew.beacon.MinewBeaconManager;
 import com.minew.beacon.MinewBeaconManagerListener;
 import com.squareup.picasso.Picasso;
 import com.tsengvn.typekit.TypekitContextWrapper;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -66,7 +84,7 @@ public class HomeActivity extends AppCompatActivity {
 
     private Application applicationclass;
 
-    NetworkService service;
+    HomeData homeData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,11 +100,64 @@ public class HomeActivity extends AppCompatActivity {
 
         applicationclass = (Application) getApplicationContext();
 
+        networking();
         init();
         initBeaconManager();
         initBeaconListenerManager();
 
         showBeaconAlarm();
+    }
+
+    public void networking() {
+        NetworkService service = Application.getInstance().getNetworkService();
+        Call<HomeResult> request = service.getHomeResult(jsonToString());
+        request.enqueue(new Callback<HomeResult>() {
+            @Override
+            public void onResponse(Call<HomeResult> call, Response<HomeResult> response) {
+                Log.d("check", "home 성공 : " + response.code());
+                if (response.isSuccessful()) {
+                    HomeResult homeResult = response.body();
+                    homeData = homeResult.home_info;
+
+                    TextView docentTitle = (TextView) findViewById(R.id.docentTitle);
+                    final RelativeLayout homeLayout = (RelativeLayout) findViewById(R.id.homeLayout);
+                    docentTitle.setText(homeData.getHome_title());
+                    Picasso.with(HomeActivity.this)
+                            .load(homeData.getHome_image_url())
+                            .into(new com.squareup.picasso.Target() {
+                                @Override
+                                public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom loadedFrom) {
+                                    homeLayout.setBackground(new BitmapDrawable(getApplicationContext().getResources(), bitmap));
+                                }
+
+                                @Override
+                                public void onBitmapFailed(Drawable drawable) {
+
+                                }
+
+                                @Override
+                                public void onPrepareLoad(Drawable drawable) {
+
+                                }
+                            });
+
+//                *** Glide 사용 ***
+//                Glide.with(HomeActivity.this)
+//                        .load(homeData.getHome_image_url())
+//                        .into(new SimpleTarget<Drawable>() {
+//                            @Override
+//                            public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+//                                homeLayout.setBackground(resource);
+//                            }
+//                        });
+                }
+            }
+
+            @Override
+            public void onFailure(Call<HomeResult> call, Throwable t) {
+                Log.d("check", "home 실패");
+            }
+        });
     }
 
     public void initBeaconManager() {
@@ -200,26 +271,31 @@ public class HomeActivity extends AppCompatActivity {
 
             case R.id.menuBtn1: //마을 둘러보기
                 intent = new Intent(HomeActivity.this, CategoryActivity.class);
+                intent.putExtra("category_title", homeData.getCategory_title());
                 startActivity(intent);
                 break;
 
             case R.id.menuBtn2: //세시/행사
                 intent = new Intent(getApplicationContext(), EventActivity.class);
+                intent.putExtra("event_title", homeData.getEvent_title());
                 startActivity(intent);
                 break;
 
             case R.id.menuBtn3: //알리는 말씀
                 intent = new Intent(HomeActivity.this, NoticeActivity.class);
+                intent.putExtra("notice_title", homeData.getNotice_title());
                 startActivity(intent);
                 break;
 
             case R.id.menuBtn4: //문의하기
                 intent = new Intent(HomeActivity.this, QuestionWriteActivity.class);
+                intent.putExtra("question_title", homeData.getQuestion_title());
                 startActivity(intent);
                 break;
 
             case R.id.menuBtn5: //이용안내
                 intent = new Intent(HomeActivity.this, InfoActivity.class);
+                intent.putExtra("operationguide_title", homeData.getOperationguide_title());
                 startActivity(intent);
                 break;
         }
@@ -346,5 +422,20 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(TypekitContextWrapper.wrap(newBase));
+    }
+
+    public String jsonToString() {
+        String jsonStr = "";
+        try {
+            JSONObject data = new JSONObject();
+            data.put("cmd", "home_info");
+
+            JSONObject root = new JSONObject();
+            root.put("info", data);
+            jsonStr = root.toString();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return jsonStr;
     }
 }
