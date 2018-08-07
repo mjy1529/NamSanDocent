@@ -20,6 +20,7 @@ import com.minew.beacon.BluetoothState;
 import com.minew.beacon.MinewBeacon;
 import com.minew.beacon.MinewBeaconManager;
 import com.minew.beacon.MinewBeaconManagerListener;
+import com.squareup.picasso.Picasso;
 import com.tsengvn.typekit.TypekitContextWrapper;
 
 import java.util.ArrayList;
@@ -223,8 +224,6 @@ public class HomeActivity extends AppCompatActivity {
                 intent = new Intent(HomeActivity.this, InfoActivity.class);
                 startActivity(intent);
                 break;
-
-
         }
     }
 

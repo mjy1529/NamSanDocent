@@ -22,6 +22,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.google.gson.JsonObject;
+import com.squareup.picasso.Picasso;
 import com.tsengvn.typekit.TypekitContextWrapper;
 
 import org.json.JSONException;
@@ -61,8 +62,9 @@ public class CategoryActivity extends AppCompatActivity {
         service = Application.getInstance().getNetworkService();
 
         init();
-        Networking();
 
+        setImg();
+        networking();
     }
 
     public void setImg() {
@@ -121,13 +123,8 @@ public class CategoryActivity extends AppCompatActivity {
         category_title2 = (TextView) findViewById(R.id.category_title2);
         category_title3 = (TextView)findViewById(R.id.category_title3);
 
-
-
         //이거 서버에서 갖고오는걸루해야함
         category_toolbar_title.setText("마을 둘러보기");
-
-
-
     }
 
     private String getCategoryInfo(String cmd) {
@@ -144,11 +141,10 @@ public class CategoryActivity extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
         return json;
     }
 
-    public void Networking() {
+    public void networking() {
         Call<CategoryResult> categoryResultCall = service.getCategoryResult(getCategoryInfo("category_list"));
         categoryResultCall.enqueue(new Callback<CategoryResult>() {
             @Override
@@ -214,7 +210,7 @@ public class CategoryActivity extends AppCompatActivity {
     public void onResume() {
         super.onResume();
 
-        Networking();
+        networking();
 
     }
 }

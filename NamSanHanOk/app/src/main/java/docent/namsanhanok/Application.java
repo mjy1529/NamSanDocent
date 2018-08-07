@@ -20,6 +20,7 @@ public class Application extends android.app.Application {
     private static String baseUrl = "http://175.123.138.122:3200";
 
     private NetworkService networkService;
+
     public static Application getInstance() {
         return instance;
     }
@@ -40,11 +41,6 @@ public class Application extends android.app.Application {
         isScanning = scanState.getScanning();
         isToggleOn = scanState.getToggleState();
 
-
-//        Typekit.getInstance()
-//                .addNormal(Typekit.createFromAsset(this, "NanumMyeongjo.otf"))
-//                .addBold(Typekit.createFromAsset(this, "NanumMyeongjoBold.otf"))
-//                .addItalic(Typekit.createFromAsset(this, "NanumMyeongjoExtraBold.otf"));
         Typekit.getInstance()
                 .addNormal(Typekit.createFromAsset(this, "SeoulHangangB.ttf"))
                 .addBold(Typekit.createFromAsset(this, "SeoulHangangEB.ttf"));
