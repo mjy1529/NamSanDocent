@@ -129,7 +129,9 @@ public class HomeActivity extends AppCompatActivity {
                             .into(new com.squareup.picasso.Target() {
                                 @Override
                                 public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom loadedFrom) {
-                                    homeLayout.setBackground(new BitmapDrawable(getApplicationContext().getResources(), bitmap));
+
+                                        homeLayout.setBackground(new BitmapDrawable(getApplicationContext().getResources(), bitmap));
+
                                 }
 
                                 @Override

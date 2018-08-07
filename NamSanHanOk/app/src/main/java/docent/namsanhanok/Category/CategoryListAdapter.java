@@ -13,16 +13,22 @@ import com.bumptech.glide.Glide;
 import java.util.ArrayList;
 
 import docent.namsanhanok.Docent.DocentActivity;
+import docent.namsanhanok.Docent.DocentData;
 import docent.namsanhanok.Home.HomeActivity;
 import docent.namsanhanok.R;
 
 public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListViewHolder> {
     private Context context;
-    public ArrayList<CategoryListActivityItem> categoryListActivityItem;
+    public ArrayList<DocentData> docentData;
 
-    public CategoryListAdapter(Context context, ArrayList<CategoryListActivityItem> categoryListActivityItem) {
+    public CategoryListAdapter(Context context, ArrayList<DocentData> docentData) {
         this.context = context;
-        this.categoryListActivityItem = categoryListActivityItem;
+        this.docentData = docentData;
+    }
+
+    public void setAdapter(ArrayList<DocentData> docentData) {
+        this.docentData = docentData;
+        notifyDataSetChanged();
     }
 
 
@@ -36,29 +42,15 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListViewHo
 
     @Override
     public void onBindViewHolder(CategoryListViewHolder holder, final int position) {
-        //        if (homeActivityItem.get(position).getImage() == null) {
-//            Glide.with(context)
-//                    .load(R.drawable.bae)
-//                    .apply(new RequestOptions()
-//                            .centerCrop())
-//                    .into(holder.VH_docent_image);
-//        }
-//        else {
-//            Glide.with(context)
-//                    .load(homeActivityItem.get(position).getImage())
-//                    .apply(new RequestOptions()
-//                            .centerCrop())
-//                    .into(holder.VH_docent_image);
-//        }
 
         Glide.with(context)
-                    .load(categoryListActivityItem.get(position).getImage())
+                    .load(docentData.get(position).docent_image_url)
                     .apply(new RequestOptions()
                             .centerCrop())
                     .into(holder.VH_category_list_image);
 
 //        holder.VH_category_image.setImageResource(categoryActivityItem.get(position).getImage());
-        holder.VH_category_list_text_title.setText(categoryListActivityItem.get(position).getTitle());
+        holder.VH_category_list_text_title.setText(docentData.get(position).docent_title);
 
 
 
@@ -66,8 +58,8 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListViewHo
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, DocentActivity.class);
-                intent.putExtra("docent_title", categoryListActivityItem.get(position).getTitle());
-
+                intent.putExtra("docent_title", docentData.get(position).docent_title);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
             }
         });
@@ -76,7 +68,8 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListViewHo
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, DocentActivity.class);
-                intent.putExtra("docent_title", categoryListActivityItem.get(position).getTitle());
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.putExtra("docent_title", docentData.get(position).docent_title);
 
                 context.startActivity(intent);
             }
@@ -86,7 +79,7 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListViewHo
 
     @Override
     public int getItemCount() {
-        return categoryListActivityItem != null ? categoryListActivityItem.size() : 0;
+        return docentData != null ? docentData.size() : 0;
     }
 
 

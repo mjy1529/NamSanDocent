@@ -1,13 +1,13 @@
 package docent.namsanhanok.Docent;
 
 public class DocentData {
-    int docent_id;
-    int category_id;
-    String docent_title;
+    public int docent_id;
+    public int category_id;
+    public String docent_title;
     String docent_content_info;
     String docent_vod_url;
     String docent_audio_url;
-    String docent_image_url;
+    public String docent_image_url;
     String docent_location;
     String beacon_number;
     String soundqr_number;

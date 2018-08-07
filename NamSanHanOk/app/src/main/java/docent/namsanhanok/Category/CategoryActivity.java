@@ -78,6 +78,7 @@ public class CategoryActivity extends AppCompatActivity {
                     resource.setColorFilter(blakcColorFilter);
 
                 }
+
             }
         });
 
@@ -171,20 +172,24 @@ public class CategoryActivity extends AppCompatActivity {
         switch (v.getId()) {
             case R.id.category_layout1 :
             case R.id.category_title1 :
-                intent.putExtra("cate_title", "한옥");
+                intent.putExtra("cate_title", categoryDataList.get(0).category_title);
+                intent.putExtra("cate_id", categoryDataList.get(0).category_id);
+                Log.d("check1", "CA 넘어갈때 () : " +  categoryDataList.get(0).category_id);
+
                 startActivity(intent);
                 break;
 
             case R.id.category_layout2 :
             case R.id.category_title2 :
-                intent.putExtra("cate_title", "정원");
+                intent.putExtra("cate_title", categoryDataList.get(1).category_title);
+                intent.putExtra("cate_id", categoryDataList.get(1).category_id);
                 startActivity(intent);
                 break;
 
             case R.id.category_layout3 :
             case R.id.category_title3 :
                 Intent docentIntent = new Intent(CategoryActivity.this, DocentActivity.class);
-                docentIntent.putExtra("docent_title", "타임 캡슐");
+                docentIntent.putExtra("docent_title", categoryDataList.get(2).category_title);
                 startActivity(docentIntent);
                 break;
 
