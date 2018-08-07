@@ -18,6 +18,8 @@ public interface NetworkService {
     @POST("/category_info/ko")
     Call<CategoryResult> getCategoryResult(@Body String cmd);
 
+
+
     // 도슨트
     @Headers("Content-Type: application/json")
     @POST("/docent_info/ko")
