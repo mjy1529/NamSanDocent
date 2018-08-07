@@ -9,9 +9,6 @@ import retrofit2.http.Path;
 
 public interface NetworkService {
 
-//    @GET ("/category_info/ko/{category_id}")
-//    Call<CategoryResult> getCategoryResult(@Path("category_id") int category_id);
-
     // 카테고리
     @Headers("Content-Type: application/json")
     @POST("/category_info/ko")
