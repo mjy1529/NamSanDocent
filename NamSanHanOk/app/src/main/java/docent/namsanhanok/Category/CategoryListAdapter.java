@@ -42,20 +42,6 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListViewHo
 
     @Override
     public void onBindViewHolder(CategoryListViewHolder holder, final int position) {
-        //        if (homeActivityItem.get(position).getImage() == null) {
-//            Glide.with(context)
-//                    .load(R.drawable.bae)
-//                    .apply(new RequestOptions()
-//                            .centerCrop())
-//                    .into(holder.VH_docent_image);
-//        }
-//        else {
-//            Glide.with(context)
-//                    .load(homeActivityItem.get(position).getImage())
-//                    .apply(new RequestOptions()
-//                            .centerCrop())
-//                    .into(holder.VH_docent_image);
-//        }
 
         Glide.with(context)
                     .load(docentData.get(position).docent_image_url)
@@ -73,7 +59,7 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListViewHo
             public void onClick(View view) {
                 Intent intent = new Intent(context, DocentActivity.class);
                 intent.putExtra("docent_title", docentData.get(position).docent_title);
-
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
             }
         });
@@ -82,6 +68,7 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListViewHo
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, DocentActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.putExtra("docent_title", docentData.get(position).docent_title);
 
                 context.startActivity(intent);

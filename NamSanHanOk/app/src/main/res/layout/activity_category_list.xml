@@ -62,6 +62,8 @@
                 android:layout_marginStart="10dp"
                 android:background="#919191" />
 
+
+
             <com.codesgood.views.JustifiedTextView
                 android:id="@+id/category_text_info"
                 android:layout_width="match_parent"

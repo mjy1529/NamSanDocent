@@ -118,7 +118,10 @@ public class CategoryListActivity extends Activity {
                     categoryDataList = response.body().category_info;
 
                     Glide.with(CategoryListActivity.this).load(categoryDataList.get(category_id-1).category_image_url).into(simple_image);
-//                    category_text_info.setText(categoryDataList.get(category_id-1).category_detail_info);
+
+//                    String text_info = categoryDataList.get(category_id-1).category_detail_info;
+                    CharSequence cs = categoryDataList.get(category_id-1).category_detail_info;
+                    category_text_info.setText(cs);
 
                     Log.d("check1", "cate_detail_info : " + categoryDataList.get(category_id-1).category_detail_info);
                     Log.d("check1", "cate_detail_info자체 : " + category_text_info);
@@ -187,6 +190,7 @@ public class CategoryListActivity extends Activity {
         category_list_title = (TextView) findViewById(R.id.category_list_title);
         category_list_title.setText(category_title + " 소개");
         countText = (TextView) findViewById(R.id.countText);
+
         category_text_info = (JustifiedTextView) findViewById(R.id.category_text_info);
 
 

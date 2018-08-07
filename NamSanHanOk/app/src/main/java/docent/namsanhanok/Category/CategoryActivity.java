@@ -78,6 +78,7 @@ public class CategoryActivity extends AppCompatActivity {
                     resource.setColorFilter(blakcColorFilter);
 
                 }
+
             }
         });
 
