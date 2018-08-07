@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.codesgood.views.JustifiedTextView;
 import com.tsengvn.typekit.TypekitContextWrapper;
 
 import java.util.ArrayList;

@@ -6,6 +6,7 @@ import docent.namsanhanok.Category.CategoryResult;
 import docent.namsanhanok.Docent.DocentData;
 import docent.namsanhanok.Docent.DocentResult;
 import docent.namsanhanok.Home.HomeResult;
+import docent.namsanhanok.Notice.NoticeResult;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.Headers;
@@ -28,5 +29,10 @@ public interface NetworkService {
     @Headers("Content-Type: application/json")
     @POST("/docent_info/ko")
     Call<DocentResult> getDocentResult(@Body String cmd);
+
+    // 알리는 말씀
+    @Headers("Content-Type: application/json")
+    @POST("/notice_info/ko")
+    Call<NoticeResult> getNoticeResult(@Body String cmd);
 
 }

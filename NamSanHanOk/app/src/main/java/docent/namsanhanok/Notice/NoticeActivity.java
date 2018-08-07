@@ -14,45 +14,83 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ScrollView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.melnykov.fab.FloatingActionButton;
 import com.tsengvn.typekit.TypekitContextWrapper;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
+import docent.namsanhanok.Application;
 import docent.namsanhanok.Home.HomeActivity;
+import docent.namsanhanok.NetworkService;
 import docent.namsanhanok.R;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class NoticeActivity extends AppCompatActivity implements NoticeRecyclerAdapter.OnLoadMoreListener {
 
     ImageButton homeBtn;
     EditText search_editText;
     ImageButton searchBtn;
-    ImageButton notice_postBtn;
     FloatingActionButton topBtn;
 
     RecyclerView noticeRecyclerView;
     NoticeRecyclerAdapter noticeAdapter;
-    private ArrayList<NoticeRecyclerItem> noticeList = new ArrayList<>();
-    private ArrayList<NoticeRecyclerItem> allNoticeList = new ArrayList<>();
 
-    int loadCount = 15;
+    ArrayList<NoticeData> allNoticeList;
+    ArrayList<NoticeData> noticeList = new ArrayList<>();
+
+    int loadCount = 10;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notice2);
 
+        networking();
         init();
 
         String search_word = search_editText.getText().toString(); //검색어
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        setData();
+    public void networking() {
+        NetworkService service = Application.getInstance().getNetworkService();
+        Call<NoticeResult> request = service.getNoticeResult(jsonToString());
+        request.enqueue(new Callback<NoticeResult>() {
+            @Override
+            public void onResponse(Call<NoticeResult> call, Response<NoticeResult> response) {
+                Log.d("check", "성공 : " + response.code());
+                if (response.isSuccessful()) {
+                    NoticeResult noticeResult = response.body();
+                    allNoticeList = noticeResult.notice_info;
+
+                    setLoadData();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<NoticeResult> call, Throwable t) {
+                Log.d("check", "실패");
+            }
+        });
+    }
+
+    public void setLoadData() {
+        if (allNoticeList.size() < loadCount) { //리스트의 수가 loadCount보다 작을 때
+            noticeList.addAll(allNoticeList);
+
+        } else { //loadCount 이상일 때
+            for (int i = 0; i < loadCount; i++) {
+                noticeList.add(allNoticeList.get(i));
+            }
+        }
+        noticeAdapter.addAll(noticeList);
     }
 
     public void onClick(View v) {
@@ -73,6 +111,11 @@ public class NoticeActivity extends AppCompatActivity implements NoticeRecyclerA
     }
 
     public void init() {
+        Intent intent = getIntent();
+        String notice_toolbar_title= intent.getStringExtra("notice_title");
+        TextView noticeTitle = (TextView) findViewById(R.id.noticeTitle);
+        noticeTitle.setText(notice_toolbar_title);
+
         homeBtn = (ImageButton) findViewById(R.id.homeBtn);
         search_editText = (EditText) findViewById(R.id.search_editText);
         searchBtn = (ImageButton) findViewById(R.id.searchBtn);
@@ -85,24 +128,11 @@ public class NoticeActivity extends AppCompatActivity implements NoticeRecyclerA
         noticeRecyclerView.setHasFixedSize(true);
         noticeAdapter.setLinearLayoutManager(layoutManager);
         noticeAdapter.setRecyclerView(noticeRecyclerView);
+        noticeAdapter.setNotice_toolbar_title(notice_toolbar_title);
         noticeRecyclerView.setAdapter(noticeAdapter);
         noticeRecyclerView.setNestedScrollingEnabled(true);
 
         topBtn.attachToRecyclerView(noticeRecyclerView);
-    }
-
-    private void setData() {
-        //전체 공지사항 리스트(allNoticeList) 받아오기
-        for (int i = 1; i <= 50; i++) {
-            allNoticeList.add(new NoticeRecyclerItem(i + ". [알림] 젊은국악오디션 하반기 참가자 서류심사 결과 안내", "2018.08.12", 20, "[알림] 젊은국악오디션 하반기 참가자 서류심사 결과 안내"));
-        }
-
-        //allNoticeList에서 loadCount만큼 받아오기
-        noticeList.clear();
-        for (int i = 0; i < loadCount; i++) {
-            noticeList.add(allNoticeList.get(i));
-        }
-        noticeAdapter.addAll(noticeList);
     }
 
     @Override
@@ -126,16 +156,31 @@ public class NoticeActivity extends AppCompatActivity implements NoticeRecyclerA
                         noticeList.add(allNoticeList.get(i));
                     }
                 }
-
                 noticeAdapter.addItem(noticeList);
                 noticeAdapter.setMoreLoading(false);
+
             }
-        }, 2500);
+        }, 2000);
     }
 
     @Override
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(TypekitContextWrapper.wrap(newBase));
+    }
+
+    public String jsonToString() {
+        String jsonStr = "";
+        try {
+            JSONObject data = new JSONObject();
+            data.put("cmd", "notice_list");
+
+            JSONObject root = new JSONObject();
+            root.put("info", data);
+            jsonStr = root.toString();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return jsonStr;
     }
 
 }
