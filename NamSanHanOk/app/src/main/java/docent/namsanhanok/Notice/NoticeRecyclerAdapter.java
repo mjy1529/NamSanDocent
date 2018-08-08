@@ -109,7 +109,7 @@ public class NoticeRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 public void onClick(View view) {
                     NoticeData sendObject = new NoticeData();
                     sendObject.setNotice_title(item.getNotice_title());
-                    sendObject.setNotice_time(item.notice_time);
+                    sendObject.setNotice_time(item.getNotice_time());
                     sendObject.setNotice_content(item.getNotice_content());
 
                     Intent intent = new Intent(view.getContext(), NoticeReadActivity.class);

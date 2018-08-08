@@ -1,6 +1,7 @@
 package docent.namsanhanok;
 
 import android.graphics.Typeface;
+import android.util.Log;
 
 import com.github.angads25.toggle.LabeledSwitch;
 import com.tsengvn.typekit.Typekit;
@@ -18,7 +19,6 @@ public class Application extends android.app.Application {
 
     private static Application instance;
     private static String baseUrl = "http://175.123.138.122:3200";
-
     private NetworkService networkService;
 
     public static Application getInstance() {
@@ -75,6 +75,4 @@ public class Application extends android.app.Application {
 
         networkService = retrofit.create(NetworkService.class);
     }
-
-
 }

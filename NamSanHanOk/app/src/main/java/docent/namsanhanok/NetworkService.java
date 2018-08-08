@@ -7,6 +7,7 @@ import docent.namsanhanok.Docent.DocentData;
 import docent.namsanhanok.Docent.DocentResult;
 import docent.namsanhanok.Event.EventResult;
 import docent.namsanhanok.Home.HomeResult;
+import docent.namsanhanok.Home.PackageResult;
 import docent.namsanhanok.Notice.NoticeResult;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -51,5 +52,10 @@ public interface NetworkService {
     @Headers("Content-Type: application/json")
     @POST("/question/ko")
     Call<String> postQuestion(@Body String cmd);
+
+    // package_info
+    @Headers("Content-Type: application/json")
+    @POST("/package_info")
+    Call<PackageResult> getPackageResult(@Body String cmd);
 
 }

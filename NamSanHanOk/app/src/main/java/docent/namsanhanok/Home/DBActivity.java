@@ -21,18 +21,16 @@ public class DBActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_db);
 
-        //db버전체크, splash에서 해야함. 튜토리얼은 실행안될 때도 있어서
-
         mContext = this;
         dbAsync = new DB_Async();
         dbAsync.execute();
 
     }
 
-public void ActivityFinish() {
-    Intent intent = new Intent(DBActivity.this , HomeActivity.class);
-    startActivity(intent);
-    finish();
+    public void activityFinish() {
+        Intent intent = new Intent(DBActivity.this, HomeActivity.class);
+        startActivity(intent);
+        finish();
     }
 
 }

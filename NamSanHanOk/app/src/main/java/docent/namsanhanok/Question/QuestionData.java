@@ -1,11 +1,11 @@
 package docent.namsanhanok.Question;
 
 public class QuestionData {
-    String question_title;
-    String question_content;
-    String question_email;
-    String question_phone;
-    String question_username;
+    private String question_title;
+    private String question_content;
+    private String question_email;
+    private String question_phone;
+    private String question_username;
 
     public void setQuestion_title(String question_title) {
         this.question_title = question_title;

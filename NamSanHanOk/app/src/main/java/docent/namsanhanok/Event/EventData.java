@@ -1,13 +1,13 @@
 package docent.namsanhanok.Event;
 
 public class EventData {
-    int event_id;
-    String event_title;
-    String event_image;
-    String event_start_date;
-    String event_end_date;
-    String event_place;
-    String event_complete;
+    private int event_id;
+    private String event_title;
+    private String event_image;
+    private String event_start_date;
+    private String event_end_date;
+    private String event_place;
+    private String event_complete;
 
     public int getEvent_id() {
         return event_id;
