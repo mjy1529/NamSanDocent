@@ -41,14 +41,9 @@ public class TutorialActivity extends AppCompatActivity {
 
         init();
 
-        tuto_BGD.getBackground().setAlpha(100);
-
-
-        ;
     }
 
 
     public void init(){
-        tuto_BGD = (LinearLayout) findViewById(R.id.tutorial_background);
     }
 }
