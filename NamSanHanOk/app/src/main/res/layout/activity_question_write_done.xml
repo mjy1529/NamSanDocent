@@ -1,15 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:gravity="center"
     android:layout_gravity="center"
     android:background="#fefff9"
+    android:gravity="center"
     android:orientation="vertical"
     tools:context=".Question.QuestionWriteDoneActivity">
-
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -24,6 +22,7 @@
                 layout="@layout/include_qestionwritedone_toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
+
         </android.support.v7.widget.Toolbar>
 
     </LinearLayout>
@@ -31,33 +30,32 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center">
+        android:gravity="center"
+        android:orientation="vertical">
 
         <TextView
-            android:layout_marginTop="20dp"
+            android:id="@+id/question_register_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="15sp"
+            android:layout_marginTop="20dp"
             android:gravity="center"
             android:textColor="#000000"
-            android:text="@string/quesContent"/>
+            android:textSize="15sp" />
 
         <Button
             android:id="@+id/question_write_done_Btn"
             android:layout_width="80dp"
             android:layout_height="35dp"
-            android:gravity="center"
-            android:paddingLeft="3dp"
-            android:paddingRight="3dp"
+            android:layout_gravity="center"
             android:layout_marginBottom="15dp"
             android:layout_marginTop="20dp"
-            android:layout_gravity="center"
-            android:textSize="15sp"
-            android:text="@string/quesDone"
-            android:onClick="onClick"
             android:background="@drawable/question_register_button"
-            />
+            android:gravity="center"
+            android:onClick="onClick"
+            android:paddingLeft="3dp"
+            android:paddingRight="3dp"
+            android:text="@string/quesDone"
+            android:textSize="15sp" />
 
     </LinearLayout>
 

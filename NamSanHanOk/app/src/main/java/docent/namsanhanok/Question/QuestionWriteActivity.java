@@ -6,19 +6,31 @@ import android.os.Bundle;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.tsengvn.typekit.TypekitContextWrapper;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import docent.namsanhanok.Application;
+import docent.namsanhanok.NetworkService;
 import docent.namsanhanok.R;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class QuestionWriteActivity extends AppCompatActivity implements EditText.OnFocusChangeListener {
     Button post_register_Btn;
@@ -39,6 +51,7 @@ public class QuestionWriteActivity extends AppCompatActivity implements EditText
     InputMethodManager imm; //spinner 선택시, 키보드 안나오게
     NestedScrollView scrollView;
 
+    String responseStr; //서버 응답
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,13 +62,15 @@ public class QuestionWriteActivity extends AppCompatActivity implements EditText
 
         init();
         email_first_address.setBackgroundResource(R.drawable.rectangle_edge_all_selected);
-
-
     }
 
     public void init() {
         Toolbar questionRegisterToolbar = (Toolbar) findViewById(R.id.question_register_toolbar);
         questionRegisterToolbar.bringToFront();
+
+        Intent intent = getIntent();
+        TextView question_register_title = (TextView) findViewById(R.id.question_register_title);
+        question_register_title.setText(intent.getStringExtra("question_title"));
 
         post_register_Btn = (Button) findViewById(R.id.question_register_Btn);
         cancelBtn = (ImageButton) findViewById(R.id.question_register_cancelBtn);
@@ -77,7 +92,6 @@ public class QuestionWriteActivity extends AppCompatActivity implements EditText
 
         imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
         scrollView = (NestedScrollView) findViewById(R.id.getScroll_location);
-
     }
 
     @Override
@@ -121,7 +135,6 @@ public class QuestionWriteActivity extends AppCompatActivity implements EditText
 
         }
     }
-
 
     //비어잇으면 상자 표시 붉게
     public boolean detectError() {
@@ -171,24 +184,10 @@ public class QuestionWriteActivity extends AppCompatActivity implements EditText
     public void onClick(View v) throws InterruptedException {
         switch (v.getId()) {
             case R.id.question_register_Btn:
-                //제목 and 내용 DB에 저장해야함, 값은 이렇게 갖고옴
-//                Toast.makeText(this, "결과값"
-//                        + "\n" + email_first_address.getText().toString()
-//                        + "\n" + phone_number.getText().toString()
-//                        + "\n" + username.getText().toString()
-//                        + "\n"+ title.getText().toString()
-//                        + "\n" + content.getText().toString(), Toast.LENGTH_SHORT).show();
-
-
-                //DB저장
-                //내용
 
                 //에러 유무에 따라 activity 넘김
                 if (!detectError()) {//빈칸이 없으면
-                    //그 다음, Question Board Activity로
-                    Intent intent = new Intent(getApplicationContext(), QuestionWriteDoneActivity.class);
-                    startActivity(intent);
-                    break;
+                    sendQuestionData();
                 } else { //빈칸이 있으면
 
                     if (getCurrentFocus() == content) {
@@ -199,17 +198,43 @@ public class QuestionWriteActivity extends AppCompatActivity implements EditText
 
                     }
                     Toast.makeText(this, nullValue.get(nullValue.size() - 1), Toast.LENGTH_SHORT).show();
-
-                    break;
                 }
+                break;
 
             case R.id.question_register_cancelBtn:
                 onBackPressed();
                 finish();
                 break;
-
-
         }
+    }
+
+    public void sendQuestionData() {
+        QuestionData questionData = new QuestionData();
+        questionData.setQuestion_email(email_first_address.getText().toString());
+        questionData.setQuestion_phone(phone_number.getText().toString());
+        questionData.setQuestion_username(username.getText().toString());
+        questionData.setQuestion_title(title.getText().toString());
+        questionData.setQuestion_content(content.getText().toString());
+
+        NetworkService service = Application.getInstance().getNetworkService();
+        Call<String> request = service.postQuestion(jsonToString(questionData));
+        request.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                if(response.isSuccessful()) {
+                    Log.d("check", "post 성공 " + response.code());
+                    responseStr = response.body();
+                    Intent intent = new Intent(getApplicationContext(), QuestionWriteDoneActivity.class);
+                    intent.putExtra("responseResult", responseStr);
+                    startActivity(intent);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+
+            }
+        });
     }
 
     @Override
@@ -217,5 +242,23 @@ public class QuestionWriteActivity extends AppCompatActivity implements EditText
         super.attachBaseContext(TypekitContextWrapper.wrap(newBase));
     }
 
+    public String jsonToString(QuestionData questionData) {
+        String jsonStr = "";
+        try {
+            JSONObject data = new JSONObject();
+            data.put("question_title", questionData.getQuestion_title());
+            data.put("question_content", questionData.getQuestion_content());
+            data.put("question_email", questionData.getQuestion_email());
+            data.put("question_phone", questionData.getQuestion_phone());
+            data.put("question_username", questionData.getQuestion_username());
+
+            JSONObject root = new JSONObject();
+            root.put("question_info", data);
+            jsonStr = root.toString();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return jsonStr;
+    }
 
 }

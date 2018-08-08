@@ -1,19 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="45dp"
-    android:background="#ffc6c6">
+    android:background="#ffc6c6"
+    android:orientation="horizontal">
 
     <TextView
         android:id="@+id/question_register_title"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:text="@string/quesPopTitle"
         android:textColor="#000000"
-        android:textSize="14sp"
-        />
+        android:textSize="14sp" />
 
 </RelativeLayout>

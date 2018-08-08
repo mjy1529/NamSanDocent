@@ -101,13 +101,12 @@ public class HomeActivity extends AppCompatActivity {
 
         applicationclass = (Application) getApplicationContext();
 
-        networking();
         init();
+        networking();
         initBeaconManager();
         initBeaconListenerManager();
 
         showBeaconAlarm();
-
     }
 
     public void networking() {
@@ -121,39 +120,7 @@ public class HomeActivity extends AppCompatActivity {
                     HomeResult homeResult = response.body();
                     homeData = homeResult.home_info;
 
-                    TextView docentTitle = (TextView) findViewById(R.id.docentTitle);
-                    final RelativeLayout homeLayout = (RelativeLayout) findViewById(R.id.homeLayout);
-                    docentTitle.setText(homeData.getHome_title());
-                    Picasso.with(HomeActivity.this)
-                            .load(homeData.getHome_image_url())
-                            .into(new com.squareup.picasso.Target() {
-                                @Override
-                                public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom loadedFrom) {
-
-                                        homeLayout.setBackground(new BitmapDrawable(getApplicationContext().getResources(), bitmap));
-
-                                }
-
-                                @Override
-                                public void onBitmapFailed(Drawable drawable) {
-
-                                }
-
-                                @Override
-                                public void onPrepareLoad(Drawable drawable) {
-
-                                }
-                            });
-
-//                *** Glide 사용 ***
-//                Glide.with(HomeActivity.this)
-//                        .load(homeData.getHome_image_url())
-//                        .into(new SimpleTarget<Drawable>() {
-//                            @Override
-//                            public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
-//                                homeLayout.setBackground(resource);
-//                            }
-//                        });
+                    setImage();
                 }
             }
 
@@ -162,6 +129,32 @@ public class HomeActivity extends AppCompatActivity {
                 Log.d("check", "home 실패");
             }
         });
+    }
+
+    public void setImage() {
+        TextView docentTitle = (TextView) findViewById(R.id.docentTitle);
+        final RelativeLayout homeLayout = (RelativeLayout) findViewById(R.id.homeLayout);
+        docentTitle.setText(homeData.getHome_title());
+        Picasso.with(HomeActivity.this)
+                .load(homeData.getHome_image_url())
+                .into(new com.squareup.picasso.Target() {
+                    @Override
+                    public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom loadedFrom) {
+
+                        homeLayout.setBackground(new BitmapDrawable(getApplicationContext().getResources(), bitmap));
+
+                    }
+
+                    @Override
+                    public void onBitmapFailed(Drawable drawable) {
+
+                    }
+
+                    @Override
+                    public void onPrepareLoad(Drawable drawable) {
+
+                    }
+                });
     }
 
     public void initBeaconManager() {
