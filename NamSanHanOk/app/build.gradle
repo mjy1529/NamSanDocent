@@ -59,8 +59,7 @@ dependencies {
     }
     //beacon library
     implementation files('libs/minewBeaconScan.jar')
-    //tutorial
-    implementation 'com.github.deano2390:MaterialShowcaseView:1.2.0'
+
     //fonts
     implementation 'com.github.katoro:typekit:1.0.1'
     //justifiedTextView

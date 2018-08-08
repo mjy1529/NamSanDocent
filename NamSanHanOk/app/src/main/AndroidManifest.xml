@@ -30,7 +30,8 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDqI8Nb1EO3PuTxKgY03Ki9SS5HseNxURQ" />
 
-        <activity android:name=".Home.SplashActivity"
+        <activity
+            android:name=".Home.SplashActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -40,39 +41,49 @@
         </activity>
         <activity
             android:name=".Docent.DocentPopUpActivity"
-            android:theme="@android:style/Theme.DeviceDefault.Light.Dialog"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.DeviceDefault.Light.Dialog" />
         <activity
             android:name=".Question.QuestionWriteDoneActivity"
-            android:theme="@android:style/Theme.Dialog"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Dialog" />
         <activity
             android:name=".Docent.DocentActivity"
             android:configChanges="orientation|screenSize"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".Category.CategoryListActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".Category.CategoryActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".Setting.SettingActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".Setting.SetLanguageActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".Event.EventActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".Question.QuestionWriteActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".Notice.NoticeActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".Notice.NoticeReadActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".Info.InfoActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".Location.LocationActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".Home.HomeActivity"
-            android:screenOrientation="portrait"/>
-
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Category.CategoryListActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Category.CategoryActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Setting.SettingActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Setting.SetLanguageActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Event.EventActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Question.QuestionWriteActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Notice.NoticeActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Notice.NoticeReadActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Info.InfoActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Location.LocationActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Home.HomeActivity"
+            android:screenOrientation="portrait" />
 
         <!-- 서비스와 리시버 -->
         <service android:name="com.minew.beacon.ScanService" />
@@ -84,6 +95,7 @@
         </receiver>
 
         <activity android:name=".Home.TutorialActivity" />
+        <activity android:name=".Home.DBActivity"></activity>
     </application>
 
 </manifest>
