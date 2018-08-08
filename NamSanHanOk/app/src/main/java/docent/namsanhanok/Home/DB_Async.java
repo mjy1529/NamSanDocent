@@ -5,21 +5,32 @@ import android.os.AsyncTask;
 import android.os.Environment;
 import android.util.Log;
 
+import net.lingala.zip4j.core.ZipFile;
+import net.lingala.zip4j.exception.ZipException;
+
 import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileDescriptor;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 public class DB_Async extends AsyncTask<String, String, String> {
 
 
-    private String fileName;
+    private String FileName;
     String savePath = Environment.getExternalStorageDirectory() + File.separator + "namsangol/";
+    private String zipFile;  //저장된 zip 파일 위치
+    private String unzipLocation; //압출을 풀 위치
+
 
     @Override
     protected void onPreExecute() {
@@ -36,17 +47,16 @@ public class DB_Async extends AsyncTask<String, String, String> {
             dir.mkdirs();
         }
 
-
         try {
             Log.d("check", "savePath : " + savePath);
 
             String DownloadURL = "http://175.123.138.125:8070/down/namsangol_v1.0.0.zip";
-            String FileName = savePath + "/namsan.zip";
+            FileName = savePath + "/namsangol_v1.0.0.zip";
             InputStream inputStream = new URL(DownloadURL).openStream();
 
             Log.d("check", "http check ok : ");
             File file = new File(FileName);
-           OutputStream out = new FileOutputStream(file);
+            OutputStream out = new FileOutputStream(file);
 
             Log.d("check", "http check ok2 : ");
 
@@ -56,6 +66,7 @@ public class DB_Async extends AsyncTask<String, String, String> {
         } catch(Exception e){
             e.printStackTrace();
         }
+
 
         return null;
     }
@@ -70,14 +81,17 @@ public class DB_Async extends AsyncTask<String, String, String> {
 
     @Override
     protected void onPostExecute(String obj) {
+        String source = FileName;
+        String destination = savePath + "/namsangol_v1.0.0";
 
-       //zip파일 풀기
+        try {
+            ZipFile zipFile = new ZipFile(source);
+            zipFile.extractAll(destination);
+        } catch (ZipException e) {
+            e.printStackTrace();
+        }
 
         super.onPostExecute(obj);
 
     }
-
-
-
-//출처: http://kwon8999.tistory.com/entry/안드로이드-AsyncTask를-이용하여-파일-다운로드 [Kwon's developer]
 }

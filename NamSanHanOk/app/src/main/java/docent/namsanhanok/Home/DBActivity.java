@@ -10,10 +10,10 @@ import java.io.File;
 import docent.namsanhanok.R;
 
 public class DBActivity extends AppCompatActivity {
-//    File storeDir;
-//    File temp;
 
     DB_Async dbAsync;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
