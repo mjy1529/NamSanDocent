@@ -50,7 +50,7 @@ public class SplashActivity extends AppCompatActivity {
 //        }
 
 
-        Intent intent = new Intent(getApplicationContext(), TutorialActivity.class);
+        Intent intent = new Intent(getApplicationContext(), DBActivity.class);
         startActivity(intent);
         finish();
     }

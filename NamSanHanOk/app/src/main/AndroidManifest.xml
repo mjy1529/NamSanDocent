@@ -18,6 +18,12 @@
     <!-- 진동 -->
     <uses-permission android:name="android.permission.VIBRATE" />
 
+    <!-- 파일 읽고/쓰기 -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    출처: http://straight-strange.tistory.com/2 [straight 혹은 strange]
+
     <application
         android:name=".Application"
         android:allowBackup="true"
