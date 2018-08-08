@@ -1,36 +1,28 @@
 package docent.namsanhanok.Home;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Environment;
 import android.util.Log;
 
 import net.lingala.zip4j.core.ZipFile;
 import net.lingala.zip4j.exception.ZipException;
+import net.lingala.zip4j.progress.ProgressMonitor;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileDescriptor;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
-import java.net.URLConnection;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
+
 
 public class DB_Async extends AsyncTask<String, String, String> {
 
 
     private String FileName;
     String savePath = Environment.getExternalStorageDirectory() + File.separator + "namsangol/";
-    private String zipFile;  //저장된 zip 파일 위치
-    private String unzipLocation; //압출을 풀 위치
-
 
     @Override
     protected void onPreExecute() {
@@ -50,7 +42,7 @@ public class DB_Async extends AsyncTask<String, String, String> {
         try {
             Log.d("check", "savePath : " + savePath);
 
-            String DownloadURL = "http://175.123.138.125:8070/down/namsangol_v1.0.0.zip";
+            String DownloadURL = "http://175.123.138.125:8070/down/ko/namsangol_v1.0.0.zip";
             FileName = savePath + "/namsangol_v1.0.0.zip";
             InputStream inputStream = new URL(DownloadURL).openStream();
 
@@ -87,11 +79,24 @@ public class DB_Async extends AsyncTask<String, String, String> {
         try {
             ZipFile zipFile = new ZipFile(source);
             zipFile.extractAll(destination);
+//            zipFile.removeFile(source);
+
+            Log.d("check", "getResult" + zipFile.getProgressMonitor().getResult());
+            Log.d("check", "getState" + zipFile.getProgressMonitor().getState());
+            Log.d("check", "getCurrentOperation" + zipFile.getProgressMonitor().getCurrentOperation());
+            Log.d("check", "getTotalWork" + zipFile.getProgressMonitor().getTotalWork());
+
+
+
+            if(zipFile.getProgressMonitor().getResult() == ProgressMonitor.RESULT_SUCCESS) {
+                Log.d("check", "Result_Success");
+                ((DBActivity)DBActivity.mContext).ActivityFinish();
+            }
+
         } catch (ZipException e) {
             e.printStackTrace();
         }
 
-        super.onPostExecute(obj);
 
     }
 }
