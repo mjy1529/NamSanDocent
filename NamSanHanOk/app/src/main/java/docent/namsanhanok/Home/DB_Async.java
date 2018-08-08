@@ -55,7 +55,7 @@ public class DB_Async extends AsyncTask<String, String, String> {
             saveRemoteFile(inputStream, out);
             out.close();
 
-        } catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -63,10 +63,9 @@ public class DB_Async extends AsyncTask<String, String, String> {
         return null;
     }
 
-    public void saveRemoteFile(InputStream is, OutputStream os) throws IOException
-    {
+    public void saveRemoteFile(InputStream is, OutputStream os) throws IOException {
         int c = 0;
-        while((c = is.read()) != -1)
+        while ((c = is.read()) != -1)
             os.write(c);
         os.flush();
     }
@@ -87,10 +86,9 @@ public class DB_Async extends AsyncTask<String, String, String> {
             Log.d("check", "getTotalWork" + zipFile.getProgressMonitor().getTotalWork());
 
 
-
-            if(zipFile.getProgressMonitor().getResult() == ProgressMonitor.RESULT_SUCCESS) {
+            if (zipFile.getProgressMonitor().getResult() == ProgressMonitor.RESULT_SUCCESS) {
                 Log.d("check", "Result_Success");
-                ((DBActivity)DBActivity.mContext).ActivityFinish();
+                ((DBActivity) DBActivity.mContext).activityFinish();
             }
 
         } catch (ZipException e) {

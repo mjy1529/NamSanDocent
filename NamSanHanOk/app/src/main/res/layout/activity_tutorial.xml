@@ -1,14 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/tutorial_background"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/tutorial_background"
+    android:orientation="vertical">
 
-    <TextView
-        android:text="tutorial activity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    <ImageButton
+        android:id="@+id/closeBtn"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="25dp"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/cancel"
+        android:backgroundTint="#000000" />
 
-</LinearLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="130dp"
+        android:paddingLeft="25dp"
+        android:paddingRight="25dp">
+
+        <TextView
+            android:id="@+id/tutorialTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="60dp"
+            android:text="@string/tutorialTitle"
+            android:textColor="#000000"
+            android:textSize="20sp" />
+
+        <ImageView
+            android:id="@+id/check1"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_alignTop="@+id/tutorialGuide1"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/ic_check_black_24dp"
+            android:backgroundTint="#000000" />
+
+        <TextView
+            android:id="@+id/tutorialGuide1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tutorialTitle"
+            android:layout_marginBottom="25dp"
+            android:layout_toRightOf="@+id/check1"
+            android:text="@string/tutorialGuide1"
+            android:textColor="#000000"
+            android:textSize="15sp" />
+
+        <ImageView
+            android:id="@+id/check2"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_alignTop="@+id/tutorialGuide2"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/ic_check_black_24dp"
+            android:backgroundTint="#000000" />
+
+        <TextView
+            android:id="@+id/tutorialGuide2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tutorialGuide1"
+            android:layout_marginBottom="25dp"
+            android:layout_toRightOf="@+id/check2"
+            android:text="@string/tutorialGuide2"
+            android:textColor="#000000"
+            android:textSize="15sp" />
+
+        <ImageView
+            android:id="@+id/check3"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_alignTop="@+id/tutorialGuide3"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/ic_check_black_24dp"
+            android:backgroundTint="#000000" />
+
+        <TextView
+            android:id="@+id/tutorialGuide3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tutorialGuide2"
+            android:layout_toRightOf="@+id/check3"
+            android:text="@string/tutorialGuide3"
+            android:textColor="#000000"
+            android:textSize="15sp" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

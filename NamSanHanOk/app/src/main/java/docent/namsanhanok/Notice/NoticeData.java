@@ -3,10 +3,10 @@ package docent.namsanhanok.Notice;
 import java.io.Serializable;
 
 public class NoticeData implements Serializable {
-    int notice_id;
-    String notice_title;
-    String notice_content;
-    String notice_time;
+    private int notice_id;
+    private String notice_title;
+    private String notice_content;
+    private String notice_time;
 
     public int getNotice_id() {
         return notice_id;
