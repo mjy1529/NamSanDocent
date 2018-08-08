@@ -7,6 +7,7 @@
     <!--black filter-->
     <color name="black_color_filter">#76000000</color>
 
+
     <color name="dialog_cancel">#919191</color>
     <color name="dialog_remove">#ff4444</color>
 

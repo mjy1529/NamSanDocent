@@ -36,23 +36,23 @@ public class SplashActivity extends AppCompatActivity {
 
     public void checkFirstRun() {
 
-        boolean isFirstRun = prefs.getBoolean("isFirstRun", true); // isFirstRun이 null값이면 true를 가져옴.
-        Intent intent;
-        if (isFirstRun) {
-            intent = new Intent(getApplicationContext(), TutorialActivity.class);
-            startActivity(intent);
-            prefs.edit().putBoolean("isFirstRun", false).apply();
-
-        }
-        else {
-            intent = new Intent(getApplicationContext(), HomeActivity.class);
-            startActivity(intent);
-        }
-
+//        boolean isFirstRun = prefs.getBoolean("isFirstRun", true); // isFirstRun이 null값이면 true를 가져옴.
+//        Intent intent;
+//        if (isFirstRun) {
+//            intent = new Intent(getApplicationContext(), TutorialActivity.class);
+//            startActivity(intent);
+//            prefs.edit().putBoolean("isFirstRun", false).apply();
 //
-//        Intent intent = new Intent(getApplicationContext(), TutorialActivity.class);
-//        startActivity(intent);
-//        finish();
+//        }
+//        else {
+//            intent = new Intent(getApplicationContext(), HomeActivity.class);
+//            startActivity(intent);
+//        }
+
+
+        Intent intent = new Intent(getApplicationContext(), TutorialActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     @Override
