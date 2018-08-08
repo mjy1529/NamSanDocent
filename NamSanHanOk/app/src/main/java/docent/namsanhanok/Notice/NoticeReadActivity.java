@@ -20,11 +20,11 @@ import libs.mjn.prettydialog.PrettyDialogCallback;
 
 public class NoticeReadActivity extends AppCompatActivity {
 
-    ImageButton moreBtn;
-
     TextView notice_title_tv;
     TextView notice_date_tv;
     TextView notice_content_tv;
+
+    String notice_toolbar_title;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,10 +39,10 @@ public class NoticeReadActivity extends AppCompatActivity {
         switch (view.getId()) {
             case R.id.listBtn:
                 intent = new Intent(this, NoticeActivity.class);
+                intent.putExtra("notice_title", notice_toolbar_title);
                 startActivity(intent);
                 finish();
                 break;
-
         }
     }
 
@@ -55,11 +55,14 @@ public class NoticeReadActivity extends AppCompatActivity {
         notice_content_tv = (TextView) findViewById(R.id.notice_content_tv);
 
         Intent intent = getIntent();
-        NoticeRecyclerItem object = (NoticeRecyclerItem) intent.getSerializableExtra("object");
+        notice_toolbar_title = intent.getStringExtra("notice_title");
+        TextView noticeTitle = (TextView)findViewById(R.id.noticeTitle);
+        noticeTitle.setText(notice_toolbar_title);
 
-        notice_title_tv.setText(object.getTitle());
-        notice_date_tv.setText(object.getDate());
-        notice_content_tv.setText(object.getContent());
+        NoticeData object = (NoticeData) intent.getSerializableExtra("object");
+        notice_title_tv.setText(object.getNotice_title());
+        notice_date_tv.setText(object.getNotice_time());
+        notice_content_tv.setText(object.getNotice_content());
     }
 
     @Override

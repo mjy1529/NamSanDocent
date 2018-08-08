@@ -101,7 +101,6 @@ public class CategoryActivity extends AppCompatActivity {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                     capsule_img.setBackground(resource3);
                     resource3.setColorFilter(blakcColorFilter);
-
                 }
             }
         });
