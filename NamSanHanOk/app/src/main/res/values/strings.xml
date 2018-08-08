@@ -42,9 +42,10 @@
     <string name="hintContent">내용</string>
 
     <!-- questionWriteDone -->
-    <string name="quesPopTitle">문의완료</string>
-    <string name="quesContent">문의가 정상적으로 완료되었습니다.</string>
+    <string name="questionSuccessTitle">문의완료</string>
+    <string name="questionSuccessMessage">문의가 정상적으로 완료되었습니다.</string>
+    <string name="questionFailTitle">문의실패</string>
+    <string name="questionFailMessage">문의 전송에 실패하였습니다.</string>
     <string name="quesDone">확인</string>
-
 
 </resources>

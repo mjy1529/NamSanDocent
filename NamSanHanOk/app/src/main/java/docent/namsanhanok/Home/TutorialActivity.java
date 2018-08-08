@@ -36,14 +36,14 @@ public class TutorialActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tutorial);
 
-
-
-
         init();
 
     }
 
 
     public void init(){
+        Intent intent = new Intent(TutorialActivity.this, HomeActivity.class);
+        startActivity(intent);
+        finish();
     }
 }

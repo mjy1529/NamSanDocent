@@ -47,4 +47,9 @@ public interface NetworkService {
     @POST("/event_info/ko")
     Call<EventResult> getEventResult(@Body String cmd);
 
+    // 문의하기
+    @Headers("Content-Type: application/json")
+    @POST("/question/ko")
+    Call<String> postQuestion(@Body String cmd);
+
 }
