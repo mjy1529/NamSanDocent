@@ -22,9 +22,6 @@ public class DBActivity extends AppCompatActivity {
         //db버전체크, splash에서 해야함. 튜토리얼은 실행안될 때도 있어서
 
 
-//        downloadZipfile();
-
-
         dbAsync = new DB_Async();
         dbAsync.execute();
     }
