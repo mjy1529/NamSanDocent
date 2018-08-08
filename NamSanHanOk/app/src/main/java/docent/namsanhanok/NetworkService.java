@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import docent.namsanhanok.Category.CategoryResult;
 import docent.namsanhanok.Docent.DocentData;
 import docent.namsanhanok.Docent.DocentResult;
+import docent.namsanhanok.Event.EventResult;
 import docent.namsanhanok.Home.HomeResult;
 import docent.namsanhanok.Notice.NoticeResult;
 import retrofit2.Call;
@@ -25,12 +26,10 @@ public interface NetworkService {
     @POST("/category_info/ko")
     Call<CategoryResult> getCategoryResult(@Body String cmd);
 
-
     // 도슨트
     @Headers("Content-Type: application/json")
     @POST("/docent_info/ko")
     Call<DocentResult> getDocentResult(@Body String cmd);
-
 
     // 도슨트 디테일
     @Headers("Content-Type: application/json")
@@ -42,5 +41,9 @@ public interface NetworkService {
     @POST("/notice_info/ko")
     Call<NoticeResult> getNoticeResult(@Body String cmd);
 
+    // 세시/행사
+    @Headers("Content-Type: application/json")
+    @POST("/event_info/ko")
+    Call<EventResult> getEventResult(@Body String cmd);
 
 }

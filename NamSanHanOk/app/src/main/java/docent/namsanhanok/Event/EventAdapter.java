@@ -19,13 +19,12 @@ import docent.namsanhanok.R;
 public class EventAdapter extends RecyclerView.Adapter<EventViewHolder>{
 
     private Context context;
-    public ArrayList<EventActivityItem> eventActivityItem;
+    public ArrayList<EventData> eventList;
 
-    public EventAdapter(Context context, ArrayList<EventActivityItem> eventActivityItem) {
+    public EventAdapter(Context context, ArrayList<EventData> eventList) {
         this.context = context;
-        this.eventActivityItem = eventActivityItem;
+        this.eventList = eventList;
     }
-
 
     @Override
     public EventViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -37,37 +36,22 @@ public class EventAdapter extends RecyclerView.Adapter<EventViewHolder>{
 
     @Override
     public void onBindViewHolder(EventViewHolder holder, final int position) {
-//        if (homeActivityItem.get(position).getImage() == null) {
-//            Glide.with(context)
-//                    .load(R.drawable.bae)
-//                    .apply(new RequestOptions()
-//                            .centerCrop())
-//                    .into(holder.VH_docent_image);
-//        }
-//        else {
-//            Glide.with(context)
-//                    .load(homeActivityItem.get(position).getImage())
-//                    .apply(new RequestOptions()
-//                            .centerCrop())
-//                    .into(holder.VH_docent_image);
-//        }
         Glide.with(context)
-                .load(eventActivityItem.get(position).getImage())
+                .load(eventList.get(position).getEvent_image())
                 .apply(new RequestOptions()
                         .centerCrop())
                 .into(holder.VH_event_image);
 
-//        holder.VH_event_image.setImageResource(eventActivityItem.get(position).getImage());
-        holder.VH_event_title.setText(eventActivityItem.get(position).getTitle());
-        holder.VH_event_place.setText(eventActivityItem.get(position).getPlace());
-        holder.VH_start_date.setText(eventActivityItem.get(position).getStartDate());
-        holder.VH_end_date.setText(eventActivityItem.get(position).getEndDate());
-        if(eventActivityItem.get(position).getComplete().equals("진행중")){
-            holder.VH_complete.setText(eventActivityItem.get(position).getComplete());
+        holder.VH_event_title.setText(eventList.get(position).getEvent_title());
+        holder.VH_event_place.setText(eventList.get(position).getEvent_place());
+        holder.VH_start_date.setText(eventList.get(position).getEvent_start_date());
+        holder.VH_end_date.setText(eventList.get(position).getEvent_end_date());
+        if(eventList.get(position).getEvent_complete().equals("진행중")){
+            holder.VH_complete.setText(eventList.get(position).getEvent_complete());
             holder.VH_complete_background.setBackgroundResource(R.drawable.round_shape_ing);
         }
         else{
-            holder.VH_complete.setText(eventActivityItem.get(position).getComplete());
+            holder.VH_complete.setText(eventList.get(position).getEvent_complete());
             holder.VH_complete_background.setBackgroundResource(R.drawable.round_shape_complete);
         }
 
@@ -76,6 +60,6 @@ public class EventAdapter extends RecyclerView.Adapter<EventViewHolder>{
 
     @Override
     public int getItemCount() {
-        return eventActivityItem != null ? eventActivityItem.size() : 0;
+        return eventList != null ? eventList.size() : 0;
     }
 }
