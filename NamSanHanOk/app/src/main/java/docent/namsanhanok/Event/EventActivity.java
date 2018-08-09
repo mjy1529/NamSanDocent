@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import docent.namsanhanok.Application;
 import docent.namsanhanok.Home.HomeActivity;
 import docent.namsanhanok.NetworkService;
+import docent.namsanhanok.Notice.NoticeRecyclerAdapter;
 import docent.namsanhanok.R;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -33,7 +34,7 @@ public class EventActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private LinearLayoutManager linearLayoutManager;
     private EventAdapter eventAdapter;
-    private ArrayList<EventData> eventList;
+    ArrayList<EventData> eventList = new ArrayList<>();
     TextView event_toolbar_title;
     ImageButton homeBtn;
 

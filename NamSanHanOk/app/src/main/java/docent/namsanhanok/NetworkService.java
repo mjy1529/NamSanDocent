@@ -17,7 +17,6 @@ import retrofit2.http.Path;
 
 public interface NetworkService {
 
-
     // 홈
     @Headers("Content-Type: application/json")
     @POST("/home_info/ko")

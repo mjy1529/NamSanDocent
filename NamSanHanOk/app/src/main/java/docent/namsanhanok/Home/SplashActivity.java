@@ -34,7 +34,6 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
 
         prefs = getSharedPreferences("Pref", MODE_PRIVATE);
-
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -72,19 +71,6 @@ public class SplashActivity extends AppCompatActivity {
         boolean isFirstRun = prefs.getBoolean("isFirstRun", true); // isFirstRun이 null값이면 true를 가져옴.
         String curVersion = packageList.get(0).package_version; //현재 버전
         String preVersion = prefs.getString("preVersion", "0.0.0");
-
-//        boolean isFirstRun = prefs.getBoolean("isFirstRun", true); // isFirstRun이 null값이면 true를 가져옴.
-//        Intent intent;
-//        if (isFirstRun) {
-//            intent = new Intent(getApplicationContext(), TutorialActivity.class);
-//            startActivity(intent);
-//            prefs.edit().putBoolean("isFirstRun", false).apply();
-//
-//        }
-//        else {
-//            intent = new Intent(getApplicationContext(), HomeActivity.class);
-//            startActivity(intent);
-//        }
 
         Intent intent;
         if (isFirstRun) {

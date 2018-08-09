@@ -2,7 +2,9 @@ package docent.namsanhanok.Event;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Environment;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,10 +39,9 @@ public class EventAdapter extends RecyclerView.Adapter<EventViewHolder>{
     @Override
     public void onBindViewHolder(EventViewHolder holder, final int position) {
         Glide.with(context)
-                .load(eventList.get(position).getEvent_image())
-                .apply(new RequestOptions()
-                        .centerCrop())
+                .load(Environment.getExternalStorageDirectory() + eventList.get(position).getEvent_image_url())
                 .into(holder.VH_event_image);
+        Log.d("load", Environment.getExternalStorageDirectory() + eventList.get(position).getEvent_image_url());
 
         holder.VH_event_title.setText(eventList.get(position).getEvent_title());
         holder.VH_event_place.setText(eventList.get(position).getEvent_place());

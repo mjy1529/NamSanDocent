@@ -7,6 +7,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Vibrator;
@@ -24,6 +25,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.Request;
+import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.target.SizeReadyCallback;
 import com.bumptech.glide.request.target.Target;
@@ -120,7 +122,7 @@ public class HomeActivity extends AppCompatActivity {
                     HomeResult homeResult = response.body();
                     homeData = homeResult.home_info;
 
-                    setImage();
+                    setting();
                 }
             }
 
@@ -131,30 +133,23 @@ public class HomeActivity extends AppCompatActivity {
         });
     }
 
-    public void setImage() {
+    public void setting() {
         TextView docentTitle = (TextView) findViewById(R.id.docentTitle);
         final RelativeLayout homeLayout = (RelativeLayout) findViewById(R.id.homeLayout);
         docentTitle.setText(homeData.getHome_title());
-        Picasso.with(HomeActivity.this)
-                .load(homeData.getHome_image_url())
-                .into(new com.squareup.picasso.Target() {
-                    @Override
-                    public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom loadedFrom) {
 
-                        homeLayout.setBackground(new BitmapDrawable(getApplicationContext().getResources(), bitmap));
-
-                    }
-
-                    @Override
-                    public void onBitmapFailed(Drawable drawable) {
-
-                    }
-
-                    @Override
-                    public void onPrepareLoad(Drawable drawable) {
-
-                    }
-                });
+        Glide.with(this)
+                .load(Environment.getExternalStorageDirectory() + homeData.getHome_image_url())
+                .apply(new RequestOptions()
+                .centerCrop())
+                .into(new SimpleTarget<Drawable>() {
+            @Override
+            public void onResourceReady(Drawable resource, Transition<? super Drawable> transition) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                    homeLayout.setBackground(resource);
+                }
+            }
+        });
     }
 
     public void initBeaconManager() {

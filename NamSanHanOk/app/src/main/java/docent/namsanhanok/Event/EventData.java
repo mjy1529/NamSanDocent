@@ -3,7 +3,7 @@ package docent.namsanhanok.Event;
 public class EventData {
     private int event_id;
     private String event_title;
-    private String event_image;
+    private String event_image_url;
     private String event_start_date;
     private String event_end_date;
     private String event_place;
@@ -25,12 +25,12 @@ public class EventData {
         this.event_title = event_title;
     }
 
-    public String getEvent_image() {
-        return event_image;
+    public String getEvent_image_url() {
+        return event_image_url;
     }
 
-    public void setEvent_image(String event_image) {
-        this.event_image = event_image;
+    public void setEvent_image_url(String event_image_url) {
+        this.event_image_url = event_image_url;
     }
 
     public String getEvent_start_date() {
