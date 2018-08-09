@@ -73,12 +73,12 @@ public class DB_Async extends AsyncTask<String, String, String> {
     @Override
     protected void onPostExecute(String obj) {
         String source = FileName;
-        String destination = savePath + "/namsangol_v1.0.0";
+        String destination = savePath;
 
         try {
             ZipFile zipFile = new ZipFile(source);
             zipFile.extractAll(destination);
-//            zipFile.removeFile(source);
+
 
             Log.d("check", "getResult" + zipFile.getProgressMonitor().getResult());
             Log.d("check", "getState" + zipFile.getProgressMonitor().getState());
@@ -89,6 +89,7 @@ public class DB_Async extends AsyncTask<String, String, String> {
             if (zipFile.getProgressMonitor().getResult() == ProgressMonitor.RESULT_SUCCESS) {
                 Log.d("check", "Result_Success");
                 ((DBActivity) DBActivity.mContext).activityFinish();
+                zipFile.removeFile(FileName);
             }
 
         } catch (ZipException e) {

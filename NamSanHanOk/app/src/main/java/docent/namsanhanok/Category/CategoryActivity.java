@@ -6,6 +6,7 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.os.Environment;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -70,7 +71,10 @@ public class CategoryActivity extends AppCompatActivity {
         final int blackFilter = getApplication().getResources().getColor(R.color.black_color_filter);
         final PorterDuffColorFilter blakcColorFilter = new PorterDuffColorFilter(blackFilter, PorterDuff.Mode.SRC_ATOP);
 
-        Glide.with(this).load(categoryDataList.get(0).category_image_url).apply(new RequestOptions()
+
+        Log.d("check1", "img1 : " + Environment.getExternalStorageDirectory() + categoryDataList.get(0).category_image_url);
+
+        Glide.with(this).load(Environment.getExternalStorageDirectory() + categoryDataList.get(0).category_image_url).apply(new RequestOptions()
                 .centerCrop()).into(new SimpleTarget<Drawable>() {
             @Override
             public void onResourceReady(Drawable resource, Transition<? super Drawable> transition) {
@@ -81,9 +85,12 @@ public class CategoryActivity extends AppCompatActivity {
                 }
 
             }
+
         });
 
-        Glide.with(this).load(categoryDataList.get(1).category_image_url).apply(new RequestOptions()
+        Log.d("check1", "img2 : " + Environment.getExternalStorageDirectory() + categoryDataList.get(1).category_image_url);
+
+        Glide.with(this).load(Environment.getExternalStorageDirectory() + categoryDataList.get(1).category_image_url).apply(new RequestOptions()
                 .centerCrop()).into(new SimpleTarget<Drawable>() {
             @Override
             public void onResourceReady(Drawable resource, Transition<? super Drawable> transition) {
@@ -94,7 +101,9 @@ public class CategoryActivity extends AppCompatActivity {
             }
         });
 
-        Glide.with(this).load(categoryDataList.get(2).category_image_url).apply(new RequestOptions()
+        Log.d("check1", "img3 : " + Environment.getExternalStorageDirectory() + categoryDataList.get(2).category_image_url);
+
+        Glide.with(this).load(Environment.getExternalStorageDirectory() + categoryDataList.get(2).category_image_url).apply(new RequestOptions()
                 .centerCrop()).into(new SimpleTarget<Drawable>() {
             @Override
             public void onResourceReady(Drawable resource3, Transition<? super Drawable> transition) {
@@ -214,8 +223,6 @@ public class CategoryActivity extends AppCompatActivity {
     @Override
     public void onResume() {
         super.onResume();
-
-        networking();
 
     }
     @Override
