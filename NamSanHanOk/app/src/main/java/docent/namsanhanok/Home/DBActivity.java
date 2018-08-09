@@ -51,6 +51,6 @@ public class DBActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        // 다운로드를 받고 있는 중에 종료되면 어떻게 해야하지?
+        // 다운로드를 받고 있는 중에 종료시 처리
     }
 }

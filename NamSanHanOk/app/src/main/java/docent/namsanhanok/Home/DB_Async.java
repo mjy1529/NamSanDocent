@@ -20,13 +20,11 @@ import java.net.URL;
 
 public class DB_Async extends AsyncTask<String, String, String> {
 
-
     private String FileName;
     String savePath = Environment.getExternalStorageDirectory() + File.separator + "namsangol/";
 
     @Override
     protected void onPreExecute() {
-
         super.onPreExecute();
     }
 
@@ -58,8 +56,6 @@ public class DB_Async extends AsyncTask<String, String, String> {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-
         return null;
     }
 
@@ -95,7 +91,5 @@ public class DB_Async extends AsyncTask<String, String, String> {
         } catch (ZipException e) {
             e.printStackTrace();
         }
-
-
     }
 }
