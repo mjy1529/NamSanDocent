@@ -6,6 +6,7 @@ import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.tsengvn.typekit.TypekitContextWrapper;
@@ -16,8 +17,10 @@ import docent.namsanhanok.R;
 
 public class DBActivity extends AppCompatActivity {
 
-    DB_Async dbAsync;
     public static Context mContext;
+
+    ProgressBar downloadBar;
+    TextView curPercent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,13 +30,12 @@ public class DBActivity extends AppCompatActivity {
         mContext = this;
 
         init();
-
-        dbAsync = new DB_Async();
-        dbAsync.execute();
+        new DB_Async().execute();
     }
 
     public void init() {
-        TextView curPercent = (TextView) findViewById(R.id.curPercent);
+        downloadBar = (ProgressBar) findViewById(R.id.downloadBar);
+        curPercent = (TextView) findViewById(R.id.curPercent);
         curPercent.bringToFront();
     }
 
@@ -46,11 +48,5 @@ public class DBActivity extends AppCompatActivity {
     @Override
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(TypekitContextWrapper.wrap(newBase));
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        // 다운로드를 받고 있는 중에 종료시 처리
     }
 }

@@ -5,26 +5,33 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Environment;
 import android.util.Log;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import net.lingala.zip4j.core.ZipFile;
 import net.lingala.zip4j.exception.ZipException;
 import net.lingala.zip4j.progress.ProgressMonitor;
 
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
+import java.net.URLConnection;
 
 
 public class DB_Async extends AsyncTask<String, String, String> {
 
+    ProgressBar downloadBar = ((DBActivity)DBActivity.mContext).downloadBar;
+    TextView curPercent = ((DBActivity)DBActivity.mContext).curPercent;
     private String FileName;
     String savePath = Environment.getExternalStorageDirectory() + File.separator + "namsangol/";
 
     @Override
     protected void onPreExecute() {
+        downloadBar.setProgress(0);
         super.onPreExecute();
     }
 
@@ -42,15 +49,21 @@ public class DB_Async extends AsyncTask<String, String, String> {
 
             String DownloadURL = "http://175.123.138.125:8070/down/ko/namsangol_v1.0.0.zip";
             FileName = savePath + "/namsangol_v1.0.0.zip";
-            InputStream inputStream = new URL(DownloadURL).openStream();
+//            InputStream inputStream = new URL(DownloadURL).openStream();
+
+            // **** 추가 **** //
+            URL url = new URL(DownloadURL);
+            URLConnection connection = url.openConnection();
+            connection.connect();
+            int sizeOfFile = connection.getContentLength();
+            InputStream inputStream = new BufferedInputStream(url.openStream());
+            // ************* //
 
             Log.d("check", "http check ok : ");
             File file = new File(FileName);
             OutputStream out = new FileOutputStream(file);
+            saveRemoteFile(inputStream, out, sizeOfFile);
 
-            Log.d("check", "http check ok2 : ");
-
-            saveRemoteFile(inputStream, out);
             out.close();
 
         } catch (Exception e) {
@@ -59,10 +72,17 @@ public class DB_Async extends AsyncTask<String, String, String> {
         return null;
     }
 
-    public void saveRemoteFile(InputStream is, OutputStream os) throws IOException {
-        int c = 0;
-        while ((c = is.read()) != -1)
-            os.write(c);
+    public void saveRemoteFile(InputStream is, OutputStream os, int sizeOfFile) throws IOException {
+        int count = 0;
+        byte data[] = new byte[1024];
+        long total = 0;
+
+        while((count = is.read(data)) != -1) {
+            total += count;
+            publishProgress("" + (int)((total * 100) / sizeOfFile));
+//            os.write(count);
+            os.write(data, 0, count);
+        }
         os.flush();
     }
 
@@ -75,13 +95,6 @@ public class DB_Async extends AsyncTask<String, String, String> {
             ZipFile zipFile = new ZipFile(source);
             zipFile.extractAll(destination);
 
-
-            Log.d("check", "getResult" + zipFile.getProgressMonitor().getResult());
-            Log.d("check", "getState" + zipFile.getProgressMonitor().getState());
-            Log.d("check", "getCurrentOperation" + zipFile.getProgressMonitor().getCurrentOperation());
-            Log.d("check", "getTotalWork" + zipFile.getProgressMonitor().getTotalWork());
-
-
             if (zipFile.getProgressMonitor().getResult() == ProgressMonitor.RESULT_SUCCESS) {
                 Log.d("check", "Result_Success");
                 ((DBActivity) DBActivity.mContext).activityFinish();
@@ -91,5 +104,12 @@ public class DB_Async extends AsyncTask<String, String, String> {
         } catch (ZipException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    protected void onProgressUpdate(String... values) {
+        super.onProgressUpdate(values);
+        downloadBar.setProgress(Integer.parseInt(values[0]));
+        curPercent.setText(values[0]+"%");
     }
 }

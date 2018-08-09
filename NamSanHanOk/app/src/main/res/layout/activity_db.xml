@@ -46,7 +46,7 @@
         android:layout_above="@+id/downloadLayout"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="10dp"
-        android:text="다운로드 중..." />
+        android:text="@string/downloadStatus" />
 
     <RelativeLayout
         android:id="@+id/downloadLayout"
@@ -62,18 +62,18 @@
             android:id="@+id/curPercent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="80%"
-            android:textSize="11sp"
             android:layout_centerInParent="true"
-            android:textColor="#ffffff" />
+            android:text="0%"
+            android:textColor="#ffffff"
+            android:textSize="11sp" />
 
         <ProgressBar
-            android:id="@+id/downloadProgress"
+            android:id="@+id/downloadBar"
             style="@android:style/Widget.ProgressBar.Horizontal"
             android:layout_width="match_parent"
             android:layout_height="20dp"
             android:max="100"
-            android:progress="80"
+            android:progress="0"
             android:progressDrawable="@drawable/progressbar" />
 
     </RelativeLayout>

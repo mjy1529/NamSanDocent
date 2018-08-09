@@ -34,7 +34,6 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
 
         prefs = getSharedPreferences("Pref", MODE_PRIVATE);
-
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {

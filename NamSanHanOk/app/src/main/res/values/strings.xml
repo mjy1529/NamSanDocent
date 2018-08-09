@@ -56,4 +56,7 @@
     <!-- splash -->
     <string name="splashTitle">Namsangol Hanok Village</string>
 
+    <!-- download -->
+    <string name="downloadStatus">다운로드 중...</string>
+
 </resources>
