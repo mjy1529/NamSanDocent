@@ -120,7 +120,7 @@ public class HomeActivity extends AppCompatActivity {
                     HomeResult homeResult = response.body();
                     homeData = homeResult.home_info;
 
-                    setImage();
+                    setting();
                 }
             }
 
@@ -131,7 +131,7 @@ public class HomeActivity extends AppCompatActivity {
         });
     }
 
-    public void setImage() {
+    public void setting() {
         TextView docentTitle = (TextView) findViewById(R.id.docentTitle);
         final RelativeLayout homeLayout = (RelativeLayout) findViewById(R.id.homeLayout);
         docentTitle.setText(homeData.getHome_title());
@@ -140,7 +140,6 @@ public class HomeActivity extends AppCompatActivity {
                 .into(new com.squareup.picasso.Target() {
                     @Override
                     public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom loadedFrom) {
-
                         homeLayout.setBackground(new BitmapDrawable(getApplicationContext().getResources(), bitmap));
 
                     }

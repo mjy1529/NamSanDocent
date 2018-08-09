@@ -36,7 +36,7 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="5dp"
-            android:text="Namsangol Hanok Village"
+            android:text="@string/splashTitle"
             android:textColor="#000000" />
 
     </LinearLayout>

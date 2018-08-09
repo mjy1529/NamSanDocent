@@ -6,6 +6,9 @@ import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.TextView;
+
+import com.tsengvn.typekit.TypekitContextWrapper;
 
 import java.io.File;
 
@@ -22,9 +25,16 @@ public class DBActivity extends AppCompatActivity {
         setContentView(R.layout.activity_db);
 
         mContext = this;
+
+        init();
+
         dbAsync = new DB_Async();
         dbAsync.execute();
+    }
 
+    public void init() {
+        TextView curPercent = (TextView) findViewById(R.id.curPercent);
+        curPercent.bringToFront();
     }
 
     public void activityFinish() {
@@ -33,4 +43,14 @@ public class DBActivity extends AppCompatActivity {
         finish();
     }
 
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(TypekitContextWrapper.wrap(newBase));
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        // 다운로드를 받고 있는 중에 종료되면 어떻게 해야하지?
+    }
 }
