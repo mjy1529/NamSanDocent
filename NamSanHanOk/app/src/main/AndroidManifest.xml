@@ -101,7 +101,6 @@
         </receiver>
 
         <activity android:name=".Home.TutorialActivity" />
-        <activity android:name=".Home.DBActivity"></activity>
     </application>
 
 </manifest>

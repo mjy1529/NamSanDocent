@@ -206,7 +206,7 @@ public class HomeActivity extends AppCompatActivity {
                                 if (newItemDialog != null && newItemDialog.isShowing()) {
                                     newItemDialog.dismiss();
                                 }
-                                vibrator.vibrate(1000);
+                                vibrator.vibrate(500);
                                 showNewItemDialog();
                                 prev_beacon = beacon_minor;
                                 break;
@@ -330,6 +330,7 @@ public class HomeActivity extends AppCompatActivity {
                     handler.removeMessages(0);
                     appearBeaconList.clear();
                     prev_beacon = "";
+
                 }
             }
         });
@@ -392,19 +393,27 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        if(toggleBtn.isOn()) {
+            mMinewBeaconManager.startScan();
+            applicationclass.setScanning(true);
+            handler.sendEmptyMessage(0);
+        }
+//        if(newItemDialog.isShowing()) newItemDialog.dismiss();
+
+    }
+
+    @Override
     protected void onStop() {
         super.onStop();
         if (applicationclass.getScanning()) {
             mMinewBeaconManager.stopScan();
+            applicationclass.setScanning(false);
         }
         handler.removeMessages(0);
     }
 
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
 
     @Override
     protected void onDestroy() {

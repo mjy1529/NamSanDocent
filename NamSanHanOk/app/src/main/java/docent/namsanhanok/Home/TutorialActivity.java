@@ -26,7 +26,8 @@ public class TutorialActivity extends AppCompatActivity {
         closeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(TutorialActivity.this, DBActivity.class);
+                SplashActivity.prefs.edit().putBoolean("isFirstRun", false).apply();
+                Intent intent = new Intent(TutorialActivity.this, HomeActivity.class);
                 startActivity(intent);
                 finish();
             }

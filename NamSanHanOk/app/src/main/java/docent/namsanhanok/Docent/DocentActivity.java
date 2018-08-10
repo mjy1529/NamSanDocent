@@ -148,6 +148,11 @@ public class DocentActivity extends AppCompatActivity {
     String audio_url;
     String video_url;
 
+    static int newDocent;
+//    static  int newDocent_cate_id;
+//    static int newDocent_docent_id;
+
+
     public DocentActivity() {
 
     }
@@ -157,14 +162,33 @@ public class DocentActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_docent);
 
-        Intent secondIntent = getIntent();
-        category_id = secondIntent.getExtras().getInt("cate_id");
-        position = secondIntent.getExtras().getInt("position");
-        docent_id = secondIntent.getExtras().getInt("docent_id");
+        Log.d("check1", "onCreate_newDocent : " + newDocent);
 
-        Log.d("check1", "docentAC, cate_id : " + category_id);
-        Log.d("check1", "docentAC, position : " + position);
-        Log.d("check1", "docentAC, docent_id : " + docent_id);
+        Log.d("check1", "onCreate_newDocent : " + newDocent);
+
+        if(newDocent == 1){
+            onResume();
+        }
+        else{
+            Intent secondIntent = getIntent();
+            category_id = secondIntent.getExtras().getInt("cate_id");
+            position = secondIntent.getExtras().getInt("position");
+            docent_id = secondIntent.getExtras().getInt("docent_id");
+            Log.d("check1", "docentAC, cate_id : " + category_id);
+            Log.d("check1", "docentAC, position : " + position);
+            Log.d("check1", "docentAC, docent_id : " + docent_id);
+        }
+//        else if(newDocent == 1){
+//            category_id = newDocent_cate_id;
+//            docent_id = newDocent_docent_id;
+//
+//        }
+
+        Log.d("check1", "밖 ocentAC, newDocent_cate_id : " + category_id);
+        Log.d("check1", "밖 docentAC, position : " + position);
+        Log.d("check1", "밖 docentAC,newDocent_docent_id : " + docent_id);
+        Log.d("check1", "밖 newDocent : " + newDocent);
+
 
 
 
@@ -616,11 +640,22 @@ public class DocentActivity extends AppCompatActivity {
 
             case R.id.confirm_go_new_docent:
                 //새로운 내용으로 내용 업데이트
+                //Preference
+                //매개변수하나 이용해서 값이 0이면 category에서 갖고오고 1이면 docent갱신
 
-                Log.d("check1", "확인 누름");
+                intent = new Intent(DocentActivity.this, DocentActivity.class);
                 //확인버튼을 눌렀으니 사라짐
                 go_new_docent_layout.setVisibility(View.GONE);
                 bottom_audio_layout.setVisibility(View.GONE);
+
+                newDocent=1;
+                finish();
+                startActivity(intent);
+
+                Log.d("check1", "확인 누름");
+                Log.d("check1", "확인버튼_newDocent : " + newDocent);
+
+
                 break;
 
         }
@@ -750,6 +785,25 @@ public class DocentActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d("check1", "newDocent : " + newDocent);
+
+        if(newDocent == 1){
+
+            Log.d("check1", "onResume, cate_id : " + category_id);
+            Log.d("check1", "onResume, docent_id : " + docent_id);
+            //여기서 비콘 넘버 받아서 그 docent의 id와 category_id를 받아오면 됨.
+            category_id = 1;
+            docent_id = 2;
+            newDocent = 0;
+
+            Log.d("check1", "onResume, cate_id : " + category_id);
+            Log.d("check1", "onResume, docent_id : " + docent_id);
+        }
+    }
+
+    @Override
     protected void onStop() {
         super.onStop();
         Log.d("check1", "onStop");
@@ -801,6 +855,7 @@ public class DocentActivity extends AppCompatActivity {
 
         return jsonStr;
     }
+
     private String getCategoryInfo(String cmd) {
         String json = "";
         try {

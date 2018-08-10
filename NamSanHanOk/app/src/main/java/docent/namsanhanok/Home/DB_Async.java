@@ -21,18 +21,24 @@ import java.io.OutputStream;
 import java.net.URL;
 import java.net.URLConnection;
 
+import docent.namsanhanok.R;
+
 
 public class DB_Async extends AsyncTask<String, String, String> {
-
-    ProgressBar downloadBar = ((DBActivity)DBActivity.mContext).downloadBar;
-    TextView curPercent = ((DBActivity)DBActivity.mContext).curPercent;
     private String FileName;
     String savePath = Environment.getExternalStorageDirectory() + File.separator + "namsangol/";
     File file;
 
+    ProgressBar downloadBar;
+    TextView curPercent;
+    TextView downloadStatus;
+
     @Override
     protected void onPreExecute() {
+        downloadBar = SplashActivity.downloadBar;
+        curPercent = SplashActivity.curPercent;
         downloadBar.setProgress(0);
+        downloadStatus = SplashActivity.downloadStatus;
         super.onPreExecute();
     }
 
@@ -97,14 +103,16 @@ public class DB_Async extends AsyncTask<String, String, String> {
             zipFile.extractAll(destination);
 
             if (zipFile.getProgressMonitor().getResult() == ProgressMonitor.RESULT_SUCCESS) {
+                ((SplashActivity) SplashActivity.mContext).activityFinish();
                 Log.d("check", "Result_Success");
-                ((DBActivity) DBActivity.mContext).activityFinish();
                 file.delete();
             }
 
         } catch (ZipException e) {
             e.printStackTrace();
         }
+        downloadStatus.setText(R.string.downloadComplete);
+        SplashActivity.prefs.edit().putString("curVersion", SplashActivity.dbVersion).apply();
     }
 
     @Override
