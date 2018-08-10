@@ -60,7 +60,6 @@ public class DocentAdapter extends RecyclerView.Adapter<DocentViewHolder> {
             public void onClick(View view) {
                 Intent intent = new Intent(context, DocentPopUpActivity.class);
                 intent.putExtra("position", position);
-//                intent.putExtra("docent_detail_id", docentDetailData.get(position).docent_detail_id);
                 intent.putExtra("docent_id", docentDetailData.get(position).docent_id);
 
                 Log.d("check1" , "docent : " + docentDetailData.get(position).docent_id);

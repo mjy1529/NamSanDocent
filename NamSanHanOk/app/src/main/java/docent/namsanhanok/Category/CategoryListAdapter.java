@@ -61,7 +61,7 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListViewHo
                 int docent_postion = position;
                 Intent intent = new Intent(context, DocentActivity.class);
                 intent.putExtra("cate_id", docentData.get(position).category_id);
-                intent.putExtra("position", docent_postion);
+                intent.putExtra("position", position);
                 intent.putExtra("docent_id", docentData.get(position).docent_id);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
@@ -74,6 +74,7 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListViewHo
                 Intent intent = new Intent(context, DocentActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.putExtra("cate_id", docentData.get(position).category_id);
+                intent.putExtra("position", position);
                 intent.putExtra("docent_id", docentData.get(position).docent_id);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);

@@ -179,8 +179,6 @@ public class DocentActivity extends AppCompatActivity {
 
         init();
         setRecyclerView();
-//        setAudioPlayer();
-//        setVideoPlayer();
 
         docentImage.setFocusableInTouchMode(true);
         docentImage.requestFocus();
@@ -551,6 +549,7 @@ public class DocentActivity extends AppCompatActivity {
 
 
     public void onClick(View v) {
+        Intent intent;
         switch (v.getId()) {
             case R.id.playAudioBtn: //오디오 play버튼을 클릭했을 때 재생/일시정지
                 if (audioPlayer.isPlaying()) {
@@ -580,16 +579,16 @@ public class DocentActivity extends AppCompatActivity {
 
             case R.id.locationBtn:
             case R.id.locationTxt:
-                Intent intent2 = new Intent(getApplicationContext(), LocationActivity.class);
-                intent2.putExtra("title", docentName.getText().toString());
-                intent2.putExtra("position", position);
-                intent2.putExtra("category_id", docentDataList.get(position).category_id);
+                intent = new Intent(getApplicationContext(), LocationActivity.class);
+                intent.putExtra("title", docentName.getText().toString());
+                intent.putExtra("position", position);
+                intent.putExtra("category_id", docentDataList.get(position).category_id);
 
-                startActivity(intent2);
+                startActivity(intent);
                 break;
 
             case R.id.homeBtn:
-                Intent intent = new Intent(DocentActivity.this, HomeActivity.class);
+                intent = new Intent(DocentActivity.this, HomeActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
@@ -598,11 +597,18 @@ public class DocentActivity extends AppCompatActivity {
 
             case R.id.confirm_go_new_docent:
                 //새로운 내용으로 내용 업데이트
-
+//                intent = new Intent(DocentActivity.this, DocentActivity.class);
+//                docent_id = 3;
+//                category_id = 2;
+//                position = 1;
+//
+//                intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+//                startActivity(intent);
                 //확인버튼을 눌렀으니 사라짐
                 go_new_docent_layout.setVisibility(View.GONE);
                 bottom_audio_layout.setVisibility(View.GONE);
                 break;
+
         }
     }
 

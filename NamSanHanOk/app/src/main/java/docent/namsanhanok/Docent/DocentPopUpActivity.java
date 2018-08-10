@@ -34,7 +34,7 @@ public class DocentPopUpActivity extends Activity {
     ImageView imageView;
     TextView textView;
     TextView imageTitle;
-//    int docent_detail_id;
+
     int position;
     int docent_id;
 
@@ -53,6 +53,7 @@ public class DocentPopUpActivity extends Activity {
         service = Application.getInstance().getNetworkService();
 
         init();
+        networking();
 
 
     }
