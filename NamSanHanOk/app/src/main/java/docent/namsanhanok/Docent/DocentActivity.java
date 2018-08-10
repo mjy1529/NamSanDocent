@@ -726,7 +726,8 @@ public class DocentActivity extends AppCompatActivity {
         super.onStop();
         if (videoPlayer.getPlayWhenReady() || audioPlayer.isPlaying()) {
             videoPlayer.setPlayWhenReady(false);
-            audioPlayer.stop();
+            audioPlayer.pause();
+            playAudioBtn.setBackgroundResource(R.drawable.ic_play_arrow_black_48dp);
         }
         if (applicationclass.getScanning()) {
             mMinewBeaconManager.stopScan();
@@ -761,6 +762,7 @@ public class DocentActivity extends AppCompatActivity {
         }
         return jsonStr;
     }
+
     private String getCategoryInfo(String cmd) {
         String json = "";
         try {
