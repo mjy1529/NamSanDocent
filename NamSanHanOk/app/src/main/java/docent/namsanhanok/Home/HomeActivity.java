@@ -52,6 +52,7 @@ import docent.namsanhanok.BackPressCloseHandler;
 import docent.namsanhanok.Category.CategoryActivity;
 import docent.namsanhanok.Category.CategoryResult;
 import docent.namsanhanok.Docent.DocentActivity;
+import docent.namsanhanok.Docent.DocentResult;
 import docent.namsanhanok.Event.EventActivity;
 import docent.namsanhanok.Info.InfoActivity;
 //import docent.namsanhanok.IntentService;
@@ -86,6 +87,7 @@ public class HomeActivity extends AppCompatActivity {
     String prev_beacon = "";
 
     private Application applicationclass;
+    NetworkService service;
 
     HomeData homeData;
 
@@ -93,6 +95,8 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        service = Application.getInstance().getNetworkService();
 
         backPressCloseHandler = new BackPressCloseHandler(this);
         mMinewBeaconManager = MinewBeaconManager.getInstance(this);
@@ -104,16 +108,16 @@ public class HomeActivity extends AppCompatActivity {
         applicationclass = (Application) getApplicationContext();
 
         init();
-        networking();
+        homeNetworking();
         initBeaconManager();
         initBeaconListenerManager();
+        docentListNetworking();
 
         showBeaconAlarm();
     }
 
-    public void networking() {
-        NetworkService service = Application.getInstance().getNetworkService();
-        Call<HomeResult> request = service.getHomeResult(jsonToString());
+    public void homeNetworking() {
+        Call<HomeResult> request = service.getHomeResult(homeJsonToString());
         request.enqueue(new Callback<HomeResult>() {
             @Override
             public void onResponse(Call<HomeResult> call, Response<HomeResult> response) {
@@ -150,6 +154,21 @@ public class HomeActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    public void docentListNetworking() {
+//        Call<DocentResult> request = service.getDocentResult(docentJsonToString());
+//        request.enqueue(new Callback<DocentResult>() {
+//            @Override
+//            public void onResponse(Call<DocentResult> call, Response<DocentResult> response) {
+//
+//            }
+//
+//            @Override
+//            public void onFailure(Call<DocentResult> call, Throwable t) {
+//
+//            }
+//        });
     }
 
     public void initBeaconManager() {
@@ -330,7 +349,6 @@ public class HomeActivity extends AppCompatActivity {
                     handler.removeMessages(0);
                     appearBeaconList.clear();
                     prev_beacon = "";
-
                 }
             }
         });
@@ -410,7 +428,7 @@ public class HomeActivity extends AppCompatActivity {
             applicationclass.setScanning(false);
         }
         handler.removeMessages(0);
-        if(newItemDialog.isShowing()) newItemDialog.dismiss();
+        //if(newItemDialog.isShowing()) newItemDialog.dismiss();
     }
 
     @Override
@@ -424,7 +442,7 @@ public class HomeActivity extends AppCompatActivity {
         super.attachBaseContext(TypekitContextWrapper.wrap(newBase));
     }
 
-    public String jsonToString() {
+    public String homeJsonToString() {
         String jsonStr = "";
         try {
             JSONObject data = new JSONObject();
@@ -438,4 +456,20 @@ public class HomeActivity extends AppCompatActivity {
         }
         return jsonStr;
     }
+
+//    public String docentJsonToString() {
+//        String jsonStr = "";
+//        try {
+//            JSONObject data = new JSONObject();
+//            data.put("cmd", "docent_list");
+//            data.put("beacon_number", "docent_list");
+//
+//            JSONObject root = new JSONObject();
+//            root.put("info", data);
+//            jsonStr = root.toString();
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//        return jsonStr;
+//    }
 }
