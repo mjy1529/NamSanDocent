@@ -27,6 +27,7 @@ import docent.namsanhanok.R;
 public class DB_Async extends AsyncTask<String, String, String> {
     private String FileName;
     String savePath = Environment.getExternalStorageDirectory() + File.separator + "namsangol/";
+    File file;
 
     ProgressBar downloadBar;
     TextView curPercent;
@@ -66,7 +67,7 @@ public class DB_Async extends AsyncTask<String, String, String> {
             // ************* //
 
             Log.d("check", "http check ok : ");
-            File file = new File(FileName);
+            file = new File(FileName);
             OutputStream out = new FileOutputStream(file);
             saveRemoteFile(inputStream, out, sizeOfFile);
 
@@ -103,7 +104,8 @@ public class DB_Async extends AsyncTask<String, String, String> {
 
             if (zipFile.getProgressMonitor().getResult() == ProgressMonitor.RESULT_SUCCESS) {
                 ((SplashActivity) SplashActivity.mContext).activityFinish();
-                zipFile.removeFile(FileName);
+                Log.d("check", "Result_Success");
+                file.delete();
             }
 
         } catch (ZipException e) {

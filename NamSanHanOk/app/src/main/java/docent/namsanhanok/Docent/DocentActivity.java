@@ -8,6 +8,7 @@ import android.hardware.SensorManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Vibrator;
@@ -102,6 +103,7 @@ public class DocentActivity extends AppCompatActivity {
     boolean isPlayerFullscreen = false;
     ImageView fullscreenIcon;
     FrameLayout fullscreenButton;
+    LinearLayout docentVideo_Layout;
 
     //audioPlayer
     MediaPlayer audioPlayer;
@@ -113,10 +115,8 @@ public class DocentActivity extends AppCompatActivity {
     //상세보기
     private RecyclerView recyclerView;
     private LinearLayoutManager linearLayoutManager;
-    private DocentAdapter docentdatailAdpater;
-    private ArrayList<DocentActivityItem> docentActivityItem;
-
-    String docent_title;
+    private DocentAdapter docentAdpater;
+    LinearLayout docentDetails_Layout;
 
     LinearLayout go_new_docent_layout;
     TextView confirm_go_new_docent;
@@ -142,9 +142,11 @@ public class DocentActivity extends AppCompatActivity {
     private  ArrayList<DocentDetailData> docentDetailDataList;
     private ArrayList<DocentData> docentDataList;
     private ArrayList<CategoryData> categoryDataList;
-    private JustifiedTextView docentExplanation;
+    private TextView docentExplanation;
     int position;
-
+    int docent_id;
+    String audio_url;
+    String video_url;
 
     public DocentActivity() {
 
@@ -158,11 +160,12 @@ public class DocentActivity extends AppCompatActivity {
         Intent secondIntent = getIntent();
         category_id = secondIntent.getExtras().getInt("cate_id");
         position = secondIntent.getExtras().getInt("position");
-
+        docent_id = secondIntent.getExtras().getInt("docent_id");
 
         service = Application.getInstance().getNetworkService();
         networking();
         networking2();
+        networking3();
 
         mMinewBeaconManager = MinewBeaconManager.getInstance(this);
         applicationclass = (Application) getApplicationContext();
@@ -176,8 +179,6 @@ public class DocentActivity extends AppCompatActivity {
 
         init();
         setRecyclerView();
-        setAudioPlayer();
-        setVideoPlayer();
 
         docentImage.setFocusableInTouchMode(true);
         docentImage.requestFocus();
@@ -206,27 +207,29 @@ public class DocentActivity extends AppCompatActivity {
 
     //docent content
     public void networking2() {
-        final Call<DocentResult> request = service.getDocentResult(jsonToString("docent_list", category_id));
+        final Call<DocentResult> request = service.getDocentResult(getDocentInfo("docent_list", category_id));
         request.enqueue(new Callback<DocentResult>() {
             @Override
             public void onResponse(Call<DocentResult> call, Response<DocentResult> response) {
                 if(response.body() != null) {
 
+                    //category는 순서대로 나타나 있으니, list를 다시 불러서 position으로 docent를 보냄.
                     docentDataList= response.body().docent_info;
-                    Log.d("check1", "DocentActivity docent_id 제목 : " + docentDataList.get(position).docent_title);
-                    Log.d("check1", "DocentActivity docent_id : " + position);
 
                     Glide.with(getApplicationContext())
-                            .load(docentDataList.get(position).docent_image_url)
+                            .load(Environment.getExternalStorageDirectory() + docentDataList.get(position).docent_image_url)
                             .into(docentImage);
 
                     docentName.setText(docentDataList.get(position).docent_title);
-                    CharSequence cs = docentDataList.get(position).docent_content_info;
 
-                    docentExplanation.setText(cs);
+                    String content = docentDataList.get(position).docent_content_info;
+                    docentExplanation.setText(content);
 
+                    audio_url = docentDataList.get(position).docent_audio_url;
+                    video_url = docentDataList.get(position).docent_vod_url;
+                    setAudioPlayer();
+                    setVideoPlayer();
 
-                    Log.d("check", docentDataList.size()+"");
                 }
             }
 
@@ -237,24 +240,31 @@ public class DocentActivity extends AppCompatActivity {
         });
     }
 
-//    public void networking() {
-//        final Call<DocentResult> request = service.getDocentResult(jsonToString("docent_list", category_id));
-//        request.enqueue(new Callback<DocentResult>() {
-//            @Override
-//            public void onResponse(Call<DocentResult> call, Response<DocentResult> response) {
-//                if(response.body() != null) {
-//                    DocentResult docentResult = response.body();
-//
-//                    Log.d("check", docentResult.docent_info.size()+"");
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<DocentResult> call, Throwable t) {
-//                Log.d("check", "fail");
-//            }
-//        });
-//    }
+    //Listcx
+    public void networking3() {
+        Call<DocentDetailResult> docentDetailListResult = service.getDocentDetailResult(getDocentDetailInfo("docent_detail_list", docent_id));
+        docentDetailListResult.enqueue(new Callback<DocentDetailResult>() {
+            @Override
+            public void onResponse(Call<DocentDetailResult> call, Response<DocentDetailResult> response) {
+                if (response.isSuccessful()) {
+                    docentDetailDataList = response.body().docent_detail_info;
+
+                    if(docentDetailDataList.size() == 0){
+                        docentDetails_Layout.setVisibility(View.GONE);
+                    }
+                    else{
+                        docentAdpater.setAdapter(docentDetailDataList);
+                    }
+
+                    Log.d("check1", "docentDetailDataList : " + docentDetailDataList.toString());
+                    Log.d("check1", "docentDetailDataList 크기: " + docentDetailDataList.size());
+                }
+            }
+            @Override
+            public void onFailure(Call<DocentDetailResult> call, Throwable t) {
+                Log.d("check1", "실패 : " + t.getMessage());            }
+        });
+    }
 
     private boolean isOnBluetooth() {
         BluetoothState bluetoothState = mMinewBeaconManager.checkBluetoothState();
@@ -424,20 +434,8 @@ public class DocentActivity extends AppCompatActivity {
 
     }
 
-//    private void initDataset() {
-//        docentActivityItem = new ArrayList<>();
-//        docentActivityItem.add(new DocentActivityItem("베", R.drawable.bae));
-//        docentActivityItem.add(new DocentActivityItem("짚신", R.drawable.jipshin));
-//        docentActivityItem.add(new DocentActivityItem("베", R.drawable.bae));
-//        docentActivityItem.add(new DocentActivityItem("짚신", R.drawable.jipshin));
-//        docentActivityItem.add(new DocentActivityItem("베", R.drawable.bae));
-//        docentActivityItem.add(new DocentActivityItem("짚신", R.drawable.jipshin));
-//        docentActivityItem.add(new DocentActivityItem("베", R.drawable.bae));
-//        docentActivityItem.add(new DocentActivityItem("짚신", R.drawable.jipshin));
-//    }
 
     public void setRecyclerView() {
-//        initDataset();
         recyclerView = (RecyclerView) findViewById(R.id.docent_recyclerView);
         linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
@@ -445,9 +443,9 @@ public class DocentActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setHasFixedSize(true);
 
-        docentdatailAdpater = new DocentAdapter(this, docentDetailDataList);
-
-        recyclerView.setAdapter(docentdatailAdpater);
+        Log.d("check1", "setRecyclerView");
+        docentAdpater = new DocentAdapter(getApplicationContext(), docentDetailDataList);
+        recyclerView.setAdapter(docentAdpater);
     }
 
     public void setVideoPlayer() {
@@ -464,7 +462,8 @@ public class DocentActivity extends AppCompatActivity {
 
         //Preparing the player
         //서버에서 가져올 때
-        String videoUrl = "http://175.123.138.125:8070/hot.mp4";
+//        String videoUrl = "http://175.123.138.125:8070/hot.mp4";
+        String videoUrl = video_url;
         DefaultBandwidthMeter defaultBandwidthMeter = new DefaultBandwidthMeter();
         MediaSource videoSource = new ExtractorMediaSource.Factory(
                 new DefaultHttpDataSourceFactory(Util.getUserAgent(getApplicationContext(), "DOCENT"), defaultBandwidthMeter)
@@ -512,7 +511,8 @@ public class DocentActivity extends AppCompatActivity {
         //audioPlayer = MediaPlayer.create(this, R.raw.konan);
 
         //서버에서 가져올 경우
-        audioPlayer = MediaPlayer.create(this, Uri.parse("http://175.123.138.125:8070/kkk.mp3"));
+//        audioPlayer = MediaPlayer.create(this, Uri.parse("http://175.123.138.125:8070/kkk.mp3"));
+        audioPlayer = MediaPlayer.create(this, Uri.parse(audio_url));
 
         audioPlayer.setLooping(true); //무한 반복
         audioPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() { //총길이 세팅
@@ -549,6 +549,7 @@ public class DocentActivity extends AppCompatActivity {
 
 
     public void onClick(View v) {
+        Intent intent;
         switch (v.getId()) {
             case R.id.playAudioBtn: //오디오 play버튼을 클릭했을 때 재생/일시정지
                 if (audioPlayer.isPlaying()) {
@@ -578,13 +579,16 @@ public class DocentActivity extends AppCompatActivity {
 
             case R.id.locationBtn:
             case R.id.locationTxt:
-                Intent intent2 = new Intent(getApplicationContext(), LocationActivity.class);
-                intent2.putExtra("title", docentName.getText().toString());
-                startActivity(intent2);
+                intent = new Intent(getApplicationContext(), LocationActivity.class);
+                intent.putExtra("title", docentName.getText().toString());
+                intent.putExtra("position", position);
+                intent.putExtra("category_id", docentDataList.get(position).category_id);
+
+                startActivity(intent);
                 break;
 
             case R.id.homeBtn:
-                Intent intent = new Intent(DocentActivity.this, HomeActivity.class);
+                intent = new Intent(DocentActivity.this, HomeActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
@@ -593,11 +597,18 @@ public class DocentActivity extends AppCompatActivity {
 
             case R.id.confirm_go_new_docent:
                 //새로운 내용으로 내용 업데이트
-
+//                intent = new Intent(DocentActivity.this, DocentActivity.class);
+//                docent_id = 3;
+//                category_id = 2;
+//                position = 1;
+//
+//                intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+//                startActivity(intent);
                 //확인버튼을 눌렀으니 사라짐
                 go_new_docent_layout.setVisibility(View.GONE);
                 bottom_audio_layout.setVisibility(View.GONE);
                 break;
+
         }
     }
 
@@ -662,7 +673,10 @@ public class DocentActivity extends AppCompatActivity {
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
         confirm_go_new_docent.setText(content);
-        docentExplanation = (JustifiedTextView) findViewById(R.id.docentExplanation);
+
+        docentDetails_Layout = (LinearLayout) findViewById(R.id.docentDetails_Layout);
+        docentVideo_Layout = (LinearLayout) findViewById(R.id.docentVideo_Layout);
+        docentExplanation = (TextView) findViewById(R.id.docentExplanation);
 
 
 
@@ -747,7 +761,7 @@ public class DocentActivity extends AppCompatActivity {
         super.attachBaseContext(TypekitContextWrapper.wrap(newBase));
     }
 
-    public String jsonToString(String cmd, int cate_id) {
+    public String getDocentInfo(String cmd, int cate_id) {
         String jsonStr = "";
         try {
             JSONObject data = new JSONObject();
@@ -760,6 +774,9 @@ public class DocentActivity extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+        Log.d("check1", "docent content 정보요청 : " + jsonStr);
+
         return jsonStr;
     }
 
@@ -777,6 +794,28 @@ public class DocentActivity extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        Log.d("check1", "Category title info 정보요청 : " + json);
+
+        return json;
+    }
+
+    private String getDocentDetailInfo(String cmd, int docent_id) {
+        String json = "";
+        try {
+            JSONObject data = new JSONObject();
+            data.put("cmd", cmd);
+            data.put("docent_id", docent_id);
+
+
+            JSONObject root = new JSONObject();
+            root.put("info", data);
+            json = root.toString();
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        Log.d("check1", "docent_detail 정보요청 : " + json);
         return json;
     }
 }

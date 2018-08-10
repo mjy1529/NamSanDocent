@@ -4,13 +4,13 @@ public class DocentData {
     public int docent_id;
     public int category_id;
     public String docent_title;
-    String docent_content_info;
-    String docent_vod_url;
-    String docent_audio_url;
+    public String docent_content_info;
+    public String docent_vod_url;
+    public String docent_audio_url;
     public String docent_image_url;
-    String docent_location;
-    String beacon_number;
-    String soundqr_number;
+    public String docent_location;
+    public String beacon_number;
+    public String soundqr_number;
 
     @Override
     public String toString() {

@@ -3,6 +3,7 @@ package docent.namsanhanok.Category;
 import android.content.Context;
 import android.content.Intent;
 
+import android.os.Environment;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -44,7 +45,7 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListViewHo
     public void onBindViewHolder(CategoryListViewHolder holder, final int position) {
 
         Glide.with(context)
-                    .load(docentData.get(position).docent_image_url)
+                    .load(Environment.getExternalStorageDirectory() + docentData.get(position).docent_image_url)
                     .apply(new RequestOptions()
                             .centerCrop())
                     .into(holder.VH_category_list_image);
@@ -60,7 +61,8 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListViewHo
                 int docent_postion = position;
                 Intent intent = new Intent(context, DocentActivity.class);
                 intent.putExtra("cate_id", docentData.get(position).category_id);
-                intent.putExtra("position", docent_postion);
+                intent.putExtra("position", position);
+                intent.putExtra("docent_id", docentData.get(position).docent_id);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
             }
@@ -72,11 +74,9 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListViewHo
                 Intent intent = new Intent(context, DocentActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.putExtra("cate_id", docentData.get(position).category_id);
+                intent.putExtra("position", position);
                 intent.putExtra("docent_id", docentData.get(position).docent_id);
-
-                Log.d("check1", "CLAdapter category id : " + docentData.get(position).category_id);
-                Log.d("check1", "CLAdapter category id : " + docentData.get(position).docent_id);
-
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
             }
         });

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import docent.namsanhanok.Category.CategoryResult;
 import docent.namsanhanok.Docent.DocentData;
+import docent.namsanhanok.Docent.DocentDetailResult;
 import docent.namsanhanok.Docent.DocentResult;
 import docent.namsanhanok.Event.EventResult;
 import docent.namsanhanok.Home.HomeResult;
@@ -35,7 +36,7 @@ public interface NetworkService {
     // 도슨트 디테일
     @Headers("Content-Type: application/json")
     @POST("/docent_detail_info/ko")
-    Call<DocentResult> getDocentDetailResult(@Body String cmd);
+    Call<DocentDetailResult> getDocentDetailResult(@Body String cmd);
 
     // 알리는 말씀
     @Headers("Content-Type: application/json")

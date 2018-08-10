@@ -3,7 +3,9 @@ package docent.namsanhanok.Category;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -48,7 +50,8 @@ public class CategoryListActivity extends Activity {
     ImageView simple_image;
     TextView category_list_title;
     TextView countText;
-    JustifiedTextView category_text_info;
+    TextView category_text_info;
+
 
     private NetworkService service;
     private ArrayList<DocentData> docentDataList;
@@ -110,24 +113,34 @@ public class CategoryListActivity extends Activity {
 
 
     public void networking(){
+
+
         Call<CategoryResult> categoryResultCall = service.getCategoryResult(getCategoryInfo("category_list"));
         categoryResultCall.enqueue(new Callback<CategoryResult>() {
             @Override
             public void onResponse(Call<CategoryResult> call, Response<CategoryResult> response) {
                 if (response.isSuccessful()) {
+
                     Log.d("check1", "Category network ok");
                     categoryDataList = response.body().category_info;
 
-                    Glide.with(CategoryListActivity.this).load(categoryDataList.get(category_id-1).category_image_url).into(simple_image);
+                    Glide.with(CategoryListActivity.this)
+                            .load(Environment.getExternalStorageDirectory() + categoryDataList.get(category_id-1).category_image_url)
+                            .into(simple_image);
 
-                    CharSequence cs = categoryDataList.get(category_id-1).category_detail_info;
-                    category_text_info.setText(cs);
+
+
+                    Log.d("check", "카테고리 내용시작");
+                    String content = categoryDataList.get(category_id-1).category_detail_info;
+                    category_text_info.setText(content);
+                    Log.d("check", "카테고리 내용 text : " + content);
                 }
             }
 
             @Override
             public void onFailure(Call<CategoryResult> call, Throwable t) {
-                Log.d("check1", "실패 : " + t.getMessage());            }
+                Log.d("check1", "실패 : " + t.getMessage());
+            }
         });
     }
 
@@ -172,7 +185,6 @@ public class CategoryListActivity extends Activity {
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setHasFixedSize(true);
 
-//        categoryListAdapter = new CategoryListAdapter(this, categoryListActivityItem);
 
         categoryListAdapter = new CategoryListAdapter(getApplicationContext(), docentDataList);
         recyclerView.setAdapter(categoryListAdapter);
@@ -183,7 +195,8 @@ public class CategoryListActivity extends Activity {
         category_list_title.setText(category_title + " 소개");
         countText = (TextView) findViewById(R.id.countText);
 
-        category_text_info = (JustifiedTextView) findViewById(R.id.category_text_info);
+        category_text_info = (TextView) findViewById(R.id.category_text_info);
+
 
 
     }

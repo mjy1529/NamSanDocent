@@ -64,11 +64,15 @@
 
 
 
-            <com.codesgood.views.JustifiedTextView
+            <TextView
                 android:id="@+id/category_text_info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="10dp" />
+                android:textScaleX="1"
+                android:lineSpacingExtra="1dp"
+                android:padding="10dp"/>
+
+
 
             <LinearLayout
                 android:layout_width="match_parent"
