@@ -400,6 +400,7 @@ public class HomeActivity extends AppCompatActivity {
         handler.removeMessages(0);
     }
 
+
     @Override
     protected void onResume() {
         super.onResume();

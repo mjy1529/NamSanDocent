@@ -162,6 +162,13 @@ public class DocentActivity extends AppCompatActivity {
         position = secondIntent.getExtras().getInt("position");
         docent_id = secondIntent.getExtras().getInt("docent_id");
 
+        Log.d("check1", "docentAC, cate_id : " + category_id);
+        Log.d("check1", "docentAC, position : " + position);
+        Log.d("check1", "docentAC, docent_id : " + docent_id);
+
+
+
+
         service = Application.getInstance().getNetworkService();
         networking();
         networking2();
@@ -216,6 +223,8 @@ public class DocentActivity extends AppCompatActivity {
                     //category는 순서대로 나타나 있으니, list를 다시 불러서 position으로 docent를 보냄.
                     docentDataList= response.body().docent_info;
 
+                    Log.d("check1", "docent image : " + Environment.getExternalStorageDirectory() + docentDataList.get(position).docent_image_url);
+
                     Glide.with(getApplicationContext())
                             .load(Environment.getExternalStorageDirectory() + docentDataList.get(position).docent_image_url)
                             .into(docentImage);
@@ -227,6 +236,10 @@ public class DocentActivity extends AppCompatActivity {
 
                     audio_url = docentDataList.get(position).docent_audio_url;
                     video_url = docentDataList.get(position).docent_vod_url;
+
+                    Log.d("check1", "audio url " + audio_url);
+                    Log.d("check1", "video url : " + video_url);
+
                     setAudioPlayer();
                     setVideoPlayer();
 
@@ -488,19 +501,20 @@ public class DocentActivity extends AppCompatActivity {
 //            e.printStackTrace();
 //        }
 
-        exo_play.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(videoPlayer.getCurrentPosition() == 0 && !videoPlayer.getPlayWhenReady()) { //썸네일
-                    exo_thumbnail.setVisibility(View.GONE);
+            exo_play.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(videoPlayer.getCurrentPosition() == 0 && !videoPlayer.getPlayWhenReady()) { //썸네일
+                        exo_thumbnail.setVisibility(View.GONE);
+                    }
+                    videoPlayer.setPlayWhenReady(true);
+                    if (audioPlayer.isPlaying()) { //비디오 재생시 오디오 일시정지
+                        audioPlayer.pause();
+                        playAudioBtn.setBackgroundResource(R.drawable.ic_play_arrow_black_48dp);
+                    }
                 }
-                videoPlayer.setPlayWhenReady(true);
-                if (audioPlayer.isPlaying()) { //비디오 재생시 오디오 일시정지
-                    audioPlayer.pause();
-                    playAudioBtn.setBackgroundResource(R.drawable.ic_play_arrow_black_48dp);
-                }
-            }
-        });
+            });
+
 
         initFullscreenDialog();
         initFullscreenButton();
@@ -570,9 +584,14 @@ public class DocentActivity extends AppCompatActivity {
 
             case R.id.audioBtn: //오디오 이미지버튼을 클릭했을 때 오디오 레이아웃 보이기
             case R.id.audioTxt:
-                if (bottom_audio_layout.getVisibility() == View.GONE) {
+                if (bottom_audio_layout.getVisibility() == View.GONE && audio_url != null) {
                     bottom_audio_layout.setVisibility(View.VISIBLE);
-                } else {
+                }
+                else if(bottom_audio_layout.getVisibility() == View.GONE && audio_url.equals("")) {
+                    Toast.makeText(getApplicationContext(), "오디오가 지원되지 않는 전시품입니다.", Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
                     bottom_audio_layout.setVisibility(View.GONE);
                 }
                 break;
@@ -597,13 +616,8 @@ public class DocentActivity extends AppCompatActivity {
 
             case R.id.confirm_go_new_docent:
                 //새로운 내용으로 내용 업데이트
-//                intent = new Intent(DocentActivity.this, DocentActivity.class);
-//                docent_id = 3;
-//                category_id = 2;
-//                position = 1;
-//
-//                intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-//                startActivity(intent);
+
+                Log.d("check1", "확인 누름");
                 //확인버튼을 눌렀으니 사라짐
                 go_new_docent_layout.setVisibility(View.GONE);
                 bottom_audio_layout.setVisibility(View.GONE);
@@ -738,16 +752,24 @@ public class DocentActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
+        Log.d("check1", "onStop");
+
         if (videoPlayer.getPlayWhenReady() || audioPlayer.isPlaying()) {
             videoPlayer.setPlayWhenReady(false);
             audioPlayer.pause();
             playAudioBtn.setBackgroundResource(R.drawable.ic_play_arrow_black_48dp);
         }
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.d("check1", "onPause");
         if (applicationclass.getScanning()) {
             mMinewBeaconManager.stopScan();
             handler1.removeMessages(0);
         }
-
     }
 
     @Override
