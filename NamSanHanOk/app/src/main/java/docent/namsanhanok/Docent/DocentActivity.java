@@ -145,7 +145,8 @@ public class DocentActivity extends AppCompatActivity {
     private TextView docentExplanation;
     int position;
     int docent_id;
-
+    String audio_url;
+    String video_url;
 
     public DocentActivity() {
 
@@ -178,8 +179,8 @@ public class DocentActivity extends AppCompatActivity {
 
         init();
         setRecyclerView();
-        setAudioPlayer();
-        setVideoPlayer();
+//        setAudioPlayer();
+//        setVideoPlayer();
 
         docentImage.setFocusableInTouchMode(true);
         docentImage.requestFocus();
@@ -225,6 +226,12 @@ public class DocentActivity extends AppCompatActivity {
 
                     String content = docentDataList.get(position).docent_content_info;
                     docentExplanation.setText(content);
+
+                    audio_url = docentDataList.get(position).docent_audio_url;
+                    video_url = docentDataList.get(position).docent_vod_url;
+                    setAudioPlayer();
+                    setVideoPlayer();
+
                 }
             }
 
@@ -457,7 +464,8 @@ public class DocentActivity extends AppCompatActivity {
 
         //Preparing the player
         //서버에서 가져올 때
-        String videoUrl = "http://175.123.138.125:8070/hot.mp4";
+//        String videoUrl = "http://175.123.138.125:8070/hot.mp4";
+        String videoUrl = video_url;
         DefaultBandwidthMeter defaultBandwidthMeter = new DefaultBandwidthMeter();
         MediaSource videoSource = new ExtractorMediaSource.Factory(
                 new DefaultHttpDataSourceFactory(Util.getUserAgent(getApplicationContext(), "DOCENT"), defaultBandwidthMeter)
@@ -505,7 +513,8 @@ public class DocentActivity extends AppCompatActivity {
         //audioPlayer = MediaPlayer.create(this, R.raw.konan);
 
         //서버에서 가져올 경우
-        audioPlayer = MediaPlayer.create(this, Uri.parse("http://175.123.138.125:8070/kkk.mp3"));
+//        audioPlayer = MediaPlayer.create(this, Uri.parse("http://175.123.138.125:8070/kkk.mp3"));
+        audioPlayer = MediaPlayer.create(this, Uri.parse(audio_url));
 
         audioPlayer.setLooping(true); //무한 반복
         audioPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() { //총길이 세팅
@@ -725,7 +734,8 @@ public class DocentActivity extends AppCompatActivity {
         super.onStop();
         if (videoPlayer.getPlayWhenReady() || audioPlayer.isPlaying()) {
             videoPlayer.setPlayWhenReady(false);
-            audioPlayer.stop();
+            audioPlayer.pause();
+            playAudioBtn.setBackgroundResource(R.drawable.ic_play_arrow_black_48dp);
         }
         if (applicationclass.getScanning()) {
             mMinewBeaconManager.stopScan();

@@ -48,37 +48,11 @@ public class DocentPopUpActivity extends Activity {
         setContentView(R.layout.activity_docentpupup);
 
         Intent secondIntent = getIntent();
-//        docent_detail_id = secondIntent.getExtras().getInt("docent_detail_id");
         position = secondIntent.getExtras().getInt("position");
         docent_id = secondIntent.getExtras().getInt("docent_id");
         service = Application.getInstance().getNetworkService();
 
         init();
-
-
-
-        networking();
-
-//        if(imgTitle.equals("베")){
-//            imageTitle.setText(imgTitle);
-//            imageView.setImageResource(R.drawable.bae);
-//            textView.setText("삼베 · 대마포라고도 한다. 삼은 삼과의 한해살이풀로서 온대와 열대지방에서 자란다." +"\n"
-//                    + "주로 섬유를 목적으로 재배하는데, 구석기시대부터 세계 각지에서 애용하였으며 한국에서는 조선 때부터 의복이나 침구 재료로 사용해왔다." + "\n"
-//                    + "또한 견고성과 내구성이 뛰어나 직물용 이외에 로프 · 그물 · 타이어 등을만드는 데도 사용한다." +"\n"
-//                    + "주로 섬유를 목적으로 재배하는데, 구석기시대부터 세계 각지에서 애용하였으며 한국에서는 조선 때부터 의복이나 침구 재료로 사용해왔다." + "\n"
-//                    + "또한 견고성과 내구성이 뛰어나 직물용 이외에 로프 · 그물 · 타이어 등을만드는 데도 사용한다." +"\n"
-//                    + "주로 섬유를 목적으로 재배하는데, 구석기시대부터 세계 각지에서 애용하였으며 한국에서는 조선 때부터 의복이나 침구 재료로 사용해왔다." + "\n"
-//                    + "또한 견고성과 내구성이 뛰어나 직물용 이외에 로프 · 그물 · 타이어 등을만드는 데도 사용한다." +"\n"
-//                    + "주로 섬유를 목적으로 재배하는데, 구석기시대부터 세계 각지에서 애용하였으며 한국에서는 조선 때부터 의복이나 침구 재료로 사용해왔다." + "\n"
-//                    + "또한 견고성과 내구성이 뛰어나 직물용 이외에 로프 · 그물 · 타이어 등을만드는 데도 사용한다." +"\n");
-//        }
-//
-//        else if(imgTitle.equals("짚신")){
-//            imageTitle.setText(imgTitle);
-//            imageView.setImageResource(R.drawable.jipshin);
-//            textView.setText("볏짚으로 삼은 신이다. " + "\n"
-//                    + "가는 새끼를 꼬아 날을 삼고 총과 돌기총으로 울을 삼아서 만든다.\n");
-//        }
 
 
     }
