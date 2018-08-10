@@ -56,12 +56,14 @@ public class CategoryActivity extends AppCompatActivity {
     private NetworkService service;
     private ArrayList<CategoryData> categoryDataList;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category);
 
         service = Application.getInstance().getNetworkService();
+
 
         init();
         networking();
@@ -200,7 +202,7 @@ public class CategoryActivity extends AppCompatActivity {
             case R.id.category_title3 :
                 onPause();
                 Intent docentIntent = new Intent(CategoryActivity.this, DocentActivity.class);
-                docentIntent.putExtra("docent_title", categoryDataList.get(2).category_title);
+                docentIntent.putExtra("cate_id", categoryDataList.get(2).category_id);
                 startActivity(docentIntent);
                 break;
 

@@ -77,6 +77,7 @@ import docent.namsanhanok.R;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.http.HEAD;
 
 import static com.minew.beacon.BluetoothState.BluetoothStatePowerOn;
 
@@ -148,6 +149,11 @@ public class DocentActivity extends AppCompatActivity {
     String audio_url;
     String video_url;
 
+    static int newDocent;
+//    static  int newDocent_cate_id;
+//    static int newDocent_docent_id;
+
+
     public DocentActivity() {
 
     }
@@ -157,10 +163,32 @@ public class DocentActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_docent);
 
-        Intent secondIntent = getIntent();
-        category_id = secondIntent.getExtras().getInt("cate_id");
-        position = secondIntent.getExtras().getInt("position");
-        docent_id = secondIntent.getExtras().getInt("docent_id");
+        Log.d("check1", "onCreate_newDocent : " + newDocent);
+
+        Log.d("check1", "onCreate_newDocent : " + newDocent);
+
+        if (newDocent == 1) {
+            onResume();
+        } else {
+            Intent secondIntent = getIntent();
+            category_id = secondIntent.getExtras().getInt("cate_id");
+            position = secondIntent.getExtras().getInt("position");
+            docent_id = secondIntent.getExtras().getInt("docent_id");
+            Log.d("check1", "docentAC, cate_id : " + category_id);
+            Log.d("check1", "docentAC, position : " + position);
+            Log.d("check1", "docentAC, docent_id : " + docent_id);
+        }
+//        else if(newDocent == 1){
+//            category_id = newDocent_cate_id;
+//            docent_id = newDocent_docent_id;
+//
+//        }
+
+        Log.d("check1", "밖 ocentAC, newDocent_cate_id : " + category_id);
+        Log.d("check1", "밖 docentAC, position : " + position);
+        Log.d("check1", "밖 docentAC,newDocent_docent_id : " + docent_id);
+        Log.d("check1", "밖 newDocent : " + newDocent);
+
 
         service = Application.getInstance().getNetworkService();
         networking();
@@ -215,6 +243,8 @@ public class DocentActivity extends AppCompatActivity {
 
                     //category는 순서대로 나타나 있으니, list를 다시 불러서 position으로 docent를 보냄.
                     docentDataList = response.body().docent_info;
+
+                    Log.d("check1", "docent image : " + Environment.getExternalStorageDirectory() + docentDataList.get(position).docent_image_url);
 
                     Glide.with(getApplicationContext())
                             .load(Environment.getExternalStorageDirectory() + docentDataList.get(position).docent_image_url)
@@ -510,6 +540,7 @@ public class DocentActivity extends AppCompatActivity {
                     playAudioBtn.setBackgroundResource(R.drawable.ic_play_arrow_black_48dp);
                 }
             }
+
         });
 
         initFullscreenDialog();
@@ -586,6 +617,12 @@ public class DocentActivity extends AppCompatActivity {
                     } else {
                         bottom_audio_layout.setVisibility(View.GONE);
                     }
+//                    if (bottom_audio_layout.getVisibility() == View.GONE && audio_url != null) {
+//                        bottom_audio_layout.setVisibility(View.VISIBLE);
+//                    } else if (bottom_audio_layout.getVisibility() == View.GONE && audio_url.equals("")) {
+//                        Toast.makeText(getApplicationContext(), "오디오가 지원되지 않는 전시품입니다.", Toast.LENGTH_SHORT).show();
+//                    } else {
+//                        bottom_audio_layout.setVisibility(View.GONE);
                 }
                 break;
 
@@ -609,16 +646,22 @@ public class DocentActivity extends AppCompatActivity {
 
             case R.id.confirm_go_new_docent:
                 //새로운 내용으로 내용 업데이트
-//                intent = new Intent(DocentActivity.this, DocentActivity.class);
-//                docent_id = 3;
-//                category_id = 2;
-//                position = 1;
-//
-//                intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-//                startActivity(intent);
+                //Preference
+                //매개변수하나 이용해서 값이 0이면 category에서 갖고오고 1이면 docent갱신
+
+                intent = new Intent(DocentActivity.this, DocentActivity.class);
                 //확인버튼을 눌렀으니 사라짐
                 go_new_docent_layout.setVisibility(View.GONE);
                 bottom_audio_layout.setVisibility(View.GONE);
+
+                newDocent = 1;
+                finish();
+                startActivity(intent);
+
+                Log.d("check1", "확인 누름");
+                Log.d("check1", "확인버튼_newDocent : " + newDocent);
+
+
                 break;
 
         }
@@ -697,8 +740,8 @@ public class DocentActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        if(videoPlayer != null) videoPlayer.stop();
-        if(audioPlayer != null) audioPlayer.stop();
+        if (videoPlayer != null) videoPlayer.stop();
+        if (audioPlayer != null) audioPlayer.stop();
 
     }
 
@@ -745,6 +788,25 @@ public class DocentActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d("check1", "newDocent : " + newDocent);
+
+        if (newDocent == 1) {
+
+            Log.d("check1", "onResume, cate_id : " + category_id);
+            Log.d("check1", "onResume, docent_id : " + docent_id);
+            //여기서 비콘 넘버 받아서 그 docent의 id와 category_id를 받아오면 됨.
+            category_id = 1;
+            docent_id = 2;
+            newDocent = 0;
+
+            Log.d("check1", "onResume, cate_id : " + category_id);
+            Log.d("check1", "onResume, docent_id : " + docent_id);
+        }
+    }
+
+    @Override
     protected void onStop() {
         super.onStop();
         if (videoPlayer != null && audioPlayer == null) { //비디오만 있을 경우
@@ -757,12 +819,16 @@ public class DocentActivity extends AppCompatActivity {
             audioPlayer.pause();
             playAudioBtn.setBackgroundResource(R.drawable.ic_play_arrow_black_48dp);
         }
+    }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.d("check1", "onPause");
         if (applicationclass.getScanning()) {
             mMinewBeaconManager.stopScan();
             handler1.removeMessages(0);
         }
-
     }
 
     @Override

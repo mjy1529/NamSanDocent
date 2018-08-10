@@ -44,13 +44,14 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListViewHo
     @Override
     public void onBindViewHolder(CategoryListViewHolder holder, final int position) {
 
+        Log.d("check1", "categoryList img_url : " + Environment.getExternalStorageDirectory() + docentData.get(position).docent_image_url);
+
         Glide.with(context)
                     .load(Environment.getExternalStorageDirectory() + docentData.get(position).docent_image_url)
                     .apply(new RequestOptions()
                             .centerCrop())
                     .into(holder.VH_category_list_image);
 
-//        holder.VH_category_image.setImageResource(categoryActivityItem.get(position).getImage());
         holder.VH_category_list_text_title.setText(docentData.get(position).docent_title);
 
 

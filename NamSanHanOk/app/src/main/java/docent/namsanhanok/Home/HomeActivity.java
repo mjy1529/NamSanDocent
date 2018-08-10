@@ -66,6 +66,7 @@ import libs.mjn.prettydialog.PrettyDialogCallback;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.http.HEAD;
 
 import static com.minew.beacon.BluetoothState.BluetoothStatePowerOn;
 
@@ -418,6 +419,8 @@ public class HomeActivity extends AppCompatActivity {
             applicationclass.setScanning(true);
             handler.sendEmptyMessage(0);
         }
+//        if(newItemDialog.isShowing()) newItemDialog.dismiss();
+
     }
 
     @Override
@@ -430,6 +433,7 @@ public class HomeActivity extends AppCompatActivity {
         handler.removeMessages(0);
         //if(newItemDialog.isShowing()) newItemDialog.dismiss();
     }
+
 
     @Override
     protected void onDestroy() {
