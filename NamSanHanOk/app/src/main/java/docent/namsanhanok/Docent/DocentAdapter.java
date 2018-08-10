@@ -2,7 +2,9 @@ package docent.namsanhanok.Docent;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Environment;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,22 +45,28 @@ public class DocentAdapter extends RecyclerView.Adapter<DocentViewHolder> {
 
         //recycler viewholder
         Glide.with(context)
-                .load(docentDetailData.get(position).docent_detail_image_url)
+                .load(Environment.getExternalStorageDirectory() + docentDetailData.get(position).docent_detail_image_url)
                 .apply(new RequestOptions()
                         .centerCrop())
                 .into(holder.VH_docent_image);
 
-        holder.VH_docent_text_title.setText(docentDetailData.get(position).docent_dtail_title);
+        Log.d("check1", "docentAdapter imageurl: " + Environment.getExternalStorageDirectory() + docentDetailData.get(position).docent_detail_image_url);
+
+        holder.VH_docent_text_title.setText(docentDetailData.get(position).docent_detail_title);
 
 
         holder.VH_docent_image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, DocentPopUpActivity.class);
-                intent.putExtra("docent_detail_title", docentDetailData.get(position).docent_dtail_title);
-                intent.putExtra("docent_detail_info", docentDetailData.get(position).docent_detail_info);
+                intent.putExtra("position", position);
+//                intent.putExtra("docent_detail_id", docentDetailData.get(position).docent_detail_id);
+                intent.putExtra("docent_id", docentDetailData.get(position).docent_id);
 
+                Log.d("check1" , "docent : " + docentDetailData.get(position).docent_id);
+                Log.d("check1" , "docent_detail_id : " + docentDetailData.get(position).docent_detail_id);
 
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
             }
         });

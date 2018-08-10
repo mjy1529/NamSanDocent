@@ -3,6 +3,6 @@ package docent.namsanhanok.Docent;
 import java.util.ArrayList;
 
 public class DocentDetailResult {
-    ArrayList<DocentData> docent_detail_info;
+    public ArrayList<DocentDetailData> docent_detail_info;
 
 }

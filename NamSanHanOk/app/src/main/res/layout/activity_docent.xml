@@ -53,7 +53,7 @@
                 android:layout_marginStart="15dp"
                 android:background="#919191" />
 
-            <com.codesgood.views.JustifiedTextView
+            <TextView
                 android:id="@+id/docentExplanation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -63,50 +63,69 @@
                 android:paddingStart="15dp"
                 android:paddingTop="10dp"/>
 
-            <TextView
-                android:id="@+id/docentDetails"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/docentExplanation"
-                android:layout_marginBottom="10dp"
-                android:layout_marginStart="15dp"
-                android:layout_marginTop="20dp"
-                android:text="@string/detail"
-                android:textStyle="bold" />
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/docent_recyclerView"
+            <LinearLayout
+                android:id="@+id/docentDetails_Layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/docentDetails"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="5dp" />
+                android:orientation="vertical"
+                android:layout_below="@+id/docentExplanation">
 
-            <TextView
-                android:id="@+id/watchVOD"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/docent_recyclerView"
-                android:layout_marginBottom="10dp"
-                android:layout_marginStart="15dp"
-                android:layout_marginTop="35dp"
-                android:text="@string/video"
-                android:textStyle="bold" />
-
-            <FrameLayout
-                android:id="@+id/main_media_frame"
-                android:layout_width="match_parent"
-                android:layout_height="230dp"
-                android:layout_below="@+id/watchVOD">
-
-                <com.google.android.exoplayer2.ui.SimpleExoPlayerView
-                    android:id="@+id/playerView"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                <TextView
+                    android:id="@+id/docentDetails"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/docentExplanation"
                     android:layout_marginBottom="10dp"
-                    app:resize_mode="fixed_width" />
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="20dp"
+                    android:text="@string/detail"
+                    android:textStyle="bold" />
 
-            </FrameLayout>
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/docent_recyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/docentDetails"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="5dp" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/docentVideo_Layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_below="@+id/docentDetails_Layout">
+
+                <TextView
+                    android:id="@+id/watchVOD"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="35dp"
+                    android:text="@string/video"
+                    android:textStyle="bold" />
+
+                <FrameLayout
+                    android:id="@+id/main_media_frame"
+                    android:layout_width="match_parent"
+                    android:layout_height="230dp"
+                    android:layout_below="@+id/watchVOD">
+
+                    <com.google.android.exoplayer2.ui.SimpleExoPlayerView
+                        android:id="@+id/playerView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="10dp"
+                        app:resize_mode="fixed_width" />
+
+                </FrameLayout>
+
+            </LinearLayout>
+
 
         </RelativeLayout>
 

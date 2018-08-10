@@ -28,6 +28,7 @@ public class DB_Async extends AsyncTask<String, String, String> {
     TextView curPercent = ((DBActivity)DBActivity.mContext).curPercent;
     private String FileName;
     String savePath = Environment.getExternalStorageDirectory() + File.separator + "namsangol/";
+    File file;
 
     @Override
     protected void onPreExecute() {
@@ -60,7 +61,7 @@ public class DB_Async extends AsyncTask<String, String, String> {
             // ************* //
 
             Log.d("check", "http check ok : ");
-            File file = new File(FileName);
+            file = new File(FileName);
             OutputStream out = new FileOutputStream(file);
             saveRemoteFile(inputStream, out, sizeOfFile);
 
@@ -98,7 +99,7 @@ public class DB_Async extends AsyncTask<String, String, String> {
             if (zipFile.getProgressMonitor().getResult() == ProgressMonitor.RESULT_SUCCESS) {
                 Log.d("check", "Result_Success");
                 ((DBActivity) DBActivity.mContext).activityFinish();
-                zipFile.removeFile(FileName);
+                file.delete();
             }
 
         } catch (ZipException e) {
