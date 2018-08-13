@@ -148,9 +148,8 @@ public class DocentActivity extends AppCompatActivity {
     String audio_url;
     String video_url;
 
-    static int newDocent;
-//    static  int newDocent_cate_id;
-//    static int newDocent_docent_id;
+    static boolean newDocent;
+    int beaconNum;
 
 
     public DocentActivity() {
@@ -166,10 +165,8 @@ public class DocentActivity extends AppCompatActivity {
 
         Log.d("check1", "onCreate_newDocent : " + newDocent);
 
-        if(newDocent == 1){
-            onResume();
-        }
-        else{
+
+        if(newDocent == false){
             Intent secondIntent = getIntent();
             category_id = secondIntent.getExtras().getInt("cate_id");
             position = secondIntent.getExtras().getInt("position");
@@ -178,11 +175,7 @@ public class DocentActivity extends AppCompatActivity {
             Log.d("check1", "docentAC, position : " + position);
             Log.d("check1", "docentAC, docent_id : " + docent_id);
         }
-//        else if(newDocent == 1){
-//            category_id = newDocent_cate_id;
-//            docent_id = newDocent_docent_id;
-//
-//        }
+
 
         Log.d("check1", "밖 ocentAC, newDocent_cate_id : " + category_id);
         Log.d("check1", "밖 docentAC, position : " + position);
@@ -191,18 +184,23 @@ public class DocentActivity extends AppCompatActivity {
 
 
 
-
-
         service = Application.getInstance().getNetworkService();
         networking();
-        networking2();
-        networking3();
+        if(newDocent == false){
+            networking2();
+        }
+        else if(newDocent == true){
+            networking3();
+        }
+        networking4();
 
         mMinewBeaconManager = MinewBeaconManager.getInstance(this);
         applicationclass = (Application) getApplicationContext();
 
         existBeacon.add("15290");
         existBeacon.add("15282");
+
+        beaconNum = 15282;
 
         showBeaconAlarm();
         initBeaconManager();
@@ -213,6 +211,7 @@ public class DocentActivity extends AppCompatActivity {
 
         docentImage.setFocusableInTouchMode(true);
         docentImage.requestFocus();
+
     }
 
     //toolbar title
@@ -249,6 +248,7 @@ public class DocentActivity extends AppCompatActivity {
 
                     Log.d("check1", "docent image : " + Environment.getExternalStorageDirectory() + docentDataList.get(position).docent_image_url);
 
+
                     Glide.with(getApplicationContext())
                             .load(Environment.getExternalStorageDirectory() + docentDataList.get(position).docent_image_url)
                             .into(docentImage);
@@ -277,8 +277,50 @@ public class DocentActivity extends AppCompatActivity {
         });
     }
 
-    //Listcx
+    //docent content
     public void networking3() {
+        final Call<DocentResult> request = service.getBeaconDocentResult(getBeaconDocentInfo("docent_list", beaconNum));
+        request.enqueue(new Callback<DocentResult>() {
+            @Override
+            public void onResponse(Call<DocentResult> call, Response<DocentResult> response) {
+                if(response.body() != null) {
+
+                    //category는 순서대로 나타나 있으니, list를 다시 불러서 position으로 docent를 보냄.
+                    docentDataList= response.body().docent_info;
+
+                    Log.d("check1", "docent image : " + Environment.getExternalStorageDirectory() + docentDataList.get(position).docent_image_url);
+
+
+                    Glide.with(getApplicationContext())
+                            .load(Environment.getExternalStorageDirectory() + docentDataList.get(position).docent_image_url)
+                            .into(docentImage);
+
+                    docentName.setText(docentDataList.get(position).docent_title);
+
+                    String content = docentDataList.get(position).docent_content_info;
+                    docentExplanation.setText(content);
+
+                    audio_url = docentDataList.get(position).docent_audio_url;
+                    video_url = docentDataList.get(position).docent_vod_url;
+
+                    Log.d("check1", "audio url " + audio_url);
+                    Log.d("check1", "video url : " + video_url);
+
+                    setAudioPlayer();
+                    setVideoPlayer();
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<DocentResult> call, Throwable t) {
+                Log.d("check", "fail");
+            }
+        });
+    }
+
+    //docent detail list
+    public void networking4() {
         Call<DocentDetailResult> docentDetailListResult = service.getDocentDetailResult(getDocentDetailInfo("docent_detail_list", docent_id));
         docentDetailListResult.enqueue(new Callback<DocentDetailResult>() {
             @Override
@@ -648,7 +690,7 @@ public class DocentActivity extends AppCompatActivity {
                 go_new_docent_layout.setVisibility(View.GONE);
                 bottom_audio_layout.setVisibility(View.GONE);
 
-                newDocent=1;
+                newDocent = true;
                 finish();
                 startActivity(intent);
 
@@ -789,14 +831,14 @@ public class DocentActivity extends AppCompatActivity {
         super.onResume();
         Log.d("check1", "newDocent : " + newDocent);
 
-        if(newDocent == 1){
+        if(newDocent == true){
 
             Log.d("check1", "onResume, cate_id : " + category_id);
             Log.d("check1", "onResume, docent_id : " + docent_id);
             //여기서 비콘 넘버 받아서 그 docent의 id와 category_id를 받아오면 됨.
             category_id = 1;
             docent_id = 2;
-            newDocent = 0;
+
 
             Log.d("check1", "onResume, cate_id : " + category_id);
             Log.d("check1", "onResume, docent_id : " + docent_id);
@@ -843,6 +885,25 @@ public class DocentActivity extends AppCompatActivity {
             JSONObject data = new JSONObject();
             data.put("cmd", cmd);
             data.put("category_id", cate_id);
+
+            JSONObject root = new JSONObject();
+            root.put("info", data);
+            jsonStr = root.toString();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        Log.d("check1", "docent content 정보요청 : " + jsonStr);
+
+        return jsonStr;
+    }
+
+    public String getBeaconDocentInfo(String cmd, int beacon_number) {
+        String jsonStr = "";
+        try {
+            JSONObject data = new JSONObject();
+            data.put("cmd", cmd);
+            data.put("beacon_number", beacon_number);
 
             JSONObject root = new JSONObject();
             root.put("info", data);

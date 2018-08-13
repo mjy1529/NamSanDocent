@@ -58,4 +58,8 @@ public interface NetworkService {
     @POST("/package_info")
     Call<PackageResult> getPackageResult(@Body String cmd);
 
+    // beacon_number로 docent
+    @Headers("Content-Type: application/json")
+    @POST("docent_info/beacon/ko")
+    Call<DocentResult> getBeaconDocentResult(@Body String cmd);
 }
