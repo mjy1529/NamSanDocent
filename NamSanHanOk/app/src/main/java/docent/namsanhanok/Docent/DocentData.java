@@ -1,6 +1,8 @@
 package docent.namsanhanok.Docent;
 
-public class DocentData {
+import java.io.Serializable;
+
+public class DocentData implements Serializable{
     public String docent_id;
     public String category_id;
     public String docent_title;

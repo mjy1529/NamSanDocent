@@ -3,6 +3,7 @@ package docent.namsanhanok;
 import java.util.ArrayList;
 
 import docent.namsanhanok.Category.CategoryResult;
+import docent.namsanhanok.Docent.DocentBeaconResult;
 import docent.namsanhanok.Docent.DocentData;
 import docent.namsanhanok.Docent.DocentDetailResult;
 import docent.namsanhanok.Docent.DocentResult;
@@ -61,5 +62,5 @@ public interface NetworkService {
     // beacon_number로 docent
     @Headers("Content-Type: application/json")
     @POST("docent_info/beacon/ko")
-    Call<DocentResult> getBeaconDocentResult(@Body String cmd);
+    Call<DocentBeaconResult> getDocentByBeaconResult(@Body String cmd);
 }

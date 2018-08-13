@@ -140,7 +140,7 @@
         android:layout_marginStart="5dp"
         android:background="@android:color/transparent"
         android:gravity="center_horizontal"
-        android:visibility="visible">
+        android:visibility="gone">
 
         <include layout="@layout/bottom_get_new_docent" />
 

@@ -141,8 +141,6 @@ public class DocentActivity extends AppCompatActivity {
     NetworkService service;
     int category_id;
     private ArrayList<DocentDetailData> docentDetailDataList;
-    private ArrayList<DocentData> docentDataList;
-    private ArrayList<CategoryData> categoryDataList;
     private TextView docentExplanation;
     int position;
     int docent_id;
@@ -152,6 +150,7 @@ public class DocentActivity extends AppCompatActivity {
     static boolean newDocent;
     int beaconNum;
 
+    DocentData docentObject;
 
     public DocentActivity() {
 
@@ -162,170 +161,188 @@ public class DocentActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_docent);
 
-        Log.d("check1", "onCreate_newDocent : " + newDocent);
-
-        Log.d("check1", "onCreate_newDocent : " + newDocent);
-
-
         if (newDocent == true) {
             onResume();
         } else {
-            Intent secondIntent = getIntent();
-            category_id = secondIntent.getExtras().getInt("cate_id");
-            position = secondIntent.getExtras().getInt("position");
-            docent_id = secondIntent.getExtras().getInt("docent_id");
-            Log.d("check1", "docentAC, cate_id : " + category_id);
-            Log.d("check1", "docentAC, position : " + position);
-            Log.d("check1", "docentAC, docent_id : " + docent_id);
+            Intent docentObjectIntent = getIntent();
+            docentObject = (DocentData) docentObjectIntent.getSerializableExtra("docentObject");
         }
 
-
-        Log.d("check1", "밖 ocentAC, newDocent_cate_id : " + category_id);
-        Log.d("check1", "밖 docentAC, position : " + position);
-        Log.d("check1", "밖 docentAC,newDocent_docent_id : " + docent_id);
-        Log.d("check1", "밖 newDocent : " + newDocent);
-
-
-        service = Application.getInstance().getNetworkService();
-        networking();
+//        networking();
         if(newDocent == false){
-            networking2();
+            //networking2();
         }
         else if(newDocent == true){
-            networking3();
+            //networking3();
         }
-        networking4();
 
         mMinewBeaconManager = MinewBeaconManager.getInstance(this);
         applicationclass = (Application) getApplicationContext();
+        service = Application.getInstance().getNetworkService();
 
         existBeacon.add("15290");
         existBeacon.add("15282");
-
         beaconNum = 15282;
 
+
         showBeaconAlarm();
+
+        init();
         initBeaconManager();
         initBeaconListenerManager();
 
-        init();
+        setDocentObject(docentObject);
+        networking4();
         setRecyclerView();
 
         docentImage.setFocusableInTouchMode(true);
         docentImage.requestFocus();
-
         newDocent = false;
     }
 
+    public void setDocentObject(DocentData docentObject) {
+        String category_title = "";
+        switch (docentObject.category_id) {
+            case "1" : category_title = "한옥"; break;
+            case "2" : category_title = "정원"; break;
+            case "3" : category_title = "타임캡슐광장"; break;
+        }
+        docentTitle.setText(category_title);
+
+        Glide.with(getApplicationContext())
+                .load(Environment.getExternalStorageDirectory() + docentObject.docent_image_url)
+                .into(docentImage);
+
+        docentName.setText(docentObject.docent_title);
+        docentExplanation.setText(docentObject.docent_content_info);
+
+        audio_url = docentObject.docent_audio_url;
+        video_url = docentObject.docent_vod_url;
+
+        if (audio_url.equals("")) {
+            audioBtn.setBackgroundResource(R.drawable.no_headphones);
+        } else {
+            setAudioPlayer();
+        }
+
+        if (video_url.equals("")) {
+            docentVideo_Layout.setVisibility(View.GONE);
+        } else {
+            setVideoPlayer();
+        }
+
+        docent_id = Integer.parseInt(docentObject.docent_id);
+    }
+
     //toolbar title
-    public void networking() {
-        Call<CategoryResult> categoryResultCall = service.getCategoryResult(getCategoryInfo("category_list"));
-        categoryResultCall.enqueue(new Callback<CategoryResult>() {
-            @Override
-            public void onResponse(Call<CategoryResult> call, Response<CategoryResult> response) {
-                if (response.isSuccessful()) {
-                    Log.d("check1", "Category network ok");
-                    categoryDataList = response.body().category_info;
-
-                    docentTitle.setText(categoryDataList.get(category_id - 1).category_title);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<CategoryResult> call, Throwable t) {
-                Log.d("check1", "실패 : " + t.getMessage());
-            }
-        });
-    }
-
-    //docent content
-    public void networking2() {
-        final Call<DocentResult> request = service.getDocentResult(getDocentInfo("docent_list", category_id));
-        request.enqueue(new Callback<DocentResult>() {
-            @Override
-            public void onResponse(Call<DocentResult> call, Response<DocentResult> response) {
-                if (response.body() != null) {
-
-                    //category는 순서대로 나타나 있으니, list를 다시 불러서 position으로 docent를 보냄.
-                    docentDataList = response.body().docent_info;
-
-                    Log.d("check1", "docent image : " + Environment.getExternalStorageDirectory() + docentDataList.get(position).docent_image_url);
-
-
-                    Glide.with(getApplicationContext())
-                            .load(Environment.getExternalStorageDirectory() + docentDataList.get(position).docent_image_url)
-                            .into(docentImage);
-
-                    docentName.setText(docentDataList.get(position).docent_title);
-
-                    String content = docentDataList.get(position).docent_content_info;
-                    docentExplanation.setText(content);
-
-                    audio_url = docentDataList.get(position).docent_audio_url;
-                    video_url = docentDataList.get(position).docent_vod_url;
-
-                    if (audio_url.equals("")) {
-                        audioBtn.setBackgroundResource(R.drawable.no_headphones);
-                    } else {
-                        setAudioPlayer();
-                    }
-
-                    if (video_url.equals("")) {
-                        docentVideo_Layout.setVisibility(View.GONE);
-                    } else {
-                        setVideoPlayer();
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<DocentResult> call, Throwable t) {
-                Log.d("check", "fail");
-            }
-        });
-    }
+//    public void networking() {
+//        Call<CategoryResult> categoryResultCall = service.getCategoryResult(getCategoryInfo("category_list"));
+//        categoryResultCall.enqueue(new Callback<CategoryResult>() {
+//            @Override
+//            public void onResponse(Call<CategoryResult> call, Response<CategoryResult> response) {
+//                if (response.isSuccessful()) {
+//                    Log.d("check1", "Category network ok");
+//                    categoryDataList = response.body().category_info;
+//
+//                    docentTitle.setText(categoryDataList.get(category_id - 1).category_title);
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<CategoryResult> call, Throwable t) {
+//                Log.d("check1", "실패 : " + t.getMessage());
+//            }
+//        });
+//    }
 
     //docent content
-    public void networking3() {
-        final Call<DocentResult> request = service.getBeaconDocentResult(getBeaconDocentInfo("docent_list", beaconNum));
-        request.enqueue(new Callback<DocentResult>() {
-            @Override
-            public void onResponse(Call<DocentResult> call, Response<DocentResult> response) {
-                if(response.body() != null) {
+//    public void networking2() {
+//        final Call<DocentResult> request = service.getDocentResult(getDocentInfo("docent_list", category_id));
+//        request.enqueue(new Callback<DocentResult>() {
+//            @Override
+//            public void onResponse(Call<DocentResult> call, Response<DocentResult> response) {
+//                if (response.body() != null) {
+//
+//                    //category는 순서대로 나타나 있으니, list를 다시 불러서 position으로 docent를 보냄.
+//                    docentDataList = response.body().docent_info;
+//
+//                    Log.d("check1", "docent image : " + Environment.getExternalStorageDirectory() + docentDataList.get(position).docent_image_url);
+//
+//
+//                    Glide.with(getApplicationContext())
+//                            .load(Environment.getExternalStorageDirectory() + docentDataList.get(position).docent_image_url)
+//                            .into(docentImage);
+//
+//                    docentName.setText(docentDataList.get(position).docent_title);
+//
+//                    String content = docentDataList.get(position).docent_content_info;
+//                    docentExplanation.setText(content);
+//
+//                    audio_url = docentDataList.get(position).docent_audio_url;
+//                    video_url = docentDataList.get(position).docent_vod_url;
+//
+//                    if (audio_url.equals("")) {
+//                        audioBtn.setBackgroundResource(R.drawable.no_headphones);
+//                    } else {
+//                        setAudioPlayer();
+//                    }
+//
+//                    if (video_url.equals("")) {
+//                        docentVideo_Layout.setVisibility(View.GONE);
+//                    } else {
+//                        setVideoPlayer();
+//                    }
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<DocentResult> call, Throwable t) {
+//                Log.d("check", "fail");
+//            }
+//        });
+//    }
 
-                    //category는 순서대로 나타나 있으니, list를 다시 불러서 position으로 docent를 보냄.
-                    docentDataList= response.body().docent_info;
-
-                    Log.d("check1", "docent image : " + Environment.getExternalStorageDirectory() + docentDataList.get(position).docent_image_url);
-
-
-                    Glide.with(getApplicationContext())
-                            .load(Environment.getExternalStorageDirectory() + docentDataList.get(position).docent_image_url)
-                            .into(docentImage);
-
-                    docentName.setText(docentDataList.get(position).docent_title);
-
-                    String content = docentDataList.get(position).docent_content_info;
-                    docentExplanation.setText(content);
-
-                    audio_url = docentDataList.get(position).docent_audio_url;
-                    video_url = docentDataList.get(position).docent_vod_url;
-
-                    Log.d("check1", "audio url " + audio_url);
-                    Log.d("check1", "video url : " + video_url);
-
-                    setAudioPlayer();
-                    setVideoPlayer();
-
-                }
-            }
-
-            @Override
-            public void onFailure(Call<DocentResult> call, Throwable t) {
-                Log.d("check", "fail");
-            }
-        });
-    }
+    //docent content
+//    public void networking3() {
+//        final Call<DocentResult> request = service.getBeaconDocentResult(getBeaconDocentInfo("docent_list", beaconNum));
+//        request.enqueue(new Callback<DocentResult>() {
+//            @Override
+//            public void onResponse(Call<DocentResult> call, Response<DocentResult> response) {
+//                if(response.body() != null) {
+//
+//                    //category는 순서대로 나타나 있으니, list를 다시 불러서 position으로 docent를 보냄.
+//                    docentDataList= response.body().docent_info;
+//
+//                    Log.d("check1", "docent image : " + Environment.getExternalStorageDirectory() + docentDataList.get(position).docent_image_url);
+//
+//
+//                    Glide.with(getApplicationContext())
+//                            .load(Environment.getExternalStorageDirectory() + docentDataList.get(position).docent_image_url)
+//                            .into(docentImage);
+//
+//                    docentName.setText(docentDataList.get(position).docent_title);
+//
+//                    String content = docentDataList.get(position).docent_content_info;
+//                    docentExplanation.setText(content);
+//
+//                    audio_url = docentDataList.get(position).docent_audio_url;
+//                    video_url = docentDataList.get(position).docent_vod_url;
+//
+//                    Log.d("check1", "audio url " + audio_url);
+//                    Log.d("check1", "video url : " + video_url);
+//
+//                    setAudioPlayer();
+//                    setVideoPlayer();
+//
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<DocentResult> call, Throwable t) {
+//                Log.d("check", "fail");
+//            }
+//        });
+//    }
 
     //docent detail list
     public void networking4() {
@@ -679,7 +696,7 @@ public class DocentActivity extends AppCompatActivity {
                 intent = new Intent(getApplicationContext(), LocationActivity.class);
                 intent.putExtra("title", docentName.getText().toString());
                 intent.putExtra("position", position);
-                intent.putExtra("category_id", docentDataList.get(position).category_id);
+                intent.putExtra("category_id", docentObject.category_id);
 
                 startActivity(intent);
                 break;
@@ -748,6 +765,7 @@ public class DocentActivity extends AppCompatActivity {
     public void init() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.docentToolbar);
         setSupportActionBar(toolbar);
+
 
         homeBtn = (ImageButton) findViewById(R.id.homeBtn);
         docentName = (TextView) findViewById(R.id.docentName);

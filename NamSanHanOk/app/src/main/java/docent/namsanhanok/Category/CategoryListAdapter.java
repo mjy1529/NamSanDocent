@@ -32,7 +32,6 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListViewHo
         notifyDataSetChanged();
     }
 
-
     @Override
     public CategoryListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_category_list_recycler, parent, false);
@@ -54,16 +53,11 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListViewHo
 
         holder.VH_category_list_text_title.setText(docentData.get(position).docent_title);
 
-
-
         holder.VH_category_list_image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int docent_postion = position;
                 Intent intent = new Intent(context, DocentActivity.class);
-                intent.putExtra("cate_id", docentData.get(position).category_id);
-                intent.putExtra("position", position);
-                intent.putExtra("docent_id", docentData.get(position).docent_id);
+                intent.putExtra("docentObject", docentData.get(position));
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
             }
@@ -73,10 +67,7 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListViewHo
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, DocentActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.putExtra("cate_id", docentData.get(position).category_id);
-                intent.putExtra("position", position);
-                intent.putExtra("docent_id", docentData.get(position).docent_id);
+                intent.putExtra("docentObject", docentData.get(position));
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
             }
@@ -88,7 +79,4 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListViewHo
     public int getItemCount() {
         return docentData != null ? docentData.size() : 0;
     }
-
-
-
 }

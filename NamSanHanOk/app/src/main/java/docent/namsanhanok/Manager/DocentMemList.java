@@ -148,7 +148,7 @@ public class DocentMemList {
 
     public boolean check_beacon_number(String bc_num)
     {
-        if (check_beacon_number_in_category(bc_num) == true || check_beacon_number_in_docent(bc_num) == true) {
+        if (check_beacon_number_in_category(bc_num) || check_beacon_number_in_docent(bc_num)) {
             return true;
         }
         return false;
@@ -156,16 +156,9 @@ public class DocentMemList {
 
     public boolean check_soundqr_number(String sq_num)
     {
-        if (check_soundqr_number_in_category(sq_num) == true || check_soundqr_number_in_docent(sq_num) == true) {
+        if (check_soundqr_number_in_category(sq_num)|| check_soundqr_number_in_docent(sq_num)) {
             return true;
         }
         return false;
-    }
-
-    @Override
-    public String toString() {
-        return "DocentMemList{" +
-                "categorylist_=" + categorylist_ +
-                '}';
     }
 }
