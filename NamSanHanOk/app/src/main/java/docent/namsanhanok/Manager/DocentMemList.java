@@ -10,10 +10,10 @@ public class DocentMemList {
 
     public HashMap<String, CategoryData> categorylist_;
     public HashMap<String, DocentData> docentlist_;
-    public static DocentMemList instance;
+    public static DocentMemList instance = new DocentMemList();;
 
     public static DocentMemList getInstance() {
-        instance = new DocentMemList();
+//        instance = new DocentMemList();
         return instance;
     }
 
@@ -45,9 +45,8 @@ public class DocentMemList {
     }
 
     public boolean put_docent_info(DocentData data) {
-        if (docentlist_.size() == 0)
-            return false;
-
+//        if (docentlist_.size() == 0)
+//            return false;
         Iterator<String> keys = docentlist_.keySet().iterator();
         boolean found = false;
         while( keys.hasNext() ){
@@ -56,12 +55,16 @@ public class DocentMemList {
                 found = true;
             }
         }
-
-        if (found == false)
-            return false;
-
-        docentlist_.put(data.docent_id, data);
-        return true;
+//        if (found == false)
+//            return false;
+//
+//        docentlist_.put(data.docent_id, data);
+//        return true;
+        if (found == false) {
+            docentlist_.put(data.docent_id, data);
+            return true;
+        }
+        return false;
     }
 
     public boolean get_category_info(String id, CategoryData data){
@@ -72,11 +75,11 @@ public class DocentMemList {
         return true;
     }
 
-    public boolean get_docent_info(String id, DocentData item){
+    public boolean get_docent_info(String id, DocentData data){
         if (docentlist_.size() == 0)
             return false;
 
-        item = docentlist_.get(id);
+        data = docentlist_.get(id);
         return true;
     }
 

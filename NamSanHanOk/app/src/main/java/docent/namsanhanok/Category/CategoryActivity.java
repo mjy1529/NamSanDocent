@@ -36,6 +36,7 @@ import java.util.ArrayList;
 import docent.namsanhanok.Application;
 import docent.namsanhanok.Docent.DocentActivity;
 import docent.namsanhanok.Home.HomeActivity;
+import docent.namsanhanok.Manager.DocentMemList;
 import docent.namsanhanok.NetworkService;
 import docent.namsanhanok.R;
 import retrofit2.Call;
@@ -54,7 +55,10 @@ public class CategoryActivity extends AppCompatActivity {
     TextView category_title3;
 
     private NetworkService service;
-    private ArrayList<CategoryData> categoryDataList;
+    public ArrayList<CategoryData> categoryDataList;
+
+    static public CategoryData categoryData;
+    DocentMemList docentMemList;
 
 
     @Override
@@ -66,59 +70,62 @@ public class CategoryActivity extends AppCompatActivity {
 
 
         init();
-        networking();
+//        networking();
+        setContent();
     }
 
-    public void setImg() {
-        final int blackFilter = getApplication().getResources().getColor(R.color.black_color_filter);
-        final PorterDuffColorFilter blakcColorFilter = new PorterDuffColorFilter(blackFilter, PorterDuff.Mode.SRC_ATOP);
-
-
-        Log.d("check1", "img1 : " + Environment.getExternalStorageDirectory() + categoryDataList.get(0).category_image_url);
-
-        Glide.with(this).load(Environment.getExternalStorageDirectory() + categoryDataList.get(0).category_image_url).apply(new RequestOptions()
-                .centerCrop()).into(new SimpleTarget<Drawable>() {
-            @Override
-            public void onResourceReady(Drawable resource, Transition<? super Drawable> transition) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                    hanok_img.setBackground(resource);
-                    resource.setColorFilter(blakcColorFilter);
-
-                }
-
-            }
-
-        });
-
-        Log.d("check1", "img2 : " + Environment.getExternalStorageDirectory() + categoryDataList.get(1).category_image_url);
-
-        Glide.with(this).load(Environment.getExternalStorageDirectory() + categoryDataList.get(1).category_image_url).apply(new RequestOptions()
-                .centerCrop()).into(new SimpleTarget<Drawable>() {
-            @Override
-            public void onResourceReady(Drawable resource, Transition<? super Drawable> transition) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                    lake_img.setBackground(resource);
-                    resource.setColorFilter(blakcColorFilter);
-                }
-            }
-        });
-
-        Log.d("check1", "img3 : " + Environment.getExternalStorageDirectory() + categoryDataList.get(2).category_image_url);
-
-        Glide.with(this).load(Environment.getExternalStorageDirectory() + categoryDataList.get(2).category_image_url).apply(new RequestOptions()
-                .centerCrop()).into(new SimpleTarget<Drawable>() {
-            @Override
-            public void onResourceReady(Drawable resource3, Transition<? super Drawable> transition) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                    capsule_img.setBackground(resource3);
-                    resource3.setColorFilter(blakcColorFilter);
-                }
-            }
-        });
-
-    }
+//    public void setImg() {
+//        final int blackFilter = getApplication().getResources().getColor(R.color.black_color_filter);
+//        final PorterDuffColorFilter blakcColorFilter = new PorterDuffColorFilter(blackFilter, PorterDuff.Mode.SRC_ATOP);
+//
+//
+//        Log.d("check1", "img1 : " + Environment.getExternalStorageDirectory() + categoryDataList.get(0).category_image_url);
+//
+//        Glide.with(this).load(Environment.getExternalStorageDirectory() + categoryDataList.get(0).category_image_url).apply(new RequestOptions()
+//                .centerCrop()).into(new SimpleTarget<Drawable>() {
+//            @Override
+//            public void onResourceReady(Drawable resource, Transition<? super Drawable> transition) {
+//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+//                    hanok_img.setBackground(resource);
+//                    resource.setColorFilter(blakcColorFilter);
+//
+//                }
+//
+//            }
+//
+//        });
+//
+//        Log.d("check1", "img2 : " + Environment.getExternalStorageDirectory() + categoryDataList.get(1).category_image_url);
+//
+//        Glide.with(this).load(Environment.getExternalStorageDirectory() + categoryDataList.get(1).category_image_url).apply(new RequestOptions()
+//                .centerCrop()).into(new SimpleTarget<Drawable>() {
+//            @Override
+//            public void onResourceReady(Drawable resource, Transition<? super Drawable> transition) {
+//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+//                    lake_img.setBackground(resource);
+//                    resource.setColorFilter(blakcColorFilter);
+//                }
+//            }
+//        });
+//
+//        Log.d("check1", "img3 : " + Environment.getExternalStorageDirectory() + categoryDataList.get(2).category_image_url);
+//
+//        Glide.with(this).load(Environment.getExternalStorageDirectory() + categoryDataList.get(2).category_image_url).apply(new RequestOptions()
+//                .centerCrop()).into(new SimpleTarget<Drawable>() {
+//            @Override
+//            public void onResourceReady(Drawable resource3, Transition<? super Drawable> transition) {
+//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+//                    capsule_img.setBackground(resource3);
+//                    resource3.setColorFilter(blakcColorFilter);
+//                }
+//            }
+//        });
+//
+//    }
 
     public void init() {
+        docentMemList = DocentMemList.getInstance();
+
         Toolbar categoryToolbar = (Toolbar)findViewById(R.id.categoryToolbar);
         categoryToolbar.bringToFront();
 
@@ -154,6 +161,57 @@ public class CategoryActivity extends AppCompatActivity {
         return json;
     }
 
+    public void setContent() {
+        categoryData = new CategoryData();
+
+        for(int i = 1; i <= docentMemList.categorylist_.size(); i ++){
+            String id = String.valueOf(i);
+            docentMemList.get_category_info(id , categoryData);
+            category_title1.setText(categoryData.category_title);
+            Log.d("check1", "setContent : " + docentMemList.categorylist_.toString());
+
+            setImg(i);
+            Log.d("check1", "setContent : " + toString());
+
+
+        }
+
+
+    }
+
+    public void setImg(int i) {
+        final int blackFilter = getApplication().getResources().getColor(R.color.black_color_filter);
+        final PorterDuffColorFilter blakcColorFilter = new PorterDuffColorFilter(blackFilter, PorterDuff.Mode.SRC_ATOP);
+
+        final int sequence = i;
+
+        Log.d("check1", "setImg_sequence : " + sequence);
+
+        Log.d("check1", "img1 : " + Environment.getExternalStorageDirectory() + categoryData.category_image_url);
+
+        Glide.with(this).load(Environment.getExternalStorageDirectory() + categoryData.category_image_url).apply(new RequestOptions()
+                .centerCrop()).into(new SimpleTarget<Drawable>() {
+            @Override
+            public void onResourceReady(Drawable resource, Transition<? super Drawable> transition) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                    Log.d("check1", "setImg_sequence2 : " + sequence);
+                    if(sequence == 0){
+                        hanok_img.setBackground(resource);
+                    }
+                    else if(sequence == 1){
+                        lake_img.setBackground(resource);
+                    }
+                    else{
+                        capsule_img.setBackground(resource);
+                    }
+                    resource.setColorFilter(blakcColorFilter);
+                }
+
+            }
+
+        });
+
+    }
     public void networking() {
         Call<CategoryResult> categoryResultCall = service.getCategoryResult(getCategoryInfo("category_list"));
         categoryResultCall.enqueue(new Callback<CategoryResult>() {
@@ -171,7 +229,7 @@ public class CategoryActivity extends AppCompatActivity {
 //                        aaaa_.get_category_info(id,  item);
 //                    item.category_image_url;
 //                    item.beacon_number;
-                        setImg();
+//                        setImg();
 
                     Log.d("Log", response.body().category_info.get(0).category_title);
                 }

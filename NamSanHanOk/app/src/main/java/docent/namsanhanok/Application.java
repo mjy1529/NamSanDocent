@@ -19,7 +19,7 @@ public class Application extends android.app.Application {
     LabeledSwitch toggleBtn;
 
     private static Application instance;
-    private static String baseUrl = "http://175.123.138.122:3200";
+    private static String baseUrl = "http://222.122.30.58:3200";
     private NetworkService networkService;
 
     public static Application getInstance() {

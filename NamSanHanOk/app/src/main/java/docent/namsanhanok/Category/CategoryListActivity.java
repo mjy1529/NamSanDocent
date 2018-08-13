@@ -33,6 +33,7 @@ import docent.namsanhanok.Application;
 import docent.namsanhanok.Docent.DocentData;
 import docent.namsanhanok.Docent.DocentResult;
 import docent.namsanhanok.Home.HomeActivity;
+import docent.namsanhanok.Manager.DocentMemList;
 import docent.namsanhanok.NetworkService;
 import docent.namsanhanok.R;
 import retrofit2.Call;
@@ -57,6 +58,8 @@ public class CategoryListActivity extends Activity {
     private ArrayList<DocentData> docentDataList;
     private ArrayList<CategoryData> categoryDataList;
 
+    private Application applicationclass;
+    DocentMemList docentMemList;
 
     int category_id;
 
@@ -170,6 +173,8 @@ public class CategoryListActivity extends Activity {
 
     public void init() {
 //        initDataset();
+        applicationclass = (Application) getApplicationContext();
+        docentMemList = DocentMemList.getInstance();
 
         category_list_toolbar_title = (TextView) findViewById(R.id.docentTitle);
         Toolbar categoryListToolbar = (Toolbar) findViewById(R.id.category_list_Toolbar);
