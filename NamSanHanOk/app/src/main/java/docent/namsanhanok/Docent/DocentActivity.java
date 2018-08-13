@@ -214,6 +214,7 @@ public class DocentActivity extends AppCompatActivity {
         docentImage.setFocusableInTouchMode(true);
         docentImage.requestFocus();
 
+        newDocent = false;
     }
 
     //toolbar title

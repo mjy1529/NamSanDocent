@@ -1,8 +1,8 @@
 package docent.namsanhanok.Docent;
 
 public class DocentData {
-    public int docent_id;
-    public int category_id;
+    public String docent_id;
+    public String category_id;
     public String docent_title;
     public String docent_content_info;
     public String docent_vod_url;

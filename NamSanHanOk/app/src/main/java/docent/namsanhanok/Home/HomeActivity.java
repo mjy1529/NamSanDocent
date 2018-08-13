@@ -50,12 +50,14 @@ import java.util.List;
 import docent.namsanhanok.Application;
 import docent.namsanhanok.BackPressCloseHandler;
 import docent.namsanhanok.Category.CategoryActivity;
+import docent.namsanhanok.Category.CategoryData;
 import docent.namsanhanok.Category.CategoryResult;
 import docent.namsanhanok.Docent.DocentActivity;
 import docent.namsanhanok.Docent.DocentResult;
 import docent.namsanhanok.Event.EventActivity;
 import docent.namsanhanok.Info.InfoActivity;
 //import docent.namsanhanok.IntentService;
+import docent.namsanhanok.Manager.DocentMemList;
 import docent.namsanhanok.NetworkService;
 import docent.namsanhanok.Notice.NoticeActivity;
 import docent.namsanhanok.Question.QuestionWriteActivity;
@@ -91,6 +93,7 @@ public class HomeActivity extends AppCompatActivity {
     NetworkService service;
 
     HomeData homeData;
+    DocentMemList docentMemList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,11 +110,14 @@ public class HomeActivity extends AppCompatActivity {
         beaconNumbers.add("15282");
 
         applicationclass = (Application) getApplicationContext();
+        docentMemList = DocentMemList.getInstance();
+        docentMemList.initialize();
 
         init();
         homeNetworking();
         initBeaconManager();
         initBeaconListenerManager();
+        categoryListNetworking();
         docentListNetworking();
 
         showBeaconAlarm();
@@ -157,19 +163,43 @@ public class HomeActivity extends AppCompatActivity {
         });
     }
 
+    public void categoryListNetworking() {
+        Call<CategoryResult> request = service.getCategoryResult(categoryJsonToString());
+        request.enqueue(new Callback<CategoryResult>() {
+            @Override
+            public void onResponse(Call<CategoryResult> call, Response<CategoryResult> response) {
+                if(response.isSuccessful()) {
+                    CategoryResult categoryResult = response.body();
+                    ArrayList<CategoryData> categoryList = categoryResult.category_info;
+                    for(int i=0; i<categoryList.size(); i++) {
+                       boolean in = docentMemList.put_category_info(categoryList.get(i));
+                        Log.d("check2", in+"");
+                    }
+                    Log.d("check", "categoryListNetworking : 성공");
+                    Log.d("check2", docentMemList.categorylist_.toString());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CategoryResult> call, Throwable t) {
+                Log.d("check", "categoryListNetworking : 실패");
+            }
+        });
+    }
+
     public void docentListNetworking() {
-//        Call<DocentResult> request = service.getDocentResult(docentJsonToString());
-//        request.enqueue(new Callback<DocentResult>() {
-//            @Override
-//            public void onResponse(Call<DocentResult> call, Response<DocentResult> response) {
-//
-//            }
-//
-//            @Override
-//            public void onFailure(Call<DocentResult> call, Throwable t) {
-//
-//            }
-//        });
+        Call<DocentResult> request = service.getDocentResult(docentJsonToString());
+        request.enqueue(new Callback<DocentResult>() {
+            @Override
+            public void onResponse(Call<DocentResult> call, Response<DocentResult> response) {
+
+            }
+
+            @Override
+            public void onFailure(Call<DocentResult> call, Throwable t) {
+
+            }
+        });
     }
 
     public void initBeaconManager() {
@@ -461,19 +491,34 @@ public class HomeActivity extends AppCompatActivity {
         return jsonStr;
     }
 
-//    public String docentJsonToString() {
-//        String jsonStr = "";
-//        try {
-//            JSONObject data = new JSONObject();
-//            data.put("cmd", "docent_list");
-//            data.put("beacon_number", "docent_list");
-//
-//            JSONObject root = new JSONObject();
-//            root.put("info", data);
-//            jsonStr = root.toString();
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
-//        return jsonStr;
-//    }
+    public String categoryJsonToString() {
+        String jsonStr = "";
+        try {
+            JSONObject data = new JSONObject();
+            data.put("cmd", "category_list");
+
+            JSONObject root = new JSONObject();
+            root.put("info", data);
+            jsonStr = root.toString();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return jsonStr;
+    }
+
+    public String docentJsonToString() {
+        String jsonStr = "";
+        try {
+            JSONObject data = new JSONObject();
+            data.put("cmd", "docent_list");
+            data.put("category_id", "1");
+
+            JSONObject root = new JSONObject();
+            root.put("info", data);
+            jsonStr = root.toString();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return jsonStr;
+    }
 }
