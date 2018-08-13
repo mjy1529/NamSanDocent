@@ -47,7 +47,8 @@ public class CategoryListActivity extends Activity {
 
     ImageButton homeBtn;
     TextView category_list_toolbar_title;
-    String category_title;
+//    String category_title;
+//    int category_id;
     ImageView simple_image;
     TextView category_list_title;
     TextView countText;
@@ -60,8 +61,9 @@ public class CategoryListActivity extends Activity {
 
     private Application applicationclass;
     DocentMemList docentMemList;
+    CategoryData categoryData;
+    DocentData docentData;
 
-    int category_id;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -69,16 +71,36 @@ public class CategoryListActivity extends Activity {
         setContentView(R.layout.activity_category_list);
 
         Intent secondIntent = getIntent();
-        category_title = secondIntent.getExtras().getString("cate_title");
-        category_id = secondIntent.getExtras().getInt("cate_id");
+//        category_title = secondIntent.getExtras().getString("cate_title");
+//        category_id = secondIntent.getExtras().getInt("cate_id");
+        categoryData = (CategoryData) secondIntent.getSerializableExtra("category");
         service = Application.getInstance().getNetworkService();
 
         init();
 
-        networking();
-        networking2();
+        setCategoryContent();
+        setDocentList();
+
+//        networking();
+//        networking2();
     }
 
+    public void setCategoryContent() {
+        //카테고리 대표 이미지 설정
+        Glide.with(CategoryListActivity.this)
+                .load(Environment.getExternalStorageDirectory() + categoryData.category_image_url)
+                .into(simple_image);
+
+        //카테고리 설명
+        String content = categoryData.category_detail_info;
+        category_text_info.setText(content);
+
+    }
+
+    public void setDocentList() {
+        docentData = new DocentData();
+        docentMemList.get_docent_info("", docentData);
+    }
     private String getCategoryInfo(String cmd) {
         String json = "";
         try {
@@ -115,61 +137,61 @@ public class CategoryListActivity extends Activity {
     }
 
 
-    public void networking(){
-
-
-        Call<CategoryResult> categoryResultCall = service.getCategoryResult(getCategoryInfo("category_list"));
-        categoryResultCall.enqueue(new Callback<CategoryResult>() {
-            @Override
-            public void onResponse(Call<CategoryResult> call, Response<CategoryResult> response) {
-                if (response.isSuccessful()) {
-
-                    Log.d("check1", "Category network ok");
-                    categoryDataList = response.body().category_info;
-
-                    Glide.with(CategoryListActivity.this)
-                            .load(Environment.getExternalStorageDirectory() + categoryDataList.get(category_id-1).category_image_url)
-                            .into(simple_image);
-
-
-
-                    Log.d("check", "카테고리 내용시작");
-                    String content = categoryDataList.get(category_id-1).category_detail_info;
-                    category_text_info.setText(content);
-                    Log.d("check", "카테고리 내용 text : " + content);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<CategoryResult> call, Throwable t) {
-                Log.d("check1", "실패 : " + t.getMessage());
-            }
-        });
-    }
-
-
-    //List
-    public void networking2() {
-        Call<DocentResult> docent_list_ResultCall = service.getDocentResult(getDocentListInfo("docent_list", category_id));
-        docent_list_ResultCall.enqueue(new Callback<DocentResult>() {
-            @Override
-            public void onResponse(Call<DocentResult> call, Response<DocentResult> response) {
-                if (response.isSuccessful()) {
-
-                    docentDataList = response.body().docent_info;
-
-                    categoryListAdapter.setAdapter(docentDataList);
-                    String count = "전시품 총 " + String.valueOf(docentDataList.size()) + "개";
-                    countText.setText(count);
-
-
-                }
-            }
-            @Override
-            public void onFailure(Call<DocentResult> call, Throwable t) {
-                Log.d("check1", "실패 : " + t.getMessage());            }
-        });
-    }
+//    public void networking(){
+//
+//
+//        Call<CategoryResult> categoryResultCall = service.getCategoryResult(getCategoryInfo("category_list"));
+//        categoryResultCall.enqueue(new Callback<CategoryResult>() {
+//            @Override
+//            public void onResponse(Call<CategoryResult> call, Response<CategoryResult> response) {
+//                if (response.isSuccessful()) {
+//
+//                    Log.d("check1", "Category network ok");
+//                    categoryDataList = response.body().category_info;
+//
+//                    Glide.with(CategoryListActivity.this)
+//                            .load(Environment.getExternalStorageDirectory() + categoryDataList.get(category_id-1).category_image_url)
+//                            .into(simple_image);
+//
+//
+//
+//                    Log.d("check", "카테고리 내용시작");
+//                    String content = categoryDataList.get(category_id-1).category_detail_info;
+//                    category_text_info.setText(content);
+//                    Log.d("check", "카테고리 내용 text : " + content);
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<CategoryResult> call, Throwable t) {
+//                Log.d("check1", "실패 : " + t.getMessage());
+//            }
+//        });
+//    }
+//
+//
+//    //List
+//    public void networking2() {
+//        Call<DocentResult> docent_list_ResultCall = service.getDocentResult(getDocentListInfo("docent_list", category_id));
+//        docent_list_ResultCall.enqueue(new Callback<DocentResult>() {
+//            @Override
+//            public void onResponse(Call<DocentResult> call, Response<DocentResult> response) {
+//                if (response.isSuccessful()) {
+//
+//                    docentDataList = response.body().docent_info;
+//
+//                    categoryListAdapter.setAdapter(docentDataList);
+//                    String count = "전시품 총 " + String.valueOf(docentDataList.size()) + "개";
+//                    countText.setText(count);
+//
+//
+//                }
+//            }
+//            @Override
+//            public void onFailure(Call<DocentResult> call, Throwable t) {
+//                Log.d("check1", "실패 : " + t.getMessage());            }
+//        });
+//    }
 
     public void init() {
 //        initDataset();
@@ -181,7 +203,7 @@ public class CategoryListActivity extends Activity {
         categoryListToolbar.bringToFront();
 
         homeBtn = (ImageButton) findViewById(R.id.homeBtn);
-        category_list_toolbar_title.setText(category_title);
+        category_list_toolbar_title.setText(categoryData.category_title);
 
         recyclerView = (RecyclerView) findViewById(R.id.category_list_recyclerView);
         linearLayoutManager = new LinearLayoutManager(this);
@@ -197,7 +219,7 @@ public class CategoryListActivity extends Activity {
         simple_image = (ImageView)findViewById(R.id.simple_image);
 
         category_list_title = (TextView) findViewById(R.id.category_list_title);
-        category_list_title.setText(category_title + " 소개");
+        category_list_title.setText(categoryData.category_title + " 소개");
         countText = (TextView) findViewById(R.id.countText);
 
         category_text_info = (TextView) findViewById(R.id.category_text_info);
