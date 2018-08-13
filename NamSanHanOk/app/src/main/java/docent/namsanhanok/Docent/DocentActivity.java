@@ -215,7 +215,6 @@ public class DocentActivity extends AppCompatActivity {
         docentImage.requestFocus();
 
         newDocent = false;
-
     }
 
     //toolbar title

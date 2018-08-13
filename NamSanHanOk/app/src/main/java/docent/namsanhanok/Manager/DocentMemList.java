@@ -3,14 +3,23 @@ package docent.namsanhanok.Manager;
 import java.util.HashMap;
 import java.util.Iterator;
 
+import docent.namsanhanok.Category.CategoryData;
+import docent.namsanhanok.Docent.DocentData;
+
 public class DocentMemList {
 
-    public HashMap<String, CategoryItem> categorylist_;
-    public HashMap<String, DocentItem> docentlist_;
+    public HashMap<String, CategoryData> categorylist_;
+    public HashMap<String, DocentData> docentlist_;
+    public static DocentMemList instance;
+
+    public static DocentMemList getInstance() {
+        instance = new DocentMemList();
+        return instance;
+    }
 
     public void initialize(){
-        categorylist_ = new HashMap<String, CategoryItem>();
-        docentlist_ = new HashMap<String, DocentItem>();
+        categorylist_ = new HashMap<>();
+        docentlist_ = new HashMap<>();
     }
 
     public void clear_all(){
@@ -18,33 +27,32 @@ public class DocentMemList {
         docentlist_.clear();
     }
 
-    public boolean put_category_info(CategoryItem item) {
-
+    public boolean put_category_info(CategoryData data) {
         Iterator<String> keys = categorylist_.keySet().iterator();
         boolean found = false;
         while( keys.hasNext() ){
             String key = keys.next();
-            if (item.category_id.compareTo(categorylist_.get(key).category_id) == 0) {
+            if (data.category_id.compareTo(categorylist_.get(key).category_id) == 0) {
                 found = true;
             }
         }
 
         if (found == false) {
-            categorylist_.put(item.category_id, item);
+            categorylist_.put(data.category_id, data);
+            return true;
         }
-
-        return found;
+        return false;
     }
 
-    public boolean put_docent_info(DocentItem item) {
-        if (categorylist_.size() == 0)
+    public boolean put_docent_info(DocentData data) {
+        if (docentlist_.size() == 0)
             return false;
 
-        Iterator<String> keys = categorylist_.keySet().iterator();
+        Iterator<String> keys = docentlist_.keySet().iterator();
         boolean found = false;
         while( keys.hasNext() ){
             String key = keys.next();
-            if (item.category_id.compareTo(categorylist_.get(key).category_id) == 0) {
+            if (data.docent_id.compareTo(docentlist_.get(key).docent_id) == 0) {
                 found = true;
             }
         }
@@ -52,19 +60,19 @@ public class DocentMemList {
         if (found == false)
             return false;
 
-        docentlist_.put(item.docent_id, item);
+        docentlist_.put(data.docent_id, data);
         return true;
     }
 
-    public boolean get_category_info(String id, CategoryItem item){
+    public boolean get_category_info(String id, CategoryData data){
         if (categorylist_.size() == 0)
             return false;
 
-        item = categorylist_.get(id);
+        data = categorylist_.get(id);
         return true;
     }
 
-    public boolean get_docent_info(String id, DocentItem item){
+    public boolean get_docent_info(String id, DocentData item){
         if (docentlist_.size() == 0)
             return false;
 
