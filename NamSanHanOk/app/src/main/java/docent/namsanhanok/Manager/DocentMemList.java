@@ -10,10 +10,9 @@ public class DocentMemList {
 
     public HashMap<String, CategoryData> categorylist_;
     public HashMap<String, DocentData> docentlist_;
-    public static DocentMemList instance;
+    public static DocentMemList instance = new DocentMemList();
 
     public static DocentMemList getInstance() {
-        instance = new DocentMemList();
         return instance;
     }
 
@@ -161,5 +160,12 @@ public class DocentMemList {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public String toString() {
+        return "DocentMemList{" +
+                "categorylist_=" + categorylist_ +
+                '}';
     }
 }

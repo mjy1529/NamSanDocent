@@ -114,7 +114,6 @@ public class HomeActivity extends AppCompatActivity {
 
         homeNetworking();
         categoryListNetworking();
-        docentListNetworking();
 
         initBeaconManager();
         initBeaconListenerManager();
@@ -151,15 +150,15 @@ public class HomeActivity extends AppCompatActivity {
         Glide.with(this)
                 .load(Environment.getExternalStorageDirectory() + homeData.getHome_image_url())
                 .apply(new RequestOptions()
-                .centerCrop())
+                        .centerCrop())
                 .into(new SimpleTarget<Drawable>() {
-            @Override
-            public void onResourceReady(Drawable resource, Transition<? super Drawable> transition) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                    homeLayout.setBackground(resource);
-                }
-            }
-        });
+                    @Override
+                    public void onResourceReady(Drawable resource, Transition<? super Drawable> transition) {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                            homeLayout.setBackground(resource);
+                        }
+                    }
+                });
     }
 
     public void categoryListNetworking() {
@@ -167,13 +166,16 @@ public class HomeActivity extends AppCompatActivity {
         request.enqueue(new Callback<CategoryResult>() {
             @Override
             public void onResponse(Call<CategoryResult> call, Response<CategoryResult> response) {
-                if(response.isSuccessful()) {
+                if (response.isSuccessful()) {
                     CategoryResult categoryResult = response.body();
                     ArrayList<CategoryData> categoryList = categoryResult.category_info;
-                    for(int i=0; i<categoryList.size(); i++) {
-                       docentMemList.put_category_info(categoryList.get(i));
+                    for (int i = 0; i < categoryList.size(); i++) {
+                        docentMemList.put_category_info(categoryList.get(i));
                     }
-                    //Log.d("check2", docentMemList.categorylist_.toString());
+
+                    for (int category_id = 1; category_id <= docentMemList.categorylist_.size(); category_id++) {
+                        docentListNetworking(String.valueOf(category_id));
+                    }
                 }
             }
 
@@ -184,27 +186,25 @@ public class HomeActivity extends AppCompatActivity {
         });
     }
 
-    public void docentListNetworking() {
-        Call<DocentResult> request = service.getDocentResult(docentJsonToString());
+    public void docentListNetworking(String category_id) {
+        Call<DocentResult> request = service.getDocentResult(docentJsonToString(category_id));
         request.enqueue(new Callback<DocentResult>() {
             @Override
             public void onResponse(Call<DocentResult> call, Response<DocentResult> response) {
-                if(response.isSuccessful()) {
+                if (response.isSuccessful()) {
                     DocentResult docentResult = response.body();
                     ArrayList<DocentData> docentList = docentResult.docent_info;
-                    Log.d("check2", docentList.toString());
 
-                    for(int i=0; i<docentList.size(); i++) {
+                    for (int i = 0; i < docentList.size(); i++) {
                         docentMemList.put_docent_info(docentList.get(i));
                     }
-                    Log.d("check2", "docentListNetworking : 성공 " + response.code());
-                    Log.d("check2", docentMemList.docentlist_.toString());
+                    Log.d("docentList", docentMemList.docentlist_.toString());
                 }
             }
 
             @Override
             public void onFailure(Call<DocentResult> call, Throwable t) {
-                Log.d("check2", "docentListNetworking : 실패");
+                Log.d("check", "docentListNetworking : 실패");
             }
         });
     }
@@ -292,7 +292,6 @@ public class HomeActivity extends AppCompatActivity {
                             appearBeaconList.add(minewBeacons.get(i));
                         }
                         Log.d("list", beacon_minor + ", " + beacon_rssi);
-
                     }
 
                 }
@@ -454,13 +453,13 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if(toggleBtn.isOn()) {
+        if (toggleBtn.isOn()) {
             mMinewBeaconManager.startScan();
             applicationclass.setScanning(true);
             handler.sendEmptyMessage(0);
         }
-//        if(newItemDialog.isShowing()) newItemDialog.dismiss();
 
+        if(newItemDialog != null && newItemDialog.isShowing()) newItemDialog.dismiss();
     }
 
     @Override
@@ -516,12 +515,12 @@ public class HomeActivity extends AppCompatActivity {
         return jsonStr;
     }
 
-    public String docentJsonToString() {
+    public String docentJsonToString(String category_id) {
         String jsonStr = "";
         try {
             JSONObject data = new JSONObject();
             data.put("cmd", "docent_list");
-            data.put("category_id", "1");
+            data.put("category_id", category_id);
 
             JSONObject root = new JSONObject();
             root.put("info", data);
