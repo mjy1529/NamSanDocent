@@ -113,12 +113,13 @@ public class HomeActivity extends AppCompatActivity {
 
         homeNetworking();
         categoryListNetworking();
-
         initBeaconManager();
         initBeaconListenerManager();
-
         showBeaconAlarm();
     }
+
+
+
 
     public void homeNetworking() {
         Call<HomeResult> request = service.getHomeResult(homeJsonToString());
@@ -176,6 +177,8 @@ public class HomeActivity extends AppCompatActivity {
                         docentListNetworking(String.valueOf(category_id));
                     }
                 }
+                Log.d("check1", "categoryListNetworking : " + docentMemList.categorylist_.toString());
+
             }
 
             @Override
