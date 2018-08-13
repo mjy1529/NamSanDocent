@@ -53,6 +53,7 @@ import docent.namsanhanok.Category.CategoryActivity;
 import docent.namsanhanok.Category.CategoryData;
 import docent.namsanhanok.Category.CategoryResult;
 import docent.namsanhanok.Docent.DocentActivity;
+import docent.namsanhanok.Docent.DocentData;
 import docent.namsanhanok.Docent.DocentResult;
 import docent.namsanhanok.Event.EventActivity;
 import docent.namsanhanok.Info.InfoActivity;
@@ -109,16 +110,14 @@ public class HomeActivity extends AppCompatActivity {
         beaconNumbers.add("15290");
         beaconNumbers.add("15282");
 
-        applicationclass = (Application) getApplicationContext();
-        docentMemList = DocentMemList.getInstance();
-        docentMemList.initialize();
-
         init();
+
         homeNetworking();
-        initBeaconManager();
-        initBeaconListenerManager();
         categoryListNetworking();
         docentListNetworking();
+
+        initBeaconManager();
+        initBeaconListenerManager();
 
         showBeaconAlarm();
     }
@@ -172,11 +171,9 @@ public class HomeActivity extends AppCompatActivity {
                     CategoryResult categoryResult = response.body();
                     ArrayList<CategoryData> categoryList = categoryResult.category_info;
                     for(int i=0; i<categoryList.size(); i++) {
-                       boolean in = docentMemList.put_category_info(categoryList.get(i));
-                        Log.d("check2", in+"");
+                       docentMemList.put_category_info(categoryList.get(i));
                     }
-                    Log.d("check", "categoryListNetworking : 성공");
-                    Log.d("check2", docentMemList.categorylist_.toString());
+                    //Log.d("check2", docentMemList.categorylist_.toString());
                 }
             }
 
@@ -192,12 +189,22 @@ public class HomeActivity extends AppCompatActivity {
         request.enqueue(new Callback<DocentResult>() {
             @Override
             public void onResponse(Call<DocentResult> call, Response<DocentResult> response) {
+                if(response.isSuccessful()) {
+                    DocentResult docentResult = response.body();
+                    ArrayList<DocentData> docentList = docentResult.docent_info;
+                    Log.d("check2", docentList.toString());
 
+                    for(int i=0; i<docentList.size(); i++) {
+                        docentMemList.put_docent_info(docentList.get(i));
+                    }
+                    Log.d("check2", "docentListNetworking : 성공 " + response.code());
+                    Log.d("check2", docentMemList.docentlist_.toString());
+                }
             }
 
             @Override
             public void onFailure(Call<DocentResult> call, Throwable t) {
-
+                Log.d("check2", "docentListNetworking : 실패");
             }
         });
     }
@@ -344,6 +351,10 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void init() {
+        applicationclass = (Application) getApplicationContext();
+        docentMemList = DocentMemList.getInstance();
+        docentMemList.initialize();
+
         Toolbar homeToolbar = (Toolbar) findViewById(R.id.homeToolbar);
         homeToolbar.bringToFront();
 
@@ -383,7 +394,6 @@ public class HomeActivity extends AppCompatActivity {
                 }
             }
         });
-
     }
 
     public void showBluetoothDialog() {
