@@ -10,10 +10,10 @@ public class DocentMemList {
 
     public HashMap<String, CategoryData> categorylist_;
     public HashMap<String, DocentData> docentlist_;
-    public static DocentMemList instance = new DocentMemList();;
+
+    public static DocentMemList instance = new DocentMemList();
 
     public static DocentMemList getInstance() {
-//        instance = new DocentMemList();
         return instance;
     }
 
@@ -71,7 +71,14 @@ public class DocentMemList {
         if (categorylist_.size() == 0)
             return false;
 
-        data = categorylist_.get(id);
+        data.category_id = categorylist_.get(id).category_id;
+        data.category_title = categorylist_.get(id).category_title;
+        data.category_image_url = categorylist_.get(id).category_image_url;
+        data.category_detail_info = categorylist_.get(id).category_detail_info;
+        data.beacon_number = categorylist_.get(id).beacon_number;
+        data.soundqr_number = categorylist_.get(id).soundqr_number;
+
+//        data = categorylist_.get(id);
         return true;
     }
 
@@ -79,7 +86,18 @@ public class DocentMemList {
         if (docentlist_.size() == 0)
             return false;
 
-        data = docentlist_.get(id);
+        data.docent_id = docentlist_.get(id).docent_id;
+        data.category_id = docentlist_.get(id).category_id;
+        data.docent_title = docentlist_.get(id).docent_title;
+        data.docent_content_info = docentlist_.get(id).docent_content_info;
+        data.docent_vod_url = docentlist_.get(id).docent_vod_url;
+        data.docent_audio_url = docentlist_.get(id).docent_audio_url;
+        data.docent_image_url = docentlist_.get(id).docent_image_url;
+        data.docent_location = docentlist_.get(id).docent_location;
+        data.beacon_number = docentlist_.get(id).beacon_number;
+        data.soundqr_number = docentlist_.get(id).soundqr_number;
+
+//        data = docentlist_.get(id);
         return true;
     }
 
@@ -161,5 +179,12 @@ public class DocentMemList {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public String toString() {
+        return "DocentMemList{" +
+                "categorylist_=" + categorylist_ +
+                '}';
     }
 }
