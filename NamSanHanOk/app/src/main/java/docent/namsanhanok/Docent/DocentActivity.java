@@ -188,12 +188,12 @@ public class DocentActivity extends AppCompatActivity {
 
         service = Application.getInstance().getNetworkService();
         networking();
-        if(newDocent == false){
+//        if(newDocent == false){
             networking2();
-        }
-        else if(newDocent == true){
-            networking3();
-        }
+//        }
+//        else if(newDocent == true){
+//            networking3();
+//        }
         networking4();
 
         mMinewBeaconManager = MinewBeaconManager.getInstance(this);
@@ -213,6 +213,8 @@ public class DocentActivity extends AppCompatActivity {
 
         docentImage.setFocusableInTouchMode(true);
         docentImage.requestFocus();
+
+        newDocent = false;
 
     }
 

@@ -166,6 +166,11 @@ public class CategoryActivity extends AppCompatActivity {
                         category_title2.setText(categoryDataList.get(1).category_title);
                         category_title3.setText(categoryDataList.get(2).category_title);
 
+
+//                        CategoryData item = new CategoryData();
+//                        aaaa_.get_category_info(id,  item);
+//                    item.category_image_url;
+//                    item.beacon_number;
                         setImg();
 
                     Log.d("Log", response.body().category_info.get(0).category_title);
