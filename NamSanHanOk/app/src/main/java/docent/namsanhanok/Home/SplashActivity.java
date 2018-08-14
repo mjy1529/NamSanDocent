@@ -1,8 +1,11 @@
 package docent.namsanhanok.Home;
 
+import android.accessibilityservice.AccessibilityService;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -48,10 +51,17 @@ public class SplashActivity extends AppCompatActivity {
 
         init();
 
+
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                networking();
+                if(checkInternet()){
+                    networking();
+                }
+                else{
+                    showAlertDataDialog();
+                }
+
             }
         }, 3000);
     }
@@ -123,7 +133,6 @@ public class SplashActivity extends AppCompatActivity {
                             @Override
                             public void onClick() {
                                 downloadDialog.dismiss();
-                                downloadStatus.setText(R.string.downloading);
                                 new DB_Async().execute();
                             }
                         }
@@ -142,6 +151,32 @@ public class SplashActivity extends AppCompatActivity {
                 .show();
     }
 
+    public void showAlertDataDialog() {
+        final PrettyDialog requestDialog = new PrettyDialog(SplashActivity.this);
+        requestDialog
+                .setMessage(getResources().getString(R.string.request))
+                .setIcon(R.drawable.pdlg_icon_info)
+                .setIconTint(R.color.pdlg_color_blue)
+                .addButton("확인",
+                        R.color.pdlg_color_white,
+                        R.color.pdlg_color_blue,
+                        new PrettyDialogCallback() {
+                            @Override
+                            public void onClick() {
+                                if(checkInternet()){
+                                    requestDialog.dismiss();
+                                    networking();
+                                }
+                                else {
+                                    requestDialog.dismiss();
+                                    onBackPressed();
+                                }
+                            }
+                        }
+                )
+                .show();
+    }
+
     public void activityFinish() {
         Intent intent;
         if (isFirstRun) {
@@ -152,6 +187,19 @@ public class SplashActivity extends AppCompatActivity {
         startActivity(intent);
         finish();
     }
+
+
+    public boolean checkInternet() {
+        ConnectivityManager manager =
+                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo mobile = manager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+        NetworkInfo wifi = manager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+
+        if (mobile.isConnected() || wifi.isConnected()) { return true;}
+        else { return false; }
+    }
+
+
     public String jsonToString() {
         String jsonStr = "";
         try {

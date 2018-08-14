@@ -16,6 +16,7 @@ import java.util.ArrayList;
 
 import docent.namsanhanok.Docent.DocentActivity;
 import docent.namsanhanok.Docent.DocentData;
+import docent.namsanhanok.Manager.DocentMemList;
 import docent.namsanhanok.R;
 
 public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListViewHolder> {

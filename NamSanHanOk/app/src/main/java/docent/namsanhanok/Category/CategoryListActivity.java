@@ -27,6 +27,8 @@ import org.json.JSONObject;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Locale;
 
 import docent.namsanhanok.Application;
@@ -71,8 +73,6 @@ public class CategoryListActivity extends Activity {
         setContentView(R.layout.activity_category_list);
 
         Intent secondIntent = getIntent();
-//        category_title = secondIntent.getExtras().getString("cate_title");
-//        category_id = secondIntent.getExtras().getInt("cate_id");
         categoryData = (CategoryData) secondIntent.getSerializableExtra("category");
         service = Application.getInstance().getNetworkService();
 
@@ -81,8 +81,6 @@ public class CategoryListActivity extends Activity {
         setCategoryContent();
         setDocentList();
 
-//        networking();
-//        networking2();
     }
 
     public void setCategoryContent() {
@@ -98,103 +96,27 @@ public class CategoryListActivity extends Activity {
     }
 
     public void setDocentList() {
-        docentData = new DocentData();
-        docentMemList.get_docent_info("", docentData);
-    }
-    private String getCategoryInfo(String cmd) {
-        String json = "";
-        try {
-            JSONObject data = new JSONObject();
-            data.put("cmd",cmd);
+        HashMap<String, DocentData> map = new HashMap<String, DocentData> ();
+        docentMemList.get_docent_info(categoryData.category_id, map);
+        docentDataList = new ArrayList<>();
 
-
-            JSONObject root = new JSONObject();
-            root.put("info", data);
-            json = root.toString();
-
-        } catch (JSONException e) {
-            e.printStackTrace();
+        Iterator<String> keys = map.keySet().iterator();
+        while (keys.hasNext()) {
+            String key = keys.next();
+            Log.d("check1", "key값 " + key);
+            Log.d("check1", "map.get(key) " + map.get(key));
+            docentData = map.get(key);
+            docentDataList.add(docentData);
         }
-        return json;
+
+
+        categoryListAdapter.setAdapter(docentDataList);
+                    String count = "전시품 총 " + String.valueOf(docentDataList.size()) + "개";
+                    countText.setText(count);
     }
 
-
-    private String getDocentListInfo(String cmd, int cate_id) {
-        String json = "";
-        try {
-            JSONObject data = new JSONObject();
-            data.put("cmd",cmd);
-            data.put("category_id",cate_id);
-
-            JSONObject root = new JSONObject();
-            root.put("info", data);
-            json = root.toString();
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return json;
-    }
-
-
-//    public void networking(){
-//
-//
-//        Call<CategoryResult> categoryResultCall = service.getCategoryResult(getCategoryInfo("category_list"));
-//        categoryResultCall.enqueue(new Callback<CategoryResult>() {
-//            @Override
-//            public void onResponse(Call<CategoryResult> call, Response<CategoryResult> response) {
-//                if (response.isSuccessful()) {
-//
-//                    Log.d("check1", "Category network ok");
-//                    categoryDataList = response.body().category_info;
-//
-//                    Glide.with(CategoryListActivity.this)
-//                            .load(Environment.getExternalStorageDirectory() + categoryDataList.get(category_id-1).category_image_url)
-//                            .into(simple_image);
-//
-//
-//
-//                    Log.d("check", "카테고리 내용시작");
-//                    String content = categoryDataList.get(category_id-1).category_detail_info;
-//                    category_text_info.setText(content);
-//                    Log.d("check", "카테고리 내용 text : " + content);
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<CategoryResult> call, Throwable t) {
-//                Log.d("check1", "실패 : " + t.getMessage());
-//            }
-//        });
-//    }
-//
-//
-//    //List
-//    public void networking2() {
-//        Call<DocentResult> docent_list_ResultCall = service.getDocentResult(getDocentListInfo("docent_list", category_id));
-//        docent_list_ResultCall.enqueue(new Callback<DocentResult>() {
-//            @Override
-//            public void onResponse(Call<DocentResult> call, Response<DocentResult> response) {
-//                if (response.isSuccessful()) {
-//
-//                    docentDataList = response.body().docent_info;
-//
-//                    categoryListAdapter.setAdapter(docentDataList);
-//                    String count = "전시품 총 " + String.valueOf(docentDataList.size()) + "개";
-//                    countText.setText(count);
-//
-//
-//                }
-//            }
-//            @Override
-//            public void onFailure(Call<DocentResult> call, Throwable t) {
-//                Log.d("check1", "실패 : " + t.getMessage());            }
-//        });
-//    }
 
     public void init() {
-//        initDataset();
         applicationclass = (Application) getApplicationContext();
         docentMemList = DocentMemList.getInstance();
 
