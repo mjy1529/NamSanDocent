@@ -176,11 +176,6 @@ public class DocentActivity extends AppCompatActivity {
             //networking3();
         }
 
-        Log.d("check1", "밖 ocentAC, newDocent_cate_id : " + category_id);
-        Log.d("check1", "밖 docentAC, position : " + position);
-        Log.d("check1", "밖 docentAC,newDocent_docent_id : " + docent_id);
-        Log.d("check1", "밖 newDocent : " + newDocent);
-
         mMinewBeaconManager = MinewBeaconManager.getInstance(this);
         applicationclass = (Application) getApplicationContext();
         service = Application.getInstance().getNetworkService();

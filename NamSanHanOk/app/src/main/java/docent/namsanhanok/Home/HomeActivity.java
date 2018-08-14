@@ -200,7 +200,6 @@ public class HomeActivity extends AppCompatActivity {
                     for (int i = 0; i < docentList.size(); i++) {
                         docentMemList.put_docent_info(docentList.get(i));
                     }
-                    Log.d("docentList", docentMemList.docentlist_.toString());
                 }
             }
 

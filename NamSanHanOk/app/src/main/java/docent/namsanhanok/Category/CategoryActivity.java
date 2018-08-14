@@ -32,10 +32,12 @@ import org.json.JSONObject;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 
 import docent.namsanhanok.Application;
 import docent.namsanhanok.Docent.DocentActivity;
+import docent.namsanhanok.Docent.DocentData;
 import docent.namsanhanok.Home.HomeActivity;
 import docent.namsanhanok.Manager.DocentMemList;
 import docent.namsanhanok.NetworkService;
@@ -60,6 +62,8 @@ public class CategoryActivity extends AppCompatActivity {
 
     public CategoryData categoryData;
     DocentMemList docentMemList;
+    DocentData docentData;
+
 
 
     @Override
@@ -117,6 +121,16 @@ public class CategoryActivity extends AppCompatActivity {
     public void setContent() {
         categoryData = new CategoryData();
 
+
+//        Iterator<String> keys = docentMemList.categorylist_.keySet().iterator();
+//        while (keys.hasNext()) {
+//            String key = keys.next();
+//            docentMemList.get_category_info(categoryData.category_id, categoryData);
+//            Log.d("check1", "id : " + categoryData.category_id);
+//            setImg(categoryData.category_id);
+//
+//        }
+
         for (int i = 1; i <= docentMemList.categorylist_.size(); i++) {
             String id = String.valueOf(i);
             docentMemList.get_category_info(id, categoryData);
@@ -125,13 +139,13 @@ public class CategoryActivity extends AppCompatActivity {
 
     }
 
-    public void setImg(int i) {
+    public void setImg(int id) {
         final int blackFilter = getApplication().getResources().getColor(R.color.black_color_filter);
         final PorterDuffColorFilter blakcColorFilter = new PorterDuffColorFilter(blackFilter, PorterDuff.Mode.SRC_ATOP);
 
-        final int sequence = i;
 
-        if(sequence == 1) {
+
+        if(id == 1) {
             category_title1.setText(categoryData.category_title);
 
             Glide.with(this).load(Environment.getExternalStorageDirectory() + categoryData.category_image_url).apply(new RequestOptions()
@@ -147,7 +161,7 @@ public class CategoryActivity extends AppCompatActivity {
 
             });
         }
-        else if(sequence == 2 ){
+        else if(id == 2){
             Log.d("check1", "img2 : " + Environment.getExternalStorageDirectory() + categoryData.category_image_url);
 
             category_title2.setText(categoryData.category_title);
@@ -164,7 +178,7 @@ public class CategoryActivity extends AppCompatActivity {
                 }
             });
         }
-        else if(sequence == 3){
+        else if(id == 3){
             Log.d("check1", "img3 : " + Environment.getExternalStorageDirectory() + categoryData.category_image_url);
 
             category_title3.setText(categoryData.category_title);
@@ -208,8 +222,17 @@ public class CategoryActivity extends AppCompatActivity {
             case R.id.category_title3 :
                 onPause();
                 Intent docentIntent = new Intent(CategoryActivity.this, DocentActivity.class);
-                docentMemList.get_category_info("3", categoryData);
-                intent.putExtra("category", categoryData);
+
+                HashMap<String, DocentData> map = new HashMap<String, DocentData> ();
+                docentMemList.get_docent_info("3", map);
+                Iterator<String> keys = map.keySet().iterator();
+                String key = keys.next();
+                Log.d("check1", "key값 " + key);
+                Log.d("check1", "map.get(key)" + map.get(key));
+
+                docentData = map.get(key);
+
+                docentIntent.putExtra("docentObject", docentData);
                 startActivity(docentIntent);
                 break;
 

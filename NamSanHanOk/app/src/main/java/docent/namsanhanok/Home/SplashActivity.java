@@ -195,14 +195,8 @@ public class SplashActivity extends AppCompatActivity {
         NetworkInfo mobile = manager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
         NetworkInfo wifi = manager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
 
-        if (mobile.isConnected() || wifi.isConnected()) {
-            Log.d("check1", "Network connect success");
-
-            return true;
-        } else {
-            Log.d("check1", "Network connect fail");
-            return false;
-        }
+        if (mobile.isConnected() || wifi.isConnected()) { return true;}
+        else { return false; }
     }
 
 
