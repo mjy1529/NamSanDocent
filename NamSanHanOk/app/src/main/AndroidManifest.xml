@@ -22,8 +22,6 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
-    출처: http://straight-strange.tistory.com/2 [straight 혹은 strange]
-
     <application
         android:name=".Application"
         android:allowBackup="true"
@@ -77,7 +75,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".Notice.NoticeActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".Notice.NoticeReadActivity"
             android:screenOrientation="portrait" />

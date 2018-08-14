@@ -8,4 +8,8 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="SearchView" parent="AppTheme">
+        <item name="searchIcon">@drawable/magnifier</item>
+    </style>
+
 </resources>

@@ -118,9 +118,6 @@ public class HomeActivity extends AppCompatActivity {
         showBeaconAlarm();
     }
 
-
-
-
     public void homeNetworking() {
         Call<HomeResult> request = service.getHomeResult(homeJsonToString());
         request.enqueue(new Callback<HomeResult>() {
