@@ -1,10 +1,13 @@
 package docent.namsanhanok.Manager;
 
+import android.util.Log;
+
 import java.util.HashMap;
 import java.util.Iterator;
 
 import docent.namsanhanok.Category.CategoryData;
 import docent.namsanhanok.Docent.DocentData;
+import uk.co.senab.photoview.log.LoggerDefault;
 
 public class DocentMemList {
 
@@ -169,8 +172,18 @@ public class DocentMemList {
                 Iterator<String> docent_keys = categorylist_.get(key).docentlist.keySet().iterator();
                 while( docent_keys.hasNext() ) {
                     String docent_key = keys.next();
+                    Log.d("key", key);
+                    Log.d("manager1", categorylist_.get(key).toString());
+
+                    Log.d("manager2", categorylist_.get(key).docentlist.get(docent_key).toString());
+                    Log.d("manager3", bc_num);
+                    Log.d("manager4", docent_key);
+
+                    Log.d("result5", categorylist_.get("1").docentlist.get("2").beacon_number);
+
                     if (bc_num.compareTo(categorylist_.get(key).docentlist.get(docent_key).beacon_number) == 0) {
                         docent_found = true;
+                        Log.d("docent_found", docent_found+"");
                         break;
                     }
                 }

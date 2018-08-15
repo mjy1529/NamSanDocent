@@ -79,7 +79,7 @@ public class EventActivity extends AppCompatActivity {
 
     public void init() {
         Toolbar categoryToolbar = (Toolbar)findViewById(R.id.event_Toolbar);
-        categoryToolbar.bringToFront();
+        setSupportActionBar(categoryToolbar);
 
         event_toolbar_title = (TextView) findViewById(R.id.docentTitle);
         Intent intent = getIntent();

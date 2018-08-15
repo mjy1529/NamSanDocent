@@ -35,12 +35,8 @@ public class NoticeReadActivity extends AppCompatActivity {
     }
 
     public void onClick(View view) {
-        Intent intent;
         switch (view.getId()) {
             case R.id.listBtn:
-                intent = new Intent(this, NoticeActivity.class);
-                intent.putExtra("notice_title", notice_toolbar_title);
-                startActivity(intent);
                 finish();
                 break;
         }

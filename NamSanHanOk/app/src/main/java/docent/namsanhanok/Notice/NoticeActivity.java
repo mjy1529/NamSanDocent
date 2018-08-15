@@ -3,16 +3,21 @@ package docent.namsanhanok.Notice;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.MotionEvent;
+import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,9 +41,9 @@ import retrofit2.Response;
 public class NoticeActivity extends AppCompatActivity implements NoticeRecyclerAdapter.OnLoadMoreListener {
 
     ImageButton homeBtn;
-    EditText search_editText;
-    ImageButton searchBtn;
     FloatingActionButton topBtn;
+    TextView noResultTextView;
+    SearchView searchView;
 
     RecyclerView noticeRecyclerView;
     NoticeRecyclerAdapter noticeAdapter;
@@ -55,8 +60,6 @@ public class NoticeActivity extends AppCompatActivity implements NoticeRecyclerA
 
         networking();
         init();
-
-        String search_word = search_editText.getText().toString(); //검색어
     }
 
     public void networking() {
@@ -70,7 +73,7 @@ public class NoticeActivity extends AppCompatActivity implements NoticeRecyclerA
                     NoticeResult noticeResult = response.body();
                     allNoticeList = noticeResult.notice_info;
 
-                    setLoadData();
+                    loadData();
                 }
             }
 
@@ -81,7 +84,9 @@ public class NoticeActivity extends AppCompatActivity implements NoticeRecyclerA
         });
     }
 
-    public void setLoadData() {
+    public void loadData() {
+        if(noticeList.size() != 0) noticeList.clear();
+
         if (allNoticeList.size() < loadCount) { //리스트의 수가 loadCount보다 작을 때
             noticeList.addAll(allNoticeList);
 
@@ -101,9 +106,6 @@ public class NoticeActivity extends AppCompatActivity implements NoticeRecyclerA
                 startActivity(intent);
                 finish();
                 break;
-            case R.id.searchBtn: //검색 버튼
-                Toast.makeText(this, "검색", android.widget.Toast.LENGTH_SHORT).show();
-                break;
             case R.id.topBtn:
                 noticeRecyclerView.smoothScrollToPosition(0);
                 break;
@@ -111,14 +113,15 @@ public class NoticeActivity extends AppCompatActivity implements NoticeRecyclerA
     }
 
     public void init() {
+        Toolbar noticeToolbar = (Toolbar) findViewById(R.id.noticeToolbar);
+        setSupportActionBar(noticeToolbar);
+
         Intent intent = getIntent();
-        String notice_toolbar_title= intent.getStringExtra("notice_title");
+        String notice_toolbar_title = intent.getStringExtra("notice_title");
         TextView noticeTitle = (TextView) findViewById(R.id.noticeTitle);
         noticeTitle.setText(notice_toolbar_title);
 
         homeBtn = (ImageButton) findViewById(R.id.homeBtn);
-        search_editText = (EditText) findViewById(R.id.search_editText);
-        searchBtn = (ImageButton) findViewById(R.id.searchBtn);
         topBtn = (FloatingActionButton) findViewById(R.id.topBtn);
         noticeRecyclerView = (RecyclerView) findViewById(R.id.noticeRecyclerView);
         noticeAdapter = new NoticeRecyclerAdapter(this);
@@ -133,6 +136,8 @@ public class NoticeActivity extends AppCompatActivity implements NoticeRecyclerA
         noticeRecyclerView.setNestedScrollingEnabled(true);
 
         topBtn.attachToRecyclerView(noticeRecyclerView);
+
+        noResultTextView = (TextView) findViewById(R.id.noResultTextView);
     }
 
     @Override
@@ -164,8 +169,76 @@ public class NoticeActivity extends AppCompatActivity implements NoticeRecyclerA
     }
 
     @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(TypekitContextWrapper.wrap(newBase));
+    public boolean onCreateOptionsMenu(Menu menu) { //검색
+        getMenuInflater().inflate(R.menu.search_menu, menu);
+        final MenuItem searchItem = menu.findItem(R.id.action_search);
+
+        MenuItem.OnActionExpandListener expandListener = new MenuItem.OnActionExpandListener() {
+            @Override
+            public boolean onMenuItemActionExpand(MenuItem menuItem) {
+                return true;
+            }
+
+            @Override
+            public boolean onMenuItemActionCollapse(MenuItem menuItem) {
+                noResultTextView.setVisibility(View.GONE);
+                noticeRecyclerView.setVisibility(View.VISIBLE);
+                topBtn.setVisibility(View.VISIBLE);
+                loadData();
+                return true;
+            }
+        };
+        searchItem.setOnActionExpandListener(expandListener);
+
+        searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        searchView.setQueryHint("검색어 입력");
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) { //검색어 입력 완료 후
+                noticeList.clear();
+                for (int i = 0; i < allNoticeList.size(); i++) {
+                    if (allNoticeList.get(i).getNotice_title().contains(query) || allNoticeList.get(i).getNotice_content().contains(query)) {
+                        noticeList.add(allNoticeList.get(i));
+                    }
+                }
+                if (noticeList.size() == 0) {
+                    noticeRecyclerView.setVisibility(View.GONE);
+                    noResultTextView.setVisibility(View.VISIBLE);
+                    noResultTextView.setText(R.string.noResult);
+                    topBtn.setVisibility(View.GONE);
+                } else {
+                    noticeRecyclerView.setVisibility(View.VISIBLE);
+                    noResultTextView.setVisibility(View.GONE);
+                    topBtn.setVisibility(View.VISIBLE);
+                    noticeAdapter.addAll(noticeList);
+                    noticeAdapter.notifyDataSetChanged();
+                }
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) { //검색어가 바뀔 때마다
+
+                return false;
+            }
+        });
+
+        ImageView searchClose = (ImageView) searchView.findViewById(android.support.v7.appcompat.R.id.search_close_btn);
+        searchClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                searchView.setQuery("", false);
+                searchView.onActionViewCollapsed();
+                searchItem.collapseActionView();
+
+                noResultTextView.setVisibility(View.GONE);
+                noticeRecyclerView.setVisibility(View.VISIBLE);
+                topBtn.setVisibility(View.VISIBLE);
+                loadData();
+            }
+        });
+
+        return true;
     }
 
     public String jsonToString() {
@@ -183,4 +256,8 @@ public class NoticeActivity extends AppCompatActivity implements NoticeRecyclerA
         return jsonStr;
     }
 
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(TypekitContextWrapper.wrap(newBase));
+    }
 }

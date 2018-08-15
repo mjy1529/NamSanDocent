@@ -118,9 +118,6 @@ public class HomeActivity extends AppCompatActivity {
         showBeaconAlarm();
     }
 
-
-
-
     public void homeNetworking() {
         Call<HomeResult> request = service.getHomeResult(homeJsonToString());
         request.enqueue(new Callback<HomeResult>() {
@@ -235,6 +232,7 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onRangeBeacons(final List<MinewBeacon> minewBeacons) {
                 addAppearBeacon(minewBeacons);
+                Log.d("beacon", minewBeacons.toString());
             }
 
             @Override
@@ -300,6 +298,7 @@ public class HomeActivity extends AppCompatActivity {
 //        }
         if (!minewBeacons.isEmpty()) {
             Collections.sort(minewBeacons, comp);
+
 
            for(int i=0; i<minewBeacons.size(); i++) {
                String beacon_minor = minewBeacons.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue();
