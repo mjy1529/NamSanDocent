@@ -113,13 +113,13 @@ public class NoticeActivity extends AppCompatActivity implements NoticeRecyclerA
     }
 
     public void init() {
+        Toolbar noticeToolbar = (Toolbar) findViewById(R.id.noticeToolbar);
+        setSupportActionBar(noticeToolbar);
+
         Intent intent = getIntent();
         String notice_toolbar_title = intent.getStringExtra("notice_title");
         TextView noticeTitle = (TextView) findViewById(R.id.noticeTitle);
         noticeTitle.setText(notice_toolbar_title);
-
-        Toolbar noticeToolbar = (Toolbar) findViewById(R.id.noticeToolbar);
-        setSupportActionBar(noticeToolbar);
 
         homeBtn = (ImageButton) findViewById(R.id.homeBtn);
         topBtn = (FloatingActionButton) findViewById(R.id.topBtn);
@@ -183,6 +183,7 @@ public class NoticeActivity extends AppCompatActivity implements NoticeRecyclerA
             public boolean onMenuItemActionCollapse(MenuItem menuItem) {
                 noResultTextView.setVisibility(View.GONE);
                 noticeRecyclerView.setVisibility(View.VISIBLE);
+                topBtn.setVisibility(View.VISIBLE);
                 loadData();
                 return true;
             }
@@ -204,9 +205,11 @@ public class NoticeActivity extends AppCompatActivity implements NoticeRecyclerA
                     noticeRecyclerView.setVisibility(View.GONE);
                     noResultTextView.setVisibility(View.VISIBLE);
                     noResultTextView.setText(R.string.noResult);
+                    topBtn.setVisibility(View.GONE);
                 } else {
                     noticeRecyclerView.setVisibility(View.VISIBLE);
                     noResultTextView.setVisibility(View.GONE);
+                    topBtn.setVisibility(View.VISIBLE);
                     noticeAdapter.addAll(noticeList);
                     noticeAdapter.notifyDataSetChanged();
                 }
@@ -230,6 +233,7 @@ public class NoticeActivity extends AppCompatActivity implements NoticeRecyclerA
 
                 noResultTextView.setVisibility(View.GONE);
                 noticeRecyclerView.setVisibility(View.VISIBLE);
+                topBtn.setVisibility(View.VISIBLE);
                 loadData();
             }
         });
