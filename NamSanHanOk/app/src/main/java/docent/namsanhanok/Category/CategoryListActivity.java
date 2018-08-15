@@ -49,7 +49,7 @@ public class CategoryListActivity extends Activity {
 
     ImageButton homeBtn;
     TextView category_list_toolbar_title;
-//    String category_title;
+    //    String category_title;
 //    int category_id;
     ImageView simple_image;
     TextView category_list_title;
@@ -96,7 +96,7 @@ public class CategoryListActivity extends Activity {
     }
 
     public void setDocentList() {
-        HashMap<String, DocentData> map = new HashMap<String, DocentData> ();
+        HashMap<String, DocentData> map = new HashMap<String, DocentData>();
         docentMemList.get_docent_info(categoryData.category_id, map);
         docentDataList = new ArrayList<>();
 
@@ -109,10 +109,9 @@ public class CategoryListActivity extends Activity {
             docentDataList.add(docentData);
         }
 
-
         categoryListAdapter.setAdapter(docentDataList);
-                    String count = "전시품 총 " + String.valueOf(docentDataList.size()) + "개";
-                    countText.setText(count);
+        String count = "전시품 총 " + String.valueOf(docentDataList.size()) + "개";
+        countText.setText(count);
     }
 
 
@@ -138,7 +137,7 @@ public class CategoryListActivity extends Activity {
         categoryListAdapter = new CategoryListAdapter(getApplicationContext(), docentDataList);
         recyclerView.setAdapter(categoryListAdapter);
 
-        simple_image = (ImageView)findViewById(R.id.simple_image);
+        simple_image = (ImageView) findViewById(R.id.simple_image);
 
         category_list_title = (TextView) findViewById(R.id.category_list_title);
         category_list_title.setText(categoryData.category_title + " 소개");
@@ -147,10 +146,7 @@ public class CategoryListActivity extends Activity {
         category_text_info = (TextView) findViewById(R.id.category_text_info);
 
 
-
     }
-
-
 
 
     public void onClick(View v) {

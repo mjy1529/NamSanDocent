@@ -15,6 +15,7 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ScrollView;
@@ -42,6 +43,7 @@ public class NoticeActivity extends AppCompatActivity implements NoticeRecyclerA
     ImageButton homeBtn;
     FloatingActionButton topBtn;
     TextView noResultTextView;
+    SearchView searchView;
 
     RecyclerView noticeRecyclerView;
     NoticeRecyclerAdapter noticeAdapter;
@@ -71,7 +73,7 @@ public class NoticeActivity extends AppCompatActivity implements NoticeRecyclerA
                     NoticeResult noticeResult = response.body();
                     allNoticeList = noticeResult.notice_info;
 
-                    setLoadData();
+                    loadData();
                 }
             }
 
@@ -82,7 +84,9 @@ public class NoticeActivity extends AppCompatActivity implements NoticeRecyclerA
         });
     }
 
-    public void setLoadData() {
+    public void loadData() {
+        if(noticeList.size() != 0) noticeList.clear();
+
         if (allNoticeList.size() < loadCount) { //리스트의 수가 loadCount보다 작을 때
             noticeList.addAll(allNoticeList);
 
@@ -164,32 +168,29 @@ public class NoticeActivity extends AppCompatActivity implements NoticeRecyclerA
         }, 2000);
     }
 
-    public String jsonToString() {
-        String jsonStr = "";
-        try {
-            JSONObject data = new JSONObject();
-            data.put("cmd", "notice_list");
-
-            JSONObject root = new JSONObject();
-            root.put("info", data);
-            jsonStr = root.toString();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return jsonStr;
-    }
-
     @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(TypekitContextWrapper.wrap(newBase));
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(Menu menu) { //검색
         getMenuInflater().inflate(R.menu.search_menu, menu);
-        MenuItem searchItem = menu.findItem(R.id.action_search);
+        final MenuItem searchItem = menu.findItem(R.id.action_search);
 
-        SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        MenuItem.OnActionExpandListener expandListener = new MenuItem.OnActionExpandListener() {
+            @Override
+            public boolean onMenuItemActionExpand(MenuItem menuItem) {
+                return true;
+            }
+
+            @Override
+            public boolean onMenuItemActionCollapse(MenuItem menuItem) {
+                noResultTextView.setVisibility(View.GONE);
+                noticeRecyclerView.setVisibility(View.VISIBLE);
+                loadData();
+                return true;
+            }
+        };
+        searchItem.setOnActionExpandListener(expandListener);
+
+        searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        searchView.setQueryHint("검색어 입력");
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) { //검색어 입력 완료 후
@@ -214,29 +215,45 @@ public class NoticeActivity extends AppCompatActivity implements NoticeRecyclerA
 
             @Override
             public boolean onQueryTextChange(String newText) { //검색어가 바뀔 때마다
+
                 return false;
             }
         });
 
-//        ImageView searchClose = searchView.findViewById(android.support.v7.appcompat.R.id.search_close_btn);
-//        searchClose.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                noResultTextView.setVisibility(View.GONE);
-//                setLoadData();
-//                noticeAdapter.notifyDataSetChanged();
-//                Log.d("back", " : close");
-//            }
-//        });
+        ImageView searchClose = (ImageView) searchView.findViewById(android.support.v7.appcompat.R.id.search_close_btn);
+        searchClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                searchView.setQuery("", false);
+                searchView.onActionViewCollapsed();
+                searchItem.collapseActionView();
+
+                noResultTextView.setVisibility(View.GONE);
+                noticeRecyclerView.setVisibility(View.VISIBLE);
+                loadData();
+            }
+        });
 
         return true;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem menuItem) {
-        if (menuItem.getItemId() == android.R.id.home) {
-            Log.d("option", "click");
+    public String jsonToString() {
+        String jsonStr = "";
+        try {
+            JSONObject data = new JSONObject();
+            data.put("cmd", "notice_list");
+
+            JSONObject root = new JSONObject();
+            root.put("info", data);
+            jsonStr = root.toString();
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
-        return super.onOptionsItemSelected(menuItem);
+        return jsonStr;
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(TypekitContextWrapper.wrap(newBase));
     }
 }
