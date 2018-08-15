@@ -72,6 +72,7 @@ import docent.namsanhanok.Category.CategoryResult;
 import docent.namsanhanok.Home.HomeActivity;
 import docent.namsanhanok.Home.UserRssi;
 import docent.namsanhanok.Location.LocationActivity;
+import docent.namsanhanok.Manager.DocentMemList;
 import docent.namsanhanok.NetworkService;
 import docent.namsanhanok.R;
 import retrofit2.Call;
@@ -152,6 +153,8 @@ public class DocentActivity extends AppCompatActivity {
 
     DocentData docentObject;
 
+    DocentMemList docentMemList;
+
     public DocentActivity() {
 
     }
@@ -161,8 +164,11 @@ public class DocentActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_docent);
 
+        init();
+
         if (newDocent == true) {
             onResume();
+//            networking3();
         } else {
             Intent docentObjectIntent = getIntent();
             docentObject = (DocentData) docentObjectIntent.getSerializableExtra("docentObject");
@@ -186,7 +192,7 @@ public class DocentActivity extends AppCompatActivity {
 
         showBeaconAlarm();
 
-        init();
+
         initBeaconManager();
         initBeaconListenerManager();
 
@@ -302,46 +308,46 @@ public class DocentActivity extends AppCompatActivity {
 //    }
 
     //docent content
-//    public void networking3() {
-//        final Call<DocentResult> request = service.getBeaconDocentResult(getBeaconDocentInfo("docent_list", beaconNum));
-//        request.enqueue(new Callback<DocentResult>() {
-//            @Override
-//            public void onResponse(Call<DocentResult> call, Response<DocentResult> response) {
-//                if(response.body() != null) {
-//
-//                    //category는 순서대로 나타나 있으니, list를 다시 불러서 position으로 docent를 보냄.
-//                    docentDataList= response.body().docent_info;
-//
-//                    Log.d("check1", "docent image : " + Environment.getExternalStorageDirectory() + docentDataList.get(position).docent_image_url);
+    public void networking3() {
+        final Call<DocentBeaconResult> request = service.getDocentByBeaconResult(getBeaconDocentInfo("docent_list", beaconNum));
+        request.enqueue(new Callback<DocentBeaconResult>() {
+            @Override
+            public void onResponse(Call<DocentBeaconResult> call, Response<DocentBeaconResult> response) {
+                if(response.body() != null) {
+
+                    //category는 순서대로 나타나 있으니, list를 다시 불러서 position으로 docent를 보냄.
+                    docentObject = response.body().docent_info;
+
+//                    Log.d("check1", "docent image : " + Environment.getExternalStorageDirectory() + docentObject.docent_image_url);
 //
 //
 //                    Glide.with(getApplicationContext())
-//                            .load(Environment.getExternalStorageDirectory() + docentDataList.get(position).docent_image_url)
+//                            .load(Environment.getExternalStorageDirectory() + docentObject.docent_image_url)
 //                            .into(docentImage);
 //
-//                    docentName.setText(docentDataList.get(position).docent_title);
+//                    docentName.setText(docentObject.docent_title);
 //
-//                    String content = docentDataList.get(position).docent_content_info;
+//                    String content = docentObject.docent_content_info;
 //                    docentExplanation.setText(content);
 //
-//                    audio_url = docentDataList.get(position).docent_audio_url;
-//                    video_url = docentDataList.get(position).docent_vod_url;
+//                    audio_url = docentObject.docent_audio_url;
+//                    video_url = docentObject.docent_vod_url;
 //
 //                    Log.d("check1", "audio url " + audio_url);
 //                    Log.d("check1", "video url : " + video_url);
 //
 //                    setAudioPlayer();
 //                    setVideoPlayer();
-//
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<DocentResult> call, Throwable t) {
-//                Log.d("check", "fail");
-//            }
-//        });
-//    }
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<DocentBeaconResult> call, Throwable t) {
+                Log.d("check", "fail");
+            }
+        });
+    }
 
     //docent detail list
     public void networking4() {
@@ -384,11 +390,37 @@ public class DocentActivity extends AppCompatActivity {
     }
 
     public void initBeaconListenerManager() {
+        Log.d("check1", "isScanning : " + applicationclass.getToggleState());
+//
+//        if (isOnBluetooth()) {
+//            if (applicationclass.getScanning()) { // scan중
+//                Log.d("check1", "isScanning : startScan");
+//
+//                mMinewBeaconManager.startScan();
+//                handler1.sendEmptyMessageDelayed(0, 2200);
+//            } else if (!applicationclass.getScanning()) { //bluetooth는 on인데 Scanning이 안되고 있다
+//                applicationclass.setScanning(false);
+//                try {
+//                    mMinewBeaconManager.stopScan();
+//                    handler1.removeMessages(0);
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        } else if (!isOnBluetooth()) { // bluetooth == false
+//            applicationclass.setScanning(false);
+//            if (mMinewBeaconManager != null) {
+//                mMinewBeaconManager.stopScan();
+//                handler1.removeMessages(0);
+//            }
+
         if (isOnBluetooth()) {
-            if (applicationclass.getScanning()) { // scan중
+            if (applicationclass.getToggleState()) { // scan중
+                Log.d("check1", "isScanning : startScan");
+
                 mMinewBeaconManager.startScan();
                 handler1.sendEmptyMessageDelayed(0, 2200);
-            } else if (!applicationclass.getScanning()) { //bluetooth는 on인데 Scanning이 안되고 있다
+            } else if (!applicationclass.getToggleState()) { //bluetooth는 on인데 Scanning이 안되고 있다
                 applicationclass.setScanning(false);
                 try {
                     mMinewBeaconManager.stopScan();
@@ -494,6 +526,9 @@ public class DocentActivity extends AppCompatActivity {
 
 
     private void addAppearBeacon(List<MinewBeacon> minewBeacons) {
+        Log.d("check1", "isScanning : " + applicationclass.isScanning);
+
+        Log.d("check1", "minewBeacons : " + minewBeacons.toString());
         if (!minewBeacons.isEmpty()) {
             Collections.sort(minewBeacons, comp);
 
@@ -501,17 +536,31 @@ public class DocentActivity extends AppCompatActivity {
                 String beacon_minor = minewBeacons.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue();
                 int beacon_rssi = minewBeacons.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_RSSI).getIntValue();
 
+                //exitBeacon의 내용을 beacon_number에 담아서 비교
                 for (String beacon_number : existBeacon) {
                     if (beacon_minor.equals(beacon_number)) {
                         if (!appearBeaconList.contains(minewBeacons.get(i))) { // 중복 제거
                             appearBeaconList.add(minewBeacons.get(i));
                         }
-                        Log.d("check1", "list : " + beacon_minor + ", " + beacon_rssi);
+                        Log.d("list", beacon_minor + ", " + beacon_rssi);
                     }
 
                 }
             }
         }
+//        if (!minewBeacons.isEmpty()) {
+//
+//            Collections.sort(minewBeacons, comp);
+//
+//            for(int i=0; i<minewBeacons.size(); i++) {
+//                String beacon_minor = minewBeacons.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue();
+//
+//                if(docentMemList.check_beacon_number(beacon_minor)) {
+//                    appearBeaconList.add(minewBeacons.get(i));
+//                    Log.d("beaconList", minewBeacons.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue());
+//                }
+//            }
+//        }
     }
 
 
@@ -863,8 +912,8 @@ public class DocentActivity extends AppCompatActivity {
             Log.d("check1", "onResume, cate_id : " + category_id);
             Log.d("check1", "onResume, docent_id : " + docent_id);
             //여기서 비콘 넘버 받아서 그 docent의 id와 category_id를 받아오면 됨.
-            category_id = 1;
-            docent_id = 2;
+            docentObject.category_id = "2";
+            docentObject.docent_id = "3";
 
 
             Log.d("check1", "onResume, cate_id : " + category_id);
