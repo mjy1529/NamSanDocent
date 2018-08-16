@@ -62,6 +62,7 @@ import docent.namsanhanok.Event.EventActivity;
 import docent.namsanhanok.Info.InfoActivity;
 //import docent.namsanhanok.IntentService;
 import docent.namsanhanok.Manager.DocentMemList;
+import docent.namsanhanok.Manager.IDInfoData;
 import docent.namsanhanok.NetworkService;
 import docent.namsanhanok.Notice.NoticeActivity;
 import docent.namsanhanok.Question.QuestionWriteActivity;
@@ -263,6 +264,7 @@ public class HomeActivity extends AppCompatActivity {
                                     newItemDialog.dismiss();
                                 }
                                 vibrator.vibrate(500);
+                                Log.d("check1", "알람떠야함");
                                 showNewItemDialog(beacon_minor);
                                 prev_beacon = beacon_minor;
                                 break;
@@ -304,7 +306,9 @@ public class HomeActivity extends AppCompatActivity {
                String beacon_minor = minewBeacons.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue();
                Log.d("check1", "beacon_minour : " + beacon_minor);
 
-               if(docentMemList.check_beacon_number(beacon_minor)) {
+               //IDinfoData
+               IDInfoData idInfoData = new IDInfoData();
+               if(docentMemList.check_beacon_number(beacon_minor, idInfoData)) {
                    Log.d("check1", "beacon_minour is exist : " + beacon_minor);
 
                    appearBeaconList.add(minewBeacons.get(i));
@@ -429,6 +433,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void showNewItemDialog(final String beacon_number) {
+        Log.d("check1", "알람뜸");
         newItemDialog = new PrettyDialog(HomeActivity.this);
         newItemDialog.setMessage(getResources().getString(R.string.newItemAlertMessage))
                 .setIcon(R.drawable.pdlg_icon_info)

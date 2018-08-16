@@ -1,43 +1,41 @@
 package docent.namsanhanok.Manager;
 
-import android.util.Log;
-
 import java.util.HashMap;
 import java.util.Iterator;
 
 import docent.namsanhanok.Category.CategoryData;
 import docent.namsanhanok.Docent.DocentData;
-import uk.co.senab.photoview.log.LoggerDefault;
 
 public class DocentMemList {
 
     public HashMap<String, CategoryData> categorylist_;
     //public HashMap<String, DocentData> docentlist_;
 
-    public static DocentMemList instance = new DocentMemList();
+    public static DocentMemList instance = new DocentMemList();;
 
     public static DocentMemList getInstance() {
+//        instance = new DocentMemList();
         return instance;
     }
 
-    public void initialize() {
+    public void initialize(){
         categorylist_ = new HashMap<>();
         //docentlist_ = new HashMap<>();
     }
 
-    //왜 하나하나 지웠을까? 한번에 안지우고
-    public void clear_all() {
+    public void clear_all(){
         try {
             Iterator<String> keys = categorylist_.keySet().iterator();
-            while (keys.hasNext()) {
+            while( keys.hasNext() ){
                 String key = keys.next();
                 categorylist_.get(key).docentlist.clear();
             }
             categorylist_.clear();
             //docentlist_.clear();
-        } catch (Exception e) {
+        }catch (Exception e)
+        {
             e.printStackTrace();
-            return;
+            return ;
         }
     }
 
@@ -45,7 +43,7 @@ public class DocentMemList {
         try {
             Iterator<String> keys = categorylist_.keySet().iterator();
             boolean found = false;
-            while (keys.hasNext()) {
+            while( keys.hasNext() ){
                 String key = keys.next();
                 if (data.category_id.compareTo(categorylist_.get(key).category_id) == 0) {
                     found = true;
@@ -58,7 +56,8 @@ public class DocentMemList {
                 return true;
             }
             return false;
-        } catch (Exception e) {
+        }catch (Exception e)
+        {
             e.printStackTrace();
             return false;
         }
@@ -71,11 +70,10 @@ public class DocentMemList {
 //            return false;
 
             boolean found = false;
-            if (categorylist_.get(data.category_id).docentlist != null) {
+            if (categorylist_.get(data.category_id).docentlist !=null) {
                 Iterator<String> keys = categorylist_.get(data.category_id).docentlist.keySet().iterator();
                 while (keys.hasNext()) {
                     String key = keys.next();
-                    //비교했을시 0이라 함은..?
                     if (data.docent_id.compareTo(categorylist_.get(data.category_id).docentlist.get(key).docent_id) == 0) {
                         found = true;
                         break;
@@ -97,13 +95,14 @@ public class DocentMemList {
                 return true;
             }
             return false;
-        } catch (Exception e) {
+        }catch (Exception e)
+        {
             e.printStackTrace();
             return false;
         }
     }
 
-    public boolean get_category_info(String id, CategoryData data) {
+    public boolean get_category_info(String id, CategoryData data){
         try {
             if (categorylist_.size() == 0)
                 return false;
@@ -116,7 +115,8 @@ public class DocentMemList {
             data.beacon_number = categorylist_.get(id).beacon_number;
             data.soundqr_number = categorylist_.get(id).soundqr_number;
             return true;
-        } catch (Exception e) {
+        }catch (Exception e)
+        {
             e.printStackTrace();
             return false;
         }
@@ -137,13 +137,15 @@ public class DocentMemList {
 
             map.putAll(categorylist_.get(category_id).docentlist);
             return true;
-        } catch (Exception e) {
+        }catch (Exception e)
+        {
             e.printStackTrace();
             return false;
         }
     }
 
-    public boolean check_beacon_number(String bc_num) {
+    public boolean check_beacon_number(String bc_num, IDInfoData idInfoData)
+    {
         try {
             if (categorylist_.size() == 0)
                 return false;
@@ -151,10 +153,11 @@ public class DocentMemList {
             Iterator<String> keys = categorylist_.keySet().iterator();
             boolean category_found = false;
             boolean docent_found = false;
-            while (keys.hasNext()) {
+            while( keys.hasNext() ){
                 String key = keys.next();
                 if (bc_num.compareTo(categorylist_.get(key).beacon_number) == 0) {
                     category_found = true;
+                    idInfoData.category_id = key;
                     break;
                 }
 
@@ -163,12 +166,13 @@ public class DocentMemList {
                 }
 
                 Iterator<String> docent_keys = categorylist_.get(key).docentlist.keySet().iterator();
-                while (docent_keys.hasNext()) {
-                    String docent_key = keys.next();
-
-                    if (bc_num.compareTo(categorylist_.get(key).docentlist.get(docent_key).beacon_number) == 0) {
+                while( docent_keys.hasNext() ) {
+                    String docent_key = docent_keys.next();
+                    String becon_number = categorylist_.get(key).docentlist.get(docent_key).beacon_number;
+                    if (bc_num.compareTo(becon_number) == 0) {
                         docent_found = true;
-                        Log.d("docent_found", docent_found + "");
+                        idInfoData.category_id = key;
+                        idInfoData.docent_id = docent_key;
                         break;
                     }
                 }
@@ -178,13 +182,15 @@ public class DocentMemList {
             }
 
             return category_found || docent_found;
-        } catch (Exception e) {
+        }catch (Exception e)
+        {
             e.printStackTrace();
             return false;
         }
     }
 
-    public boolean check_soundqr_number(String sq_num) {
+    public boolean check_soundqr_number(String sq_num, IDInfoData idInfoData)
+    {
         try {
             if (categorylist_.size() == 0)
                 return false;
@@ -192,10 +198,11 @@ public class DocentMemList {
             Iterator<String> keys = categorylist_.keySet().iterator();
             boolean category_found = false;
             boolean docent_found = false;
-            while (keys.hasNext()) {
+            while( keys.hasNext() ){
                 String key = keys.next();
                 if (sq_num.compareTo(categorylist_.get(key).soundqr_number) == 0) {
                     category_found = true;
+                    idInfoData.category_id = key;
                     break;
                 }
 
@@ -204,10 +211,13 @@ public class DocentMemList {
                 }
 
                 Iterator<String> docent_keys = categorylist_.get(key).docentlist.keySet().iterator();
-                while (docent_keys.hasNext()) {
-                    String docent_key = keys.next();
-                    if (sq_num.compareTo(categorylist_.get(key).docentlist.get(docent_key).soundqr_number) == 0) {
+                while( docent_keys.hasNext() ) {
+                    String docent_key = docent_keys.next();
+                    String soundqr_number = categorylist_.get(key).docentlist.get(docent_key).soundqr_number;
+                    if (sq_num.compareTo(soundqr_number) == 0) {
                         docent_found = true;
+                        idInfoData.category_id = key;
+                        idInfoData.docent_id = docent_key;
                         break;
                     }
                 }
@@ -217,7 +227,8 @@ public class DocentMemList {
 
             }
             return category_found || docent_found;
-        } catch (Exception e) {
+        }catch (Exception e)
+        {
             e.printStackTrace();
             return false;
         }

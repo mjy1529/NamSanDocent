@@ -36,7 +36,7 @@ public class DocentPopUpActivity extends Activity {
     TextView imageTitle;
 
     int position;
-    int docent_id;
+    String docent_id;
 
     NetworkService service;
     ArrayList<DocentDetailData> docentDetailDataList;
@@ -49,7 +49,7 @@ public class DocentPopUpActivity extends Activity {
 
         Intent secondIntent = getIntent();
         position = secondIntent.getExtras().getInt("position");
-        docent_id = secondIntent.getExtras().getInt("docent_id");
+        docent_id = secondIntent.getExtras().getString("docent_id");
         service = Application.getInstance().getNetworkService();
 
         init();
@@ -106,7 +106,7 @@ public class DocentPopUpActivity extends Activity {
         super.attachBaseContext(TypekitContextWrapper.wrap(newBase));
     }
 
-    private String getDocentDetailInfo(String cmd, int docent_id) {
+    private String getDocentDetailInfo(String cmd, String docent_id) {
         String json = "";
         try {
             JSONObject data = new JSONObject();
