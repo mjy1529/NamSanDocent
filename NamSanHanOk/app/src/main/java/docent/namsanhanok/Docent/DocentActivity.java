@@ -7,6 +7,7 @@ import android.content.pm.ActivityInfo;
 import android.hardware.SensorManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -153,8 +154,6 @@ public class DocentActivity extends AppCompatActivity {
 
     DocentData docentObject;
 
-    DocentMemList docentMemList;
-
     public DocentActivity() {
 
     }
@@ -168,23 +167,11 @@ public class DocentActivity extends AppCompatActivity {
 
         if (newDocent == true) {
             onResume();
-//            networking3();
         } else {
             Intent docentObjectIntent = getIntent();
             docentObject = (DocentData) docentObjectIntent.getSerializableExtra("docentObject");
+            setDocentObject(docentObject);
         }
-
-//        networking();
-        if(newDocent == false){
-            //networking2();
-        }
-        else if(newDocent == true){
-            //networking3();
-        }
-
-        mMinewBeaconManager = MinewBeaconManager.getInstance(this);
-        applicationclass = (Application) getApplicationContext();
-        service = Application.getInstance().getNetworkService();
 
         existBeacon.add("15290");
         existBeacon.add("15282");
@@ -195,7 +182,6 @@ public class DocentActivity extends AppCompatActivity {
         initBeaconManager();
         initBeaconListenerManager();
 
-        setDocentObject(docentObject);
         networking4();
         setRecyclerView();
 
@@ -204,12 +190,67 @@ public class DocentActivity extends AppCompatActivity {
         newDocent = false;
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if(newDocent) {
+            Intent intent = getIntent();
+            final String beaconNumber = intent.getStringExtra("beaconNumber");
+
+            docentObject = new DocentData();
+            new AsyncTask<Void, Void, String>() {
+                @Override
+                protected String doInBackground(Void... voids) {
+                    Call<DocentBeaconResult> request = service.getDocentByBeaconResult(beaconJsonToString(beaconNumber));
+                    try {
+                        Log.d("RESPONSE : ", "비콘 성공");
+                        DocentBeaconResult docentBeaconResult = request.execute().body();
+                        docentObject = docentBeaconResult.docent_info;
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    return null;
+                }
+
+                @Override
+                protected void onPostExecute(String s) {
+                    super.onPostExecute(s);
+                    setDocentObject(docentObject);
+                }
+            }.execute();
+
+//            Call<DocentBeaconResult> request = service.getDocentByBeaconResult(beaconJsonToString(beaconNumber));
+//            request.enqueue(new Callback<DocentBeaconResult>() {
+//                @Override
+//                public void onResponse(Call<DocentBeaconResult> call, Response<DocentBeaconResult> response) {
+//                    if(response.isSuccessful()) {
+//                        DocentBeaconResult docentBeaconResult = response.body();
+//                        docentObject = docentBeaconResult.docent_info;
+//                        setDocentObject(docentObject);
+//                    }
+//                }
+//
+//                @Override
+//                public void onFailure(Call<DocentBeaconResult> call, Throwable t) {
+//
+//                }
+//            });
+        }
+    }
+
     public void setDocentObject(DocentData docentObject) {
         String category_title = "";
         switch (docentObject.category_id) {
-            case "1" : category_title = "한옥"; break;
-            case "2" : category_title = "정원"; break;
-            case "3" : category_title = "타임캡슐광장"; break;
+            case "1":
+                category_title = "한옥";
+                break;
+            case "2":
+                category_title = "정원";
+                break;
+            case "3":
+                category_title = "타임캡슐광장";
+                break;
         }
         docentTitle.setText(category_title);
 
@@ -236,49 +277,6 @@ public class DocentActivity extends AppCompatActivity {
         }
 
         docent_id = Integer.parseInt(docentObject.docent_id);
-    }
-
-
-    //docent content
-    public void networking3() {
-        final Call<DocentBeaconResult> request = service.getDocentByBeaconResult(getBeaconDocentInfo("docent_list", beaconNum));
-        request.enqueue(new Callback<DocentBeaconResult>() {
-            @Override
-            public void onResponse(Call<DocentBeaconResult> call, Response<DocentBeaconResult> response) {
-                if(response.body() != null) {
-
-                    //category는 순서대로 나타나 있으니, list를 다시 불러서 position으로 docent를 보냄.
-                    docentObject = response.body().docent_info;
-
-//                    Log.d("check1", "docent image : " + Environment.getExternalStorageDirectory() + docentObject.docent_image_url);
-//
-//
-//                    Glide.with(getApplicationContext())
-//                            .load(Environment.getExternalStorageDirectory() + docentObject.docent_image_url)
-//                            .into(docentImage);
-//
-//                    docentName.setText(docentObject.docent_title);
-//
-//                    String content = docentObject.docent_content_info;
-//                    docentExplanation.setText(content);
-//
-//                    audio_url = docentObject.docent_audio_url;
-//                    video_url = docentObject.docent_vod_url;
-//
-//                    Log.d("check1", "audio url " + audio_url);
-//                    Log.d("check1", "video url : " + video_url);
-//
-//                    setAudioPlayer();
-//                    setVideoPlayer();
-
-                }
-            }
-
-            @Override
-            public void onFailure(Call<DocentBeaconResult> call, Throwable t) {
-                Log.d("check", "fail");
-            }
-        });
     }
 
     //docent detail list
@@ -393,7 +391,7 @@ public class DocentActivity extends AppCompatActivity {
 
             @Override
             public void onUpdateState(BluetoothState bluetoothState) {
-                if (!isOnBluetooth()) { // bluetooth==flase
+                if (!isOnBluetooth()) { // bluetooth==false
 //                    isScanning = false;
                     applicationclass.setScanning(false);
                     if (mMinewBeaconManager != null) {
@@ -456,7 +454,6 @@ public class DocentActivity extends AppCompatActivity {
         };
     }
 
-
     private void addAppearBeacon(List<MinewBeacon> minewBeacons) {
         Log.d("check1", "isScanning : " + applicationclass.isScanning);
 
@@ -507,7 +504,6 @@ public class DocentActivity extends AppCompatActivity {
 
         go_new_docent_layout.setVisibility(View.VISIBLE);
         go_new_docent_content.setText(closeBeacon);
-
 
         handler2.postDelayed(new Runnable() {
             @Override
@@ -690,12 +686,9 @@ public class DocentActivity extends AppCompatActivity {
                 break;
 
             case R.id.confirm_go_new_docent:
-                //새로운 내용으로 내용 업데이트
-                //Preference
-                //매개변수하나 이용해서 값이 0이면 category에서 갖고오고 1이면 docent갱신
-
                 intent = new Intent(DocentActivity.this, DocentActivity.class);
-                //확인버튼을 눌렀으니 사라짐
+                intent.putExtra("beaconNumber", closeBeacon);
+
                 go_new_docent_layout.setVisibility(View.GONE);
                 bottom_audio_layout.setVisibility(View.GONE);
 
@@ -704,12 +697,7 @@ public class DocentActivity extends AppCompatActivity {
                 finish();
                 startActivity(intent);
 
-                Log.d("check1", "확인 누름");
-                Log.d("check1", "확인버튼_newDocent : " + newDocent);
-
-
                 break;
-
         }
     }
 
@@ -719,7 +707,6 @@ public class DocentActivity extends AppCompatActivity {
             audioCurrentTime.setText(currentTime);
         }
     };
-
 
     public void Thread() {
         Runnable task = new Runnable() {
@@ -745,6 +732,10 @@ public class DocentActivity extends AppCompatActivity {
     public void init() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.docentToolbar);
         setSupportActionBar(toolbar);
+
+        mMinewBeaconManager = MinewBeaconManager.getInstance(this);
+        applicationclass = (Application) getApplicationContext();
+        service = Application.getInstance().getNetworkService();
 
         homeBtn = (ImageButton) findViewById(R.id.homeBtn);
         docentName = (TextView) findViewById(R.id.docentName);
@@ -788,7 +779,6 @@ public class DocentActivity extends AppCompatActivity {
         super.onBackPressed();
         if (videoPlayer != null) videoPlayer.stop();
         if (audioPlayer != null) audioPlayer.stop();
-
     }
 
     private void initFullscreenDialog() {
@@ -833,23 +823,20 @@ public class DocentActivity extends AppCompatActivity {
         });
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Log.d("check1", "newDocent : " + newDocent);
+    public String beaconJsonToString(String beacon_number) {
+        String jsonStr = "";
+        try {
+            JSONObject data = new JSONObject();
+            data.put("cmd", "docent_list");
+            data.put("beacon_number", beacon_number);
 
-        if(newDocent == true){
-
-            Log.d("check1", "onResume, cate_id : " + category_id);
-            Log.d("check1", "onResume, docent_id : " + docent_id);
-            //여기서 비콘 넘버 받아서 그 docent의 id와 category_id를 받아오면 됨.
-            docentObject.category_id = "2";
-            docentObject.docent_id = "3";
-
-
-            Log.d("check1", "onResume, cate_id : " + category_id);
-            Log.d("check1", "onResume, docent_id : " + docent_id);
+            JSONObject root = new JSONObject();
+            root.put("info", data);
+            jsonStr = root.toString();
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
+        return jsonStr;
     }
 
     @Override
@@ -888,70 +875,12 @@ public class DocentActivity extends AppCompatActivity {
         super.attachBaseContext(TypekitContextWrapper.wrap(newBase));
     }
 
-    public String getDocentInfo(String cmd, int cate_id) {
-        String jsonStr = "";
-        try {
-            JSONObject data = new JSONObject();
-            data.put("cmd", cmd);
-            data.put("category_id", cate_id);
-
-            JSONObject root = new JSONObject();
-            root.put("info", data);
-            jsonStr = root.toString();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        Log.d("check1", "docent content 정보요청 : " + jsonStr);
-
-        return jsonStr;
-    }
-
-    public String getBeaconDocentInfo(String cmd, int beacon_number) {
-        String jsonStr = "";
-        try {
-            JSONObject data = new JSONObject();
-            data.put("cmd", cmd);
-            data.put("beacon_number", beacon_number);
-
-            JSONObject root = new JSONObject();
-            root.put("info", data);
-            jsonStr = root.toString();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        Log.d("check1", "docent content 정보요청 : " + jsonStr);
-
-        return jsonStr;
-    }
-
-    private String getCategoryInfo(String cmd) {
-        String json = "";
-        try {
-            JSONObject data = new JSONObject();
-            data.put("cmd", cmd);
-
-
-            JSONObject root = new JSONObject();
-            root.put("info", data);
-            json = root.toString();
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        Log.d("check1", "Category title info 정보요청 : " + json);
-
-        return json;
-    }
-
     private String getDocentDetailInfo(String cmd, int docent_id) {
         String json = "";
         try {
             JSONObject data = new JSONObject();
             data.put("cmd", cmd);
             data.put("docent_id", docent_id);
-
 
             JSONObject root = new JSONObject();
             root.put("info", data);
