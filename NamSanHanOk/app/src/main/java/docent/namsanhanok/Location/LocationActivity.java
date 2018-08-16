@@ -23,11 +23,7 @@ import java.util.ArrayList;
 
 import docent.namsanhanok.Application;
 import docent.namsanhanok.Docent.DocentData;
-import docent.namsanhanok.Docent.DocentResult;
 import docent.namsanhanok.NetworkService;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 import uk.co.senab.photoview.PhotoViewAttacher;
 
 import docent.namsanhanok.R;
