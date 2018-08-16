@@ -104,6 +104,8 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+        Log.d("check1", "home_onCreate");
+
         service = Application.getInstance().getNetworkService();
 
         backPressCloseHandler = new BackPressCloseHandler(this);
@@ -306,7 +308,7 @@ public class HomeActivity extends AppCompatActivity {
                String beacon_minor = minewBeacons.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue();
                Log.d("check1", "beacon_minour : " + beacon_minor);
 
-               //IDinfoData
+               //IDnfoData
                IDInfoData idInfoData = new IDInfoData();
                if(docentMemList.check_beacon_number(beacon_minor, idInfoData)) {
                    Log.d("check1", "beacon_minour is exist : " + beacon_minor);
@@ -497,10 +499,14 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (toggleBtn.isOn()) {
+        Log.d("check1", "home_onResume");
+
+        if(applicationclass.getToggleState()){
+            Log.d("check1", "home_onResume_start_scan");
+            handler.sendEmptyMessageDelayed(0, 2500);
             mMinewBeaconManager.startScan();
             applicationclass.setScanning(true);
-            handler.sendEmptyMessage(0);
+
         }
 
         if(newItemDialog != null && newItemDialog.isShowing()) newItemDialog.dismiss();
@@ -508,6 +514,8 @@ public class HomeActivity extends AppCompatActivity {
 
     @Override
     protected void onStop() {
+        Log.d("check1", "home_onStop");
+
         super.onStop();
         if (applicationclass.getScanning()) {
             mMinewBeaconManager.stopScan();
@@ -520,6 +528,8 @@ public class HomeActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
+        Log.d("check1", "home_onDestroy");
+
         super.onDestroy();
         appearBeaconList.clear();
     }
