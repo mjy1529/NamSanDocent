@@ -24,64 +24,10 @@
 
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/category_layout1"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/category_recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:onClick="onClick">
-
-        <TextView
-            android:id="@+id/category_title1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginStart="20dp"
-            android:onClick="onClick"
-            android:textColor="#ffffff"
-            android:textSize="30sp"
-            android:textStyle="bold" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/category_layout2"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:onClick="onClick">
-
-        <TextView
-            android:id="@+id/category_title2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginStart="20dp"
-            android:onClick="onClick"
-            android:textColor="#ffffff"
-            android:textSize="30sp"
-            android:textStyle="bold" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/category_layout3"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:onClick="onClick">
-
-        <TextView
-            android:id="@+id/category_title3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginStart="20dp"
-            android:onClick="onClick"
-            android:textColor="#ffffff"
-            android:textSize="30sp"
-            android:textStyle="bold" />
-
-    </LinearLayout>
+        android:nestedScrollingEnabled="false" />
 
 </LinearLayout>
