@@ -56,15 +56,12 @@ public class DB_Async extends AsyncTask<String, String, String> {
 
             String DownloadURL = "http://175.123.138.125:8070/down/ko/namsangol_v1.0.0.zip";
             FileName = savePath + "/namsangol_v1.0.0.zip";
-//            InputStream inputStream = new URL(DownloadURL).openStream();
 
-            // **** 추가 **** //
             URL url = new URL(DownloadURL);
             URLConnection connection = url.openConnection();
             connection.connect();
             int sizeOfFile = connection.getContentLength();
             InputStream inputStream = new BufferedInputStream(url.openStream());
-            // ************* //
 
             Log.d("check", "http check ok : ");
             file = new File(FileName);
@@ -87,7 +84,6 @@ public class DB_Async extends AsyncTask<String, String, String> {
         while((count = is.read(data)) != -1) {
             total += count;
             publishProgress("" + (int)((total * 100) / sizeOfFile));
-//            os.write(count);
             os.write(data, 0, count);
         }
         os.flush();

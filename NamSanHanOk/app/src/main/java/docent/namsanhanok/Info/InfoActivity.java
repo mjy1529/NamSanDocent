@@ -62,7 +62,7 @@ public class InfoActivity extends AppCompatActivity implements OnMapReadyCallbac
         googleMap.getUiSettings().setZoomControlsEnabled(true);
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(NamsanHanok));
         googleMap.animateCamera(CameraUpdateFactory.newLatLng(NamsanHanok));
-        googleMap.setMinZoomPreference(13.0f);
+        googleMap.setMinZoomPreference(13.5f);
     }
 
     @Override

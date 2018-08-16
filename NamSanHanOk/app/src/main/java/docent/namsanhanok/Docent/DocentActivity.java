@@ -192,7 +192,6 @@ public class DocentActivity extends AppCompatActivity {
 
         showBeaconAlarm();
 
-
         initBeaconManager();
         initBeaconListenerManager();
 
@@ -239,73 +238,6 @@ public class DocentActivity extends AppCompatActivity {
         docent_id = Integer.parseInt(docentObject.docent_id);
     }
 
-    //toolbar title
-//    public void networking() {
-//        Call<CategoryResult> categoryResultCall = service.getCategoryResult(getCategoryInfo("category_list"));
-//        categoryResultCall.enqueue(new Callback<CategoryResult>() {
-//            @Override
-//            public void onResponse(Call<CategoryResult> call, Response<CategoryResult> response) {
-//                if (response.isSuccessful()) {
-//                    Log.d("check1", "Category network ok");
-//                    categoryDataList = response.body().category_info;
-//
-//                    docentTitle.setText(categoryDataList.get(category_id - 1).category_title);
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<CategoryResult> call, Throwable t) {
-//                Log.d("check1", "실패 : " + t.getMessage());
-//            }
-//        });
-//    }
-
-    //docent content
-//    public void networking2() {
-//        final Call<DocentResult> request = service.getDocentResult(getDocentInfo("docent_list", category_id));
-//        request.enqueue(new Callback<DocentResult>() {
-//            @Override
-//            public void onResponse(Call<DocentResult> call, Response<DocentResult> response) {
-//                if (response.body() != null) {
-//
-//                    //category는 순서대로 나타나 있으니, list를 다시 불러서 position으로 docent를 보냄.
-//                    docentDataList = response.body().docent_info;
-//
-//                    Log.d("check1", "docent image : " + Environment.getExternalStorageDirectory() + docentDataList.get(position).docent_image_url);
-//
-//
-//                    Glide.with(getApplicationContext())
-//                            .load(Environment.getExternalStorageDirectory() + docentDataList.get(position).docent_image_url)
-//                            .into(docentImage);
-//
-//                    docentName.setText(docentDataList.get(position).docent_title);
-//
-//                    String content = docentDataList.get(position).docent_content_info;
-//                    docentExplanation.setText(content);
-//
-//                    audio_url = docentDataList.get(position).docent_audio_url;
-//                    video_url = docentDataList.get(position).docent_vod_url;
-//
-//                    if (audio_url.equals("")) {
-//                        audioBtn.setBackgroundResource(R.drawable.no_headphones);
-//                    } else {
-//                        setAudioPlayer();
-//                    }
-//
-//                    if (video_url.equals("")) {
-//                        docentVideo_Layout.setVisibility(View.GONE);
-//                    } else {
-//                        setVideoPlayer();
-//                    }
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<DocentResult> call, Throwable t) {
-//                Log.d("check", "fail");
-//            }
-//        });
-//    }
 
     //docent content
     public void networking3() {
@@ -813,7 +745,6 @@ public class DocentActivity extends AppCompatActivity {
     public void init() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.docentToolbar);
         setSupportActionBar(toolbar);
-
 
         homeBtn = (ImageButton) findViewById(R.id.homeBtn);
         docentName = (TextView) findViewById(R.id.docentName);

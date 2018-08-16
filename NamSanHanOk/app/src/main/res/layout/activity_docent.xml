@@ -61,14 +61,14 @@
                 android:paddingBottom="10dp"
                 android:paddingEnd="15dp"
                 android:paddingStart="15dp"
-                android:paddingTop="10dp"/>
+                android:paddingTop="10dp" />
 
             <LinearLayout
                 android:id="@+id/docentDetails_Layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_below="@+id/docentExplanation">
+                android:layout_below="@+id/docentExplanation"
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/docentDetails"
@@ -96,8 +96,8 @@
                 android:id="@+id/docentVideo_Layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_below="@+id/docentDetails_Layout">
+                android:layout_below="@+id/docentDetails_Layout"
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/watchVOD"

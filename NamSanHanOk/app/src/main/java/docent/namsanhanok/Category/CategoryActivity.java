@@ -64,8 +64,6 @@ public class CategoryActivity extends AppCompatActivity {
     DocentMemList docentMemList;
     DocentData docentData;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,18 +71,15 @@ public class CategoryActivity extends AppCompatActivity {
 
         service = Application.getInstance().getNetworkService();
 
-
         init();
         setContent();
     }
 
-
-
     public void init() {
         docentMemList = DocentMemList.getInstance();
 
-        Toolbar categoryToolbar = (Toolbar)findViewById(R.id.categoryToolbar);
-        categoryToolbar.bringToFront();
+        Toolbar categoryToolbar = (Toolbar) findViewById(R.id.categoryToolbar);
+        setSupportActionBar(categoryToolbar);
 
         hanok_img = (LinearLayout) findViewById(R.id.category_layout1);
         lake_img = (LinearLayout) findViewById(R.id.category_layout2);
@@ -95,47 +90,31 @@ public class CategoryActivity extends AppCompatActivity {
 
         category_title1 = (TextView) findViewById(R.id.category_title1);
         category_title2 = (TextView) findViewById(R.id.category_title2);
-        category_title3 = (TextView)findViewById(R.id.category_title3);
+        category_title3 = (TextView) findViewById(R.id.category_title3);
 
-        //이거 서버에서 갖고오는걸루해야함
-        category_toolbar_title.setText("마을 둘러보기");
-    }
-
-    private String getCategoryInfo(String cmd) {
-        String json = "";
-        try {
-            JSONObject data = new JSONObject();
-            data.put("cmd",cmd);
-
-
-            JSONObject root = new JSONObject();
-            root.put("info", data);
-            json = root.toString();
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return json;
+        Intent intent = getIntent();
+        category_toolbar_title.setText(intent.getStringExtra("category_title"));
     }
 
     public void setContent() {
         categoryData = new CategoryData();
 
-
-//        Iterator<String> keys = docentMemList.categorylist_.keySet().iterator();
-//        while (keys.hasNext()) {
-//            String key = keys.next();
-//            docentMemList.get_category_info(categoryData.category_id, categoryData);
-//            Log.d("check1", "id : " + categoryData.category_id);
-//            setImg(categoryData.category_id);
-//
-//        }
-
-        for (int i = 1; i <= docentMemList.categorylist_.size(); i++) {
-            String id = String.valueOf(i);
-            docentMemList.get_category_info(id, categoryData);
-            setImg(i);
+        int i = 0;
+        Iterator<String> keys = docentMemList.categorylist_.keySet().iterator();
+        while (keys.hasNext()) {
+            String key = keys.next();
+            docentMemList.get_category_info(docentMemList.categorylist_.get(key).category_id, categoryData);
+            Log.d("check1", "setContent : " + docentMemList.categorylist_.toString());
+            setImg(i); //djkim
+            i++;
+            Log.d("check1", "setContent : " + toString());
         }
+
+//        for (int i = 1; i <= docentMemList.categorylist_.size(); i++) {
+//            String id = String.valueOf(i);
+//            docentMemList.get_category_info(id, categoryData);
+//            setImg(i);
+//        }
 
     }
 
@@ -143,9 +122,7 @@ public class CategoryActivity extends AppCompatActivity {
         final int blackFilter = getApplication().getResources().getColor(R.color.black_color_filter);
         final PorterDuffColorFilter blakcColorFilter = new PorterDuffColorFilter(blackFilter, PorterDuff.Mode.SRC_ATOP);
 
-
-
-        if(id == 1) {
+        if (id == 1) {
             category_title1.setText(categoryData.category_title);
 
             Glide.with(this).load(Environment.getExternalStorageDirectory() + categoryData.category_image_url).apply(new RequestOptions()
@@ -160,8 +137,7 @@ public class CategoryActivity extends AppCompatActivity {
                 }
 
             });
-        }
-        else if(id == 2){
+        } else if (id == 2) {
             Log.d("check1", "img2 : " + Environment.getExternalStorageDirectory() + categoryData.category_image_url);
 
             category_title2.setText(categoryData.category_title);
@@ -177,8 +153,7 @@ public class CategoryActivity extends AppCompatActivity {
                     }
                 }
             });
-        }
-        else if(id == 3){
+        } else if (id == 3) {
             Log.d("check1", "img3 : " + Environment.getExternalStorageDirectory() + categoryData.category_image_url);
 
             category_title3.setText(categoryData.category_title);
@@ -202,28 +177,28 @@ public class CategoryActivity extends AppCompatActivity {
         Intent intent = new Intent(getApplicationContext(), CategoryListActivity.class);
         categoryData = new CategoryData();
         switch (v.getId()) {
-            case R.id.category_layout1 :
-            case R.id.category_title1 :
+            case R.id.category_layout1:
+            case R.id.category_title1:
                 docentMemList.get_category_info("1", categoryData);
                 intent.putExtra("category", categoryData);
                 onPause();
                 startActivity(intent);
                 break;
 
-            case R.id.category_layout2 :
-            case R.id.category_title2 :
+            case R.id.category_layout2:
+            case R.id.category_title2:
                 docentMemList.get_category_info("2", categoryData);
                 onPause();
                 intent.putExtra("category", categoryData);
                 startActivity(intent);
                 break;
 
-            case R.id.category_layout3 :
-            case R.id.category_title3 :
+            case R.id.category_layout3:
+            case R.id.category_title3:
                 onPause();
                 Intent docentIntent = new Intent(CategoryActivity.this, DocentActivity.class);
 
-                HashMap<String, DocentData> map = new HashMap<String, DocentData> ();
+                HashMap<String, DocentData> map = new HashMap<String, DocentData>();
                 docentMemList.get_docent_info("3", map);
                 Iterator<String> keys = map.keySet().iterator();
                 String key = keys.next();
@@ -236,7 +211,7 @@ public class CategoryActivity extends AppCompatActivity {
                 startActivity(docentIntent);
                 break;
 
-            case  R.id.homeBtn :
+            case R.id.homeBtn:
                 onPause();
                 Intent intent2 = new Intent(CategoryActivity.this, HomeActivity.class);
                 intent2.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -257,6 +232,7 @@ public class CategoryActivity extends AppCompatActivity {
         super.onResume();
 
     }
+
     @Override
 
     public void onPause() {
