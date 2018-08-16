@@ -302,11 +302,15 @@ public class HomeActivity extends AppCompatActivity {
 
            for(int i=0; i<minewBeacons.size(); i++) {
                String beacon_minor = minewBeacons.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue();
+               Log.d("check1", "beacon_minour : " + beacon_minor);
 
                if(docentMemList.check_beacon_number(beacon_minor)) {
+                   Log.d("check1", "beacon_minour is exist : " + beacon_minor);
+
                    appearBeaconList.add(minewBeacons.get(i));
                    Log.d("beaconList", minewBeacons.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue());
                }
+
            }
         }
     }
