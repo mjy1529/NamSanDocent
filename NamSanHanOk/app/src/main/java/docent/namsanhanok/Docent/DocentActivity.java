@@ -141,7 +141,6 @@ public class DocentActivity extends AppCompatActivity {
 
     //서버 네트워크
     NetworkService service;
-    int category_id;
     private ArrayList<DocentDetailData> docentDetailDataList;
     private TextView docentExplanation;
     int position;

@@ -38,8 +38,6 @@ public class LocationActivity extends AppCompatActivity {
     PhotoViewAttacher mAttacher;
 
     NetworkService service;
-    int category_id;
-    int position;
     ArrayList<DocentData> docentDataList;
 
     DocentData docentData;

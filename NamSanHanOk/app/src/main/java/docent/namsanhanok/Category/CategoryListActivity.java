@@ -50,7 +50,6 @@ public class CategoryListActivity extends Activity {
     ImageButton homeBtn;
     TextView category_list_toolbar_title;
     //    String category_title;
-//    int category_id;
     ImageView simple_image;
     TextView category_list_title;
     TextView countText;
@@ -65,7 +64,6 @@ public class CategoryListActivity extends Activity {
     DocentMemList docentMemList;
     CategoryData categoryData;
     DocentData docentData;
-
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
