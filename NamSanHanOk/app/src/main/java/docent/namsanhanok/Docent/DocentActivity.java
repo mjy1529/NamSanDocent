@@ -674,9 +674,11 @@ public class DocentActivity extends AppCompatActivity {
             case R.id.locationBtn:
             case R.id.locationTxt:
                 intent = new Intent(getApplicationContext(), LocationActivity.class);
-                intent.putExtra("title", docentName.getText().toString());
-                intent.putExtra("position", position);
-                intent.putExtra("category_id", docentObject.category_id);
+                intent.putExtra("docentData", docentObject);
+
+//                intent.putExtra("title", docentName.getText().toString());
+//                intent.putExtra("position", position);
+//                intent.putExtra("category_id", docentObject.category_id);
 
                 startActivity(intent);
                 break;

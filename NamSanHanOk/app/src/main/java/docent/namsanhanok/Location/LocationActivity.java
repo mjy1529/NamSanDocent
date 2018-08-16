@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.tsengvn.typekit.TypekitContextWrapper;
 
 import org.json.JSONException;
@@ -45,57 +46,34 @@ public class LocationActivity extends AppCompatActivity {
     int position;
     ArrayList<DocentData> docentDataList;
 
+    DocentData docentData;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_location);
 
         Intent secondIntent = getIntent();
-        locationTitle = secondIntent.getExtras().getString("title");
-        category_id = secondIntent.getExtras().getInt("category_id");
-        position = secondIntent.getExtras().getInt("position");
+
+        docentData = (DocentData) secondIntent.getSerializableExtra("docentData");
         service = Application.getInstance().getNetworkService();
 
         init();
-        networking();
+        setLocationContent();
 
         }
 
-    public void networking() {
-        Call<DocentResult> request = service.getDocentResult(getDocentInfo("docent_list", category_id));
-            request.enqueue(new Callback<DocentResult>() {
-                @Override
-                public void onResponse(Call<DocentResult> call, Response<DocentResult> response) {
-                    if(response.body() != null) {
+    public void setLocationContent(){
+        Glide.with(getApplicationContext())
+                .load(Environment.getExternalStorageDirectory() + docentData.docent_location)
+                .apply(new RequestOptions().fitCenter())
+                .into(map);
 
 
-                        docentDataList= response.body().docent_info;
-
-                        Glide.with(getApplicationContext())
-                                .load(Environment.getExternalStorageDirectory() + docentDataList.get(position).docent_location)
-                                .into(map);
-
-
-                        mAttacher = new PhotoViewAttacher(map);
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<DocentResult> call, Throwable t) {
-                    Log.d("check", "fail");
-                }
-            });
+        mAttacher = new PhotoViewAttacher(map);
     }
 
-//    public void setLocationImage(){
-//        if(locationTitle.equals("삼각동 도편수(都片手) 이승업(李承業) 가옥")){
-////            map.setImageResource(R.drawable.map_whole_namsanhanok_2);
-//            map.setImageResource(R.drawable.map_whole_namsanhanok_2);
-//            mAttacher = new PhotoViewAttacher(map);
-//
-//        }
-//
-//    }
+
 
     public void init() {
         cancelBtn = (ImageButton) findViewById(R.id.location_cancelBtn);
@@ -117,24 +95,7 @@ public class LocationActivity extends AppCompatActivity {
         }
     }
 
-    public String getDocentInfo(String cmd, int cate_id) {
-        String jsonStr = "";
-        try {
-            JSONObject data = new JSONObject();
-            data.put("cmd", cmd);
-            data.put("category_id", cate_id);
 
-            JSONObject root = new JSONObject();
-            root.put("info", data);
-            jsonStr = root.toString();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        Log.d("check1", "docent content 정보요청 : " + jsonStr);
-
-        return jsonStr;
-    }
     @Override
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(TypekitContextWrapper.wrap(newBase));
