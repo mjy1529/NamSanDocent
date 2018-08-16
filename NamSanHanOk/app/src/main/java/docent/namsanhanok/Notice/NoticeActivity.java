@@ -191,7 +191,7 @@ public class NoticeActivity extends AppCompatActivity implements NoticeRecyclerA
         searchItem.setOnActionExpandListener(expandListener);
 
         searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
-        searchView.setQueryHint("검색어 입력");
+        searchView.setQueryHint(getResources().getString(R.string.searchMessage));
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) { //검색어 입력 완료 후

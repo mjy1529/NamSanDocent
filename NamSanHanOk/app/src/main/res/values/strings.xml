@@ -64,6 +64,7 @@
 
     <!-- notice -->
     <string name="noResult">검색 결과가 없습니다.</string>
+    <string name="searchMessage">검색어 입력</string>
 
     <!-- data connect -->
     <string name="request"> 인터넷이 연결되어 있지 않습니다. </string>
