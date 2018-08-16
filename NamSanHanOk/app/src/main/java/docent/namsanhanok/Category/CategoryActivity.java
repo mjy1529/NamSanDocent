@@ -62,8 +62,6 @@ public class CategoryActivity extends AppCompatActivity {
     private LinearLayoutManager linearLayoutManager;
     private CategoryAdapter categoryAdapter;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,18 +69,15 @@ public class CategoryActivity extends AppCompatActivity {
 
         service = Application.getInstance().getNetworkService();
 
-
         init();
         setContent();
     }
 
-
-
     public void init() {
         docentMemList = DocentMemList.getInstance();
 
-        Toolbar categoryToolbar = (Toolbar)findViewById(R.id.categoryToolbar);
-        categoryToolbar.bringToFront();
+        Toolbar categoryToolbar = (Toolbar) findViewById(R.id.categoryToolbar);
+        setSupportActionBar(categoryToolbar);
 
         //recyclerview
         recyclerView = (RecyclerView) findViewById(R.id.category_recyclerView);
@@ -99,37 +94,34 @@ public class CategoryActivity extends AppCompatActivity {
         homeBtn = (ImageButton) findViewById(R.id.homeBtn);
         category_toolbar_title = (TextView) findViewById(R.id.docentTitle);
 
-        //이거 서버에서 갖고오는걸루해야함
-        category_toolbar_title.setText("마을 둘러보기");
     }
 
 
     public void setContent() {
         categoryDataList = new ArrayList<>();
 
+        //toolbar title 설정
+        Intent intent = getIntent();
+        category_toolbar_title.setText(intent.getStringExtra("category_title"));
+
         Iterator<String> keys = docentMemList.categorylist_.keySet().iterator();
         while (keys.hasNext()) {
             CategoryData categoryData = new CategoryData();
             String key = keys.next();
             docentMemList.get_category_info(docentMemList.categorylist_.get(key).category_id, categoryData);
-            Log.d("check1", "categoryData : " + "\n" + categoryData);
 
             categoryDataList.add(categoryData);
-            Log.d("check1", "categoryDataList1 : " + "\n" + categoryDataList.toString());
-
         }
 
         categoryAdapter.setAdapter(categoryDataList);
         categorySize = categoryDataList.size();
-        Log.d("check1", "categoryDataList2 : " + "\n" + categoryDataList.toString());
 
     }
 
     public void onClick(View v) {
         Intent intent = new Intent(getApplicationContext(), CategoryListActivity.class);
-//        categoryData = new CategoryData();
         switch (v.getId()) {
-            case  R.id.homeBtn :
+            case R.id.homeBtn:
                 onPause();
                 Intent intent2 = new Intent(CategoryActivity.this, HomeActivity.class);
                 intent2.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -149,6 +141,23 @@ public class CategoryActivity extends AppCompatActivity {
     public void onResume() {
         super.onResume();
 
+    }
+
+    @Override
+
+    public void onPause() {
+
+        super.onPause();
+
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+
+            }
+
+        }, 100);
     }
 
 }

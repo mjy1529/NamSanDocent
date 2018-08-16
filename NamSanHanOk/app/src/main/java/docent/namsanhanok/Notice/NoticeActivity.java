@@ -11,16 +11,12 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.melnykov.fab.FloatingActionButton;
 import com.tsengvn.typekit.TypekitContextWrapper;
@@ -56,7 +52,7 @@ public class NoticeActivity extends AppCompatActivity implements NoticeRecyclerA
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_notice2);
+        setContentView(R.layout.activity_notice);
 
         networking();
         init();
@@ -191,7 +187,7 @@ public class NoticeActivity extends AppCompatActivity implements NoticeRecyclerA
         searchItem.setOnActionExpandListener(expandListener);
 
         searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
-        searchView.setQueryHint("검색어 입력");
+        searchView.setQueryHint(getResources().getString(R.string.searchMessage));
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) { //검색어 입력 완료 후
