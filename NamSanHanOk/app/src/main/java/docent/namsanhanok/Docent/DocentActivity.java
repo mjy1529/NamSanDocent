@@ -145,7 +145,7 @@ public class DocentActivity extends AppCompatActivity {
     private ArrayList<DocentDetailData> docentDetailDataList;
     private TextView docentExplanation;
     int position;
-    int docent_id;
+    String docent_id;
     String audio_url;
     String video_url;
 
@@ -220,22 +220,7 @@ public class DocentActivity extends AppCompatActivity {
                 }
             }.execute();
 
-//            Call<DocentBeaconResult> request = service.getDocentByBeaconResult(beaconJsonToString(beaconNumber));
-//            request.enqueue(new Callback<DocentBeaconResult>() {
-//                @Override
-//                public void onResponse(Call<DocentBeaconResult> call, Response<DocentBeaconResult> response) {
-//                    if(response.isSuccessful()) {
-//                        DocentBeaconResult docentBeaconResult = response.body();
-//                        docentObject = docentBeaconResult.docent_info;
-//                        setDocentObject(docentObject);
-//                    }
-//                }
-//
-//                @Override
-//                public void onFailure(Call<DocentBeaconResult> call, Throwable t) {
-//
-//                }
-//            });
+
         }
     }
 
@@ -276,7 +261,7 @@ public class DocentActivity extends AppCompatActivity {
             setVideoPlayer();
         }
 
-        docent_id = Integer.parseInt(docentObject.docent_id);
+        docent_id = docentObject.docent_id;
     }
 
     //docent detail list
@@ -877,7 +862,7 @@ public class DocentActivity extends AppCompatActivity {
         super.attachBaseContext(TypekitContextWrapper.wrap(newBase));
     }
 
-    private String getDocentDetailInfo(String cmd, int docent_id) {
+    private String getDocentDetailInfo(String cmd, String docent_id) {
         String json = "";
         try {
             JSONObject data = new JSONObject();

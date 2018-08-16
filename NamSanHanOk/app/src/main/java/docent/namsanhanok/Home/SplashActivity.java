@@ -51,6 +51,7 @@ public class SplashActivity extends AppCompatActivity {
 
         init();
 
+
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -100,7 +101,7 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     public void checkVersion() {
-        dbVersion = packageList.get(0).package_version;
+        dbVersion = packageList.get(0).package_version; // ko 버전은 0
         String curVersion = prefs.getString("curVersion", "0.0.0");
         isFirstRun = prefs.getBoolean("isFirstRun", true);
 
@@ -132,7 +133,7 @@ public class SplashActivity extends AppCompatActivity {
                             @Override
                             public void onClick() {
                                 downloadDialog.dismiss();
-                                new DB_Async().execute();
+                                new DB_Async(packageList.get(0)).execute();
                             }
                         }
                 )

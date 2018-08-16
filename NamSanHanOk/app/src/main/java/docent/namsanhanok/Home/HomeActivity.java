@@ -263,6 +263,7 @@ public class HomeActivity extends AppCompatActivity {
                                     newItemDialog.dismiss();
                                 }
                                 vibrator.vibrate(500);
+                                Log.d("check1", "알람떠야함");
                                 showNewItemDialog(beacon_minor);
                                 prev_beacon = beacon_minor;
                                 break;
@@ -429,6 +430,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void showNewItemDialog(final String beacon_number) {
+        Log.d("check1", "알람뜸");
         newItemDialog = new PrettyDialog(HomeActivity.this);
         newItemDialog.setMessage(getResources().getString(R.string.newItemAlertMessage))
                 .setIcon(R.drawable.pdlg_icon_info)
