@@ -15,7 +15,7 @@ public class CategoryData implements Serializable{
 
     public HashMap<String, DocentData> docentlist; // category id, docent data
 
-    CategoryData() {
+    public CategoryData() {
         category_id = "";
         category_title = "";
         category_image_url = "";

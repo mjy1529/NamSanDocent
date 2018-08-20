@@ -74,6 +74,7 @@ import docent.namsanhanok.Home.HomeActivity;
 import docent.namsanhanok.Home.UserRssi;
 import docent.namsanhanok.Location.LocationActivity;
 import docent.namsanhanok.Manager.DocentMemList;
+import docent.namsanhanok.Manager.IDInfoData;
 import docent.namsanhanok.NetworkService;
 import docent.namsanhanok.R;
 import retrofit2.Call;
@@ -82,6 +83,7 @@ import retrofit2.Response;
 import retrofit2.http.HEAD;
 
 import static com.minew.beacon.BluetoothState.BluetoothStatePowerOn;
+import static docent.namsanhanok.AppUtility.AppUtility.deepClone;
 
 public class DocentActivity extends AppCompatActivity {
 
@@ -130,6 +132,8 @@ public class DocentActivity extends AppCompatActivity {
 
     String closeBeacon;
 
+    DocentMemList docentMemList;
+
     //지울 것
     TextView go_new_docent_content;
 
@@ -165,12 +169,33 @@ public class DocentActivity extends AppCompatActivity {
         init();
 
         if (newDocent == true) {
-            onResume();
+            Intent intent = getIntent();
+            final String beaconNumber = intent.getStringExtra("beaconNumber");
+            //onResume();
+            CategoryData categoryData = new CategoryData();
+            docentObject = new DocentData();
+            IDInfoData idInfoData = new IDInfoData();
+            if (docentMemList.check_beacon_number(beaconNumber, idInfoData) == false) {
+                Toast.makeText(getApplicationContext(), "알수없는 비콘 정보입니다.", Toast.LENGTH_SHORT).show();
+            }else {
+                categoryData = (CategoryData) deepClone(docentMemList.getCategorylist().get(idInfoData.category_id));
+                //categoryData = SerializationUtils.clone(categorylist_.get(idInfoData.category_id));
+                //categoryData = categorylist_.get(idInfoData.category_id);
+                if (idInfoData.docent_id.length() > 0) {
+                    //docentData = categorylist_.get(idInfoData.category_id).docentlist.get(idInfoData.docent_id);
+                    //docentData = SerializationUtils.clone(categorylist_.get(idInfoData.category_id).docentlist.get(idInfoData.docent_id));
+                    docentObject = (DocentData) deepClone(docentMemList.getCategorylist().get(idInfoData.category_id).docentlist.get(idInfoData.docent_id));
+                }
+
+//            if (docentMemList.get_docent_info(beaconNumber, categoryData, docentObject) == false) {
+//                Toast.makeText(getApplicationContext(), "알수없는 비콘 정보입니다.", Toast.LENGTH_SHORT).show();
+//            }
+            }
         } else {
             Intent docentObjectIntent = getIntent();
             docentObject = (DocentData) docentObjectIntent.getSerializableExtra("docentObject");
-            setDocentObject(docentObject);
         }
+        setDocentObject(docentObject);
 
         existBeacon.add("15290");
         existBeacon.add("15282");
@@ -719,6 +744,7 @@ public class DocentActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.docentToolbar);
         setSupportActionBar(toolbar);
 
+        docentMemList = DocentMemList.getInstance();
         mMinewBeaconManager = MinewBeaconManager.getInstance(this);
         applicationclass = (Application) getApplicationContext();
         service = Application.getInstance().getNetworkService();

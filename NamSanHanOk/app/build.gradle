@@ -71,5 +71,7 @@ dependencies {
     implementation files('libs/picasso-2.5.2.jar')
     //decompress zip file
     implementation 'net.lingala.zip4j:zip4j:1.3.2'
+    // object copy
+    implementation 'org.apache.commons:commons-lang3:3.6'
 }
 

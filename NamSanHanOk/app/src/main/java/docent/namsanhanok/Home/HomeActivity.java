@@ -171,11 +171,11 @@ public class HomeActivity extends AppCompatActivity {
                         docentMemList.put_category_info(categoryList.get(i));
                     }
 
-                    for (int category_id = 1; category_id <= docentMemList.categorylist_.size(); category_id++) {
+                    for (int category_id = 1; category_id <= docentMemList.getCategorylist().size(); category_id++) {
                         docentListNetworking(String.valueOf(category_id));
                     }
                 }
-                Log.d("check1", "categoryListNetworking : " + docentMemList.categorylist_.toString());
+                Log.d("check1", "categoryListNetworking : " + docentMemList.getCategorylist().toString());
 
             }
 

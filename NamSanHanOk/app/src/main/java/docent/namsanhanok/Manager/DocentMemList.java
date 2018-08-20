@@ -1,5 +1,11 @@
 package docent.namsanhanok.Manager;
 
+import org.apache.commons.lang3.SerializationUtils;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.HashMap;
 import java.util.Iterator;
 
@@ -8,7 +14,7 @@ import docent.namsanhanok.Docent.DocentData;
 
 public class DocentMemList {
 
-    public HashMap<String, CategoryData> categorylist_;
+    private HashMap<String, CategoryData> categorylist_;
     //public HashMap<String, DocentData> docentlist_;
 
     public static DocentMemList instance = new DocentMemList();;
@@ -21,6 +27,10 @@ public class DocentMemList {
     public void initialize(){
         categorylist_ = new HashMap<>();
         //docentlist_ = new HashMap<>();
+    }
+
+    public HashMap<String, CategoryData> getCategorylist() {
+        return categorylist_;
     }
 
     public void clear_all(){
@@ -122,11 +132,20 @@ public class DocentMemList {
         }
     }
 
-//    public boolean get_docent_info(String id, DocentData data){
-//        if (docentlist_.size() == 0)
+//    public boolean get_docent_info(String bc_num, CategoryData categoryData, DocentData docentData){
+//        IDInfoData idInfoData = new IDInfoData();
+//        if (check_beacon_number(bc_num, idInfoData) == false) {
 //            return false;
+//        }
 //
-//        data = docentlist_.get(id);
+//        categoryData = (CategoryData)deepClone(categorylist_.get(idInfoData.category_id));
+//        //categoryData = SerializationUtils.clone(categorylist_.get(idInfoData.category_id));
+//        //categoryData = categorylist_.get(idInfoData.category_id);
+//        if (idInfoData.docent_id.length() > 0) {
+//            //docentData = categorylist_.get(idInfoData.category_id).docentlist.get(idInfoData.docent_id);
+//            //docentData = SerializationUtils.clone(categorylist_.get(idInfoData.category_id).docentlist.get(idInfoData.docent_id));
+//            docentData = (DocentData)deepClone(categorylist_.get(idInfoData.category_id).docentlist.get(idInfoData.docent_id));
+//        }
 //        return true;
 //    }
 
