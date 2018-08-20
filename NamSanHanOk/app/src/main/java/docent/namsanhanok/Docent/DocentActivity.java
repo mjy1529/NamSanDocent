@@ -851,8 +851,25 @@ public class DocentActivity extends AppCompatActivity {
         return jsonStr;
     }
 
+
+    @Override
+    protected void onRestart() {
+        Log.d("check1", "onRestart");
+        Log.d("check1", "sendEmptyMessage");
+
+        super.onRestart();
+        if(applicationclass.getToggleState()){
+            handler1.sendEmptyMessageDelayed(0, 2500);
+            mMinewBeaconManager.startScan();
+            applicationclass.setScanning(true);
+
+        }
+    }
+
     @Override
     protected void onStop() {
+        Log.d("check1", "onStop");
+
         super.onStop();
         if (videoPlayer != null && audioPlayer == null) { //비디오만 있을 경우
             videoPlayer.setPlayWhenReady(false);
@@ -864,22 +881,34 @@ public class DocentActivity extends AppCompatActivity {
             audioPlayer.pause();
             playAudioBtn.setBackgroundResource(R.drawable.ic_play_arrow_black_48dp);
         }
+
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         Log.d("check1", "onPause");
+//        if (applicationclass.getScanning()) {
+//            mMinewBeaconManager.stopScan();
+//            handler1.removeMessages(0);
+//        }
+
         if (applicationclass.getScanning()) {
             mMinewBeaconManager.stopScan();
-            handler1.removeMessages(0);
+            applicationclass.setScanning(false);
         }
+        handler1.removeMessages(0);
+
     }
+
 
     @Override
     protected void onDestroy() {
+        Log.d("check1", "onDestroy");
+
         super.onDestroy();
         appearBeaconList.clear();
+        handler1.removeMessages(0);
     }
 
     @Override
