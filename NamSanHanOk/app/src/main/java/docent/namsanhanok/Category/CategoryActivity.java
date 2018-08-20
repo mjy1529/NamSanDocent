@@ -104,11 +104,11 @@ public class CategoryActivity extends AppCompatActivity {
         Intent intent = getIntent();
         category_toolbar_title.setText(intent.getStringExtra("category_title"));
 
-        Iterator<String> keys = docentMemList.categorylist_.keySet().iterator();
+        Iterator<String> keys = docentMemList.getCategorylist().keySet().iterator();
         while (keys.hasNext()) {
             CategoryData categoryData = new CategoryData();
             String key = keys.next();
-            docentMemList.get_category_info(docentMemList.categorylist_.get(key).category_id, categoryData);
+            docentMemList.get_category_info(docentMemList.getCategorylist().get(key).category_id, categoryData);
 
             categoryDataList.add(categoryData);
         }
