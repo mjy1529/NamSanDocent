@@ -1,33 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center_horizontal"
-    android:background="@android:color/transparent"
-    >
+    android:orientation="vertical">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_gravity="center_vertical"
         android:background="@drawable/new_docent_layout_border"
         android:orientation="horizontal"
-        android:padding="9dp"
-        android:backgroundTint="#d6d6d6">
+        android:padding="9dp">
 
         <TextView
             android:id="@+id/go_new_docent_content"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:textColor="#b5000000"
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="15dp"
+            android:layout_weight="1"
             android:ellipsize="end"
+            android:gravity="center"
             android:singleLine="true"
             android:text="새로 검색된 작품을 보시겠습니까?"
-            android:layout_marginStart="15dp"
-            android:layout_marginEnd="10dp"
-            android:gravity="center"
-            android:layout_weight="1"
-            />
+            android:textColor="#b5000000" />
 
         <TextView
             android:id="@+id/confirm_go_new_docent"
@@ -35,10 +32,11 @@
             android:layout_height="40dp"
             android:layout_gravity="center_vertical"
             android:layout_marginEnd="15dp"
+            android:layout_weight="3"
             android:gravity="center"
             android:onClick="onClick"
-            android:text="확인하기"
-            android:layout_weight="3"
-            />
+            android:text="확인하기" />
+
     </LinearLayout>
+
 </LinearLayout>

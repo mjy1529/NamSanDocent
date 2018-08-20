@@ -328,7 +328,6 @@ public class HomeActivity extends AppCompatActivity {
                 Log.d("handler", "작동중...");
                 this.sendEmptyMessageDelayed(0, 3000);
             }
-
         };
     }
 
