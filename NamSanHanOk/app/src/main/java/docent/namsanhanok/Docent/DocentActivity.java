@@ -214,39 +214,37 @@ public class DocentActivity extends AppCompatActivity {
         newDocent = false;
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        if(newDocent) {
-            Intent intent = getIntent();
-            final String beaconNumber = intent.getStringExtra("beaconNumber");
-
-            docentObject = new DocentData();
-            new AsyncTask<Void, Void, String>() {
-                @Override
-                protected String doInBackground(Void... voids) {
-                    Call<DocentBeaconResult> request = service.getDocentByBeaconResult(beaconJsonToString(beaconNumber));
-                    try {
-                        Log.d("RESPONSE : ", "비콘 성공");
-                        DocentBeaconResult docentBeaconResult = request.execute().body();
-                        docentObject = docentBeaconResult.docent_info;
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    return null;
-                }
-
-                @Override
-                protected void onPostExecute(String s) {
-                    super.onPostExecute(s);
-                    setDocentObject(docentObject);
-                }
-            }.execute();
-
-
-        }
-    }
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+//
+//        if(newDocent) {
+//            Intent intent = getIntent();
+//            final String beaconNumber = intent.getStringExtra("beaconNumber");
+//
+//            docentObject = new DocentData();
+//            new AsyncTask<Void, Void, String>() {
+//                @Override
+//                protected String doInBackground(Void... voids) {
+//                    Call<DocentBeaconResult> request = service.getDocentByBeaconResult(beaconJsonToString(beaconNumber));
+//                    try {
+//                        Log.d("RESPONSE : ", "비콘 성공");
+//                        DocentBeaconResult docentBeaconResult = request.execute().body();
+//                        docentObject = docentBeaconResult.docent_info;
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                    }
+//                    return null;
+//                }
+//
+//                @Override
+//                protected void onPostExecute(String s) {
+//                    super.onPostExecute(s);
+//                    setDocentObject(docentObject);
+//                }
+//            }.execute();
+//        }
+//    }
 
     public void setDocentObject(DocentData docentObject) {
         String category_title = "";
@@ -501,7 +499,6 @@ public class DocentActivity extends AppCompatActivity {
 //        }
     }
 
-
     public void showNewItemDialog() {
         Log.d("check1", "showNewItemDialog 시작");
 //                go_new_docent_layout.setVisibility(View.VISIBLE);
@@ -523,7 +520,6 @@ public class DocentActivity extends AppCompatActivity {
         }, 8000); // delayMills == 지연원하는 밀리초
 
     }
-
 
     public void setRecyclerView() {
         recyclerView = (RecyclerView) findViewById(R.id.docent_recyclerView);
@@ -835,22 +831,21 @@ public class DocentActivity extends AppCompatActivity {
         });
     }
 
-    public String beaconJsonToString(String beacon_number) {
-        String jsonStr = "";
-        try {
-            JSONObject data = new JSONObject();
-            data.put("cmd", "docent_list");
-            data.put("beacon_number", beacon_number);
-
-            JSONObject root = new JSONObject();
-            root.put("info", data);
-            jsonStr = root.toString();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return jsonStr;
-    }
-
+//    public String beaconJsonToString(String beacon_number) {
+//        String jsonStr = "";
+//        try {
+//            JSONObject data = new JSONObject();
+//            data.put("cmd", "docent_list");
+//            data.put("beacon_number", beacon_number);
+//
+//            JSONObject root = new JSONObject();
+//            root.put("info", data);
+//            jsonStr = root.toString();
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//        return jsonStr;
+//    }
 
     @Override
     protected void onRestart() {
