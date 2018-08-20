@@ -234,32 +234,33 @@ public class HomeActivity extends AppCompatActivity {
 
             @Override
             public void onRangeBeacons(final List<MinewBeacon> minewBeacons) {
-                if(!minewBeacons.isEmpty()){
-                    try {
-                        minewBeacons.wait();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    for(int i = 0; i < minewBeacons.size(); i++){
-                        List<MinewBeacon> minewBeacons1 = null;
-                        minewBeacons1.addAll(minewBeacons);
-                    }
-                    synchronized (minewBeacons)
-                    IDInfoData idInfoData = new IDInfoData();
-                    String beacon_minor = minewBeacons.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue();
-                    int beacon_rssi = minewBeacons.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_RSSI).getIntValue();
-                    if (docentMemList.check_beacon_number(beacon_minor, idInfoData))
-                }
-                if (processing == false) {
-                    processing = true;
-                    criticalsection start;
-                    List<MinewBeacon> minewBeaconsTemp;
-                    minewBeaconsTemp.addTotal(minewBeacons);
-                    addAppearBeacon(minewBeacons);
-                    Log.d("beacon", minewBeacons.toString());
-                    criticalsection end;
-                    processing= false;
-                }
+//                if(!minewBeacons.isEmpty()){
+//                    try {
+//                        minewBeacons.wait();
+//                    } catch (InterruptedException e) {
+//                        e.printStackTrace();
+//                    }
+//                    for(int i = 0; i < minewBeacons.size(); i++){
+//                        List<MinewBeacon> minewBeacons1 = null;
+//                        minewBeacons1.addAll(minewBeacons);
+//                    }
+//                    synchronized (minewBeacons)
+//                    IDInfoData idInfoData = new IDInfoData();
+//                    String beacon_minor = minewBeacons.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue();
+//                    int beacon_rssi = minewBeacons.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_RSSI).getIntValue();
+//                    if (docentMemList.check_beacon_number(beacon_minor, idInfoData))
+//                }
+//                if (processing == false) {
+//                    processing = true;
+//                    criticalsection start;
+//                    List<MinewBeacon> minewBeaconsTemp;
+//                    minewBeaconsTemp.addTotal(minewBeacons);
+//                    addAppearBeacon(minewBeacons);
+//                    Log.d("beacon", minewBeacons.toString());
+//                    criticalsection end;
+//                    processing= false;
+//                }
+                addAppearBeacon(minewBeacons);
             }
 
             @Override
