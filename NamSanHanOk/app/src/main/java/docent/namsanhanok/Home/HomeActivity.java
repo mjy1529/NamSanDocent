@@ -522,7 +522,6 @@ public class HomeActivity extends AppCompatActivity {
             applicationclass.setScanning(false);
         }
         handler.removeMessages(0);
-        //if(newItemDialog.isShowing()) newItemDialog.dismiss();
     }
 
 
