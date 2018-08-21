@@ -1,7 +1,10 @@
 package docent.namsanhanok.Home;
 
+import android.Manifest;
+import android.bluetooth.le.BluetoothLeScanner;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -105,6 +108,7 @@ public class HomeActivity extends AppCompatActivity {
     HomeData homeData;
     DocentMemList docentMemList;
     static List<MinewBeacon> minewBeacons1 = new ArrayList<>();
+    private static final int PERMISSION_REQUEST_COARSE_LOCATION = 456;
 
 
     @Override
@@ -119,7 +123,11 @@ public class HomeActivity extends AppCompatActivity {
         initBeaconManager();
         initBeaconListenerManager();
 //        showBeaconAlarm();
+
+
+
     }
+
 
     public void homeNetworking() {
         Call<HomeResult> request = service.getHomeResult(homeJsonToString());
@@ -238,7 +246,7 @@ public class HomeActivity extends AppCompatActivity {
 
             @Override
             public void onDisappearBeacons(List<MinewBeacon> minewBeacons) {
-                Log.d("check2", "disappear");
+                Log.d("check2", "home_disappear");
 
             }
 
@@ -302,51 +310,6 @@ public class HomeActivity extends AppCompatActivity {
     }
 
 
-//
-//    private void addAppearBeacon(List<MinewBeacon> minewBeacons) {
-//
-//        if (!minewBeacons.isEmpty()) {
-//            Collections.sort(minewBeacons, comp);
-//            boolean exist = true;
-//            int i = 0;
-//
-//            while(exist && i < minewBeacons.size()){
-//                Log.d("check2", "i는 " + i);
-//
-//                String beacon_minor = minewBeacons.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue();
-//                int beacon_rssi = minewBeacons.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_RSSI).getIntValue();
-//                Log.d("check2", "beacon_minor : " + beacon_minor);
-//                Log.d("check2", "beacon_rssi : " + beacon_rssi);
-//
-//                i++;
-//                //IDInfoData
-//                IDInfoData idInfoData = new IDInfoData();
-//                if (docentMemList.check_beacon_number(beacon_minor, idInfoData)) {
-//                    Log.d("check2", "beacon_minor is exist : " + beacon_minor);
-//                    Log.d("check2", "prev_beacon1 : " + prev_beacon);
-//
-////                   appearBeaconList.add(minewBeacons.get(i));
-////                   Log.d("beaconList", minewBeacons.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue());
-//
-//                    if (beacon_rssi > -70 && beacon_rssi < -30 ) {
-//                        if (!beacon_minor.equals(prev_beacon)) { // 이전 비콘넘버와 다를때
-//                            if (newItemDialog != null && newItemDialog.isShowing()) { //newItemDialog가 보여진다면
-//                                newItemDialog.dismiss();
-//                                showBeaconAlarm(idInfoData);
-//                                prev_beacon = beacon_minor;
-//                            }
-//                            Log.d("check2", "prev_beacon2 : " + prev_beacon);
-//
-//
-//                        }
-//                        exist = false;
-//                        Log.d("check2", "exist : " + exist);
-//                    }
-//                }
-//
-//            }
-//        }
-//    }
 
     public void showBeaconAlarm(final IDInfoData idInfoData) {
 
@@ -585,6 +548,8 @@ public class HomeActivity extends AppCompatActivity {
         if (handler != null) {
             handler.removeMessages(0);
         }
+
+
     }
 
 
@@ -593,7 +558,7 @@ public class HomeActivity extends AppCompatActivity {
         Log.d("check1", "home_onDestroy");
 
         super.onDestroy();
-        appearBeaconList.clear();
+        minewBeacons1.clear();
     }
 
     @Override

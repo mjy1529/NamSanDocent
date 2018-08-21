@@ -1,5 +1,7 @@
 package docent.namsanhanok.Category;
 
+import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothGatt;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -87,6 +89,7 @@ public class CategoryListActivity extends AppCompatActivity {
 
     public void initBeaconManager() {
         mMinewBeaconManager = new MinewBeaconManager();
+
 
         mMinewBeaconManager.setDeviceManagerDelegateListener(new MinewBeaconManagerListener() {
             @Override
@@ -307,6 +310,7 @@ public class CategoryListActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        Log.d("check1", "categoryList_onResume");
 
         if (isOnBluetooth()) {
 
@@ -361,6 +365,7 @@ public class CategoryListActivity extends AppCompatActivity {
         if (handler != null) {
             handler.removeMessages(0);
         }
+
     }
 
     @Override
