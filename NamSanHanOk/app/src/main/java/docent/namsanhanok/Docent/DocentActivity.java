@@ -290,7 +290,6 @@ public class DocentActivity extends AppCompatActivity {
     public void initBeaconListenerManager() {
         Log.d("check1", "docent_isScanning : " + applicationclass.getToggleState());
 
-
         if (isOnBluetooth()) {
             if (applicationclass.getToggleState()) { // scan중
                 Log.d("check1", "docent_isScanning : startScan");
