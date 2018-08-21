@@ -61,7 +61,7 @@ dependencies {
     implementation 'com.github.katoro:typekit:1.0.1'
     //justifiedTextView
     implementation 'com.codesgood:justifiedtextview:1.0.2'
-    // 서버 통신 retrofit2
+    //서버 통신 retrofit2
     implementation 'com.squareup.retrofit2:retrofit:2.3.0'
     //json parsing
     implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
@@ -71,7 +71,7 @@ dependencies {
     implementation files('libs/picasso-2.5.2.jar')
     //decompress zip file
     implementation 'net.lingala.zip4j:zip4j:1.3.2'
-    // object copy
+    //object copy
     implementation 'org.apache.commons:commons-lang3:3.6'
 }
 

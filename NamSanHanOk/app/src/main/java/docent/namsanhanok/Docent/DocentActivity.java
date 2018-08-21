@@ -316,29 +316,6 @@ public class DocentActivity extends AppCompatActivity {
     }
 
     public void initBeaconListenerManager() {
-        Log.d("check1", "docent_isScanning : " + applicationclass.getToggleState());
-//
-//        if (isOnBluetooth()) {
-//            if (applicationclass.getScanning()) { // scan중
-//                Log.d("check1", "isScanning : startScan");
-//
-//                mMinewBeaconManager.startScan();
-//                handler1.sendEmptyMessageDelayed(0, 2200);
-//            } else if (!applicationclass.getScanning()) { //bluetooth는 on인데 Scanning이 안되고 있다
-//                applicationclass.setScanning(false);
-//                try {
-//                    mMinewBeaconManager.stopScan();
-//                    handler1.removeMessages(0);
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        } else if (!isOnBluetooth()) { // bluetooth == false
-//            applicationclass.setScanning(false);
-//            if (mMinewBeaconManager != null) {
-//                mMinewBeaconManager.stopScan();
-//                handler1.removeMessages(0);
-//            }
 
         if (isOnBluetooth()) {
             if (applicationclass.getToggleState()) { // scan중
@@ -388,7 +365,6 @@ public class DocentActivity extends AppCompatActivity {
             @Override
             public void onUpdateState(BluetoothState bluetoothState) {
                 if (!isOnBluetooth()) { // bluetooth==false
-//                    isScanning = false;
                     applicationclass.setScanning(false);
                     if (mMinewBeaconManager != null) {
                         mMinewBeaconManager.stopScan();
