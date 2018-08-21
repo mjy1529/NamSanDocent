@@ -91,17 +91,17 @@ public class CategoryListActivity extends AppCompatActivity {
         mMinewBeaconManager.setDeviceManagerDelegateListener(new MinewBeaconManagerListener() {
             @Override
             public void onAppearBeacons(List<MinewBeacon> minewBeacons) {
+                Log.d("beacon", "appearBeacons");
 
             }
 
             @Override
-            public void onDisappearBeacons(List<MinewBeacon> list) {
+            public void onDisappearBeacons(List<MinewBeacon> minewBeacons) {
 
             }
 
             @Override
             public void onRangeBeacons(List<MinewBeacon> minewBeacons) {
-
                 for (int i = 0; i < minewBeacons.size(); i++) {
                     String beacon_minor = minewBeacons.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue();
 
@@ -123,9 +123,11 @@ public class CategoryListActivity extends AppCompatActivity {
                         beacon_rssi = minewBeacons2.get(0).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_RSSI).getIntValue();
                     }
 
+                    Log.d("beacon", beacon_minor);
+
                     if (beacon_rssi > -70 && beacon_rssi < -30) {
                         IDInfoData idInfoData = new IDInfoData();
-                        if (!beacon_minor.equals(prev_beacon)) {
+                        if (!beacon_minor.equals(prev_beacon) && !beacon_minor.equals(categoryData.beacon_number)) {
                             if (newItemDialog != null && newItemDialog.isShowing()) {
                                 newItemDialog.dismiss();
                             }
@@ -134,7 +136,6 @@ public class CategoryListActivity extends AppCompatActivity {
                                 showBeaconAlarm(idInfoData);
                                 prev_beacon = beacon_minor;
                             }
-
                         }
                     }
                 }
@@ -171,7 +172,7 @@ public class CategoryListActivity extends AppCompatActivity {
                 synchronized (this) {
                     showNewItemDialog(idInfoData);
                 }
-                Log.d("check1", "handler 작동중...");
+
             }
         }, 2500);
     }
@@ -185,6 +186,8 @@ public class CategoryListActivity extends AppCompatActivity {
         category_list_toolbar_title.setText(categoryData.category_title); //툴바 타이틀
         category_list_title.setText(categoryData.category_title + " 소개"); //소개 타이틀
         category_text_info.setText(categoryData.category_detail_info); //카테고리 설명
+
+        this.categoryData = categoryData;
     }
 
     public void setDocentList(CategoryData categoryData) {
@@ -223,12 +226,16 @@ public class CategoryListActivity extends AppCompatActivity {
                                         setCategoryContent(categoryData);
                                         setDocentList(categoryData);
 
+                                        Log.d("beacon", "showAlarmBeaconNumber : " + categoryData.beacon_number);
+
                                     } else if (!idInfoData.docent_id.equals("")) {
                                         Intent intent = new Intent(CategoryListActivity.this, DocentActivity.class);
 
                                         HashMap<String, DocentData> map = new HashMap<>();
                                         docentMemList.get_docent_info(idInfoData.category_id, map);
                                         DocentData docentData = map.get(idInfoData.docent_id);
+
+                                        Log.d("beacon", "showAlarmBeaconNumber : " + docentData.beacon_number);
 
                                         intent.putExtra("docentObject", docentData);
                                         startActivity(intent);
