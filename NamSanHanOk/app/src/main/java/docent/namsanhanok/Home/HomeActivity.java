@@ -285,12 +285,14 @@ public class HomeActivity extends AppCompatActivity {
 
                     }
 
-
 //                if (processing == false) {
 //                    processing = true;
 //                    criticalsection start;
-//                    List<MinewBeacon> minewBeaconsTemp;
-//                    minewBeaconsTemp.addTotal(minewBeacons);
+//                    synchronized (this) {
+//
+//                    }
+//                    ArrayList<MinewBeacon> minewBeaconsTemp = new ArrayList<>();
+//                    minewBeaconsTemp.addAll(minewBeacons);
 //                    addAppearBeacon(minewBeacons);
 //                    Log.d("beacon", minewBeacons.toString());
 //                    criticalsection end;
@@ -310,70 +312,51 @@ public class HomeActivity extends AppCompatActivity {
     }
 
 
-
-    private void addAppearBeacon(List<MinewBeacon> minewBeacons) {
+//
+//    private void addAppearBeacon(List<MinewBeacon> minewBeacons) {
+//
 //        if (!minewBeacons.isEmpty()) {
 //            Collections.sort(minewBeacons, comp);
+//            boolean exist = true;
+//            int i = 0;
 //
-//            for (int i = 0; i < minewBeacons.size(); i++) {
+//            while(exist && i < minewBeacons.size()){
+//                Log.d("check2", "i는 " + i);
+//
 //                String beacon_minor = minewBeacons.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue();
 //                int beacon_rssi = minewBeacons.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_RSSI).getIntValue();
+//                Log.d("check2", "beacon_minor : " + beacon_minor);
+//                Log.d("check2", "beacon_rssi : " + beacon_rssi);
 //
-//                for (String beacon_number : beaconNumbers) {
-//                    if (beacon_minor.equals(beacon_number)) {
-//                        if (!appearBeaconList.contains(minewBeacons.get(i))) { // 중복 제거
-//                            appearBeaconList.add(minewBeacons.get(i));
+//                i++;
+//                //IDInfoData
+//                IDInfoData idInfoData = new IDInfoData();
+//                if (docentMemList.check_beacon_number(beacon_minor, idInfoData)) {
+//                    Log.d("check2", "beacon_minor is exist : " + beacon_minor);
+//                    Log.d("check2", "prev_beacon1 : " + prev_beacon);
+//
+////                   appearBeaconList.add(minewBeacons.get(i));
+////                   Log.d("beaconList", minewBeacons.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue());
+//
+//                    if (beacon_rssi > -70 && beacon_rssi < -30 ) {
+//                        if (!beacon_minor.equals(prev_beacon)) { // 이전 비콘넘버와 다를때
+//                            if (newItemDialog != null && newItemDialog.isShowing()) { //newItemDialog가 보여진다면
+//                                newItemDialog.dismiss();
+//                                showBeaconAlarm(idInfoData);
+//                                prev_beacon = beacon_minor;
+//                            }
+//                            Log.d("check2", "prev_beacon2 : " + prev_beacon);
+//
+//
 //                        }
-
-//                        Log.d("list", beacon_minor + ", " + beacon_rssi);
+//                        exist = false;
+//                        Log.d("check2", "exist : " + exist);
 //                    }
-//
 //                }
+//
 //            }
 //        }
-
-        if (!minewBeacons.isEmpty()) {
-            Collections.sort(minewBeacons, comp);
-            boolean exist = true;
-            int i = 0;
-
-            while(exist && i < minewBeacons.size()){
-                Log.d("check2", "i는 " + i);
-
-                String beacon_minor = minewBeacons.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue();
-                int beacon_rssi = minewBeacons.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_RSSI).getIntValue();
-                Log.d("check2", "beacon_minor : " + beacon_minor);
-                Log.d("check2", "beacon_rssi : " + beacon_rssi);
-
-                i++;
-                //IDInfoData
-                IDInfoData idInfoData = new IDInfoData();
-                if (docentMemList.check_beacon_number(beacon_minor, idInfoData)) {
-                    Log.d("check2", "beacon_minor is exist : " + beacon_minor);
-                    Log.d("check2", "prev_beacon1 : " + prev_beacon);
-
-//                   appearBeaconList.add(minewBeacons.get(i));
-//                   Log.d("beaconList", minewBeacons.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue());
-
-                    if (beacon_rssi > -70 && beacon_rssi < -30 ) {
-                        if (!beacon_minor.equals(prev_beacon)) { // 이전 비콘넘버와 다를때
-                            if (newItemDialog != null && newItemDialog.isShowing()) { //newItemDialog가 보여진다면
-                                newItemDialog.dismiss();
-                                showBeaconAlarm(idInfoData);
-                                prev_beacon = beacon_minor;
-                            }
-                            Log.d("check2", "prev_beacon2 : " + prev_beacon);
-
-
-                        }
-                        exist = false;
-                        Log.d("check2", "exist : " + exist);
-                    }
-                }
-
-            }
-        }
-    }
+//    }
 
     public void showBeaconAlarm(final IDInfoData idInfoData) {
 
