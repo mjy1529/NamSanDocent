@@ -240,12 +240,6 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onDisappearBeacons(List<MinewBeacon> minewBeacons) {
                 Log.d("check2", "disappear");
-                for (int i = 0; i < minewBeacons1.size(); i++) {
-                    String disappearBeacon_minor = minewBeacons1.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue();
-                    appearBeaconList.remove(minewBeacons1.get(i));
-                    if (disappearBeacon_minor.equals(prev_beacon))
-                        prev_beacon = "";
-                }
 
             }
 
@@ -254,10 +248,9 @@ public class HomeActivity extends AppCompatActivity {
                 if (!minewBeacons1.isEmpty()) {
                     Collections.sort(minewBeacons1, comp);
                     for (int i = 0; i < minewBeacons1.size(); i++) {
-                        Log.d("check2", "minewBeacons1거리순 : " + minewBeacons1.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue());
+                         Log.d("check2", "\n" + "minewBeacons1 " + (i+1) +"번째 : " + minewBeacons1.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue());
 
                     }
-                    Log.d("check2", "minewBeacons1거리 첫번째 : " + minewBeacons1.get(0).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue());
 
                     String beacon_minor;
                     int beacon_rssi;
@@ -270,10 +263,7 @@ public class HomeActivity extends AppCompatActivity {
                     if (beacon_rssi > -70 && beacon_rssi < -30) {
                         IDInfoData idInfoData = new IDInfoData();
                         if (!beacon_minor.equals(prev_beacon)) {
-                            if (newItemDialog != null && newItemDialog.isShowing()) {
-                                newItemDialog.dismiss();
 
-                            }
 
                             Log.d("check2", "prev_beacon2 : " + prev_beacon);
                             if (docentMemList.check_beacon_number(beacon_minor, idInfoData)) {
@@ -502,6 +492,11 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void showNewItemDialog(final IDInfoData idInfoData) {
+        if (newItemDialog != null && newItemDialog.isShowing()) {
+            newItemDialog.dismiss();
+            Log.d("check2", "Dialog dismiss");
+
+        }
         Log.d("check1", "알람뜸");
         newItemDialog = new PrettyDialog(HomeActivity.this);
         newItemDialog.setMessage(getResources().getString(R.string.newItemAlertMessage))
@@ -531,6 +526,8 @@ public class HomeActivity extends AppCompatActivity {
                                 }
                                 startActivity(intent);
                                 newItemDialog.dismiss();
+                                Log.d("check2", "Dialog dismiss");
+
                             }
                         }
                 )
@@ -541,6 +538,8 @@ public class HomeActivity extends AppCompatActivity {
                             @Override
                             public void onClick() {
                                 newItemDialog.dismiss();
+                                Log.d("check2", "Dialog dismiss");
+
                             }
                         }
                 );
@@ -569,7 +568,10 @@ public class HomeActivity extends AppCompatActivity {
 
         }
 
-        if (newItemDialog != null && newItemDialog.isShowing()) newItemDialog.dismiss();
+        if (newItemDialog != null && newItemDialog.isShowing()){
+            newItemDialog.dismiss();
+            Log.d("check2", "Dialog dismiss");
+        }
     }
 
     @Override
@@ -661,4 +663,7 @@ public class HomeActivity extends AppCompatActivity {
         }
         return jsonStr;
     }
+
+
+
 }
