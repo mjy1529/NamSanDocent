@@ -312,11 +312,11 @@ public class DocentActivity extends AppCompatActivity {
     }
 
     public void initBeaconManager() {
-        mMinewBeaconManager = MinewBeaconManager.getInstance(this);
+        mMinewBeaconManager = new MinewBeaconManager();
     }
 
     public void initBeaconListenerManager() {
-        Log.d("check1", "isScanning : " + applicationclass.getToggleState());
+        Log.d("check1", "docent_isScanning : " + applicationclass.getToggleState());
 //
 //        if (isOnBluetooth()) {
 //            if (applicationclass.getScanning()) { // scan중
@@ -342,7 +342,7 @@ public class DocentActivity extends AppCompatActivity {
 
         if (isOnBluetooth()) {
             if (applicationclass.getToggleState()) { // scan중
-                Log.d("check1", "isScanning : startScan");
+                Log.d("check1", "docent_isScanning : startScan");
 
                 mMinewBeaconManager.startScan();
                 handler1.sendEmptyMessageDelayed(0, 2200);
@@ -451,9 +451,9 @@ public class DocentActivity extends AppCompatActivity {
     }
 
     private void addAppearBeacon(List<MinewBeacon> minewBeacons) {
-        Log.d("check1", "isScanning : " + applicationclass.isScanning);
+        Log.d("check1", "docent_isScanning : " + applicationclass.isScanning);
 
-        Log.d("check1", "minewBeacons : " + minewBeacons.toString());
+        Log.d("check1", "docent_minewBeacons : " + minewBeacons.toString());
         if (!minewBeacons.isEmpty()) {
             Collections.sort(minewBeacons, comp);
 
@@ -776,6 +776,14 @@ public class DocentActivity extends AppCompatActivity {
         super.onBackPressed();
         if (videoPlayer != null) videoPlayer.stop();
         if (audioPlayer != null) audioPlayer.stop();
+
+        Log.d("check1", "docent_backpressed");
+
+//        if (applicationclass.getScanning()) {
+//            mMinewBeaconManager.stopScan();
+//            applicationclass.setScanning(false);
+//        }
+//        handler1.removeMessages(0);
     }
 
     private void initFullscreenDialog() {
@@ -866,6 +874,7 @@ public class DocentActivity extends AppCompatActivity {
             playAudioBtn.setBackgroundResource(R.drawable.ic_play_arrow_black_48dp);
         }
 
+
     }
 
     @Override
@@ -876,14 +885,19 @@ public class DocentActivity extends AppCompatActivity {
 //            mMinewBeaconManager.stopScan();
 //            handler1.removeMessages(0);
 //        }
+        Log.d("check1", "onPause_getScanning : " + applicationclass.getScanning());
+        Log.d("check1", "onPause_getToogleState" + applicationclass.getToggleState());
 
-        if (applicationclass.getScanning()) {
+        if (applicationclass.getToggleState()) {
             mMinewBeaconManager.stopScan();
             applicationclass.setScanning(false);
         }
         handler1.removeMessages(0);
 
+        finish();
     }
+
+
 
 
     @Override
