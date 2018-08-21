@@ -118,7 +118,6 @@ public class HomeActivity extends AppCompatActivity {
         categoryListNetworking();
         initBeaconManager();
         initBeaconListenerManager();
-//        showBeaconAlarm();
     }
 
     public void homeNetworking() {
@@ -220,7 +219,7 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onAppearBeacons(List<MinewBeacon> minewBeacons) {
                 for(int i = 0 ; i < minewBeacons.size() ; i++){
-                    Log.d("check2", "minewBeacons : " + minewBeacons.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue());
+                    Log.d("check3", "minewBeacons : " + minewBeacons.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue());
                 }
 
                 for(int i = 0; i < minewBeacons.size() ; i++){
@@ -646,5 +645,5 @@ public class HomeActivity extends AppCompatActivity {
         }
         return jsonStr;
     }
-    
+
 }

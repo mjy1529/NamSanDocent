@@ -65,7 +65,7 @@ public class CategoryListActivity extends AppCompatActivity {
     Vibrator vibrator;
     PrettyDialog newItemDialog = null;
     MinewBeaconManager mMinewBeaconManager = null;
-    static List<MinewBeacon> minewBeacons1 = new ArrayList<>();
+    static List<MinewBeacon> minewBeacons2 = new ArrayList<>();
     String prev_beacon = "";
     UserRssi comp = new UserRssi();
     Handler handler = null;
@@ -92,16 +92,6 @@ public class CategoryListActivity extends AppCompatActivity {
             @Override
             public void onAppearBeacons(List<MinewBeacon> minewBeacons) {
 
-                for (int i = 0; i < minewBeacons.size(); i++) {
-                    String beacon_minor = minewBeacons.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue();
-
-                    IDInfoData idInfoData = new IDInfoData();
-                    if (docentMemList.check_beacon_number(beacon_minor, idInfoData)) {
-                        synchronized (this) {
-                            minewBeacons1.add(minewBeacons.get(i));
-                        }
-                    }
-                }
             }
 
             @Override
@@ -110,18 +100,27 @@ public class CategoryListActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onRangeBeacons(List<MinewBeacon> list) {
+            public void onRangeBeacons(List<MinewBeacon> minewBeacons) {
 
-                if (!minewBeacons1.isEmpty()) {
-                    Collections.sort(minewBeacons1, comp);
+                for (int i = 0; i < minewBeacons.size(); i++) {
+                    String beacon_minor = minewBeacons.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue();
 
-                    Log.d("minew", minewBeacons1.get(0).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue());
+                    IDInfoData idInfoData = new IDInfoData();
+                    if (docentMemList.check_beacon_number(beacon_minor, idInfoData)) {
+                        synchronized (this) {
+                            minewBeacons2.add(minewBeacons.get(i));
+                        }
+                    }
+                }
+
+                if (!minewBeacons2.isEmpty()) {
+                    Collections.sort(minewBeacons2, comp);
 
                     String beacon_minor;
                     int beacon_rssi;
                     synchronized (this) {
-                        beacon_minor = minewBeacons1.get(0).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue();
-                        beacon_rssi = minewBeacons1.get(0).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_RSSI).getIntValue();
+                        beacon_minor = minewBeacons2.get(0).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue();
+                        beacon_rssi = minewBeacons2.get(0).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_RSSI).getIntValue();
                     }
 
                     if (beacon_rssi > -70 && beacon_rssi < -30) {
@@ -137,7 +136,6 @@ public class CategoryListActivity extends AppCompatActivity {
                             }
 
                         }
-
                     }
                 }
             }
@@ -151,9 +149,7 @@ public class CategoryListActivity extends AppCompatActivity {
                         handler.removeMessages(0);
                     }
                 } else if (isOnBluetooth()) {
-                    if (Application.getInstance().getScanning()) {
-
-                    } else if (!Application.getInstance().getScanning()) {
+                    if (!Application.getInstance().getScanning()) {
                         Application.getInstance().isScanning = true;
                         handler.sendEmptyMessage(0);
                         try {
@@ -309,7 +305,6 @@ public class CategoryListActivity extends AppCompatActivity {
         super.onResume();
 
         if (isOnBluetooth()) {
-
             if (Application.getInstance().getToggleState()) {
                 mMinewBeaconManager.startScan();
                 if (handler != null) {
