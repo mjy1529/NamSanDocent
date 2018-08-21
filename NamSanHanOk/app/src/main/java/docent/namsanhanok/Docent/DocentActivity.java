@@ -312,7 +312,7 @@ public class DocentActivity extends AppCompatActivity {
     }
 
     public void initBeaconManager() {
-        mMinewBeaconManager = MinewBeaconManager.getInstance(this);
+        mMinewBeaconManager = new MinewBeaconManager();
     }
 
     public void initBeaconListenerManager() {
@@ -784,7 +784,6 @@ public class DocentActivity extends AppCompatActivity {
 //            applicationclass.setScanning(false);
 //        }
 //        handler1.removeMessages(0);
-
     }
 
     private void initFullscreenDialog() {

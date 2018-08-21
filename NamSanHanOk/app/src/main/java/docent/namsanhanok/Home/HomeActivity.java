@@ -211,7 +211,8 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void initBeaconManager() {
-        mMinewBeaconManager = MinewBeaconManager.getInstance(this);
+//        mMinewBeaconManager = MinewBeaconManager.getInstance(this);
+        mMinewBeaconManager = new MinewBeaconManager();
     }
 
     public void initBeaconListenerManager() {
