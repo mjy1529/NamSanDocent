@@ -211,7 +211,6 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void initBeaconManager() {
-//        mMinewBeaconManager = MinewBeaconManager.getInstance(this);
         mMinewBeaconManager = new MinewBeaconManager();
     }
 
@@ -636,22 +635,6 @@ public class HomeActivity extends AppCompatActivity {
             JSONObject data = new JSONObject();
             data.put("cmd", "docent_list");
             data.put("category_id", category_id);
-
-            JSONObject root = new JSONObject();
-            root.put("info", data);
-            jsonStr = root.toString();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return jsonStr;
-    }
-
-    public String beaconJsonToString(String beacon_number) {
-        String jsonStr = "";
-        try {
-            JSONObject data = new JSONObject();
-            data.put("cmd", "docent_list");
-            data.put("beacon_number", beacon_number);
 
             JSONObject root = new JSONObject();
             root.put("info", data);

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.minew.beacon.BeaconValueIndex;
 import com.minew.beacon.BluetoothState;
 import com.minew.beacon.MinewBeacon;
 import com.minew.beacon.MinewBeaconManager;
@@ -23,6 +25,7 @@ import com.minew.beacon.MinewBeaconManagerListener;
 import com.tsengvn.typekit.TypekitContextWrapper;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -31,6 +34,7 @@ import docent.namsanhanok.Application;
 import docent.namsanhanok.Docent.DocentActivity;
 import docent.namsanhanok.Docent.DocentData;
 import docent.namsanhanok.Home.HomeActivity;
+import docent.namsanhanok.Home.UserRssi;
 import docent.namsanhanok.Manager.DocentMemList;
 import docent.namsanhanok.Manager.IDInfoData;
 import docent.namsanhanok.NetworkService;
@@ -58,10 +62,13 @@ public class CategoryListActivity extends AppCompatActivity {
     CategoryData categoryData;
     DocentData docentData;
 
+    Vibrator vibrator;
     PrettyDialog newItemDialog = null;
     MinewBeaconManager mMinewBeaconManager = null;
-    ArrayList<MinewBeacon> minewBeaconTempList = new ArrayList<>();
-    boolean processing = false;
+    static List<MinewBeacon> minewBeacons1 = new ArrayList<>();
+    String prev_beacon = "";
+    UserRssi comp = new UserRssi();
+    Handler handler = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,14 +83,6 @@ public class CategoryListActivity extends AppCompatActivity {
 
         setCategoryContent(categoryData);
         setDocentList(categoryData);
-
-        // *** 테스트용 코드 : 비콘알림코드 추가 후 삭제 *** //
-        IDInfoData idInfoData = new IDInfoData();
-        idInfoData.category_id = "2";
-        idInfoData.docent_id = "4";
-        // ***************************************** //
-
-        showNewItemDialog(idInfoData);
     }
 
     public void initBeaconManager() {
@@ -91,8 +90,18 @@ public class CategoryListActivity extends AppCompatActivity {
 
         mMinewBeaconManager.setDeviceManagerDelegateListener(new MinewBeaconManagerListener() {
             @Override
-            public void onAppearBeacons(List<MinewBeacon> list) {
+            public void onAppearBeacons(List<MinewBeacon> minewBeacons) {
 
+                for (int i = 0; i < minewBeacons.size(); i++) {
+                    String beacon_minor = minewBeacons.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue();
+
+                    IDInfoData idInfoData = new IDInfoData();
+                    if (docentMemList.check_beacon_number(beacon_minor, idInfoData)) {
+                        synchronized (this) {
+                            minewBeacons1.add(minewBeacons.get(i));
+                        }
+                    }
+                }
             }
 
             @Override
@@ -103,13 +112,72 @@ public class CategoryListActivity extends AppCompatActivity {
             @Override
             public void onRangeBeacons(List<MinewBeacon> list) {
 
+                if (!minewBeacons1.isEmpty()) {
+                    Collections.sort(minewBeacons1, comp);
+
+                    Log.d("minew", minewBeacons1.get(0).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue());
+
+                    String beacon_minor;
+                    int beacon_rssi;
+                    synchronized (this) {
+                        beacon_minor = minewBeacons1.get(0).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue();
+                        beacon_rssi = minewBeacons1.get(0).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_RSSI).getIntValue();
+                    }
+
+                    if (beacon_rssi > -70 && beacon_rssi < -30) {
+                        IDInfoData idInfoData = new IDInfoData();
+                        if (!beacon_minor.equals(prev_beacon)) {
+                            if (newItemDialog != null && newItemDialog.isShowing()) {
+                                newItemDialog.dismiss();
+                            }
+
+                            if (docentMemList.check_beacon_number(beacon_minor, idInfoData)) {
+                                showBeaconAlarm(idInfoData);
+                                prev_beacon = beacon_minor;
+                            }
+
+                        }
+
+                    }
+                }
             }
 
             @Override
             public void onUpdateState(BluetoothState bluetoothState) {
+                if (!isOnBluetooth()) {
+                    Application.getInstance().setScanning(false);
+                    if (mMinewBeaconManager != null) {
+                        mMinewBeaconManager.stopScan();
+                        handler.removeMessages(0);
+                    }
+                } else if (isOnBluetooth()) {
+                    if (Application.getInstance().getScanning()) {
 
+                    } else if (!Application.getInstance().getScanning()) {
+                        Application.getInstance().isScanning = true;
+                        handler.sendEmptyMessage(0);
+                        try {
+                            mMinewBeaconManager.startScan();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
             }
         });
+    }
+
+    public void showBeaconAlarm(final IDInfoData idInfoData) {
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                vibrator.vibrate(500);
+                synchronized (this) {
+                    showNewItemDialog(idInfoData);
+                }
+                Log.d("check1", "handler 작동중...");
+            }
+        }, 2500);
     }
 
     public void setCategoryContent(CategoryData categoryData) {
@@ -189,6 +257,7 @@ public class CategoryListActivity extends AppCompatActivity {
 
     public void init() {
         docentMemList = DocentMemList.getInstance();
+        handler = new Handler();
 
         Toolbar categoryListToolbar = (Toolbar) findViewById(R.id.category_list_Toolbar);
         setSupportActionBar(categoryListToolbar);
@@ -209,6 +278,8 @@ public class CategoryListActivity extends AppCompatActivity {
 
         categoryListAdapter = new CategoryListAdapter(getApplicationContext(), docentDataList);
         recyclerView.setAdapter(categoryListAdapter);
+
+        vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
     }
 
 
@@ -238,13 +309,18 @@ public class CategoryListActivity extends AppCompatActivity {
         super.onResume();
 
         if (isOnBluetooth()) {
+
             if (Application.getInstance().getToggleState()) {
                 mMinewBeaconManager.startScan();
+                if (handler != null) {
+                    handler.sendEmptyMessage(0);
+                }
 
             } else if (!Application.getInstance().getToggleState()) {
                 Application.getInstance().setScanning(false);
                 try {
                     mMinewBeaconManager.stopScan();
+                    if (handler != null) handler.removeMessages(0);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -254,6 +330,7 @@ public class CategoryListActivity extends AppCompatActivity {
             Application.getInstance().setScanning(false);
             if (mMinewBeaconManager != null) {
                 mMinewBeaconManager.stopScan();
+                if (handler != null) handler.removeMessages(0);
             }
         }
     }
@@ -270,6 +347,20 @@ public class CategoryListActivity extends AppCompatActivity {
             }
 
         }, 100);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        super.onStop();
+        if (Application.getInstance().getToggleState()) {
+            mMinewBeaconManager.stopScan();
+            Application.getInstance().setScanning(false);
+        }
+        if (handler != null) {
+            handler.removeMessages(0);
+        }
     }
 
     @Override
