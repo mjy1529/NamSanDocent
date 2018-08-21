@@ -104,6 +104,8 @@ public class HomeActivity extends AppCompatActivity {
 
     HomeData homeData;
     DocentMemList docentMemList;
+    static List<MinewBeacon> minewBeacons1 = new ArrayList<>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -217,39 +219,73 @@ public class HomeActivity extends AppCompatActivity {
         mMinewBeaconManager.setDeviceManagerDelegateListener(new MinewBeaconManagerListener() {
             @Override
             public void onAppearBeacons(List<MinewBeacon> minewBeacons) {
+                for(int i = 0 ; i < minewBeacons.size() ; i++){
+                    Log.d("check2", "minewBeacons : " + minewBeacons.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue());
+                }
+
+                for(int i = 0; i < minewBeacons.size() ; i++){
+                    String beacon_minor = minewBeacons.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue();
+
+                    IDInfoData idInfoData = new IDInfoData();
+                    if (docentMemList.check_beacon_number(beacon_minor, idInfoData)) {
+                        synchronized (this){
+                            minewBeacons1.add(minewBeacons.get(i));
+                        }
+                    }
+                }
 
             }
 
             @Override
             public void onDisappearBeacons(List<MinewBeacon> minewBeacons) {
                 Log.d("check2", "disappear");
-//                for (int i = 0; i < minewBeacons.size(); i++) {
-//                    String disappearBeacon_minor = minewBeacons.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue();
-//                    appearBeaconList.remove(minewBeacons.get(i));
-//                    if (disappearBeacon_minor.equals(prev_beacon))
-//                        prev_beacon = "";
-//                }
+                for (int i = 0; i < minewBeacons1.size(); i++) {
+                    String disappearBeacon_minor = minewBeacons1.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue();
+                    appearBeaconList.remove(minewBeacons1.get(i));
+                    if (disappearBeacon_minor.equals(prev_beacon))
+                        prev_beacon = "";
+                }
 
             }
 
             @Override
             public void onRangeBeacons(final List<MinewBeacon> minewBeacons) {
-//                if(!minewBeacons.isEmpty()){
-//                    try {
-//                        minewBeacons.wait();
-//                    } catch (InterruptedException e) {
-//                        e.printStackTrace();
-//                    }
-//                    for(int i = 0; i < minewBeacons.size(); i++){
-//                        List<MinewBeacon> minewBeacons1 = null;
-//                        minewBeacons1.addAll(minewBeacons);
-//                    }
-//                    synchronized (minewBeacons)
-//                    IDInfoData idInfoData = new IDInfoData();
-//                    String beacon_minor = minewBeacons.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue();
-//                    int beacon_rssi = minewBeacons.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_RSSI).getIntValue();
-//                    if (docentMemList.check_beacon_number(beacon_minor, idInfoData))
-//                }
+                if (!minewBeacons1.isEmpty()) {
+                    Collections.sort(minewBeacons1, comp);
+                    for (int i = 0; i < minewBeacons1.size(); i++) {
+                        Log.d("check2", "minewBeacons1거리순 : " + minewBeacons1.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue());
+
+                    }
+                    Log.d("check2", "minewBeacons1거리 첫번째 : " + minewBeacons1.get(0).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue());
+
+                    String beacon_minor;
+                    int beacon_rssi;
+                    synchronized (this) {
+                        beacon_minor = minewBeacons1.get(0).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue();
+                        beacon_rssi = minewBeacons1.get(0).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_RSSI).getIntValue();
+                    }
+
+
+                    if (beacon_rssi > -70 && beacon_rssi < -30) {
+                        IDInfoData idInfoData = new IDInfoData();
+                        if (!beacon_minor.equals(prev_beacon)) {
+                            if (newItemDialog != null && newItemDialog.isShowing()) {
+                                newItemDialog.dismiss();
+
+                            }
+
+                            Log.d("check2", "prev_beacon2 : " + prev_beacon);
+                            if (docentMemList.check_beacon_number(beacon_minor, idInfoData)) {
+                                showBeaconAlarm(idInfoData);
+                                prev_beacon = beacon_minor;
+                            }
+
+
+                        }
+
+                    }
+
+
 //                if (processing == false) {
 //                    processing = true;
 //                    criticalsection start;
@@ -260,7 +296,8 @@ public class HomeActivity extends AppCompatActivity {
 //                    criticalsection end;
 //                    processing= false;
 //                }
-                addAppearBeacon(minewBeacons);
+
+                }
             }
 
             @Override
@@ -272,39 +309,7 @@ public class HomeActivity extends AppCompatActivity {
         });
     }
 
-//    private void showBeaconAlarm() {
-//        handler = new Handler() {
-//            @Override
-//            public void handleMessage(Message msg) {
-//                super.handleMessage(msg);
-//                if (!appearBeaconList.isEmpty()) {
-//                    Collections.sort(appearBeaconList, comp);
-//                    for (int i = 0; i < appearBeaconList.size(); i++) {
-//                        int beacon_rssi = appearBeaconList.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_RSSI).getIntValue();
-//                        String beacon_minor = appearBeaconList.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue();
-//
-//                        Log.d("list", "핸들러 작동중...");
-//
-//                        if (-70 < beacon_rssi && beacon_rssi < -30) {
-//                            if (!beacon_minor.equals(prev_beacon)) {
-//                                if (newItemDialog != null && newItemDialog.isShowing()) {
-//                                    newItemDialog.dismiss();
-//                                }
-//                                vibrator.vibrate(500);
-//                                Log.d("check1", "알람떠야함");
-//                                showNewItemDialog(beacon_minor);
-//                                prev_beacon = beacon_minor;
-//                                break;
-//                            }
-//                        } else {
-//                            appearBeaconList.remove(appearBeaconList.get(i));
-//                        }
-//                    }
-//                }
-//                this.sendEmptyMessageDelayed(0, 3000);
-//            }
-//        };
-//    }
+
 
     private void addAppearBeacon(List<MinewBeacon> minewBeacons) {
 //        if (!minewBeacons.isEmpty()) {
@@ -350,15 +355,15 @@ public class HomeActivity extends AppCompatActivity {
 //                   appearBeaconList.add(minewBeacons.get(i));
 //                   Log.d("beaconList", minewBeacons.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue());
 
-                    if (beacon_rssi > -70 && beacon_rssi < -30) {
-                        if (!beacon_minor.equals(prev_beacon)) {
-                            if (newItemDialog != null && newItemDialog.isShowing()) {
+                    if (beacon_rssi > -70 && beacon_rssi < -30 ) {
+                        if (!beacon_minor.equals(prev_beacon)) { // 이전 비콘넘버와 다를때
+                            if (newItemDialog != null && newItemDialog.isShowing()) { //newItemDialog가 보여진다면
                                 newItemDialog.dismiss();
+                                showBeaconAlarm(idInfoData);
+                                prev_beacon = beacon_minor;
                             }
                             Log.d("check2", "prev_beacon2 : " + prev_beacon);
 
-                            showBeaconAlarm(idInfoData);
-                            prev_beacon = beacon_minor;
 
                         }
                         exist = false;
@@ -371,31 +376,17 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void showBeaconAlarm(final IDInfoData idInfoData) {
-//        handler.sendEmptyMessageDelayed(0, 3000);
-//        handler.postDelayed(new Runnable() {
-//                                @Override
-//                                public void run() {
-//                                    vibrator.vibrate(500);
-//                                    showNewItemDialog(idInfoData);
-//                                    Log.d("handler", "작동중...");
-//                                    handler.sendEmptyMessage(0);
-//                                }
-//                            }, 3000);
-
-//        try {
-//            sleep(3000);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
 
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 vibrator.vibrate(500);
-                showNewItemDialog(idInfoData);
+                synchronized (this){
+                    showNewItemDialog(idInfoData);
+                }
                 Log.d("check1", "handler 작동중...");
             }
-        },3000);
+        },2500);
 
     }
 
@@ -572,31 +563,6 @@ public class HomeActivity extends AppCompatActivity {
         newItemDialog.show();
     }
 
-    public void getDocentByBeacon(final String beacon_number) {
-        new AsyncTask<Void, Void, String>() {
-            @Override
-            protected String doInBackground(Void... voids) {
-                service = Application.getInstance().getNetworkService();
-                Call<DocentBeaconResult> request = service.getDocentByBeaconResult(beaconJsonToString(beacon_number));
-                try {
-                    DocentBeaconResult docentBeaconResult = request.execute().body();
-                    DocentData docentData = docentBeaconResult.docent_info;
-                    Intent intent = new Intent(HomeActivity.this, DocentActivity.class);
-                    intent.putExtra("docentObject", docentData);
-                    Log.d("beacon_number", docentData.beacon_number);
-                    startActivity(intent);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                return null;
-            }
-
-            @Override
-            protected void onPostExecute(String s) {
-                super.onPostExecute(s);
-            }
-        }.execute();
-    }
 
     @Override
     public void onBackPressed() {
@@ -627,7 +593,7 @@ public class HomeActivity extends AppCompatActivity {
         Log.d("check1", "home_onStop");
 
         super.onStop();
-        if (applicationclass.getScanning()) {
+        if (applicationclass.getToggleState()) {
             mMinewBeaconManager.stopScan();
             applicationclass.setScanning(false);
         }
