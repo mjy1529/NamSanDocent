@@ -9,17 +9,23 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.minew.beacon.BluetoothState;
+import com.minew.beacon.MinewBeacon;
+import com.minew.beacon.MinewBeaconManager;
+import com.minew.beacon.MinewBeaconManagerListener;
 import com.tsengvn.typekit.TypekitContextWrapper;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 
 import docent.namsanhanok.Application;
 import docent.namsanhanok.Docent.DocentActivity;
@@ -31,6 +37,8 @@ import docent.namsanhanok.NetworkService;
 import docent.namsanhanok.R;
 import libs.mjn.prettydialog.PrettyDialog;
 import libs.mjn.prettydialog.PrettyDialogCallback;
+
+import static com.minew.beacon.BluetoothState.BluetoothStatePowerOn;
 
 public class CategoryListActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
@@ -44,7 +52,6 @@ public class CategoryListActivity extends AppCompatActivity {
     TextView countText;
     TextView category_text_info;
 
-    private NetworkService service;
     private ArrayList<DocentData> docentDataList;
 
     DocentMemList docentMemList;
@@ -52,6 +59,9 @@ public class CategoryListActivity extends AppCompatActivity {
     DocentData docentData;
 
     PrettyDialog newItemDialog = null;
+    MinewBeaconManager mMinewBeaconManager = null;
+    ArrayList<MinewBeacon> minewBeaconTempList = new ArrayList<>();
+    boolean processing = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,9 +70,9 @@ public class CategoryListActivity extends AppCompatActivity {
 
         Intent secondIntent = getIntent();
         categoryData = (CategoryData) secondIntent.getSerializableExtra("category");
-        service = Application.getInstance().getNetworkService();
 
         init();
+        initBeaconManager();
 
         setCategoryContent(categoryData);
         setDocentList(categoryData);
@@ -71,9 +81,35 @@ public class CategoryListActivity extends AppCompatActivity {
         IDInfoData idInfoData = new IDInfoData();
         idInfoData.category_id = "2";
         idInfoData.docent_id = "4";
-        // ******************************** //
+        // ***************************************** //
 
         showNewItemDialog(idInfoData);
+    }
+
+    public void initBeaconManager() {
+        mMinewBeaconManager = new MinewBeaconManager();
+
+        mMinewBeaconManager.setDeviceManagerDelegateListener(new MinewBeaconManagerListener() {
+            @Override
+            public void onAppearBeacons(List<MinewBeacon> list) {
+
+            }
+
+            @Override
+            public void onDisappearBeacons(List<MinewBeacon> list) {
+
+            }
+
+            @Override
+            public void onRangeBeacons(List<MinewBeacon> list) {
+
+            }
+
+            @Override
+            public void onUpdateState(BluetoothState bluetoothState) {
+
+            }
+        });
     }
 
     public void setCategoryContent(CategoryData categoryData) {
@@ -188,18 +224,41 @@ public class CategoryListActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(TypekitContextWrapper.wrap(newBase));
+    private boolean isOnBluetooth() {
+        BluetoothState bluetoothState = mMinewBeaconManager.checkBluetoothState();
+        if (bluetoothState == BluetoothStatePowerOn) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+
+        if (isOnBluetooth()) {
+            if (Application.getInstance().getToggleState()) {
+                mMinewBeaconManager.startScan();
+
+            } else if (!Application.getInstance().getToggleState()) {
+                Application.getInstance().setScanning(false);
+                try {
+                    mMinewBeaconManager.stopScan();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+        } else if (!isOnBluetooth()) {
+            Application.getInstance().setScanning(false);
+            if (mMinewBeaconManager != null) {
+                mMinewBeaconManager.stopScan();
+            }
+        }
     }
 
     public void onPause() {
-
         super.onPause();
 
         Handler handler = new Handler();
@@ -211,5 +270,10 @@ public class CategoryListActivity extends AppCompatActivity {
             }
 
         }, 100);
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(TypekitContextWrapper.wrap(newBase));
     }
 }
