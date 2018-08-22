@@ -226,7 +226,7 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onAppearBeacons(List<MinewBeacon> minewBeacons) {
                 for(int i = 0 ; i < minewBeacons.size() ; i++){
-                    Log.d("check3", "minewBeacons : " + minewBeacons.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue());
+                    Log.d("check2", "home_minewBeacons : " + minewBeacons.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue());
                 }
 
                 for(int i = 0; i < minewBeacons.size() ; i++){
@@ -245,7 +245,10 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onDisappearBeacons(List<MinewBeacon> minewBeacons) {
                 Log.d("check2", "home_disappear");
-
+                for (MinewBeacon minewBeacon : minewBeacons) {
+                    String deviceName = minewBeacon.getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue();
+                    Log.d("check2", "home_사라진다 : " + deviceName);
+                }
             }
 
             @Override
@@ -253,7 +256,7 @@ public class HomeActivity extends AppCompatActivity {
                 if (!minewBeacons1.isEmpty()) {
                     Collections.sort(minewBeacons1, comp);
                     for (int i = 0; i < minewBeacons1.size(); i++) {
-                         Log.d("check2", "\n" + "minewBeacons1 " + (i+1) +"번째 : " + minewBeacons1.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue());
+                         Log.d("check2", "\n" + "home_minewBeacons1 " + (i+1) +"번째 : " + minewBeacons1.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue());
 
                     }
 
@@ -270,7 +273,7 @@ public class HomeActivity extends AppCompatActivity {
                         if (!beacon_minor.equals(prev_beacon)) {
 
 
-                            Log.d("check2", "prev_beacon2 : " + prev_beacon);
+                            Log.d("check2", "home_prev_beacon2 : " + prev_beacon);
                             if (docentMemList.check_beacon_number(beacon_minor, idInfoData)) {
                                 showBeaconAlarm(idInfoData);
                                 prev_beacon = beacon_minor;
@@ -427,7 +430,7 @@ public class HomeActivity extends AppCompatActivity {
                         handler.sendEmptyMessage(0);
                     }
 
-                    appearBeaconList.clear();
+//                    appearBeaconList.clear();
                     prev_beacon = "";
                 }
             }
@@ -475,8 +478,6 @@ public class HomeActivity extends AppCompatActivity {
                                    CategoryData categoryData = new CategoryData();
                                    docentMemList.get_category_info(idInfoData.category_id, categoryData);
                                    intent.putExtra("category", categoryData);
-                                    mMinewBeaconManager.stopScan();
-                                    applicationclass.setScanning(false);
 
                                 } else if (!idInfoData.docent_id.equals("") && !idInfoData.category_id.equals("")) {
                                     intent = new Intent(HomeActivity.this, DocentActivity.class);
@@ -485,10 +486,9 @@ public class HomeActivity extends AppCompatActivity {
                                     DocentData docentData = new DocentData();
                                     docentData = map.get(idInfoData.docent_id);
                                     intent.putExtra("docentObject", docentData);
-                                    mMinewBeaconManager.stopScan();
-                                    applicationclass.setScanning(false);
                                 }
-
+                                mMinewBeaconManager.stopScan();
+                                applicationclass.setScanning(false);
                                 startActivity(intent);
                                 newItemDialog.dismiss();
                                 Log.d("check2", "Dialog dismiss");
