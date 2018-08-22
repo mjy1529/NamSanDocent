@@ -122,10 +122,7 @@ public class HomeActivity extends AppCompatActivity {
         categoryListNetworking();
         initBeaconManager();
         initBeaconListenerManager();
-//        showBeaconAlarm();
-
     }
-
 
     public void homeNetworking() {
         Call<HomeResult> request = service.getHomeResult(homeJsonToString());
@@ -306,8 +303,6 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
     }
-
-
 
     public void showBeaconAlarm(final IDInfoData idInfoData) {
 
