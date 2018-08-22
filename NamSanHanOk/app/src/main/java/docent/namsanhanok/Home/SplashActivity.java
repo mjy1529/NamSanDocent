@@ -51,14 +51,12 @@ public class SplashActivity extends AppCompatActivity {
 
         init();
 
-
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                if(checkInternet()){
+                if (checkInternet()) {
                     networking();
-                }
-                else{
+                } else {
                     showAlertDataDialog();
                 }
 
@@ -163,11 +161,10 @@ public class SplashActivity extends AppCompatActivity {
                         new PrettyDialogCallback() {
                             @Override
                             public void onClick() {
-                                if(checkInternet()){
+                                if (checkInternet()) {
                                     requestDialog.dismiss();
                                     networking();
-                                }
-                                else {
+                                } else {
                                     requestDialog.dismiss();
                                     onBackPressed();
                                 }
@@ -178,16 +175,10 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     public void activityFinish() {
-        Intent intent;
-        if (isFirstRun) {
-            intent = new Intent(SplashActivity.this, TutorialActivity.class);
-        } else {
-            intent = new Intent(SplashActivity.this, HomeActivity.class);
-        }
+        Intent intent = new Intent(SplashActivity.this, HomeActivity.class);
         startActivity(intent);
         finish();
     }
-
 
     public boolean checkInternet() {
         ConnectivityManager manager =
@@ -195,8 +186,11 @@ public class SplashActivity extends AppCompatActivity {
         NetworkInfo mobile = manager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
         NetworkInfo wifi = manager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
 
-        if (mobile.isConnected() || wifi.isConnected()) { return true;}
-        else { return false; }
+        if (mobile.isConnected() || wifi.isConnected()) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
 

@@ -37,7 +37,7 @@ public class DB_Async extends AsyncTask<String, String, String> {
 
     PackageData packageData_;
 
-    DB_Async(PackageData packageData){
+    DB_Async(PackageData packageData) {
         packageData_ = packageData;
         savePath_ = Environment.getExternalStorageDirectory() + File.separator + packageData_.package_title + "/";
         fileName_ = savePath_ + packageData_.package_title + "_v" + packageData_.package_version + ".zip"; // savePath + "/namsangol_v1.0.0.zip";
@@ -74,7 +74,7 @@ public class DB_Async extends AsyncTask<String, String, String> {
         //상위 디렉토리가 존재하지 않을 경우 생성
         if (!dir.exists()) {
             dir.mkdirs();
-        }else {
+        } else {
             setDirEmpty(savePath_);
             dir.mkdirs();
         }
@@ -112,9 +112,9 @@ public class DB_Async extends AsyncTask<String, String, String> {
         byte data[] = new byte[1024];
         long total = 0;
 
-        while((count = is.read(data)) != -1) {
+        while ((count = is.read(data)) != -1) {
             total += count;
-            publishProgress("" + (int)((total * 100) / sizeOfFile));
+            publishProgress("" + (int) ((total * 100) / sizeOfFile));
 //            os.write(count);
             os.write(data, 0, count);
         }
@@ -146,7 +146,8 @@ public class DB_Async extends AsyncTask<String, String, String> {
     @Override
     protected void onProgressUpdate(String... values) {
         super.onProgressUpdate(values);
+        downloadStatus.setText(R.string.downloading);
         downloadBar.setProgress(Integer.parseInt(values[0]));
-        curPercent.setText(values[0]+"%");
+        curPercent.setText(values[0] + "%");
     }
 }

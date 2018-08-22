@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
@@ -24,6 +25,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -42,6 +44,7 @@ import com.minew.beacon.MinewBeacon;
 import com.minew.beacon.MinewBeaconManager;
 import com.minew.beacon.MinewBeaconManagerListener;
 import com.squareup.picasso.Picasso;
+import com.tsengvn.typekit.Typekit;
 import com.tsengvn.typekit.TypekitContextWrapper;
 
 import org.json.JSONException;
@@ -81,10 +84,11 @@ import libs.mjn.prettydialog.PrettyDialogCallback;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.http.HEAD;
+import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence;
+import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
+import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
 
 import static com.minew.beacon.BluetoothState.BluetoothStatePowerOn;
-import static java.lang.Thread.sleep;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -98,7 +102,6 @@ public class HomeActivity extends AppCompatActivity {
     private Vibrator vibrator;
 
     UserRssi comp = new UserRssi();
-    List<MinewBeacon> appearBeaconList = new ArrayList<>(); //인식된 비콘 리스트
     private Handler handler = null;
     String prev_beacon = "";
 
@@ -110,6 +113,7 @@ public class HomeActivity extends AppCompatActivity {
     static List<MinewBeacon> minewBeacons1 = new ArrayList<>();
     private static final int PERMISSION_REQUEST_COARSE_LOCATION = 456;
 
+    static final String SHOWCASE_ID = "tutorial";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,11 +121,12 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
 
         init();
-
         homeNetworking();
         categoryListNetworking();
         initBeaconManager();
         initBeaconListenerManager();
+
+        presentShowcaseSequence();
     }
 
     public void homeNetworking() {
@@ -143,6 +148,21 @@ public class HomeActivity extends AppCompatActivity {
                 Log.d("check", "home 실패");
             }
         });
+    }
+
+    public void presentShowcaseSequence() {
+        LinearLayout tutorial_layout = (LinearLayout) findViewById(R.id.tutorial_layout);
+
+        Typeface typeface = Typeface.createFromAsset(this.getAssets(), "SeoulHangangEB.ttf");
+
+        ShowcaseConfig config = new ShowcaseConfig();
+        config.setDelay(500);
+        config.setDismissTextStyle(typeface);
+
+        MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(this, SHOWCASE_ID);
+        sequence.setConfig(config);
+        sequence.addSequenceItem(tutorial_layout, getResources().getString(R.string.tutorialGuide), "확인");
+        sequence.start();
     }
 
     public void setting() {
@@ -232,7 +252,7 @@ public class HomeActivity extends AppCompatActivity {
                     String deviceName = minewBeacon.getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue();
                     Log.d("check2", "home_사라진다 : " + deviceName);
 
-                    if(minewBeacons1.contains(minewBeacons))
+                    if (minewBeacons1.contains(minewBeacons))
                         minewBeacons1.remove(minewBeacons);
                 }
 
@@ -240,12 +260,12 @@ public class HomeActivity extends AppCompatActivity {
 
             @Override
             public void onRangeBeacons(final List<MinewBeacon> minewBeacons) {
-                for(int i = 0; i < minewBeacons.size() ; i++){
+                for (int i = 0; i < minewBeacons.size(); i++) {
                     String beacon_minor = minewBeacons.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue();
 
                     IDInfoData idInfoData = new IDInfoData();
                     if (docentMemList.check_beacon_number(beacon_minor, idInfoData)) {
-                        synchronized (this){
+                        synchronized (this) {
                             if (!minewBeacons1.contains(minewBeacons.get(i))) {
                                 minewBeacons1.add(minewBeacons.get(i));
                                 Log.d("beacon", "add : " + minewBeacons.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue());
@@ -257,7 +277,7 @@ public class HomeActivity extends AppCompatActivity {
                 if (!minewBeacons1.isEmpty()) {
                     Collections.sort(minewBeacons1, comp);
                     for (int i = 0; i < minewBeacons1.size(); i++) {
-                         Log.d("check2", "\n" + "home_minewBeacons1 " + (i+1) +"번째 : " + minewBeacons1.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue());
+                        Log.d("check2", "\n" + "home_minewBeacons1 " + (i + 1) + "번째 : " + minewBeacons1.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue());
 
                     }
 
@@ -317,12 +337,12 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void run() {
                 vibrator.vibrate(500);
-                synchronized (this){
+                synchronized (this) {
                     showNewItemDialog(idInfoData);
                 }
                 Log.d("check1", "handler 작동중...");
             }
-        },2500);
+        }, 2500);
 
     }
 
@@ -414,7 +434,7 @@ public class HomeActivity extends AppCompatActivity {
                     applicationclass.setToggleState(true);
                     mMinewBeaconManager.startScan();
 
-                    if(handler != null) {
+                    if (handler != null) {
                         handler.sendEmptyMessage(0);
                     }
 
@@ -425,7 +445,7 @@ public class HomeActivity extends AppCompatActivity {
                         mMinewBeaconManager.stopScan();
                     }
 
-                    if(handler != null) {
+                    if (handler != null) {
                         handler.sendEmptyMessage(0);
                     }
 
@@ -472,11 +492,11 @@ public class HomeActivity extends AppCompatActivity {
                             public void onClick() {
                                 //getDocentByBeacon(beacon_number);
                                 Intent intent = null;
-                                if(idInfoData.docent_id.equals("")) { //카테고리리스트액티비티
-                                   intent = new Intent(HomeActivity.this, CategoryListActivity.class);
-                                   CategoryData categoryData = new CategoryData();
-                                   docentMemList.get_category_info(idInfoData.category_id, categoryData);
-                                   intent.putExtra("category", categoryData);
+                                if (idInfoData.docent_id.equals("")) { //카테고리리스트액티비티
+                                    intent = new Intent(HomeActivity.this, CategoryListActivity.class);
+                                    CategoryData categoryData = new CategoryData();
+                                    docentMemList.get_category_info(idInfoData.category_id, categoryData);
+                                    intent.putExtra("category", categoryData);
 
                                 } else if (!idInfoData.docent_id.equals("") && !idInfoData.category_id.equals("")) {
                                     intent = new Intent(HomeActivity.this, DocentActivity.class);
@@ -532,7 +552,7 @@ public class HomeActivity extends AppCompatActivity {
 
         }
 
-        if (newItemDialog != null && newItemDialog.isShowing()){
+        if (newItemDialog != null && newItemDialog.isShowing()) {
             newItemDialog.dismiss();
             Log.d("check2", "Dialog dismiss");
         }

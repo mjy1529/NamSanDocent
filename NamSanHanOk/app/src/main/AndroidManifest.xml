@@ -99,7 +99,6 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name=".Home.TutorialActivity" />
     </application>
 
 </manifest>

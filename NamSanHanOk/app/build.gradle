@@ -73,5 +73,7 @@ dependencies {
     implementation 'net.lingala.zip4j:zip4j:1.3.2'
     //object copy
     implementation 'org.apache.commons:commons-lang3:3.6'
+    //tutorial
+    implementation 'com.github.deano2390:MaterialShowcaseView:1.2.0'
 }
 
