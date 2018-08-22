@@ -27,6 +27,8 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -89,6 +91,8 @@ public class DocentActivity extends AppCompatActivity {
     TextView audioTxt;
     TextView locaTxt;
     TextView docentTitle;
+    ScrollView docent_scrollView;
+    RelativeLayout docentLayout;
 
     //videoPlayer
     SimpleExoPlayer videoPlayer;
@@ -126,8 +130,8 @@ public class DocentActivity extends AppCompatActivity {
 
     DocentMemList docentMemList;
 
-    //지울 것
-    TextView go_new_docent_content;
+//    //지울 것
+//    TextView go_new_docent_content;
 
     private Handler handler1;
     private Handler handler2;
@@ -337,7 +341,6 @@ public class DocentActivity extends AppCompatActivity {
                 //categoryList
                 for (int i = 0; i < minewBeacons.size(); i++) {
                     String beacon_minor = minewBeacons.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue();
-                    Log.d("beacon", "range : " + minewBeacons.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue());
 
                     IDInfoData idInfoData = new IDInfoData();
                     if (docentMemList.check_beacon_number(beacon_minor, idInfoData)) {
@@ -597,9 +600,9 @@ public class DocentActivity extends AppCompatActivity {
             case R.id.audioTxt:
                 if (audioPlayer != null) {
                     if (bottom_audio_layout.getVisibility() == View.GONE) {
-                        bottom_audio_layout.startAnimation(bottomUpAnimation);
                         bottom_audio_layout.setVisibility(View.VISIBLE);
-                        
+                        bottom_audio_layout.startAnimation(bottomUpAnimation);
+
                     } else if (bottom_audio_layout.getAnimation() == topDownAnimation){
                         bottom_audio_layout.startAnimation(bottomUpAnimation);
                     } else {
@@ -733,7 +736,9 @@ public class DocentActivity extends AppCompatActivity {
         docentExplanation = (TextView) findViewById(R.id.docentExplanation);
 
         //지울 것
-        go_new_docent_content = (TextView) findViewById(R.id.go_new_docent_content);
+//        go_new_docent_content = (TextView) findViewById(R.id.go_new_docent_content);
+        docent_scrollView = (ScrollView) findViewById(R.id.docent_scrollview);
+        docentLayout = (RelativeLayout) findViewById(R.id.docentLayout);
 
         bottomUpAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.bottom_up);
         topDownAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.top_down);
