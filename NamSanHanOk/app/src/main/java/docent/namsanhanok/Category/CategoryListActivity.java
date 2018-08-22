@@ -90,11 +90,9 @@ public class CategoryListActivity extends AppCompatActivity {
     public void initBeaconManager() {
         mMinewBeaconManager = new MinewBeaconManager();
 
-
         mMinewBeaconManager.setDeviceManagerDelegateListener(new MinewBeaconManagerListener() {
             @Override
             public void onAppearBeacons(List<MinewBeacon> minewBeacons) {
-                Log.d("beacon", "appearBeacons");
 
             }
 
@@ -107,23 +105,22 @@ public class CategoryListActivity extends AppCompatActivity {
             public void onRangeBeacons(List<MinewBeacon> minewBeacons) {
                 for (int i = 0; i < minewBeacons.size(); i++) {
                     String beacon_minor = minewBeacons.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue();
-                    Log.d("check2", "\n" + "minewBeacons" + minewBeacons.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue());
+                    Log.d("beacon", "range : " + minewBeacons.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue());
 
                     IDInfoData idInfoData = new IDInfoData();
                     if (docentMemList.check_beacon_number(beacon_minor, idInfoData)) {
                         synchronized (this) {
-                            minewBeacons2.add(minewBeacons.get(i));
+                            if (!minewBeacons2.contains(minewBeacons.get(i))) {
+                                minewBeacons2.add(minewBeacons.get(i));
+                                Log.d("beacon", "add : " + minewBeacons.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue());
+                            }
+                            for (int j = 0; j < minewBeacons2.size(); j++) {
+                                Log.d("minewBeaconList", "\n" + "minewBeacons2 " + (j + 1) + "번째 : " + minewBeacons2.get(j).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue());
+                            }
                         }
                     }
-                    synchronized (this){
-                        for(int j = 0; j<minewBeacons2.size(); j++){
-                            Log.d("check2", "\n" + "minewBeacons2 " + (j+1) +"번째 : " + minewBeacons2.get(j).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue());
 
-                        }
-                    }
                 }
-
-
 
                 if (!minewBeacons2.isEmpty()) {
                     Collections.sort(minewBeacons2, comp);
@@ -238,7 +235,8 @@ public class CategoryListActivity extends AppCompatActivity {
                                         setCategoryContent(categoryData);
                                         setDocentList(categoryData);
 
-                                        Log.d("beacon", "showAlarmBeaconNumber : " + categoryData.beacon_number);
+                                        mMinewBeaconManager.stopScan();
+                                        Application.getInstance().setScanning(false);
 
                                     } else if (!idInfoData.docent_id.equals("")) {
                                         Intent intent = new Intent(CategoryListActivity.this, DocentActivity.class);
@@ -247,7 +245,8 @@ public class CategoryListActivity extends AppCompatActivity {
                                         docentMemList.get_docent_info(idInfoData.category_id, map);
                                         DocentData docentData = map.get(idInfoData.docent_id);
 
-                                        Log.d("beacon", "showAlarmBeaconNumber : " + docentData.beacon_number);
+                                        mMinewBeaconManager.stopScan();
+                                        Application.getInstance().setScanning(false);
 
                                         intent.putExtra("docentObject", docentData);
                                         startActivity(intent);
@@ -297,7 +296,6 @@ public class CategoryListActivity extends AppCompatActivity {
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
     }
 
-
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.homeBtn:
@@ -322,7 +320,7 @@ public class CategoryListActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        Log.d("check1", "categoryList_onResume");
+        Log.d("check", "categoryList_onResume");
 
         if (isOnBluetooth()) {
             if (Application.getInstance().getToggleState()) {

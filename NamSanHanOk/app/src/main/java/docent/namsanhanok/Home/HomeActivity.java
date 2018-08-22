@@ -225,20 +225,6 @@ public class HomeActivity extends AppCompatActivity {
         mMinewBeaconManager.setDeviceManagerDelegateListener(new MinewBeaconManagerListener() {
             @Override
             public void onAppearBeacons(List<MinewBeacon> minewBeacons) {
-                for(int i = 0 ; i < minewBeacons.size() ; i++){
-                    Log.d("check2", "home_minewBeacons : " + minewBeacons.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue());
-                }
-
-                for(int i = 0; i < minewBeacons.size() ; i++){
-                    String beacon_minor = minewBeacons.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue();
-
-                    IDInfoData idInfoData = new IDInfoData();
-                    if (docentMemList.check_beacon_number(beacon_minor, idInfoData)) {
-                        synchronized (this){
-                            minewBeacons1.add(minewBeacons.get(i));
-                        }
-                    }
-                }
 
             }
 
@@ -248,11 +234,29 @@ public class HomeActivity extends AppCompatActivity {
                 for (MinewBeacon minewBeacon : minewBeacons) {
                     String deviceName = minewBeacon.getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue();
                     Log.d("check2", "home_사라진다 : " + deviceName);
+
+                    if(minewBeacons1.contains(minewBeacons))
+                        minewBeacons1.remove(minewBeacons);
                 }
+
             }
 
             @Override
             public void onRangeBeacons(final List<MinewBeacon> minewBeacons) {
+                for(int i = 0; i < minewBeacons.size() ; i++){
+                    String beacon_minor = minewBeacons.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue();
+
+                    IDInfoData idInfoData = new IDInfoData();
+                    if (docentMemList.check_beacon_number(beacon_minor, idInfoData)) {
+                        synchronized (this){
+                            if (!minewBeacons1.contains(minewBeacons.get(i))) {
+                                minewBeacons1.add(minewBeacons.get(i));
+                                Log.d("beacon", "add : " + minewBeacons.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue());
+                            }
+                        }
+                    }
+                }
+
                 if (!minewBeacons1.isEmpty()) {
                     Collections.sort(minewBeacons1, comp);
                     for (int i = 0; i < minewBeacons1.size(); i++) {
