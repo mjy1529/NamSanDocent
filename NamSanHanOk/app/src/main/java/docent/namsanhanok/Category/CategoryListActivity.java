@@ -67,7 +67,7 @@ public class CategoryListActivity extends AppCompatActivity {
     Vibrator vibrator;
     PrettyDialog newItemDialog = null;
     MinewBeaconManager mMinewBeaconManager = null;
-    static List<MinewBeacon> minewBeacons2 = new ArrayList<>();
+    static List<MinewBeacon> minewBeacons1 = new ArrayList<>();
     String prev_beacon = "";
     UserRssi comp = new UserRssi();
     Handler handler = null;
@@ -98,7 +98,13 @@ public class CategoryListActivity extends AppCompatActivity {
 
             @Override
             public void onDisappearBeacons(List<MinewBeacon> minewBeacons) {
+                for (MinewBeacon minewBeacon : minewBeacons) {
+                    String deviceName = minewBeacon.getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue();
+                    Log.d("check2", "사라진다 : " + deviceName);
 
+                    if(minewBeacons1.contains(minewBeacon))
+                        minewBeacons1.remove(minewBeacon);
+                }
             }
 
             @Override
@@ -110,26 +116,25 @@ public class CategoryListActivity extends AppCompatActivity {
                     IDInfoData idInfoData = new IDInfoData();
                     if (docentMemList.check_beacon_number(beacon_minor, idInfoData)) {
                         synchronized (this) {
-                            if (!minewBeacons2.contains(minewBeacons.get(i))) {
-                                minewBeacons2.add(minewBeacons.get(i));
+                            if (!minewBeacons1.contains(minewBeacons.get(i))) {
+                                minewBeacons1.add(minewBeacons.get(i));
                                 Log.d("beacon", "add : " + minewBeacons.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue());
                             }
-                            for (int j = 0; j < minewBeacons2.size(); j++) {
-                                Log.d("minewBeaconList", "\n" + "minewBeacons2 " + (j + 1) + "번째 : " + minewBeacons2.get(j).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue());
+                            for (int j = 0; j < minewBeacons1.size(); j++) {
+                                Log.d("minewBeaconList", "\n" + "minewBeacons1 " + (j + 1) + "번째 : " + minewBeacons1.get(j).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue());
                             }
                         }
                     }
-
                 }
 
-                if (!minewBeacons2.isEmpty()) {
-                    Collections.sort(minewBeacons2, comp);
+                if (!minewBeacons1.isEmpty()) {
+                    Collections.sort(minewBeacons1, comp);
 
                     String beacon_minor;
                     int beacon_rssi;
                     synchronized (this) {
-                        beacon_minor = minewBeacons2.get(0).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue();
-                        beacon_rssi = minewBeacons2.get(0).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_RSSI).getIntValue();
+                        beacon_minor = minewBeacons1.get(0).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue();
+                        beacon_rssi = minewBeacons1.get(0).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_RSSI).getIntValue();
                     }
 
                     Log.d("beacon", beacon_minor);

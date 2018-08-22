@@ -23,7 +23,7 @@
             android:ellipsize="end"
             android:gravity="center"
             android:singleLine="true"
-            android:text="새로 검색된 작품을 보시겠습니까?"
+            android:text="@string/new_docent"
             android:textColor="#b5000000" />
 
         <TextView

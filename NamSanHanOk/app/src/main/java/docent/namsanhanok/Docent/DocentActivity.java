@@ -123,8 +123,6 @@ public class DocentActivity extends AppCompatActivity {
     Application applicationclass;
     static List<MinewBeacon> minewBeacons1 = new ArrayList<>();
 
-    String closeBeacon;
-
     DocentMemList docentMemList;
 
     //지울 것
@@ -140,13 +138,11 @@ public class DocentActivity extends AppCompatActivity {
     NetworkService service;
     private ArrayList<DocentDetailData> docentDetailDataList;
     private TextView docentExplanation;
-    int position;
     String docent_id;
     String audio_url;
     String video_url;
 
     static boolean newDocent;
-    int beaconNum;
 
     DocentData docentObject;
     IDInfoData lastIDinfoData;
@@ -166,7 +162,6 @@ public class DocentActivity extends AppCompatActivity {
         if (newDocent == true) {
             Intent intent = getIntent();
             final String beaconNumber = intent.getStringExtra("beaconNumber");
-            //onResume();
             CategoryData categoryData = new CategoryData();
             docentObject = new DocentData();
             IDInfoData idInfoData = new IDInfoData();
@@ -191,12 +186,6 @@ public class DocentActivity extends AppCompatActivity {
             docentObject = (DocentData) docentObjectIntent.getSerializableExtra("docentObject");
         }
         setDocentObject(docentObject);
-
-//        existBeacon.add("15290");
-//        existBeacon.add("15282");
-//        beaconNum = 15282;
-
-//        showBeaconAlarm();
 
         initBeaconManager();
         initBeaconListenerManager();
@@ -389,7 +378,6 @@ public class DocentActivity extends AppCompatActivity {
                                 synchronized (this) {
                                     setIDInfoData(idInfoData);
                                     showBeaconAlarm();
-                                    closeBeacon = beacon_minor;
                                 }
                                 prev_beacon = beacon_minor;
                             }
@@ -430,7 +418,6 @@ public class DocentActivity extends AppCompatActivity {
     }
 
     public void showBeaconAlarm() {
-
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -451,11 +438,8 @@ public class DocentActivity extends AppCompatActivity {
     }
 
 
-   
-
     public void showNewItemDialog() {
         Log.d("check1", "showNewItemDialog 시작");
-//                go_new_docent_layout.setVisibility(View.VISIBLE);
 
         handler2 = new Handler();
         handler2.sendEmptyMessage(0);
@@ -463,7 +447,6 @@ public class DocentActivity extends AppCompatActivity {
         vibrator.vibrate(500);
 
         go_new_docent_layout.setVisibility(View.VISIBLE);
-        go_new_docent_content.setText(closeBeacon);
 
         handler2.postDelayed(new Runnable() {
             @Override
@@ -617,12 +600,6 @@ public class DocentActivity extends AppCompatActivity {
                     } else {
                         bottom_audio_layout.setVisibility(View.GONE);
                     }
-//                    if (bottom_audio_layout.getVisibility() == View.GONE && audio_url != null) {
-//                        bottom_audio_layout.setVisibility(View.VISIBLE);
-//                    } else if (bottom_audio_layout.getVisibility() == View.GONE && audio_url.equals("")) {
-//                        Toast.makeText(getApplicationContext(), "오디오가 지원되지 않는 전시품입니다.", Toast.LENGTH_SHORT).show();
-//                    } else {
-//                        bottom_audio_layout.setVisibility(View.GONE);
                 }
                 break;
 
@@ -630,11 +607,6 @@ public class DocentActivity extends AppCompatActivity {
             case R.id.locationTxt:
                 intent = new Intent(getApplicationContext(), LocationActivity.class);
                 intent.putExtra("docentData", docentObject);
-
-//                intent.putExtra("title", docentName.getText().toString());
-//                intent.putExtra("position", position);
-//                intent.putExtra("category_id", docentObject.category_id);
-
                 startActivity(intent);
                 break;
 
@@ -732,7 +704,6 @@ public class DocentActivity extends AppCompatActivity {
         docentImage = (ImageView) findViewById(R.id.docentImage);
         audioBtn = (ImageButton) findViewById(R.id.audioBtn);
         locationBtn = (ImageButton) findViewById(R.id.locationBtn);
-//        playerView = (PlayerView) findViewById(R.id.playerView);
         playerView = (SimpleExoPlayerView) findViewById(R.id.playerView);
         bottom_audio_layout = (LinearLayout) findViewById(R.id.bottom_audio_layout);
         playAudioBtn = (ImageButton) findViewById(R.id.playAudioBtn);
@@ -741,8 +712,6 @@ public class DocentActivity extends AppCompatActivity {
         audioTotalTime = (TextView) findViewById(R.id.audioTotalTime);
         audioCurrentTime = (TextView) findViewById(R.id.audioCurrentTime);
         docentTitle = (TextView) findViewById(R.id.docentTitle);
-//        docentTitle.setText(docent_title);
-
         exo_thumbnail = (ImageView) findViewById(R.id.exo_thumbnail);
 
         audioTxt = (TextView) findViewById(R.id.audioTxt);
@@ -771,7 +740,6 @@ public class DocentActivity extends AppCompatActivity {
         if (audioPlayer != null) audioPlayer.stop();
 
         Log.d("check1", "docent_backpressed");
-
     }
 
     private void initFullscreenDialog() {
@@ -815,22 +783,6 @@ public class DocentActivity extends AppCompatActivity {
             }
         });
     }
-
-//    public String beaconJsonToString(String beacon_number) {
-//        String jsonStr = "";
-//        try {
-//            JSONObject data = new JSONObject();
-//            data.put("cmd", "docent_list");
-//            data.put("beacon_number", beacon_number);
-//
-//            JSONObject root = new JSONObject();
-//            root.put("info", data);
-//            jsonStr = root.toString();
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
-//        return jsonStr;
-//    }
 
     @Override
     protected void onRestart() {

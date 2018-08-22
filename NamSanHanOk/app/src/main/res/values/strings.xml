@@ -20,6 +20,7 @@
     <string name="video">영상보기</string>
     <string name="audio">Audio</string>
     <string name="location">Location</string>
+    <string name="new_docent">새로운 작품이 확인되었습니다.</string>
 
     <!-- home -->
     <string name="autoPlay">자동전시안내</string>
