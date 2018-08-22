@@ -44,6 +44,8 @@ public class SplashActivity extends AppCompatActivity {
 
     public static Context mContext;
 
+    PrettyDialog downloadDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -119,7 +121,8 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     public void showAlertDialog() {
-        final PrettyDialog downloadDialog = new PrettyDialog(SplashActivity.this);
+        downloadDialog = new PrettyDialog(SplashActivity.this);
+        downloadDialog.setCancelable(false);
         downloadDialog
                 .setMessage(getResources().getString(R.string.downloadAlertMessage))
                 .setIcon(R.drawable.pdlg_icon_info)
@@ -192,7 +195,6 @@ public class SplashActivity extends AppCompatActivity {
             return false;
         }
     }
-
 
     public String jsonToString() {
         String jsonStr = "";
