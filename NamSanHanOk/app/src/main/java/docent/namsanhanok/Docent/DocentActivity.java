@@ -11,7 +11,6 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Vibrator;
-import android.provider.Telephony;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -22,6 +21,8 @@ import android.text.style.UnderlineSpan;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -145,6 +146,9 @@ public class DocentActivity extends AppCompatActivity {
     DocentData docentObject;
     IDInfoData lastIDinfoData;
 
+    //Animation
+    Animation bottomUpAnimation;
+    Animation topDownAnimation;
 
     public DocentActivity() {
 
@@ -569,7 +573,6 @@ public class DocentActivity extends AppCompatActivity {
         });
     }
 
-
     public void onClick(View v) {
         Intent intent;
         switch (v.getId()) {
@@ -594,8 +597,11 @@ public class DocentActivity extends AppCompatActivity {
             case R.id.audioTxt:
                 if (audioPlayer != null) {
                     if (bottom_audio_layout.getVisibility() == View.GONE) {
+                        bottom_audio_layout.startAnimation(bottomUpAnimation);
                         bottom_audio_layout.setVisibility(View.VISIBLE);
+
                     } else {
+                        bottom_audio_layout.startAnimation(topDownAnimation);
                         bottom_audio_layout.setVisibility(View.GONE);
                     }
                 }
@@ -727,6 +733,9 @@ public class DocentActivity extends AppCompatActivity {
 
         //지울 것
         go_new_docent_content = (TextView) findViewById(R.id.go_new_docent_content);
+
+        bottomUpAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.bottom_up);
+        topDownAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.top_down);
     }
 
     @Override
