@@ -475,6 +475,8 @@ public class HomeActivity extends AppCompatActivity {
                                    CategoryData categoryData = new CategoryData();
                                    docentMemList.get_category_info(idInfoData.category_id, categoryData);
                                    intent.putExtra("category", categoryData);
+                                    mMinewBeaconManager.stopScan();
+                                    applicationclass.setScanning(false);
 
                                 } else if (!idInfoData.docent_id.equals("") && !idInfoData.category_id.equals("")) {
                                     intent = new Intent(HomeActivity.this, DocentActivity.class);
@@ -483,7 +485,10 @@ public class HomeActivity extends AppCompatActivity {
                                     DocentData docentData = new DocentData();
                                     docentData = map.get(idInfoData.docent_id);
                                     intent.putExtra("docentObject", docentData);
+                                    mMinewBeaconManager.stopScan();
+                                    applicationclass.setScanning(false);
                                 }
+
                                 startActivity(intent);
                                 newItemDialog.dismiss();
                                 Log.d("check2", "Dialog dismiss");
