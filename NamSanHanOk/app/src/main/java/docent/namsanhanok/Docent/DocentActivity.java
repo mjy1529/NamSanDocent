@@ -607,10 +607,10 @@ public class DocentActivity extends AppCompatActivity {
                         bottom_audio_layout.setVisibility(View.VISIBLE);
                         bottom_audio_layout.startAnimation(bottomUpAnimation);
 
-
+                    } else if (bottom_audio_layout.getAnimation() == topDownAnimation){
+                        bottom_audio_layout.startAnimation(bottomUpAnimation);
                     } else {
                         bottom_audio_layout.startAnimation(topDownAnimation);
-                        bottom_audio_layout.setVisibility(View.GONE);
                     }
                 }
                 break;
