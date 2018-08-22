@@ -1,5 +1,7 @@
 package docent.namsanhanok.Category;
 
+import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothGatt;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -104,11 +106,17 @@ public class CategoryListActivity extends AppCompatActivity {
             public void onRangeBeacons(List<MinewBeacon> minewBeacons) {
                 for (int i = 0; i < minewBeacons.size(); i++) {
                     String beacon_minor = minewBeacons.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue();
+                    Log.d("check2", "\n" + "minewBeacons" + minewBeacons.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue());
 
                     IDInfoData idInfoData = new IDInfoData();
                     if (docentMemList.check_beacon_number(beacon_minor, idInfoData)) {
                         synchronized (this) {
                             minewBeacons2.add(minewBeacons.get(i));
+                        }
+                    }
+                    synchronized (this){
+                        for(int j = 0; j<minewBeacons2.size(); j++){
+                            Log.d("check2", "\n" + "minewBeacons2 " + (j+1) +"번째 : " + minewBeacons2.get(j).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue());
                         }
                     }
                 }
@@ -285,7 +293,6 @@ public class CategoryListActivity extends AppCompatActivity {
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
     }
 
-
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.homeBtn:
@@ -310,6 +317,7 @@ public class CategoryListActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        Log.d("check", "categoryList_onResume");
 
         if (isOnBluetooth()) {
             if (Application.getInstance().getToggleState()) {
@@ -363,6 +371,7 @@ public class CategoryListActivity extends AppCompatActivity {
         if (handler != null) {
             handler.removeMessages(0);
         }
+
     }
 
     @Override
