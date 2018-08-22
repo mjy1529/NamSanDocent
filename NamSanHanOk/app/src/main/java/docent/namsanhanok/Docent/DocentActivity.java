@@ -153,7 +153,6 @@ public class DocentActivity extends AppCompatActivity {
     //Animation
     Animation bottomUpAnimation;
     Animation topDownAnimation;
-    private int .;
 
     public DocentActivity() {
 
