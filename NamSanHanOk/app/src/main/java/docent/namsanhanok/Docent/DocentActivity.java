@@ -91,8 +91,6 @@ public class DocentActivity extends AppCompatActivity {
     TextView audioTxt;
     TextView locaTxt;
     TextView docentTitle;
-    ScrollView docent_scrollView;
-    RelativeLayout docentLayout;
 
     //videoPlayer
     SimpleExoPlayer videoPlayer;
@@ -129,6 +127,10 @@ public class DocentActivity extends AppCompatActivity {
     static List<MinewBeacon> minewBeacons1 = new ArrayList<>();
 
     DocentMemList docentMemList;
+
+
+    View docentSpace;
+    View audioSpace;
 
 //    //지울 것
 //    TextView go_new_docent_content;
@@ -452,12 +454,14 @@ public class DocentActivity extends AppCompatActivity {
         vibrator.vibrate(500);
 
         go_new_docent_layout.setVisibility(View.VISIBLE);
+        docentSpace.setVisibility(View.VISIBLE);
 
         handler2.postDelayed(new Runnable() {
             @Override
             public void run() {
                 //지연시키길 원하는 밀리초 뒤에 동작
                 go_new_docent_layout.setVisibility(View.GONE);
+                docentSpace.setVisibility(View.GONE);
             }
         }, 8000); // delayMills == 지연원하는 밀리초
 
@@ -737,8 +741,8 @@ public class DocentActivity extends AppCompatActivity {
 
         //지울 것
 //        go_new_docent_content = (TextView) findViewById(R.id.go_new_docent_content);
-        docent_scrollView = (ScrollView) findViewById(R.id.docent_scrollview);
-        docentLayout = (RelativeLayout) findViewById(R.id.docentLayout);
+        docentSpace = (View) findViewById(R.id.newDocent_Space);
+        audioSpace = (View) findViewById(R.id.Audio_Space);
 
         bottomUpAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.bottom_up);
         topDownAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.top_down);

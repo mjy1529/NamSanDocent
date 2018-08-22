@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/docentLayout"
     tools:context=".Docent.DocentActivity">
 
     <android.support.v7.widget.Toolbar
@@ -20,7 +19,6 @@
     </android.support.v7.widget.Toolbar>
 
     <ScrollView
-        android:id="@+id/docent_scrollview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/bottomLayout"
@@ -129,6 +127,29 @@
                 </FrameLayout>
 
             </LinearLayout>
+
+            <LinearLayout
+                android:layout_below="@+id/docentVideo_Layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+-
+                <View
+                    android:id="@+id/newDocent_Space"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:visibility="gone">
+                </View>
+
+                <View
+                    android:id="@+id/Audio_Space"
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:layout_height="40dp"
+                    android:visibility="gone">
+                </View>
+            </LinearLayout>
+
 
         </RelativeLayout>
 
