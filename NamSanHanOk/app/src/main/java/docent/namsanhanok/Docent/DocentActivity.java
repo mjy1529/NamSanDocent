@@ -128,11 +128,9 @@ public class DocentActivity extends AppCompatActivity {
     //지울 것
     TextView go_new_docent_content;
 
-    List<MinewBeacon> appearBeaconList = new ArrayList<>(); //인식된 비콘 리스트
     private Handler handler1;
     private Handler handler2;
     String prev_beacon = "";
-    ArrayList<String> existBeacon = new ArrayList<>();
 
     //서버 네트워크
     NetworkService service;
@@ -647,8 +645,6 @@ public class DocentActivity extends AppCompatActivity {
                     finish();
                     startActivity(intent);
                 }
-//                intent = new Intent(DocentActivity.this, DocentActivity.class);
-//                intent.putExtra("beaconNumber", closeBeacon);
 
                 go_new_docent_layout.setVisibility(View.GONE);
                 bottom_audio_layout.setVisibility(View.GONE);
@@ -845,8 +841,8 @@ public class DocentActivity extends AppCompatActivity {
     protected void onDestroy() {
         Log.d("check1", "onDestroy");
 
+        minewBeacons1.clear();
         super.onDestroy();
-        appearBeaconList.clear();
         if (handler1 != null) {
             handler1.removeMessages(0);
         }
