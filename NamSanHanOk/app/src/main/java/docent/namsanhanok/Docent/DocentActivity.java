@@ -194,7 +194,7 @@ public class DocentActivity extends AppCompatActivity {
 //        existBeacon.add("15282");
 //        beaconNum = 15282;
 
-        showBeaconAlarm();
+//        showBeaconAlarm();
 
         initBeaconManager();
         initBeaconListenerManager();
@@ -290,6 +290,7 @@ public class DocentActivity extends AppCompatActivity {
     public void initBeaconListenerManager() {
         Log.d("check1", "docent_isScanning : " + applicationclass.getToggleState());
 
+
         if (isOnBluetooth()) {
             if (applicationclass.getToggleState()) { // scan중
                 Log.d("check1", "docent_isScanning : startScan");
@@ -319,6 +320,7 @@ public class DocentActivity extends AppCompatActivity {
                 }
             }
         }
+
 
         mMinewBeaconManager.setDeviceManagerDelegateListener(new MinewBeaconManagerListener() {
 
@@ -358,7 +360,7 @@ public class DocentActivity extends AppCompatActivity {
                 if (!minewBeacons1.isEmpty()) {
                     Collections.sort(minewBeacons1, comp);
                     for (int i = 0; i < minewBeacons1.size(); i++) {
-                        Log.d("check2", "\n" + "minewBeacons1 " + (i + 1) + "번째 : " + minewBeacons1.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue());
+                        Log.d("check2", "\n" + "docent_minewBeacons1 " + (i + 1) + "번째 : " + minewBeacons1.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue());
                     }
 
                     String beacon_minor;
@@ -739,6 +741,7 @@ public class DocentActivity extends AppCompatActivity {
                 bottom_audio_layout.setVisibility(View.GONE);
 
                 newDocent = true;
+                
 
                 finish();
                 startActivity(intent);
@@ -780,7 +783,6 @@ public class DocentActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         docentMemList = DocentMemList.getInstance();
-        mMinewBeaconManager = MinewBeaconManager.getInstance(this);
         applicationclass = (Application) getApplicationContext();
         service = Application.getInstance().getNetworkService();
 
@@ -943,7 +945,6 @@ public class DocentActivity extends AppCompatActivity {
             handler1.removeMessages(0);
         }
 
-        finish();
     }
 
 
