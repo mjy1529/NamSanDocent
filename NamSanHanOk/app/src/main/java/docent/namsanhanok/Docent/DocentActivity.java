@@ -92,8 +92,6 @@ public class DocentActivity extends AppCompatActivity {
     TextView audioTxt;
     TextView locaTxt;
     TextView docentTitle;
-    ScrollView docent_scrollView;
-    RelativeLayout docentLayout;
 
     //videoPlayer
     SimpleExoPlayer videoPlayer;
@@ -130,6 +128,10 @@ public class DocentActivity extends AppCompatActivity {
 
     DocentMemList docentMemList;
 
+
+    View docentSpace;
+    View audioSpace;
+
 //    //지울 것
 //    TextView go_new_docent_content;
 
@@ -153,6 +155,7 @@ public class DocentActivity extends AppCompatActivity {
     //Animation
     Animation bottomUpAnimation;
     Animation topDownAnimation;
+
 
     public DocentActivity() {
 
@@ -456,13 +459,17 @@ public class DocentActivity extends AppCompatActivity {
 
         vibrator.vibrate(500);
 
+        Log.d("check4", "docent_setVisible");
         go_new_docent_layout.setVisibility(View.VISIBLE);
+        docentSpace.setVisibility(View.VISIBLE);
 
         handler2.postDelayed(new Runnable() {
             @Override
             public void run() {
+                Log.d("check4", "8초뒤 docent_GONE");
                 //지연시키길 원하는 밀리초 뒤에 동작
                 go_new_docent_layout.setVisibility(View.GONE);
+                docentSpace.setVisibility(View.GONE);
             }
         }, 8000); // delayMills == 지연원하는 밀리초
 
@@ -603,13 +610,13 @@ public class DocentActivity extends AppCompatActivity {
             case R.id.audioBtn: //오디오 이미지버튼을 클릭했을 때 오디오 레이아웃 보이기
             case R.id.audioTxt:
                 if (audioPlayer != null) {
-                    if (bottom_audio_layout.getVisibility() == View.GONE) {
+                    if(bottom_audio_layout.getVisibility() == View.GONE){
+                        Log.d("check4", "audio_visible");
                         bottom_audio_layout.setVisibility(View.VISIBLE);
                         bottom_audio_layout.startAnimation(bottomUpAnimation);
-
-                    } else if (bottom_audio_layout.getAnimation() == topDownAnimation) {
-                        bottom_audio_layout.startAnimation(bottomUpAnimation);
-                    } else {
+                    }
+                    else if(bottom_audio_layout.getVisibility() == View.VISIBLE){
+                        Log.d("check4", "audio_gone");
                         bottom_audio_layout.startAnimation(topDownAnimation);
                     }
                 }
@@ -663,11 +670,8 @@ public class DocentActivity extends AppCompatActivity {
                 go_new_docent_layout.setVisibility(View.GONE);
                 bottom_audio_layout.setVisibility(View.GONE);
 
-
                 mMinewBeaconManager.stopScan();
                 applicationclass.setScanning(false);
-//                finish();
-//                startActivity(intent);
 
                 break;
         }
@@ -727,7 +731,7 @@ public class DocentActivity extends AppCompatActivity {
         audioTxt = (TextView) findViewById(R.id.audioTxt);
         locaTxt = (TextView) findViewById(R.id.locationTxt);
 
-        go_new_docent_layout = (LinearLayout) findViewById(R.id.go_new_docent);
+        go_new_docent_layout = (LinearLayout) findViewById(R.id.bottom_get_new_docent);
         confirm_go_new_docent = (TextView) findViewById(R.id.confirm_go_new_docent);
 
         SpannableString content = new SpannableString("확인하기");
@@ -740,12 +744,47 @@ public class DocentActivity extends AppCompatActivity {
         docentExplanation = (TextView) findViewById(R.id.docentExplanation);
 
         //지울 것
-//        go_new_docent_content = (TextView) findViewById(R.id.go_new_docent_content);
-        docent_scrollView = (ScrollView) findViewById(R.id.docent_scrollview);
-        docentLayout = (RelativeLayout) findViewById(R.id.docentLayout);
+        docentSpace = (View) findViewById(R.id.newDocent_Space);
+        audioSpace = (View) findViewById(R.id.Audio_Space);
+
 
         bottomUpAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.bottom_up);
         topDownAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.top_down);
+        //리스너 등록, 끝나는 시점 알 수 있음.
+        bottomUpAnimation.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+                audioSpace.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+
+        topDownAnimation.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                Log.d("check4", "topdown animation_endl");
+                bottom_audio_layout.setVisibility(View.GONE);
+                audioSpace.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
     }
 
     @Override
