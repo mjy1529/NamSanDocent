@@ -747,7 +747,6 @@ public class DocentActivity extends AppCompatActivity {
         audioTxt = (TextView) findViewById(R.id.audioTxt);
         locaTxt = (TextView) findViewById(R.id.locationTxt);
 
-//        go_new_docent_layout = (LinearLayout) findViewById(R.id.go_new_docent);
         go_new_docent_layout = (LinearLayout) findViewById(R.id.bottom_get_new_docent);
         confirm_go_new_docent = (TextView) findViewById(R.id.confirm_go_new_docent);
 
@@ -761,7 +760,6 @@ public class DocentActivity extends AppCompatActivity {
         docentExplanation = (TextView) findViewById(R.id.docentExplanation);
 
         //지울 것
-//        go_new_docent_content = (TextView) findViewById(R.id.go_new_docent_content);
         docentSpace = (View) findViewById(R.id.newDocent_Space);
         audioSpace = (View) findViewById(R.id.Audio_Space);
 
