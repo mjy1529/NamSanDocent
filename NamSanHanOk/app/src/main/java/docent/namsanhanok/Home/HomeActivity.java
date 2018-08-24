@@ -308,20 +308,6 @@ public class HomeActivity extends AppCompatActivity {
 
                     }
 
-//                if (processing == false) {
-//                    processing = true;
-//                    criticalsection start;
-//                    synchronized (this) {
-//
-//                    }
-//                    ArrayList<MinewBeacon> minewBeaconsTemp = new ArrayList<>();
-//                    minewBeaconsTemp.addAll(minewBeacons);
-//                    addAppearBeacon(minewBeacons);
-//                    Log.d("beacon", minewBeacons.toString());
-//                    criticalsection end;
-//                    processing= false;
-//                }
-
                 }
             }
 
@@ -453,7 +439,6 @@ public class HomeActivity extends AppCompatActivity {
                         handler.sendEmptyMessage(0);
                     }
 
-//                    appearBeaconList.clear();
                     prev_beacon = "";
                 }
             }
@@ -526,6 +511,7 @@ public class HomeActivity extends AppCompatActivity {
                             @Override
                             public void onClick() {
                                 newItemDialog.dismiss();
+
                                 Log.d("check2", "Dialog dismiss");
 
                             }

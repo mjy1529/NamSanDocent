@@ -34,6 +34,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
@@ -95,7 +96,6 @@ public class DocentActivity extends AppCompatActivity {
     //videoPlayer
     SimpleExoPlayer videoPlayer;
     SimpleExoPlayerView playerView;
-    //PlayerView playerView;
     ImageButton exo_play;
     ImageView exo_thumbnail;
 
@@ -246,6 +246,11 @@ public class DocentActivity extends AppCompatActivity {
         }
 
         docent_id = docentObject.docent_id;
+
+        Glide.with(getApplicationContext())
+                .load(Environment.getExternalStorageDirectory() + docentObject.docent_image_url)
+                .apply(new RequestOptions().centerCrop())
+                .into(exo_thumbnail);
     }
 
     //docent detail list
@@ -333,7 +338,7 @@ public class DocentActivity extends AppCompatActivity {
                     String deviceName = minewBeacon.getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue();
                     Log.d("check2", "docent_사라진다 : " + deviceName);
 
-                    if(minewBeacons1.contains(minewBeacons))
+                    if (minewBeacons1.contains(minewBeacons))
                         minewBeacons1.remove(minewBeacons);
                 }
 
@@ -387,8 +392,8 @@ public class DocentActivity extends AppCompatActivity {
                                 synchronized (this) {
                                     setIDInfoData(idInfoData);
                                     showBeaconAlarm();
+                                    prev_beacon = beacon_minor;
                                 }
-                                prev_beacon = beacon_minor;
                             }
                         }
 
@@ -497,8 +502,7 @@ public class DocentActivity extends AppCompatActivity {
         playerView.setPlayer(videoPlayer);
 
         //Preparing the player
-        //서버에서 가져올 때
-//        String videoUrl = "http://175.123.138.125:8070/hot.mp4";
+        //String videoUrl = "http://175.123.138.125:8070/hot.mp4";
         String videoUrl = video_url;
         DefaultBandwidthMeter defaultBandwidthMeter = new DefaultBandwidthMeter();
         MediaSource videoSource = new ExtractorMediaSource.Factory(
@@ -615,7 +619,6 @@ public class DocentActivity extends AppCompatActivity {
                     else if(bottom_audio_layout.getVisibility() == View.VISIBLE){
                         Log.d("check4", "audio_gone");
                         bottom_audio_layout.startAnimation(topDownAnimation);
-
                     }
                 }
                 break;
@@ -646,7 +649,9 @@ public class DocentActivity extends AppCompatActivity {
                     CategoryData categoryData = new CategoryData();
                     docentMemList.get_category_info(lastIDinfoData.category_id, categoryData);
                     intent.putExtra("category", categoryData);
-                    categoryListActivity.finish();
+                    if(categoryListActivity != null){
+                        categoryListActivity.finish();
+                    }
                     finish();
                     startActivity(intent);
 
@@ -669,10 +674,8 @@ public class DocentActivity extends AppCompatActivity {
                 go_new_docent_layout.setVisibility(View.GONE);
                 bottom_audio_layout.setVisibility(View.GONE);
 
-
                 mMinewBeaconManager.stopScan();
                 applicationclass.setScanning(false);
-
 
                 break;
         }
