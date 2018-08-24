@@ -47,6 +47,7 @@ import libs.mjn.prettydialog.PrettyDialogCallback;
 import static com.minew.beacon.BluetoothState.BluetoothStatePowerOn;
 
 public class CategoryListActivity extends AppCompatActivity {
+    public static CategoryListActivity categoryListActivity;
     private RecyclerView recyclerView;
     private LinearLayoutManager linearLayoutManager;
     private CategoryListAdapter categoryListAdapter;
@@ -80,6 +81,7 @@ public class CategoryListActivity extends AppCompatActivity {
         Intent secondIntent = getIntent();
         categoryData = (CategoryData) secondIntent.getSerializableExtra("category");
 
+        categoryListActivity = CategoryListActivity.this;
         init();
         initBeaconManager();
 
@@ -111,17 +113,17 @@ public class CategoryListActivity extends AppCompatActivity {
             public void onRangeBeacons(List<MinewBeacon> minewBeacons) {
                 for (int i = 0; i < minewBeacons.size(); i++) {
                     String beacon_minor = minewBeacons.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue();
-                    Log.d("beacon", "range : " + minewBeacons.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue());
+                    Log.d("check", "CategoryList_beacon_minor : " + minewBeacons.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue());
 
                     IDInfoData idInfoData = new IDInfoData();
                     if (docentMemList.check_beacon_number(beacon_minor, idInfoData)) {
                         synchronized (this) {
                             if (!minewBeacons1.contains(minewBeacons.get(i))) {
                                 minewBeacons1.add(minewBeacons.get(i));
-                                Log.d("beacon", "add : " + minewBeacons.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue());
+                                Log.d("check", "categoryList_add : " + minewBeacons.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue());
                             }
                             for (int j = 0; j < minewBeacons1.size(); j++) {
-                                Log.d("minewBeaconList", "\n" + "minewBeacons1 " + (j + 1) + "번째 : " + minewBeacons1.get(j).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue());
+                                Log.d("minewBeaconList", "\n" + "category_List_minewBeacons1 " + (j + 1) + "번째 : " + minewBeacons1.get(j).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue());
                             }
                         }
                     }
@@ -137,7 +139,7 @@ public class CategoryListActivity extends AppCompatActivity {
                         beacon_rssi = minewBeacons1.get(0).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_RSSI).getIntValue();
                     }
 
-                    Log.d("beacon", beacon_minor);
+                    Log.d("check", "categoryList_beacon_minor" + beacon_minor);
 
                     if (beacon_rssi > -70 && beacon_rssi < -30) {
                         IDInfoData idInfoData = new IDInfoData();
@@ -255,6 +257,7 @@ public class CategoryListActivity extends AppCompatActivity {
 
                                         intent.putExtra("docentObject", docentData);
                                         startActivity(intent);
+
                                     }
                                     newItemDialog.dismiss();
                                 }
@@ -354,7 +357,17 @@ public class CategoryListActivity extends AppCompatActivity {
     }
 
     public void onPause() {
+        Log.d("check", "categoryList_onPause");
         super.onPause();
+
+        prev_beacon = "";
+        if (Application.getInstance().getToggleState()) {
+            mMinewBeaconManager.stopScan();
+            Application.getInstance().setScanning(false);
+        }
+        if (handler != null) {
+            handler.removeMessages(0);
+        }
 
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
@@ -369,6 +382,8 @@ public class CategoryListActivity extends AppCompatActivity {
 
     @Override
     protected void onStop() {
+        Log.d("check", "categoryList_onStop");
+
         super.onStop();
 
         super.onStop();

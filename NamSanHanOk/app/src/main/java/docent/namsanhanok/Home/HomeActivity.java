@@ -120,6 +120,7 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+        Log.d("check2", "\n" + "onCreate_prev_beacon : " + prev_beacon);
         init();
         homeNetworking();
         categoryListNetworking();
@@ -268,7 +269,7 @@ public class HomeActivity extends AppCompatActivity {
                         synchronized (this) {
                             if (!minewBeacons1.contains(minewBeacons.get(i))) {
                                 minewBeacons1.add(minewBeacons.get(i));
-                                Log.d("beacon", "add : " + minewBeacons.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue());
+                                Log.d("check", "home_Beacon_add : " + minewBeacons.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue());
                             }
                         }
                     }
@@ -288,11 +289,13 @@ public class HomeActivity extends AppCompatActivity {
                         beacon_rssi = minewBeacons1.get(0).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_RSSI).getIntValue();
                     }
 
+                    Log.d("check2", "home_prev_beacon1 : " + prev_beacon);
+                    Log.d("check2", "\n" + "home_첫번째 비콘_minor : " + beacon_minor);
+                    Log.d("check2", "\n" + "home_첫번째 비콘_rssi : " + beacon_rssi);
 
                     if (beacon_rssi > -70 && beacon_rssi < -30) {
                         IDInfoData idInfoData = new IDInfoData();
                         if (!beacon_minor.equals(prev_beacon)) {
-
 
                             Log.d("check2", "home_prev_beacon2 : " + prev_beacon);
                             if (docentMemList.check_beacon_number(beacon_minor, idInfoData)) {
@@ -398,6 +401,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void init() {
+        Log.d("check2", "\n" + "init()실행");
         handler = new Handler();
         applicationclass = (Application) getApplicationContext();
         docentMemList = DocentMemList.getInstance();
@@ -555,6 +559,20 @@ public class HomeActivity extends AppCompatActivity {
         if (newItemDialog != null && newItemDialog.isShowing()) {
             newItemDialog.dismiss();
             Log.d("check2", "Dialog dismiss");
+        }
+    }
+
+    @Override
+    protected void onPause(){
+        super.onPause();
+        Log.d("check1", "home_onPause");
+        prev_beacon = "";
+        if (applicationclass.getToggleState()) {
+            mMinewBeaconManager.stopScan();
+            applicationclass.setScanning(false);
+        }
+        if (handler != null) {
+            handler.removeMessages(0);
         }
     }
 

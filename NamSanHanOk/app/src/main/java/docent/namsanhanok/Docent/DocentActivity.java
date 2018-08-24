@@ -155,7 +155,7 @@ public class DocentActivity extends AppCompatActivity {
     //Animation
     Animation bottomUpAnimation;
     Animation topDownAnimation;
-
+    CategoryListActivity categoryListActivity;
 
     public DocentActivity() {
 
@@ -166,6 +166,7 @@ public class DocentActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_docent);
 
+        categoryListActivity = (CategoryListActivity)CategoryListActivity.categoryListActivity;
         init();
 
         if (newDocent == true) {
@@ -610,28 +611,12 @@ public class DocentActivity extends AppCompatActivity {
                         Log.d("check4", "audio_visible");
                         bottom_audio_layout.setVisibility(View.VISIBLE);
                         bottom_audio_layout.startAnimation(bottomUpAnimation);
-//                        audioSpace.startAnimation(bottomUpAnimation);
                     }
                     else if(bottom_audio_layout.getVisibility() == View.VISIBLE){
                         Log.d("check4", "audio_gone");
                         bottom_audio_layout.startAnimation(topDownAnimation);
-//                        audioSpace.startAnimation(topDownAnimation);
 
                     }
-
-//                    if (bottom_audio_layout.getVisibility() == View.GONE) {
-//                        bottom_audio_layout.setVisibility(View.VISIBLE);
-//                        bottom_audio_layout.startAnimation(bottomUpAnimation);
-//                        audioSpace.setVisibility(View.VISIBLE);
-//
-//                    } else if (bottom_audio_layout.getAnimation() == topDownAnimation){
-//                        bottom_audio_layout.startAnimation(bottomUpAnimation);
-//                        audioSpace.setVisibility(View.VISIBLE);
-//
-//                    } else {
-//                        bottom_audio_layout.startAnimation(topDownAnimation);
-//                        audioSpace.setVisibility(View.GONE);
-//                    }
                 }
                 break;
 
@@ -661,6 +646,7 @@ public class DocentActivity extends AppCompatActivity {
                     CategoryData categoryData = new CategoryData();
                     docentMemList.get_category_info(lastIDinfoData.category_id, categoryData);
                     intent.putExtra("category", categoryData);
+                    categoryListActivity.finish();
                     finish();
                     startActivity(intent);
 
@@ -686,8 +672,7 @@ public class DocentActivity extends AppCompatActivity {
 
                 mMinewBeaconManager.stopScan();
                 applicationclass.setScanning(false);
-//                finish();
-//                startActivity(intent);
+
 
                 break;
         }
@@ -892,6 +877,7 @@ public class DocentActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
+        prev_beacon="";
         Log.d("check1", "onPause");
 //        if (applicationclass.getScanning()) {
 //            mMinewBeaconManager.stopScan();
