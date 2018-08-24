@@ -321,14 +321,14 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void showBeaconAlarm(final IDInfoData idInfoData) {
-
+        if(handler != null){
+            handler.removeMessages(0);
+        }
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 vibrator.vibrate(500);
-                synchronized (this) {
-                    showNewItemDialog(idInfoData);
-                }
+                showNewItemDialog(idInfoData);
                 Log.d("check1", "handler 작동중...");
             }
         }, 2500);

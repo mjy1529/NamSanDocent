@@ -432,16 +432,18 @@ public class DocentActivity extends AppCompatActivity {
     }
 
     public void showBeaconAlarm() {
+        if(handler2 != null){
+            handler2.removeMessages(0);
+        }
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                vibrator.vibrate(500);
-                synchronized (this) {
-                    showNewItemDialog();
-                }
+
+                showNewItemDialog();
+
                 Log.d("check1", "handler 작동중...");
             }
-        }, 2500);
+        }, 2000);
 
     }
 
