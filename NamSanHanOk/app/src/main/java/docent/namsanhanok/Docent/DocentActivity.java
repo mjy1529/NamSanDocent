@@ -343,7 +343,6 @@ public class DocentActivity extends AppCompatActivity {
 
             }
 
-
             @Override
             public void onRangeBeacons(final List<MinewBeacon> minewBeacons) {
                 //categoryList

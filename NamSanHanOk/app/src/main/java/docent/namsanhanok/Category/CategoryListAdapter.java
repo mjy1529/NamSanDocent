@@ -48,8 +48,7 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListViewHo
 
         Glide.with(context)
                     .load(Environment.getExternalStorageDirectory() + docentData.get(position).docent_image_url)
-                    .apply(new RequestOptions()
-                            .centerCrop())
+                    .apply(new RequestOptions().centerCrop())
                     .into(holder.VH_category_list_image);
 
         holder.VH_category_list_text_title.setText(docentData.get(position).docent_title);

@@ -288,11 +288,9 @@ public class HomeActivity extends AppCompatActivity {
                         beacon_rssi = minewBeacons1.get(0).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_RSSI).getIntValue();
                     }
 
-
                     if (beacon_rssi > -70 && beacon_rssi < -30) {
                         IDInfoData idInfoData = new IDInfoData();
                         if (!beacon_minor.equals(prev_beacon)) {
-
 
                             Log.d("check2", "home_prev_beacon2 : " + prev_beacon);
                             if (docentMemList.check_beacon_number(beacon_minor, idInfoData)) {

@@ -1,7 +1,6 @@
 package docent.namsanhanok.Category;
 
-import android.bluetooth.BluetoothDevice;
-import android.bluetooth.BluetoothGatt;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.minew.beacon.BeaconValueIndex;
 import com.minew.beacon.BluetoothState;
 import com.minew.beacon.MinewBeacon;
@@ -32,6 +32,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
+import docent.namsanhanok.AppUtility.BeaconDialog;
 import docent.namsanhanok.Application;
 import docent.namsanhanok.Docent.DocentActivity;
 import docent.namsanhanok.Docent.DocentData;
@@ -39,10 +40,8 @@ import docent.namsanhanok.Home.HomeActivity;
 import docent.namsanhanok.Home.UserRssi;
 import docent.namsanhanok.Manager.DocentMemList;
 import docent.namsanhanok.Manager.IDInfoData;
-import docent.namsanhanok.NetworkService;
 import docent.namsanhanok.R;
 import libs.mjn.prettydialog.PrettyDialog;
-import libs.mjn.prettydialog.PrettyDialogCallback;
 
 import static com.minew.beacon.BluetoothState.BluetoothStatePowerOn;
 
@@ -65,7 +64,7 @@ public class CategoryListActivity extends AppCompatActivity {
     DocentData docentData;
 
     Vibrator vibrator;
-    PrettyDialog newItemDialog = null;
+    BeaconDialog newItemDialog = null;
     MinewBeaconManager mMinewBeaconManager = null;
     static List<MinewBeacon> minewBeacons1 = new ArrayList<>();
     String prev_beacon = "";
@@ -102,7 +101,7 @@ public class CategoryListActivity extends AppCompatActivity {
                     String deviceName = minewBeacon.getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue();
                     Log.d("check2", "사라진다 : " + deviceName);
 
-                    if(minewBeacons1.contains(minewBeacon))
+                    if (minewBeacons1.contains(minewBeacon))
                         minewBeacons1.remove(minewBeacon);
                 }
             }
@@ -222,56 +221,34 @@ public class CategoryListActivity extends AppCompatActivity {
     }
 
     public void showNewItemDialog(final IDInfoData idInfoData) {
-        newItemDialog = new PrettyDialog(CategoryListActivity.this);
-        newItemDialog.setMessage(getResources().getString(R.string.newItemAlertMessage))
-                .setIcon(R.drawable.pdlg_icon_info)
-                .setIconTint(R.color.pdlg_color_blue)
-                .addButton("확인", // button text
-                        R.color.pdlg_color_white,  // button text color
-                        R.color.pdlg_color_blue,  // button background color
-                        new PrettyDialogCallback() {  // button OnClick listener
-                            @Override
-                            public void onClick() {
-                                if (!idInfoData.category_id.equals("")) {
-                                    if (idInfoData.docent_id.equals("")) {
-                                        CategoryData categoryData = new CategoryData();
-                                        docentMemList.get_category_info(idInfoData.category_id, categoryData);
+        if (!idInfoData.category_id.equals("")) {
+            if (idInfoData.docent_id.equals("")) {
+                CategoryData categoryData = new CategoryData();
+                docentMemList.get_category_info(idInfoData.category_id, categoryData);
+                newItemDialog = new BeaconDialog(CategoryListActivity.this, categoryData);
 
-                                        setCategoryContent(categoryData);
-                                        setDocentList(categoryData);
+            } else {
+                HashMap<String, DocentData> map = new HashMap<>();
+                docentMemList.get_docent_info(idInfoData.docent_id, map);
+                DocentData docentData = map.get(idInfoData.docent_id);
+                newItemDialog = new BeaconDialog(CategoryListActivity.this, docentData);
+            }
 
-                                        mMinewBeaconManager.stopScan();
-                                        Application.getInstance().setScanning(false);
+            newItemDialog.setCancelable(false);
+            newItemDialog.show();
+        }
+    }
 
-                                    } else if (!idInfoData.docent_id.equals("")) {
-                                        Intent intent = new Intent(CategoryListActivity.this, DocentActivity.class);
+    public void stopScan() {
+        mMinewBeaconManager.stopScan();
+        Application.getInstance().setScanning(false);
+    }
 
-                                        HashMap<String, DocentData> map = new HashMap<>();
-                                        docentMemList.get_docent_info(idInfoData.category_id, map);
-                                        DocentData docentData = map.get(idInfoData.docent_id);
-
-                                        mMinewBeaconManager.stopScan();
-                                        Application.getInstance().setScanning(false);
-
-                                        intent.putExtra("docentObject", docentData);
-                                        startActivity(intent);
-                                    }
-                                    newItemDialog.dismiss();
-                                }
-                            }
-                        }
-                )
-                .addButton("취소", // button text
-                        R.color.pdlg_color_white,  // button text color
-                        R.color.dialog_cancel,  // button background color
-                        new PrettyDialogCallback() {  // button OnClick listener
-                            @Override
-                            public void onClick() {
-                                newItemDialog.dismiss();
-                            }
-                        }
-                );
-        newItemDialog.show();
+    public void moveToDocentActivity(DocentData docentData) {
+        Intent intent = new Intent(CategoryListActivity.this, DocentActivity.class);
+        intent.putExtra("docentObject", docentData);
+        startActivity(intent);
+        finish();
     }
 
     public void init() {

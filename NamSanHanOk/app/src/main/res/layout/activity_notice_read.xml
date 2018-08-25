@@ -85,8 +85,7 @@
                 android:layout_alignEnd="@+id/notice_title_tv"
                 android:layout_alignStart="@+id/notice_title_tv"
                 android:layout_below="@+id/line"
-                android:layout_marginBottom="30dp"
-                android:text="@string/notice_content" />
+                android:layout_marginBottom="30dp" />
 
         </RelativeLayout>
 
