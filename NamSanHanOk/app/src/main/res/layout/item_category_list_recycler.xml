@@ -13,22 +13,22 @@
             android:layout_width="120dp"
             android:layout_height="80dp"
             android:layout_marginBottom="10dp"
-            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
             android:onClick="onClick" />
 
         <TextView
             android:id="@+id/category_list_recycler_title"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginBottom="5dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:layout_marginTop="5dp"
-            android:layout_toRightOf="@id/category_list_recycler_image"
+            android:layout_toEndOf="@id/category_list_recycler_image"
             android:onClick="onClick"
-            android:textSize="14dp" />
+            android:textSize="14sp" />
 
     </RelativeLayout>
 

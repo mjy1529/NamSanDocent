@@ -2,6 +2,7 @@ package docent.namsanhanok.AppUtility;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.ShapeDrawable;
@@ -18,6 +19,7 @@ import com.bumptech.glide.request.RequestOptions;
 import docent.namsanhanok.Category.CategoryData;
 import docent.namsanhanok.Category.CategoryListActivity;
 import docent.namsanhanok.Docent.DocentData;
+import docent.namsanhanok.Home.HomeActivity;
 import docent.namsanhanok.R;
 
 
@@ -48,9 +50,14 @@ public class BeaconDialog extends Dialog {
         positiveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((CategoryListActivity)context).setCategoryContent(categoryData);
-                ((CategoryListActivity)context).setDocentList(categoryData);
-                ((CategoryListActivity)context).stopScan();
+                if (context instanceof CategoryListActivity) {
+                    ((CategoryListActivity) context).setCategoryContent(categoryData);
+                    ((CategoryListActivity) context).setDocentList(categoryData);
+                    ((CategoryListActivity) context).stopScan();
+                } else {
+                    ((HomeActivity) context).moveToCategoryActivity(categoryData);
+                }
+
                 dismiss();
             }
         });
@@ -83,8 +90,12 @@ public class BeaconDialog extends Dialog {
         positiveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((CategoryListActivity)context).moveToDocentActivity(docentData);
-                ((CategoryListActivity)context).stopScan();
+                if (context instanceof CategoryListActivity) {
+                    ((CategoryListActivity) context).moveToDocentActivity(docentData);
+                    ((CategoryListActivity) context).stopScan();
+                } else {
+                    ((HomeActivity) context).moveToDocentActivity(docentData);
+                }
                 dismiss();
             }
         });

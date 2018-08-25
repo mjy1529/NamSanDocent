@@ -155,7 +155,7 @@ public class DocentActivity extends AppCompatActivity {
     //Animation
     Animation bottomUpAnimation;
     Animation topDownAnimation;
-
+    CategoryListActivity categoryListActivity;
 
     public DocentActivity() {
 
@@ -166,6 +166,7 @@ public class DocentActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_docent);
 
+        categoryListActivity = (CategoryListActivity)CategoryListActivity.categoryListActivity;
         init();
 
         if (newDocent == true) {
@@ -390,8 +391,8 @@ public class DocentActivity extends AppCompatActivity {
                                 synchronized (this) {
                                     setIDInfoData(idInfoData);
                                     showBeaconAlarm();
+                                    prev_beacon = beacon_minor;
                                 }
-                                prev_beacon = beacon_minor;
                             }
                         }
 
@@ -430,16 +431,18 @@ public class DocentActivity extends AppCompatActivity {
     }
 
     public void showBeaconAlarm() {
+        if(handler2 != null){
+            handler2.removeMessages(0);
+        }
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                vibrator.vibrate(500);
-                synchronized (this) {
-                    showNewItemDialog();
-                }
+
+                showNewItemDialog();
+
                 Log.d("check1", "handler 작동중...");
             }
-        }, 2500);
+        }, 2000);
 
     }
 
@@ -647,6 +650,9 @@ public class DocentActivity extends AppCompatActivity {
                     CategoryData categoryData = new CategoryData();
                     docentMemList.get_category_info(lastIDinfoData.category_id, categoryData);
                     intent.putExtra("category", categoryData);
+                    if(categoryListActivity != null){
+                        categoryListActivity.finish();
+                    }
                     finish();
                     startActivity(intent);
 
@@ -875,6 +881,7 @@ public class DocentActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
+        prev_beacon="";
         Log.d("check1", "onPause");
 //        if (applicationclass.getScanning()) {
 //            mMinewBeaconManager.stopScan();
