@@ -52,13 +52,11 @@ public class QuestionWriteActivity extends AppCompatActivity implements EditText
     NestedScrollView scrollView;
 
     String responseStr; //서버 응답
-    private Application applicationclass;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_questionwrite);
-        applicationclass = (Application) getApplicationContext();
 
         writeActivity = QuestionWriteActivity.this;
 
@@ -219,7 +217,7 @@ public class QuestionWriteActivity extends AppCompatActivity implements EditText
         questionData.setQuestion_content(content.getText().toString());
 
 
-        NetworkService service = applicationclass.getNetworkService();
+        NetworkService service = Application.getInstance().getNetworkService();
         Call<String> request = service.postQuestion(jsonToString(questionData));
         request.enqueue(new Callback<String>() {
             @Override

@@ -110,8 +110,6 @@ public class CategoryActivity extends AppCompatActivity {
             categoryDataList.add(categoryData);
         }
 
-        categoryAdapter.setAdapter(categoryDataList);
-
     }
 
     public void onClick(View v) {

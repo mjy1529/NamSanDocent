@@ -107,7 +107,6 @@ public class HomeActivity extends AppCompatActivity {
     private Handler handler = null;
     String prev_beacon = "";
 
-    private Application applicationclass;
     NetworkService service;
 
     HomeData homeData;
@@ -121,7 +120,6 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        applicationclass = (Application) getApplicationContext();
 
         Log.d("check2", "\n" + "onCreate_prev_beacon : " + prev_beacon);
         init();
@@ -387,7 +385,7 @@ public class HomeActivity extends AppCompatActivity {
         docentMemList = DocentMemList.getInstance();
         docentMemList.initialize();
 
-        service = applicationclass.getNetworkService();
+        service = Application.getInstance().getNetworkService();
 
         backPressCloseHandler = new BackPressCloseHandler(this);
         mMinewBeaconManager = MinewBeaconManager.getInstance(this);
@@ -404,19 +402,19 @@ public class HomeActivity extends AppCompatActivity {
         menuBtn5 = (ImageView) findViewById(R.id.menuBtn5);
         toggleBtn = (LabeledSwitch) findViewById(R.id.toggleBtn);
 
-        toggleBtn.setOn(applicationclass.getToggleState());
+        toggleBtn.setOn(Application.getInstance().getToggleState());
 
         toggleBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (!isOnBluetooth() && !toggleBtn.isOn()) { // bluethooth == false, toggle버튼 on
                     toggleBtn.setOn(true);
-                    applicationclass.setToggleState(false);
+                    Application.getInstance().setToggleState(false);
                     showBluetoothDialog();
 
                 } else if (isOnBluetooth() && !toggleBtn.isOn()) { // bluetooth==true, toggle버튼 on
-                    applicationclass.setScanning(true);
-                    applicationclass.setToggleState(true);
+                    Application.getInstance().setScanning(true);
+                    Application.getInstance().setToggleState(true);
                     mMinewBeaconManager.startScan();
 
                     if (handler != null) {
@@ -424,8 +422,8 @@ public class HomeActivity extends AppCompatActivity {
                     }
 
                 } else if (isOnBluetooth() && toggleBtn.isOn()) { // bluetooth==true, toggle버튼 off
-                    applicationclass.setToggleState(false);
-                    applicationclass.setScanning(false);
+                    Application.getInstance().setToggleState(false);
+                    Application.getInstance().setScanning(false);
                     if (mMinewBeaconManager != null) {
                         mMinewBeaconManager.stopScan();
                     }
@@ -537,7 +535,7 @@ public class HomeActivity extends AppCompatActivity {
         startActivity(intent);
 
         mMinewBeaconManager.stopScan();
-        applicationclass.setScanning(false);
+        Application.getInstance().setScanning(false);
     }
 
     public void moveToDocentActivity(DocentData docentData) {
@@ -546,7 +544,7 @@ public class HomeActivity extends AppCompatActivity {
         startActivity(intent);
 
         mMinewBeaconManager.stopScan();
-        applicationclass.setScanning(false);
+        Application.getInstance().setScanning(false);
     }
 
     @Override
@@ -560,13 +558,13 @@ public class HomeActivity extends AppCompatActivity {
         super.onResume();
         Log.d("check1", "home_onResume");
 
-        if (applicationclass.getToggleState()) {
+        if (Application.getInstance().getToggleState()) {
             Log.d("check1", "home_onResume_start_scan");
             if (handler != null) {
                 handler.sendEmptyMessageDelayed(0, 2500);
             }
             mMinewBeaconManager.startScan();
-            applicationclass.setScanning(true);
+            Application.getInstance().setScanning(true);
 
         }
 
@@ -581,9 +579,9 @@ public class HomeActivity extends AppCompatActivity {
         super.onPause();
         Log.d("check1", "home_onPause");
         prev_beacon = "";
-        if (applicationclass.getToggleState()) {
+        if (Application.getInstance().getToggleState()) {
             mMinewBeaconManager.stopScan();
-            applicationclass.setScanning(false);
+            Application.getInstance().setScanning(false);
         }
         if (handler != null) {
             handler.removeMessages(0);
@@ -595,9 +593,9 @@ public class HomeActivity extends AppCompatActivity {
         Log.d("check1", "home_onStop");
 
         super.onStop();
-        if (applicationclass.getToggleState()) {
+        if (Application.getInstance().getToggleState()) {
             mMinewBeaconManager.stopScan();
-            applicationclass.setScanning(false);
+            Application.getInstance().setScanning(false);
         }
         if (handler != null) {
             handler.removeMessages(0);

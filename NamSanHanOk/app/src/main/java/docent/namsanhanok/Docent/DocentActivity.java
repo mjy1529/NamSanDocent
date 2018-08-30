@@ -125,7 +125,6 @@ public class DocentActivity extends AppCompatActivity {
     private Vibrator vibrator;
     private MinewBeaconManager mMinewBeaconManager;
     UserRssi comp = new UserRssi();
-    Application applicationclass;
     static List<MinewBeacon> beaconArrayList = new ArrayList<>();
 
     DocentMemList docentMemList;
@@ -167,7 +166,6 @@ public class DocentActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_docent);
-        applicationclass = (Application) getApplicationContext();
 
         categoryListActivity = (CategoryListActivity)CategoryListActivity.categoryListActivity;
         init();
@@ -258,7 +256,7 @@ public class DocentActivity extends AppCompatActivity {
 
     //docent detail list
     public void networking4() {
-        Call<DocentDetailResult> docentDetailListResult = service.getDocentDetailResult(getDocentDetailInfo("docent_detail_list", docent_id));
+        final Call<DocentDetailResult> docentDetailListResult = service.getDocentDetailResult(getDocentDetailInfo("docent_detail_list", docent_id));
         docentDetailListResult.enqueue(new Callback<DocentDetailResult>() {
             @Override
             public void onResponse(Call<DocentDetailResult> call, Response<DocentDetailResult> response) {
@@ -267,8 +265,6 @@ public class DocentActivity extends AppCompatActivity {
 
                     if (docentDetailDataList.size() == 0) {
                         docentDetails_Layout.setVisibility(View.GONE);
-                    } else {
-                        docentAdpater.setAdapter(docentDetailDataList);
                     }
 
                     Log.d("check1", "docentDetailDataList : " + docentDetailDataList.toString());
@@ -299,15 +295,15 @@ public class DocentActivity extends AppCompatActivity {
     public void initBeaconListenerManager() {
 
         if (isOnBluetooth()) {
-            if (applicationclass.getToggleState()) { // scan중
+            if (Application.getInstance().getToggleState()) { // scan중
                 Log.d("check1", "docent_isScanning : startScan");
 
                 mMinewBeaconManager.startScan();
                 if (handler1 != null) {
                     handler1.sendEmptyMessageDelayed(0, 2200);
                 }
-            } else if (!applicationclass.getToggleState()) { //bluetooth는 on인데 Scanning이 안되고 있다
-                applicationclass.setScanning(false);
+            } else if (!Application.getInstance().getToggleState()) { //bluetooth는 on인데 Scanning이 안되고 있다
+                Application.getInstance().setScanning(false);
                 try {
                     mMinewBeaconManager.stopScan();
                     if (handler1 != null) {
@@ -318,7 +314,7 @@ public class DocentActivity extends AppCompatActivity {
                 }
             }
         } else if (!isOnBluetooth()) { // bluetooth == false
-            applicationclass.setScanning(false);
+            Application.getInstance().setScanning(false);
             if (mMinewBeaconManager != null) {
                 mMinewBeaconManager.stopScan();
                 if (handler1 != null) {
@@ -406,7 +402,7 @@ public class DocentActivity extends AppCompatActivity {
             @Override
             public void onUpdateState(BluetoothState bluetoothState) {
                 if (!isOnBluetooth()) { // bluetooth==false
-                    applicationclass.setScanning(false);
+                    Application.getInstance().setScanning(false);
                     if (mMinewBeaconManager != null) {
                         mMinewBeaconManager.stopScan();
                         if (handler1 != null) {
@@ -414,9 +410,9 @@ public class DocentActivity extends AppCompatActivity {
                         }
                     }
                 } else if (isOnBluetooth()) {
-                    if (applicationclass.getScanning()) { // scan중
-                    } else if (!applicationclass.getScanning()) { //bluetooth는 on인데 Scanning이 안되고 있다
-                        applicationclass.isScanning = true;
+                    if (Application.getInstance().getScanning()) { // scan중
+                    } else if (!Application.getInstance().getScanning()) { //bluetooth는 on인데 Scanning이 안되고 있다
+                        Application.getInstance().isScanning = true;
                         if (handler1 != null) {
                             handler1.sendEmptyMessage(0);
                         }
@@ -654,7 +650,7 @@ public class DocentActivity extends AppCompatActivity {
                 bottom_audio_layout.setVisibility(View.GONE);
 
                 mMinewBeaconManager.stopScan();
-                applicationclass.setScanning(false);
+                Application.getInstance().setScanning(false);
 
                 break;
         }
@@ -826,12 +822,12 @@ public class DocentActivity extends AppCompatActivity {
         Log.d("check1", "sendEmptyMessage");
 
         super.onRestart();
-        if (applicationclass.getToggleState()) {
+        if (Application.getInstance().getToggleState()) {
             if (handler1 != null) {
                 handler1.sendEmptyMessageDelayed(0, 2500);
             }
             mMinewBeaconManager.startScan();
-            applicationclass.setScanning(true);
+            Application.getInstance().setScanning(true);
 
         }
     }
@@ -860,16 +856,12 @@ public class DocentActivity extends AppCompatActivity {
         super.onPause();
         prev_beacon="";
         Log.d("check1", "onPause");
-//        if (applicationclass.getScanning()) {
-//            mMinewBeaconManager.stopScan();
-//            handler1.removeMessages(0);
-//        }
-        Log.d("check1", "onPause_getScanning : " + applicationclass.getScanning());
-        Log.d("check1", "onPause_getToogleState" + applicationclass.getToggleState());
+        Log.d("check1", "onPause_getScanning : " + Application.getInstance().getScanning());
+        Log.d("check1", "onPause_getToogleState" + Application.getInstance().getToggleState());
 
-        if (applicationclass.getToggleState()) {
+        if (Application.getInstance().getToggleState()) {
             mMinewBeaconManager.stopScan();
-            applicationclass.setScanning(false);
+            Application.getInstance().setScanning(false);
         }
         if (handler1 != null) {
             handler1.removeMessages(0);

@@ -26,11 +26,6 @@ public class DocentAdapter extends RecyclerView.Adapter<DocentViewHolder> {
         this.docentDetailData = docentDetailData;
     }
 
-    public void setAdapter(ArrayList<DocentDetailData> docentDetailData) {
-        this.docentDetailData = docentDetailData;
-        notifyDataSetChanged();
-    }
-
 
     @Override
     public DocentViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
