@@ -25,25 +25,23 @@ import docent.namsanhanok.R;
 
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryViewHolder> {
     private Context context;
-    public ArrayList<CategoryData> categoryData;
-//    int weight = CategoryActivity.categorySize;
-    int weight = 3;
+    public ArrayList<CategoryData> categoryDataList;
 
-    public CategoryAdapter(Context context, ArrayList<CategoryData> categoryData) {
+    public CategoryAdapter(Context context, ArrayList<CategoryData> categoryDataList) {
         this.context = context;
-        this.categoryData = categoryData;
+        this.categoryDataList = categoryDataList;
     }
 
-    public void setAdapter(ArrayList<CategoryData> categoryData) {
-        this.categoryData = categoryData;
-        notifyDataSetChanged();
-    }
+//    public void setAdapter(ArrayList<CategoryData> categoryData) {
+//        this.categoryData = categoryData;
+//        notifyDataSetChanged();
+//    }
 
     @Override
     public CategoryViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_category_recycler, parent, false);
 //        CategoryViewHolder categoryViewHolder = new CategoryViewHolder(view);
-        view.getLayoutParams().height = parent.getHeight() / weight;
+        view.getLayoutParams().height = parent.getHeight() / getItemCount();
 
         return new CategoryViewHolder(view);
     }
@@ -53,9 +51,9 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryViewHolder> {
         final int blackFilter = context.getResources().getColor(R.color.black_color_filter);
         final PorterDuffColorFilter blakcColorFilter = new PorterDuffColorFilter(blackFilter, PorterDuff.Mode.SRC_ATOP);
 
-        Log.d("check1", "categoryList img_url : " + Environment.getExternalStorageDirectory() + categoryData.get(position).category_image_url);
+        Log.d("check1", "categoryList img_url : " + Environment.getExternalStorageDirectory() + categoryDataList.get(position).category_image_url);
 
-        Glide.with(context).load(Environment.getExternalStorageDirectory() + categoryData.get(position).category_image_url)
+        Glide.with(context).load(Environment.getExternalStorageDirectory() + categoryDataList.get(position).category_image_url)
                 .apply(new RequestOptions()
                 .centerCrop()).into(new SimpleTarget<Drawable>() {
             @Override
@@ -70,13 +68,13 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryViewHolder> {
         });
 
 
-        holder.VH_category_title.setText(categoryData.get(position).category_title);
+        holder.VH_category_title.setText(categoryDataList.get(position).category_title);
 
         holder.VH_category_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, CategoryListActivity.class);
-                intent.putExtra("category", categoryData.get(position));
+                intent.putExtra("category", categoryDataList.get(position));
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
             }
@@ -86,7 +84,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryViewHolder> {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, CategoryListActivity.class);
-                intent.putExtra("category", categoryData.get(position));
+                intent.putExtra("category", categoryDataList.get(position));
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
             }
@@ -96,7 +94,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryViewHolder> {
 
     @Override
     public int getItemCount() {
-        return categoryData != null ? categoryData.size() : 0;
+        return categoryDataList != null ? categoryDataList.size() : 0;
     }
 
 }

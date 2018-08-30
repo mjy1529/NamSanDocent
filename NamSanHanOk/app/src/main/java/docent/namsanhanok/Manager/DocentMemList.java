@@ -17,7 +17,7 @@ public class DocentMemList {
     private HashMap<String, CategoryData> categorylist_;
     //public HashMap<String, DocentData> docentlist_;
 
-    public static DocentMemList instance = new DocentMemList();;
+    public static DocentMemList instance = new DocentMemList();
 
     public static DocentMemList getInstance() {
 //        instance = new DocentMemList();
