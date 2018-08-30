@@ -32,11 +32,6 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryViewHolder> {
         this.categoryDataList = categoryDataList;
     }
 
-//    public void setAdapter(ArrayList<CategoryData> categoryData) {
-//        this.categoryData = categoryData;
-//        notifyDataSetChanged();
-//    }
-
     @Override
     public CategoryViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_category_recycler, parent, false);
@@ -66,7 +61,6 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryViewHolder> {
             }
 
         });
-
 
         holder.VH_category_title.setText(categoryDataList.get(position).category_title);
 

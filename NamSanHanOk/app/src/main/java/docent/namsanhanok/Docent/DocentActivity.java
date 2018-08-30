@@ -361,7 +361,7 @@ public class DocentActivity extends AppCompatActivity {
                                 Log.d("beacon", "add : " + minewBeacons.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue());
                             }
                             for (int j = 0; j < beaconArrayList.size(); j++) {
-                                Log.d("check", "\n" + "docent_minewBeacons1 " + (j + 1) + "번째 : " + beaconArrayList.get(j).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue());
+                                Log.d("check", "\n" + "docent_beaconArrayList " + (j + 1) + "번째 : " + beaconArrayList.get(j).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue());
                             }
                         }
                     }
@@ -372,7 +372,7 @@ public class DocentActivity extends AppCompatActivity {
                 if (!beaconArrayList.isEmpty()) {
                     Collections.sort(beaconArrayList, comp);
                     for (int i = 0; i < beaconArrayList.size(); i++) {
-                        Log.d("check2", "\n" + "docent_minewBeacons1 " + (i + 1) + "번째 : " + beaconArrayList.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue());
+                        Log.d("check2", "\n" + "docent_beaconArrayList " + (i + 1) + "번째 : " + beaconArrayList.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue());
                     }
 
                     String beacon_minor;

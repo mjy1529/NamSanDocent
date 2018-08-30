@@ -138,15 +138,15 @@ public class CategoryActivity extends AppCompatActivity {
 
         super.onPause();
 
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-
-            @Override
-            public void run() {
-
-            }
-
-        }, 100);
+//        Handler handler = new Handler();
+//        handler.postDelayed(new Runnable() {
+//
+//            @Override
+//            public void run() {
+//
+//            }
+//
+//        }, 100);
     }
 
 }
