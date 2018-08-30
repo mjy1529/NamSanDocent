@@ -37,18 +37,21 @@ public class EventActivity extends AppCompatActivity {
     ArrayList<EventData> eventList = new ArrayList<>();
     TextView event_toolbar_title;
     ImageButton homeBtn;
+    Application applicationclass;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event);
+        applicationclass = (Application) getApplicationContext();
+
 
         init();
         networking();
     }
 
     public void networking() {
-        NetworkService service = Application.getInstance().getNetworkService();
+        NetworkService service = applicationclass.getNetworkService();
         final Call<EventResult> request = service.getEventResult(jsonToString());
         request.enqueue(new Callback<EventResult>() {
             @Override

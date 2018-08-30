@@ -40,17 +40,18 @@ public class DocentPopUpActivity extends Activity {
 
     NetworkService service;
     ArrayList<DocentDetailData> docentDetailDataList;
+    Application applicationclass;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_docentpupup);
+        applicationclass = (Application) getApplicationContext();
 
         Intent secondIntent = getIntent();
         position = secondIntent.getExtras().getInt("position");
         docent_id = secondIntent.getExtras().getString("docent_id");
-        service = Application.getInstance().getNetworkService();
 
         init();
         networking();
@@ -84,6 +85,8 @@ public class DocentPopUpActivity extends Activity {
     }
 
     public void init(){
+        service = applicationclass.getNetworkService();
+
         closeBtn = (ImageButton) findViewById(R.id.closed);
         closeBtn.setOnClickListener(new View.OnClickListener() {
             @Override

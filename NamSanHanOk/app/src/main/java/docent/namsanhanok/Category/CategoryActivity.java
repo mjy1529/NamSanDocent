@@ -119,14 +119,13 @@ public class CategoryActivity extends AppCompatActivity {
     }
 
     public void onClick(View v) {
-        Intent intent = new Intent(getApplicationContext(), CategoryListActivity.class);
         switch (v.getId()) {
             case R.id.homeBtn:
                 onPause();
-                Intent intent2 = new Intent(CategoryActivity.this, HomeActivity.class);
-                intent2.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                intent2.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent2);
+                Intent intent = new Intent(CategoryActivity.this, HomeActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
                 finish();
                 break;
         }

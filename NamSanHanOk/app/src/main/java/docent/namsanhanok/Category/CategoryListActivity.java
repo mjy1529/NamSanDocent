@@ -68,15 +68,18 @@ public class CategoryListActivity extends AppCompatActivity {
     Vibrator vibrator;
     BeaconDialog newItemDialog = null;
     MinewBeaconManager mMinewBeaconManager = null;
-    static List<MinewBeacon> minewBeacons1 = new ArrayList<>();
+    static List<MinewBeacon> beaconArrayList = new ArrayList<>();
     String prev_beacon = "";
     UserRssi comp = new UserRssi();
     Handler handler = null;
+
+    Application applicationclass;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category_list);
+        applicationclass = (Application) getApplicationContext();
 
         Intent secondIntent = getIntent();
         categoryData = (CategoryData) secondIntent.getSerializableExtra("category");
@@ -104,8 +107,8 @@ public class CategoryListActivity extends AppCompatActivity {
                     String deviceName = minewBeacon.getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue();
                     Log.d("check2", "사라진다 : " + deviceName);
 
-                    if (minewBeacons1.contains(minewBeacon))
-                        minewBeacons1.remove(minewBeacon);
+                    if (beaconArrayList.contains(minewBeacon))
+                        beaconArrayList.remove(minewBeacon);
                 }
             }
 
@@ -118,25 +121,25 @@ public class CategoryListActivity extends AppCompatActivity {
                     IDInfoData idInfoData = new IDInfoData();
                     if (docentMemList.check_beacon_number(beacon_minor, idInfoData)) {
                         synchronized (this) {
-                            if (!minewBeacons1.contains(minewBeacons.get(i))) {
-                                minewBeacons1.add(minewBeacons.get(i));
+                            if (!beaconArrayList.contains(minewBeacons.get(i))) {
+                                beaconArrayList.add(minewBeacons.get(i));
                                 Log.d("check", "categoryList_add : " + minewBeacons.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue());
                             }
-                            for (int j = 0; j < minewBeacons1.size(); j++) {
-                                Log.d("minewBeaconList", "\n" + "category_List_minewBeacons1 " + (j + 1) + "번째 : " + minewBeacons1.get(j).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue());
+                            for (int j = 0; j < beaconArrayList.size(); j++) {
+                                Log.d("minewBeaconList", "\n" + "category_List_minewBeacons1 " + (j + 1) + "번째 : " + beaconArrayList.get(j).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue());
                             }
                         }
                     }
                 }
 
-                if (!minewBeacons1.isEmpty()) {
-                    Collections.sort(minewBeacons1, comp);
+                if (!beaconArrayList.isEmpty()) {
+                    Collections.sort(beaconArrayList, comp);
 
                     String beacon_minor;
                     int beacon_rssi;
                     synchronized (this) {
-                        beacon_minor = minewBeacons1.get(0).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue();
-                        beacon_rssi = minewBeacons1.get(0).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_RSSI).getIntValue();
+                        beacon_minor = beaconArrayList.get(0).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue();
+                        beacon_rssi = beaconArrayList.get(0).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_RSSI).getIntValue();
                     }
 
                     Log.d("check", "categoryList_beacon_minor" + beacon_minor);
@@ -160,14 +163,14 @@ public class CategoryListActivity extends AppCompatActivity {
             @Override
             public void onUpdateState(BluetoothState bluetoothState) {
                 if (!isOnBluetooth()) {
-                    Application.getInstance().setScanning(false);
+                    applicationclass.setScanning(false);
                     if (mMinewBeaconManager != null) {
                         mMinewBeaconManager.stopScan();
                         handler.removeMessages(0);
                     }
                 } else if (isOnBluetooth()) {
-                    if (!Application.getInstance().getScanning()) {
-                        Application.getInstance().isScanning = true;
+                    if (!applicationclass.getScanning()) {
+                       applicationclass.isScanning = true;
                         handler.sendEmptyMessage(0);
                         try {
                             mMinewBeaconManager.startScan();
@@ -249,7 +252,7 @@ public class CategoryListActivity extends AppCompatActivity {
 
     public void stopScan() {
         mMinewBeaconManager.stopScan();
-        Application.getInstance().setScanning(false);
+        applicationclass.setScanning(false);
     }
 
     public void moveToDocentActivity(DocentData docentData) {
@@ -313,14 +316,14 @@ public class CategoryListActivity extends AppCompatActivity {
         Log.d("check", "categoryList_onResume");
 
         if (isOnBluetooth()) {
-            if (Application.getInstance().getToggleState()) {
+            if (applicationclass.getToggleState()) {
                 mMinewBeaconManager.startScan();
                 if (handler != null) {
                     handler.sendEmptyMessage(0);
                 }
 
-            } else if (!Application.getInstance().getToggleState()) {
-                Application.getInstance().setScanning(false);
+            } else if (!applicationclass.getToggleState()) {
+                applicationclass.setScanning(false);
                 try {
                     mMinewBeaconManager.stopScan();
                     if (handler != null) handler.removeMessages(0);
@@ -330,7 +333,7 @@ public class CategoryListActivity extends AppCompatActivity {
             }
 
         } else if (!isOnBluetooth()) {
-            Application.getInstance().setScanning(false);
+            applicationclass.setScanning(false);
             if (mMinewBeaconManager != null) {
                 mMinewBeaconManager.stopScan();
                 if (handler != null) handler.removeMessages(0);
@@ -343,23 +346,14 @@ public class CategoryListActivity extends AppCompatActivity {
         super.onPause();
 
         prev_beacon = "";
-        if (Application.getInstance().getToggleState()) {
+        if (applicationclass.getToggleState()) {
             mMinewBeaconManager.stopScan();
-            Application.getInstance().setScanning(false);
+            applicationclass.setScanning(false);
         }
         if (handler != null) {
             handler.removeMessages(0);
         }
 
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-
-            @Override
-            public void run() {
-
-            }
-
-        }, 100);
     }
 
     @Override
@@ -369,9 +363,9 @@ public class CategoryListActivity extends AppCompatActivity {
         super.onStop();
 
         super.onStop();
-        if (Application.getInstance().getToggleState()) {
+        if (applicationclass.getToggleState()) {
             mMinewBeaconManager.stopScan();
-            Application.getInstance().setScanning(false);
+            applicationclass.setScanning(false);
         }
         if (handler != null) {
             handler.removeMessages(0);

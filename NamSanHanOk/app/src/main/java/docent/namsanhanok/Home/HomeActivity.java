@@ -121,6 +121,7 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        applicationclass = (Application) getApplicationContext();
 
         Log.d("check2", "\n" + "onCreate_prev_beacon : " + prev_beacon);
         init();
@@ -387,11 +388,11 @@ public class HomeActivity extends AppCompatActivity {
     public void init() {
         Log.d("check2", "\n" + "init()실행");
         handler = new Handler();
-        applicationclass = (Application) getApplicationContext();
         docentMemList = DocentMemList.getInstance();
         docentMemList.initialize();
 
-        service = Application.getInstance().getNetworkService();
+        service = applicationclass.getNetworkService();
+
         backPressCloseHandler = new BackPressCloseHandler(this);
         mMinewBeaconManager = MinewBeaconManager.getInstance(this);
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
@@ -540,7 +541,7 @@ public class HomeActivity extends AppCompatActivity {
         startActivity(intent);
 
         mMinewBeaconManager.stopScan();
-        Application.getInstance().setScanning(false);
+        applicationclass.setScanning(false);
     }
 
     public void moveToDocentActivity(DocentData docentData) {
@@ -549,7 +550,7 @@ public class HomeActivity extends AppCompatActivity {
         startActivity(intent);
 
         mMinewBeaconManager.stopScan();
-        Application.getInstance().setScanning(false);
+        applicationclass.setScanning(false);
     }
 
     @Override
