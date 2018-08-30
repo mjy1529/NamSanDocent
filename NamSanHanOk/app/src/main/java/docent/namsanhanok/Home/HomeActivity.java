@@ -300,12 +300,8 @@ public class HomeActivity extends AppCompatActivity {
                                 showBeaconAlarm(idInfoData);
                                 prev_beacon = beacon_minor;
                             }
-
-
                         }
-
                     }
-
                 }
             }
 
