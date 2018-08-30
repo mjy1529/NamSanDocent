@@ -80,17 +80,14 @@ public class CategoryListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category_list);
-        applicationclass = (Application) getApplicationContext();
-
-        Intent secondIntent = getIntent();
-        categoryData = (CategoryData) secondIntent.getSerializableExtra("category");
 
         categoryListActivity = CategoryListActivity.this;
+
         init();
         initBeaconManager();
-
         setCategoryContent(categoryData);
         setDocentList(categoryData);
+        initRecyclerView();
     }
 
     public void initBeaconManager() {
@@ -222,10 +219,6 @@ public class CategoryListActivity extends AppCompatActivity {
             docentData = map.get(key);
             docentDataList.add(docentData);
         }
-
-        categoryListAdapter.setAdapter(docentDataList);
-        String count = "전시품 총 " + String.valueOf(docentDataList.size()) + "개";
-        countText.setText(count);
     }
 
     public void showNewItemDialog(final IDInfoData idInfoData) {
@@ -264,11 +257,16 @@ public class CategoryListActivity extends AppCompatActivity {
     }
 
     public void init() {
-        docentMemList = DocentMemList.getInstance();
-        handler = new Handler();
-
         Toolbar categoryListToolbar = (Toolbar) findViewById(R.id.category_list_Toolbar);
         setSupportActionBar(categoryListToolbar);
+
+        Intent secondIntent = getIntent();
+        categoryData = (CategoryData) secondIntent.getSerializableExtra("category");
+
+        handler = new Handler();
+        applicationclass = (Application) getApplicationContext();
+        docentMemList = DocentMemList.getInstance();
+        vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
         homeBtn = (ImageButton) findViewById(R.id.homeBtn);
         simple_image = (ImageView) findViewById(R.id.simple_image);
@@ -276,7 +274,9 @@ public class CategoryListActivity extends AppCompatActivity {
         countText = (TextView) findViewById(R.id.countText);
         category_text_info = (TextView) findViewById(R.id.category_text_info);
         category_list_toolbar_title = (TextView) findViewById(R.id.docentTitle);
+    }
 
+    public void initRecyclerView() {
         recyclerView = (RecyclerView) findViewById(R.id.category_list_recyclerView);
         linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -287,7 +287,8 @@ public class CategoryListActivity extends AppCompatActivity {
         categoryListAdapter = new CategoryListAdapter(getApplicationContext(), docentDataList);
         recyclerView.setAdapter(categoryListAdapter);
 
-        vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+        String count = "전시품 총 " + String.valueOf(categoryListAdapter.getItemCount()) + "개";
+        countText.setText(count);
     }
 
     public void onClick(View v) {

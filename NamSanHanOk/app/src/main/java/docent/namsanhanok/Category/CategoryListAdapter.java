@@ -28,11 +28,6 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListViewHo
         this.docentDataList = docentDataList;
     }
 
-    public void setAdapter(ArrayList<DocentData> docentDataList) {
-        this.docentDataList = docentDataList;
-        notifyDataSetChanged();
-    }
-
     @Override
     public CategoryListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_category_list_recycler, parent, false);
