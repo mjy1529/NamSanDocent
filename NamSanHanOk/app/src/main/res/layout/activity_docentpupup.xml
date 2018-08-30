@@ -1,73 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
     android:layout_gravity="center"
     android:background="#fefff9"
-    >
+    android:orientation="vertical">
 
-        <RelativeLayout
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="#ffc6c6">
+
+        <TextView
+            android:id="@+id/image_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:textColor="#000000"
+            android:textSize="16sp" />
+
+        <ImageButton
+            android:id="@+id/closed"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="10dp"
+            android:backgroundTint="#919191"
+            android:background="@drawable/ic_close_black_24dp" />
+
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none">
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:background="#ffc6c6">
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="10dp"
+            android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/image_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
-                android:textSize="20dp"/>
-
-            <ImageButton
-                android:id="@+id/closed"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:layout_marginEnd="5dp"
-                android:background="@drawable/letter_x"
-                />
-
-        </RelativeLayout>
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scrollbars="none">
-
-            <LinearLayout
+            <ImageView
+                android:id="@+id/image"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
-                android:orientation="vertical">
+                android:layout_gravity="center_horizontal"
+                android:layout_marginEnd="15dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="15dp"
+                android:adjustViewBounds="true" />
 
-                <ImageView
-                    android:id="@+id/image"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:adjustViewBounds="true"
-                    android:layout_marginEnd="15dp"
-                    android:layout_marginStart="15dp"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="15dp" />
+            <TextView
+                android:id="@+id/image_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="25dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="30dp"
+                android:gravity="center" />
 
-                <TextView
-                    android:id="@+id/image_info"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:layout_marginStart="30dp"
-                    android:layout_marginTop="30dp"
-                    android:layout_marginEnd="15dp"
-                    android:layout_marginBottom="25dp"
-                    />
+        </LinearLayout>
 
-            </LinearLayout>
-
-        </ScrollView>
-
+    </ScrollView>
 
 </LinearLayout>

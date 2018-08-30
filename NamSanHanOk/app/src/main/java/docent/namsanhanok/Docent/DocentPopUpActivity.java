@@ -54,8 +54,6 @@ public class DocentPopUpActivity extends Activity {
 
         init();
         networking();
-
-
     }
 
     public void networking() {
@@ -77,8 +75,6 @@ public class DocentPopUpActivity extends Activity {
 
                     Log.d("check1", "docentDetailDataList : " + docentDetailDataList.toString());
                     Log.d("check1", "docentDetailDataList 크기: " + docentDetailDataList.size());
-
-
                 }
             }
             @Override
@@ -125,5 +121,4 @@ public class DocentPopUpActivity extends Activity {
         Log.d("check1", "docent_detail 정보요청 : " + json);
         return json;
     }
-
 }

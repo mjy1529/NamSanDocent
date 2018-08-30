@@ -524,7 +524,7 @@ public class HomeActivity extends AppCompatActivity {
 
             } else {
                 HashMap<String, DocentData> map = new HashMap<>();
-                docentMemList.get_docent_info(idInfoData.docent_id, map);
+                docentMemList.get_docent_info(idInfoData.category_id, map);
                 DocentData docentData = map.get(idInfoData.docent_id);
                 newItemDialog = new BeaconDialog(HomeActivity.this, docentData);
             }
