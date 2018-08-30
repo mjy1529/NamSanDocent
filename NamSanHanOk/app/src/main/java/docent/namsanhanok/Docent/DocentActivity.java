@@ -130,7 +130,6 @@ public class DocentActivity extends AppCompatActivity {
 
     DocentMemList docentMemList;
 
-
     View docentSpace;
     View audioSpace;
 
@@ -268,7 +267,7 @@ public class DocentActivity extends AppCompatActivity {
                     if (docentDetailDataList.size() == 0) {
                         docentDetails_Layout.setVisibility(View.GONE);
                     } else {
-//                        docentAdpater.setAdapter(docentDetailDataList);
+                        setRecyclerView();
                     }
 
                     Log.d("check1", "docentDetailDataList : " + docentDetailDataList.toString());
