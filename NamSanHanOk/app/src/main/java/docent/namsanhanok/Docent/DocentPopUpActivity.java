@@ -94,7 +94,6 @@ public class DocentPopUpActivity extends Activity {
                 onBackPressed();
             }
         });
-
         imageView = (ImageView) findViewById(R.id.image);
         textView = (TextView) findViewById(R.id.image_info);
         imageTitle = (TextView) findViewById(R.id.image_title);
@@ -123,5 +122,11 @@ public class DocentPopUpActivity extends Activity {
 
         Log.d("check1", "docent_detail 정보요청 : " + json);
         return json;
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        overridePendingTransition(0,0);
     }
 }
