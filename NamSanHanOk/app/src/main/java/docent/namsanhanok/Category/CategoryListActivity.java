@@ -366,10 +366,8 @@ public class CategoryListActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         Log.d("check", "categoryList_onStop");
-
         super.onStop();
 
-        super.onStop();
         if (Application.getInstance().getToggleState()) {
             mMinewBeaconManager.stopScan();
             Application.getInstance().setScanning(false);
@@ -377,7 +375,6 @@ public class CategoryListActivity extends AppCompatActivity {
         if (handler != null) {
             handler.removeMessages(0);
         }
-
     }
 
     @Override
