@@ -26,6 +26,11 @@ public class DocentAdapter extends RecyclerView.Adapter<DocentViewHolder> {
         this.docentDetailDataList = docentDetailDataList;
     }
 
+    public void setAdapter(ArrayList<DocentDetailData> docentDetailData) {
+                this.docentDetailDataList = docentDetailData;
+                notifyDataSetChanged();
+
+    }
     @Override
     public DocentViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_docent_recycler, parent, false);

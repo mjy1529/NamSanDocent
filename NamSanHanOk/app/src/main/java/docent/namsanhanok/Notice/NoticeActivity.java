@@ -47,7 +47,6 @@ public class NoticeActivity extends AppCompatActivity implements NoticeRecyclerA
     ArrayList<NoticeData> allNoticeList;
     ArrayList<NoticeData> noticeList = new ArrayList<>();
 
-    private Application applicationclass;
     NetworkService service;
 
     int loadCount = 10;
@@ -56,7 +55,6 @@ public class NoticeActivity extends AppCompatActivity implements NoticeRecyclerA
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notice);
-        applicationclass = (Application) getApplicationContext();
 
         networking();
         init();
@@ -64,7 +62,7 @@ public class NoticeActivity extends AppCompatActivity implements NoticeRecyclerA
     }
 
     public void networking() {
-        NetworkService service = applicationclass.getNetworkService();
+        NetworkService service = Application.getInstance().getNetworkService();
         Call<NoticeResult> request = service.getNoticeResult(jsonToString());
         request.enqueue(new Callback<NoticeResult>() {
             @Override

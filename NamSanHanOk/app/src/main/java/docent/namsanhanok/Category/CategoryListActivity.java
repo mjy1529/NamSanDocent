@@ -74,12 +74,14 @@ public class CategoryListActivity extends AppCompatActivity {
     UserRssi comp = new UserRssi();
     Handler handler = null;
 
-    Application applicationclass;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category_list);
+
+        Intent secondIntent = getIntent();
+        categoryData = (CategoryData) secondIntent.getSerializableExtra("category");
+
 
         categoryListActivity = CategoryListActivity.this;
 
@@ -161,14 +163,14 @@ public class CategoryListActivity extends AppCompatActivity {
             @Override
             public void onUpdateState(BluetoothState bluetoothState) {
                 if (!isOnBluetooth()) {
-                    applicationclass.setScanning(false);
+                    Application.getInstance().setScanning(false);
                     if (mMinewBeaconManager != null) {
                         mMinewBeaconManager.stopScan();
                         handler.removeMessages(0);
                     }
                 } else if (isOnBluetooth()) {
-                    if (!applicationclass.getScanning()) {
-                       applicationclass.isScanning = true;
+                    if (!Application.getInstance().getScanning()) {
+                       Application.getInstance().isScanning = true;
                         handler.sendEmptyMessage(0);
                         try {
                             mMinewBeaconManager.startScan();
@@ -246,7 +248,7 @@ public class CategoryListActivity extends AppCompatActivity {
 
     public void stopScan() {
         mMinewBeaconManager.stopScan();
-        applicationclass.setScanning(false);
+        Application.getInstance().setScanning(false);
     }
 
     public void moveToDocentActivity(DocentData docentData) {
@@ -264,7 +266,6 @@ public class CategoryListActivity extends AppCompatActivity {
         categoryData = (CategoryData) secondIntent.getSerializableExtra("category");
 
         handler = new Handler();
-        applicationclass = (Application) getApplicationContext();
         docentMemList = DocentMemList.getInstance();
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
@@ -318,14 +319,14 @@ public class CategoryListActivity extends AppCompatActivity {
         Log.d("check", "categoryList_onResume");
 
         if (isOnBluetooth()) {
-            if (applicationclass.getToggleState()) {
+            if (Application.getInstance().getToggleState()) {
                 mMinewBeaconManager.startScan();
                 if (handler != null) {
                     handler.sendEmptyMessage(0);
                 }
 
-            } else if (!applicationclass.getToggleState()) {
-                applicationclass.setScanning(false);
+            } else if (!Application.getInstance().getToggleState()) {
+                Application.getInstance().setScanning(false);
                 try {
                     mMinewBeaconManager.stopScan();
                     if (handler != null) handler.removeMessages(0);
@@ -335,7 +336,7 @@ public class CategoryListActivity extends AppCompatActivity {
             }
 
         } else if (!isOnBluetooth()) {
-            applicationclass.setScanning(false);
+            Application.getInstance().setScanning(false);
             if (mMinewBeaconManager != null) {
                 mMinewBeaconManager.stopScan();
                 if (handler != null) handler.removeMessages(0);
@@ -348,9 +349,9 @@ public class CategoryListActivity extends AppCompatActivity {
         super.onPause();
 
         prev_beacon = "";
-        if (applicationclass.getToggleState()) {
+        if (Application.getInstance().getToggleState()) {
             mMinewBeaconManager.stopScan();
-            applicationclass.setScanning(false);
+            Application.getInstance().setScanning(false);
         }
         if (handler != null) {
             handler.removeMessages(0);
@@ -365,9 +366,9 @@ public class CategoryListActivity extends AppCompatActivity {
 
 
         super.onStop();
-        if (applicationclass.getToggleState()) {
+        if (Application.getInstance().getToggleState()) {
             mMinewBeaconManager.stopScan();
-            applicationclass.setScanning(false);
+            Application.getInstance().setScanning(false);
         }
         if (handler != null) {
             handler.removeMessages(0);

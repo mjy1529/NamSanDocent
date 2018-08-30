@@ -98,6 +98,7 @@ public class CategoryActivity extends AppCompatActivity {
         }
     }
 
+
     public void initRecyclerView() {
         recyclerView = (RecyclerView) findViewById(R.id.category_recyclerView);
         linearLayoutManager = new LinearLayoutManager(this);
