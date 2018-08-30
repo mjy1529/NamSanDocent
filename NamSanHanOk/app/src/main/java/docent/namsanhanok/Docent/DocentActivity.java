@@ -202,7 +202,7 @@ public class DocentActivity extends AppCompatActivity {
         initBeaconListenerManager();
 
         networking4();
-        setRecyclerView();
+//        setRecyclerView();
 
         docentImage.setFocusableInTouchMode(true);
         docentImage.requestFocus();
@@ -265,6 +265,12 @@ public class DocentActivity extends AppCompatActivity {
 
                     if (docentDetailDataList.size() == 0) {
                         docentDetails_Layout.setVisibility(View.GONE);
+                    }
+                    else {
+//                        docentAdpater.setAdapter(docentDetailDataList);
+//                        docentAdpater = new DocentAdapter(getApplicationContext(), docentDetailDataList);
+                        setRecyclerView();
+
                     }
 
                     Log.d("check1", "docentDetailDataList : " + docentDetailDataList.toString());
@@ -724,7 +730,6 @@ public class DocentActivity extends AppCompatActivity {
         //지울 것
         docentSpace = (View) findViewById(R.id.newDocent_Space);
         audioSpace = (View) findViewById(R.id.Audio_Space);
-
 
         bottomUpAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.bottom_up);
         topDownAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.top_down);

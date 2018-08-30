@@ -54,7 +54,6 @@ public class CategoryActivity extends AppCompatActivity {
 
     private NetworkService service;
     public ArrayList<CategoryData> categoryDataList;
-    static int categorySize;
 
     DocentMemList docentMemList;
 
@@ -67,29 +66,17 @@ public class CategoryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category);
 
-        service = Application.getInstance().getNetworkService();
-
         init();
         setContent();
+        initRecyclerView();
     }
 
     public void init() {
-        docentMemList = DocentMemList.getInstance();
-
         Toolbar categoryToolbar = (Toolbar) findViewById(R.id.categoryToolbar);
         setSupportActionBar(categoryToolbar);
 
-        //recyclerview
-        recyclerView = (RecyclerView) findViewById(R.id.category_recyclerView);
-        linearLayoutManager = new LinearLayoutManager(this);
-        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-
-        recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.setHasFixedSize(true);
-
-        categoryAdapter = new CategoryAdapter(getApplicationContext(), categoryDataList);
-        recyclerView.setAdapter(categoryAdapter);
-
+        service = Application.getInstance().getNetworkService();
+        docentMemList = DocentMemList.getInstance();
         homeBtn = (ImageButton) findViewById(R.id.homeBtn);
         category_toolbar_title = (TextView) findViewById(R.id.docentTitle);
     }
@@ -109,7 +96,18 @@ public class CategoryActivity extends AppCompatActivity {
 
             categoryDataList.add(categoryData);
         }
+    }
 
+
+    public void initRecyclerView() {
+        recyclerView = (RecyclerView) findViewById(R.id.category_recyclerView);
+        linearLayoutManager = new LinearLayoutManager(this);
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.setHasFixedSize(true);
+
+        categoryAdapter = new CategoryAdapter(getApplicationContext(), categoryDataList);
+        recyclerView.setAdapter(categoryAdapter);
     }
 
     public void onClick(View v) {
@@ -137,7 +135,6 @@ public class CategoryActivity extends AppCompatActivity {
     }
 
     @Override
-
     public void onPause() {
 
         super.onPause();
