@@ -351,15 +351,16 @@ public class CategoryListActivity extends AppCompatActivity {
             handler.removeMessages(0);
         }
 
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-
-            @Override
-            public void run() {
-
-            }
-
-        }, 100);
+        // 이미지 로딩시
+//        Handler handler = new Handler();
+//        handler.postDelayed(new Runnable() {
+//
+//            @Override
+//            public void run() {
+//
+//            }
+//
+//        }, 100);
     }
 
     @Override
