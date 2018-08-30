@@ -19,18 +19,12 @@ import docent.namsanhanok.R;
 
 public class DocentAdapter extends RecyclerView.Adapter<DocentViewHolder> {
     private Context context;
-    public ArrayList<DocentDetailData> docentDetailData;
+    public ArrayList<DocentDetailData> docentDetailDataList;
 
-    public DocentAdapter(Context context, ArrayList<DocentDetailData> docentDetailData) {
+    public DocentAdapter(Context context, ArrayList<DocentDetailData> docentDetailDataList) {
         this.context = context;
-        this.docentDetailData = docentDetailData;
+        this.docentDetailDataList = docentDetailDataList;
     }
-
-    public void setAdapter(ArrayList<DocentDetailData> docentDetailData) {
-        this.docentDetailData = docentDetailData;
-        notifyDataSetChanged();
-    }
-
 
     @Override
     public DocentViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -42,27 +36,26 @@ public class DocentAdapter extends RecyclerView.Adapter<DocentViewHolder> {
 
     @Override
     public void onBindViewHolder(DocentViewHolder holder, final int position) {
-
         //recycler viewholder
         Glide.with(context)
-                .load(Environment.getExternalStorageDirectory() + docentDetailData.get(position).docent_detail_image_url)
+                .load(Environment.getExternalStorageDirectory() + docentDetailDataList.get(position).docent_detail_image_url)
                 .apply(new RequestOptions()
                         .centerCrop())
                 .into(holder.VH_docent_image);
 
-        Log.d("check1", "docentAdapter imageurl: " + Environment.getExternalStorageDirectory() + docentDetailData.get(position).docent_detail_image_url);
+        Log.d("check1", "docentAdapter imageurl: " + Environment.getExternalStorageDirectory() + docentDetailDataList.get(position).docent_detail_image_url);
 
-        holder.VH_docent_text_title.setText(docentDetailData.get(position).docent_detail_title);
+        holder.VH_docent_text_title.setText(docentDetailDataList.get(position).docent_detail_title);
 
         holder.VH_docent_image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, DocentPopUpActivity.class);
                 intent.putExtra("position", position);
-                intent.putExtra("docent_id", docentDetailData.get(position).docent_id);
+                intent.putExtra("docent_id", docentDetailDataList.get(position).docent_id);
 
-                Log.d("check1" , "docent : " + docentDetailData.get(position).docent_id);
-                Log.d("check1" , "docent_detail_id : " + docentDetailData.get(position).docent_detail_id);
+                Log.d("check1" , "docent : " + docentDetailDataList.get(position).docent_id);
+                Log.d("check1" , "docent_detail_id : " + docentDetailDataList.get(position).docent_detail_id);
 
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
@@ -73,6 +66,6 @@ public class DocentAdapter extends RecyclerView.Adapter<DocentViewHolder> {
 
     @Override
     public int getItemCount() {
-        return docentDetailData != null ? docentDetailData.size() : 0;
+        return docentDetailDataList != null ? docentDetailDataList.size() : 0;
     }
 }

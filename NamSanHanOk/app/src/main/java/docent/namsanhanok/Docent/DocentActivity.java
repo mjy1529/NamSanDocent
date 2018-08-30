@@ -268,7 +268,7 @@ public class DocentActivity extends AppCompatActivity {
                     if (docentDetailDataList.size() == 0) {
                         docentDetails_Layout.setVisibility(View.GONE);
                     } else {
-                        docentAdpater.setAdapter(docentDetailDataList);
+//                        docentAdpater.setAdapter(docentDetailDataList);
                     }
 
                     Log.d("check1", "docentDetailDataList : " + docentDetailDataList.toString());
@@ -728,7 +728,6 @@ public class DocentActivity extends AppCompatActivity {
         //지울 것
         docentSpace = (View) findViewById(R.id.newDocent_Space);
         audioSpace = (View) findViewById(R.id.Audio_Space);
-
 
         bottomUpAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.bottom_up);
         topDownAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.top_down);
