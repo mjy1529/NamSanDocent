@@ -54,7 +54,6 @@ public class BeaconDialog extends Dialog {
                 } else {
                     ((HomeActivity) context).moveToCategoryActivity(categoryData);
                 }
-
                 dismiss();
             }
         });
@@ -105,4 +104,9 @@ public class BeaconDialog extends Dialog {
         });
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        dismiss();
+    }
 }
