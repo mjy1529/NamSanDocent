@@ -398,7 +398,6 @@ public class DocentActivity extends AppCompatActivity {
                                 }
                             }
                         }
-
                     }
                 }
 

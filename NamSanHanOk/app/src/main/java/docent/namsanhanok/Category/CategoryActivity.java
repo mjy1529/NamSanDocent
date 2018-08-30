@@ -87,16 +87,13 @@ public class CategoryActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setHasFixedSize(true);
 
-
         categoryAdapter = new CategoryAdapter(getApplicationContext(), categoryDataList);
         recyclerView.setAdapter(categoryAdapter);
 
         homeBtn = (ImageButton) findViewById(R.id.homeBtn);
         category_toolbar_title = (TextView) findViewById(R.id.docentTitle);
-
     }
-
-
+    
     public void setContent() {
         categoryDataList = new ArrayList<>();
 

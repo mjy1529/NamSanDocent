@@ -77,7 +77,6 @@ public class NoticeActivity extends AppCompatActivity implements NoticeRecyclerA
                     loadData();
                 }
             }
-
             @Override
             public void onFailure(Call<NoticeResult> call, Throwable t) {
                 Log.d("check", "실패");
