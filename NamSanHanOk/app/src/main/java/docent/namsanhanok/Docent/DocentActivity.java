@@ -46,7 +46,9 @@ import com.google.android.exoplayer2.trackselection.TrackSelector;
 import com.google.android.exoplayer2.ui.PlaybackControlView;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.BandwidthMeter;
+import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
+import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 import com.minew.beacon.BeaconValueIndex;
@@ -452,7 +454,6 @@ public class DocentActivity extends AppCompatActivity {
         Log.d("check3", "lastIDinfo_category_id : " + lastIDinfoData.category_id);
     }
 
-
     public void showNewItemDialog() {
         Log.d("check1", "showNewItemDialog 시작");
 
@@ -503,31 +504,13 @@ public class DocentActivity extends AppCompatActivity {
         playerView.setPlayer(videoPlayer);
 
         //Preparing the player
-        //String videoUrl = "http://175.123.138.125:8070/hot.mp4";
         String videoUrl = video_url;
         DefaultBandwidthMeter defaultBandwidthMeter = new DefaultBandwidthMeter();
-        MediaSource videoSource = new ExtractorMediaSource.Factory(
-                new DefaultHttpDataSourceFactory(Util.getUserAgent(getApplicationContext(), "DOCENT"), defaultBandwidthMeter)
-        ).createMediaSource(Uri.parse(videoUrl));
+        DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(DocentActivity.this,
+                Util.getUserAgent(DocentActivity.this, "NamsanHanokDocent"), defaultBandwidthMeter);
+        MediaSource videoSource = new ExtractorMediaSource.Factory(dataSourceFactory)
+                .createMediaSource(Uri.parse(videoUrl));
         videoPlayer.prepare(videoSource);
-
-        //raw 폴더에서 가져올 때
-//        final RawResourceDataSource rawResourceDataSource = new RawResourceDataSource(this);
-//        DataSpec dataSpec = new DataSpec(RawResourceDataSource.buildRawResourceUri(R.raw.hot));
-//        try {
-//            rawResourceDataSource.open(dataSpec);
-//            DataSource.Factory factory = new DataSource.Factory() {
-//                @Override
-//                public DataSource createDataSource() {
-//                    return rawResourceDataSource;
-//                }
-//            };
-//
-//            MediaSource videoSource = new ExtractorMediaSource.Factory(factory).createMediaSource(rawResourceDataSource.getUri());
-//            videoPlayer.prepare(videoSource);
-//        } catch (RawResourceDataSource.RawResourceDataSourceException e) {
-//            e.printStackTrace();
-//        }
 
         exo_play.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -549,11 +532,6 @@ public class DocentActivity extends AppCompatActivity {
     }
 
     public void setAudioPlayer() {
-        //raw 폴더에서 가져올 때
-        //audioPlayer = MediaPlayer.create(this, R.raw.konan);
-
-        //서버에서 가져올 경우
-//        audioPlayer = MediaPlayer.create(this, Uri.parse("http://175.123.138.125:8070/kkk.mp3"));
         audioPlayer = MediaPlayer.create(this, Uri.parse(audio_url));
 
         audioPlayer.setLooping(true); //무한 반복
