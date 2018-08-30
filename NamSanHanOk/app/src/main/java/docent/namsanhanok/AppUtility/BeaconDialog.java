@@ -2,11 +2,8 @@ package docent.namsanhanok.AppUtility;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.ShapeDrawable;
-import android.graphics.drawable.shapes.OvalShape;
 import android.os.Environment;
 import android.view.View;
 import android.widget.ImageButton;

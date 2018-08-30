@@ -54,7 +54,6 @@ public class DocentAdapter extends RecyclerView.Adapter<DocentViewHolder> {
 
         holder.VH_docent_text_title.setText(docentDetailData.get(position).docent_detail_title);
 
-
         holder.VH_docent_image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
