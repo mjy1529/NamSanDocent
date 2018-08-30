@@ -127,7 +127,7 @@ public class CategoryListActivity extends AppCompatActivity {
                                 Log.d("check", "categoryList_add : " + minewBeacons.get(i).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue());
                             }
                             for (int j = 0; j < beaconArrayList.size(); j++) {
-                                Log.d("minewBeaconList", "\n" + "category_List_minewBeacons1 " + (j + 1) + "번째 : " + beaconArrayList.get(j).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue());
+                                Log.d("minewBeaconList", "\n" + "category_List_beaconArrayList " + (j + 1) + "번째 : " + beaconArrayList.get(j).getBeaconValue(BeaconValueIndex.MinewBeaconValueIndex_Minor).getStringValue());
                             }
                         }
                     }

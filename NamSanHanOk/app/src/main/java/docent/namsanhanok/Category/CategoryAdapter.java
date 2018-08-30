@@ -26,8 +26,6 @@ import docent.namsanhanok.R;
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryViewHolder> {
     private Context context;
     public ArrayList<CategoryData> categoryData;
-//    int weight = CategoryActivity.categorySize;
-    int weight = 3;
 
     public CategoryAdapter(Context context, ArrayList<CategoryData> categoryData) {
         this.context = context;
@@ -43,7 +41,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryViewHolder> {
     public CategoryViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_category_recycler, parent, false);
 //        CategoryViewHolder categoryViewHolder = new CategoryViewHolder(view);
-        view.getLayoutParams().height = parent.getHeight() / weight;
+        view.getLayoutParams().height = parent.getHeight() / getItemCount();
 
         return new CategoryViewHolder(view);
     }

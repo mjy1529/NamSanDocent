@@ -21,15 +21,15 @@ import docent.namsanhanok.R;
 
 public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListViewHolder> {
     private Context context;
-    public ArrayList<DocentData> docentData;
+    public ArrayList<DocentData> docentDataList;
 
-    public CategoryListAdapter(Context context, ArrayList<DocentData> docentData) {
+    public CategoryListAdapter(Context context, ArrayList<DocentData> docentDataList) {
         this.context = context;
-        this.docentData = docentData;
+        this.docentDataList = docentDataList;
     }
 
-    public void setAdapter(ArrayList<DocentData> docentData) {
-        this.docentData = docentData;
+    public void setAdapter(ArrayList<DocentData> docentDataList) {
+        this.docentDataList = docentDataList;
         notifyDataSetChanged();
     }
 
@@ -44,20 +44,20 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListViewHo
     @Override
     public void onBindViewHolder(CategoryListViewHolder holder, final int position) {
 
-        Log.d("check1", "categoryList img_url : " + Environment.getExternalStorageDirectory() + docentData.get(position).docent_image_url);
+        Log.d("check1", "categoryList img_url : " + Environment.getExternalStorageDirectory() + docentDataList.get(position).docent_image_url);
 
         Glide.with(context)
-                    .load(Environment.getExternalStorageDirectory() + docentData.get(position).docent_image_url)
+                    .load(Environment.getExternalStorageDirectory() + docentDataList.get(position).docent_image_url)
                     .apply(new RequestOptions().centerCrop())
                     .into(holder.VH_category_list_image);
 
-        holder.VH_category_list_text_title.setText(docentData.get(position).docent_title);
+        holder.VH_category_list_text_title.setText(docentDataList.get(position).docent_title);
 
         holder.VH_category_list_image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, DocentActivity.class);
-                intent.putExtra("docentObject", docentData.get(position));
+                intent.putExtra("docentObject", docentDataList.get(position));
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
             }
@@ -67,7 +67,7 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListViewHo
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, DocentActivity.class);
-                intent.putExtra("docentObject", docentData.get(position));
+                intent.putExtra("docentObject", docentDataList.get(position));
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
             }
@@ -77,6 +77,6 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListViewHo
 
     @Override
     public int getItemCount() {
-        return docentData != null ? docentData.size() : 0;
+        return docentDataList != null ? docentDataList.size() : 0;
     }
 }
