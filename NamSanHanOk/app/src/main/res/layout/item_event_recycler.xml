@@ -27,6 +27,7 @@
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp"
                 android:paddingTop="2dp"
+                android:textColor="#000000"
                 android:text="진행중"
                 android:textSize="12sp" />
 

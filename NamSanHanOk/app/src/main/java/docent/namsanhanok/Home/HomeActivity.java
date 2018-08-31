@@ -442,10 +442,10 @@ public class HomeActivity extends AppCompatActivity {
         final PrettyDialog bluetoothDialog = new PrettyDialog(HomeActivity.this);
         bluetoothDialog.setMessage(getResources().getString(R.string.bluetoothAlertMessage))
                 .setIcon(R.drawable.pdlg_icon_info)
-                .setIconTint(R.color.pdlg_color_blue)
+                .setIconTint(R.color.dark_blue)
                 .addButton("확인", // button text
                         R.color.pdlg_color_white,  // button text color
-                        R.color.pdlg_color_blue,  // button background color
+                        R.color.dark_blue,  // button background color
                         new PrettyDialogCallback() {  // button OnClick listener
                             @Override
                             public void onClick() {

@@ -1,14 +1,18 @@
 package docent.namsanhanok.Question;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
+
+import com.tsengvn.typekit.TypekitContextWrapper;
 
 import docent.namsanhanok.Home.HomeActivity;
 import docent.namsanhanok.R;
@@ -65,5 +69,23 @@ public class QuestionWriteDoneActivity extends Activity {
                 break;
 
         }
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(TypekitContextWrapper.wrap(newBase));
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        overridePendingTransition(0,0);
+    }
+
+    //바깥영역 터치시 Activity 종료되지 않게함
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+//        return super.onTouchEvent(event);
+        return false;
     }
 }

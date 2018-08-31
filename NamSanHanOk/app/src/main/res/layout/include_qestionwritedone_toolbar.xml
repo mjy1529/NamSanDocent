@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="45dp"
-    android:background="#ffc6c6"
+    android:background="@color/dark_orange"
     android:orientation="horizontal">
 
     <TextView
@@ -10,7 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:textColor="#000000"
-        android:textSize="14sp" />
+        android:textStyle="bold"
+        android:textColor="#ffffff"
+        android:textSize="16sp" />
 
 </RelativeLayout>

@@ -9,14 +9,15 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:background="#ffc6c6">
+        android:background="@color/dark_purple">
 
         <TextView
             android:id="@+id/image_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:textColor="#000000"
+            android:textStyle="bold"
+            android:textColor="#ffffff"
             android:textSize="16sp" />
 
         <ImageButton
@@ -26,7 +27,7 @@
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:layout_marginEnd="10dp"
-            android:backgroundTint="#919191"
+            android:backgroundTint="#ffffff"
             android:background="@drawable/ic_close_black_24dp" />
 
     </RelativeLayout>

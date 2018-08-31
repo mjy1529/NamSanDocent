@@ -33,7 +33,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class QuestionWriteActivity extends AppCompatActivity implements EditText.OnFocusChangeListener {
-    Button post_register_Btn;
+    ImageButton post_register_Btn;
     ImageButton cancelBtn;
 
     //WriteDoneAcitivy에서 현재 Activity 종료
@@ -72,7 +72,7 @@ public class QuestionWriteActivity extends AppCompatActivity implements EditText
         TextView question_register_title = (TextView) findViewById(R.id.question_register_title);
         question_register_title.setText(intent.getStringExtra("question_title"));
 
-        post_register_Btn = (Button) findViewById(R.id.question_register_Btn);
+        post_register_Btn = (ImageButton) findViewById(R.id.question_register_Btn);
         cancelBtn = (ImageButton) findViewById(R.id.question_register_cancelBtn);
 
         email_first_address = (EditText) findViewById(R.id.question_email_first_address);

@@ -8,7 +8,7 @@
     <LinearLayout
         android:id="@+id/bottom_get_new_docent"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="45dp"
         android:layout_gravity="center_vertical"
         android:background="@drawable/new_docent_layout_border"
         android:orientation="horizontal"
@@ -26,7 +26,7 @@
             android:gravity="center"
             android:singleLine="true"
             android:text="@string/new_docent"
-            android:textColor="#b5000000" />
+            android:textColor="#ffffff" />
 
         <TextView
             android:id="@+id/confirm_go_new_docent"
@@ -37,6 +37,7 @@
             android:layout_weight="3"
             android:gravity="center"
             android:onClick="onClick"
+            android:textColor="#ffffff"
             android:text="확인하기" />
 
     </LinearLayout>

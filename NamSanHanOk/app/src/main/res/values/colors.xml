@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#2bb5ff</color>
+    <color name="colorPrimary">#AB3E3A</color>
+    <color name="colorPrimaryDark">#943633</color>
+    <color name="colorAccent">#c54843</color>
 
     <!--black filter-->
     <color name="black_color_filter">#76000000</color>
@@ -12,4 +12,12 @@
 
     <color name="light_green">#d38de69b</color>
     <color name="purple">#c6d971ff</color>
+
+    <color name="floating_button">#42797B</color>
+    <color name="dark_purple">#585B78</color>
+    <color name="tp_dark_purple">#d1585B78</color>
+
+    <color name="dark_orange">#CD6445</color>
+    <color name="dark_blue">#1e3c70</color>
+    <color name="dark_gold">#ddb46f</color>
 </resources>
