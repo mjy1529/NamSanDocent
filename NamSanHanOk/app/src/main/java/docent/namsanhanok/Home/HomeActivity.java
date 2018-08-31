@@ -96,7 +96,6 @@ public class HomeActivity extends AppCompatActivity {
     ImageButton settingBtn;
     ImageView menuBtn1, menuBtn2, menuBtn3, menuBtn4, menuBtn5;
     LabeledSwitch toggleBtn;
-    //PrettyDialog newItemDialog;
     BeaconDialog newItemDialog = null;
 
     private BackPressCloseHandler backPressCloseHandler;

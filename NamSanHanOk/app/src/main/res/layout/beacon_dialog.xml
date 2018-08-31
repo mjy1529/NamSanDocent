@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:shape="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
 
     <RelativeLayout
         android:id="@+id/dialog_layout"
@@ -10,15 +10,14 @@
         android:layout_height="wrap_content"
         android:background="@drawable/beacon_dialog_border">
 
-
         <TextView
             android:id="@+id/beacon_dialog_title"
             android:layout_width="match_parent"
             android:layout_height="45dp"
+            android:background="@color/colorPrimary"
             android:gravity="center"
             android:text="@string/autoAlarmText"
             android:textColor="#ffffff"
-            android:background="@color/colorPrimary"
             android:textSize="16sp"
             android:textStyle="bold" />
 
@@ -28,8 +27,8 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/beacon_dialog_title"
             android:gravity="center"
-            android:paddingBottom="10dp"
-            android:paddingTop="10dp"
+            android:paddingBottom="15dp"
+            android:paddingTop="15dp"
             android:text="@string/newItemAlertMessage"
             android:textColor="#000000" />
 
@@ -39,32 +38,30 @@
             android:layout_height="180dp"
             android:layout_below="@+id/newItemAlertMessage"
             android:layout_marginBottom="15dp"
-            android:scaleType="fitXY"
-            android:src="@drawable/namsan1"
             android:paddingEnd="10dp"
             android:paddingStart="10dp"
-            android:paddingTop="5dp"
-            />
+            android:scaleType="fitXY"
+            android:src="@drawable/namsan1" />
 
         <TextView
             android:id="@+id/newItemTitle"
             android:layout_width="match_parent"
             android:layout_height="35dp"
             android:layout_alignBottom="@+id/newItemImage"
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="10dp"
             android:background="#b11e1e1e"
             android:gravity="center"
             android:textColor="#ffffff"
             android:textSize="15sp"
-            android:textStyle="bold"
-            android:layout_marginEnd="10dp"
-            android:layout_marginStart="10dp" />
-
-
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/positiveBtn"
             android:layout_width="match_parent"
-            android:layout_height="45dp"
+            android:layout_height="wrap_content"
+            android:paddingTop="15dp"
+            android:paddingBottom="15dp"
             android:layout_below="@id/newItemTitle"
             android:gravity="center"
             android:text="@string/showDetailText"
@@ -79,7 +76,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/dialog_layout"
         android:layout_marginBottom="10dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="15dp"
         android:gravity="center">
 
         <ImageButton
