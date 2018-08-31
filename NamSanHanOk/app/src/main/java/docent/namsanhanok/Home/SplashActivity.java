@@ -157,10 +157,10 @@ public class SplashActivity extends AppCompatActivity {
         requestDialog
                 .setMessage(getResources().getString(R.string.request))
                 .setIcon(R.drawable.pdlg_icon_info)
-                .setIconTint(R.color.pdlg_color_blue)
+                .setIconTint(R.color.dark_blue)
                 .addButton("확인",
                         R.color.pdlg_color_white,
-                        R.color.pdlg_color_blue,
+                        R.color.dark_blue,
                         new PrettyDialogCallback() {
                             @Override
                             public void onClick() {
