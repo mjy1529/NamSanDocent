@@ -459,57 +459,6 @@ public class HomeActivity extends AppCompatActivity {
             newItemDialog.dismiss();
         }
 
-//        Log.d("check1", "알람뜸");
-//        newItemDialog = new PrettyDialog(HomeActivity.this);
-//        newItemDialog.setMessage(getResources().getString(R.string.newItemAlertMessage))
-//                .setIcon(R.drawable.pdlg_icon_info)
-//                .setIconTint(R.color.pdlg_color_blue)
-//                .addButton("확인", // button text
-//                        R.color.pdlg_color_white,  // button text color
-//                        R.color.pdlg_color_blue,  // button background color
-//                        new PrettyDialogCallback() {  // button OnClick listener
-//                            @Override
-//                            public void onClick() {
-//                                //getDocentByBeacon(beacon_number);
-//                                Intent intent = null;
-//                                if (idInfoData.docent_id.equals("")) { //카테고리리스트액티비티
-//                                    intent = new Intent(HomeActivity.this, CategoryListActivity.class);
-//                                    CategoryData categoryData = new CategoryData();
-//                                    docentMemList.get_category_info(idInfoData.category_id, categoryData);
-//                                    intent.putExtra("category", categoryData);
-//
-//                                } else if (!idInfoData.docent_id.equals("") && !idInfoData.category_id.equals("")) {
-//                                    intent = new Intent(HomeActivity.this, DocentActivity.class);
-//                                    HashMap<String, DocentData> map = new HashMap<>();
-//                                    docentMemList.get_docent_info(idInfoData.category_id, map);
-//                                    DocentData docentData = new DocentData();
-//                                    docentData = map.get(idInfoData.docent_id);
-//                                    intent.putExtra("docentObject", docentData);
-//                                }
-//                                mMinewBeaconManager.stopScan();
-//                                applicationclass.setScanning(false);
-//                                startActivity(intent);
-//                                newItemDialog.dismiss();
-//                                Log.d("check2", "Dialog dismiss");
-//
-//                            }
-//                        }
-//                )
-//                .addButton("취소", // button text
-//                        R.color.pdlg_color_white,  // button text color
-//                        R.color.dialog_cancel,  // button background color
-//                        new PrettyDialogCallback() {  // button OnClick listener
-//                            @Override
-//                            public void onClick() {
-//                                newItemDialog.dismiss();
-//
-//                                Log.d("check2", "Dialog dismiss");
-//
-//                            }
-//                        }
-//                );
-//        newItemDialog.show();
-
         if (!idInfoData.category_id.equals("")) {
             if (idInfoData.docent_id.equals("")) {
                 CategoryData categoryData = new CategoryData();

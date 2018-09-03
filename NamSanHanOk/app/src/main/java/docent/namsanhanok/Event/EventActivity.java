@@ -68,12 +68,12 @@ public class EventActivity extends AppCompatActivity {
     }
 
     public void setRecyclerView() {
+        eventAdapter = new EventAdapter(this, eventList);
         linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
 
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setHasFixedSize(true);
-        eventAdapter = new EventAdapter(this, eventList);
         recyclerView.setAdapter(eventAdapter);
     }
 

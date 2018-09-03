@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
@@ -61,6 +62,7 @@ import com.tsengvn.typekit.TypekitContextWrapper;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -167,7 +169,7 @@ public class DocentActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_docent);
 
-        categoryListActivity = (CategoryListActivity)CategoryListActivity.categoryListActivity;
+        categoryListActivity = (CategoryListActivity) CategoryListActivity.categoryListActivity;
         init();
 
         if (newDocent == true) {
@@ -234,17 +236,21 @@ public class DocentActivity extends AppCompatActivity {
         audio_url = docentObject.docent_audio_url;
         video_url = docentObject.docent_vod_url;
 
+        // *** 09/03 추가 *** //
         if (audio_url.equals("")) {
             audioBtn.setBackgroundResource(R.drawable.no_headphones);
+            audioPlayer = null;
         } else {
             setAudioPlayer();
         }
 
-        if (video_url.equals("")) {
-            docentVideo_Layout.setVisibility(View.GONE);
-        } else {
-            setVideoPlayer();
-        }
+//        Video 오류 처리시 주석 해제하기
+//        if (video_url.equals("")) {
+//            docentVideo_Layout.setVisibility(View.GONE);
+//        } else {
+//            setVideoPlayer();
+//        }
+        // ***************** //
 
         docent_id = docentObject.docent_id;
 
@@ -431,7 +437,7 @@ public class DocentActivity extends AppCompatActivity {
     }
 
     public void showBeaconAlarm() {
-        if(handler2 != null){
+        if (handler2 != null) {
             handler2.removeMessages(0);
         }
         handler.postDelayed(new Runnable() {
@@ -530,39 +536,49 @@ public class DocentActivity extends AppCompatActivity {
     }
 
     public void setAudioPlayer() {
-        audioPlayer = MediaPlayer.create(this, Uri.parse(audio_url));
+        try {
+//            audioPlayer = MediaPlayer.create(this, Uri.parse(audio_url));
+            audioPlayer = new MediaPlayer();
+            audioPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+            audioPlayer.setDataSource(audio_url);
+            audioPlayer.prepare();
 
-        audioPlayer.setLooping(true); //무한 반복
-        audioPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() { //총길이 세팅
-            @Override
-            public void onPrepared(MediaPlayer music) {
-                String minute = String.format("%2d", ((music.getDuration()) / 1000 / 60) % 60);
-                String second = String.format("%2d", ((music.getDuration()) / 1000) % 60);
-                audioTotalTime.setText(minute + ":" + second); //총 재생시간
-                audioCurrentTime.setText("0:00"); //현재 재생시간
-            }
-        });
-
-        seekbar.setMax(audioPlayer.getDuration()); //seekbar의 총길이를 audioPlayer의 총길이로 설정
-        seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                //사용자가 seekbar를 움직여서 값이 변했다면 true, 재생위치를 바꿈 (seekTo)
-                if (fromUser) {
-                    audioPlayer.seekTo(progress);
-                    String currentTime = String.format("%d:%02d", (audioPlayer.getCurrentPosition() / 1000 / 60) % 60, (audioPlayer.getCurrentPosition() / 1000) % 60);
-                    audioCurrentTime.setText(currentTime);
+            audioPlayer.setLooping(true); //무한 반복
+            audioPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() { //총길이 세팅
+                @Override
+                public void onPrepared(MediaPlayer music) {
+                    String minute = String.format("%2d", ((music.getDuration()) / 1000 / 60) % 60);
+                    String second = String.format("%2d", ((music.getDuration()) / 1000) % 60);
+                    audioTotalTime.setText(minute + ":" + second); //총 재생시간
+                    audioCurrentTime.setText("0:00"); //현재 재생시간
                 }
-            }
+            });
 
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-            }
+            seekbar.setMax(audioPlayer.getDuration()); //seekbar의 총길이를 audioPlayer의 총길이로 설정
+            seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                @Override
+                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                    //사용자가 seekbar를 움직여서 값이 변했다면 true, 재생위치를 바꿈 (seekTo)
+                    if (fromUser) {
+                        audioPlayer.seekTo(progress);
+                        String currentTime = String.format("%d:%02d", (audioPlayer.getCurrentPosition() / 1000 / 60) % 60, (audioPlayer.getCurrentPosition() / 1000) % 60);
+                        audioCurrentTime.setText(currentTime);
+                    }
+                }
 
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-            }
-        });
+                @Override
+                public void onStartTrackingTouch(SeekBar seekBar) {
+                }
+
+                @Override
+                public void onStopTrackingTouch(SeekBar seekBar) {
+                }
+            });
+
+        } catch (IOException e) {
+            audioBtn.setBackgroundResource(R.drawable.no_headphones);
+            audioPlayer = null;
+        }
     }
 
     public void onClick(View v) {
@@ -588,12 +604,11 @@ public class DocentActivity extends AppCompatActivity {
             case R.id.audioBtn: //오디오 이미지버튼을 클릭했을 때 오디오 레이아웃 보이기
             case R.id.audioTxt:
                 if (audioPlayer != null) {
-                    if(bottom_audio_layout.getVisibility() == View.GONE){
+                    if (bottom_audio_layout.getVisibility() == View.GONE) {
                         Log.d("check4", "audio_visible");
                         bottom_audio_layout.setVisibility(View.VISIBLE);
                         bottom_audio_layout.startAnimation(bottomUpAnimation);
-                    }
-                    else if(bottom_audio_layout.getVisibility() == View.VISIBLE){
+                    } else if (bottom_audio_layout.getVisibility() == View.VISIBLE) {
                         Log.d("check4", "audio_gone");
                         bottom_audio_layout.startAnimation(topDownAnimation);
                     }
@@ -626,7 +641,7 @@ public class DocentActivity extends AppCompatActivity {
                     CategoryData categoryData = new CategoryData();
                     docentMemList.get_category_info(lastIDinfoData.category_id, categoryData);
                     intent.putExtra("category", categoryData);
-                    if(categoryListActivity != null){
+                    if (categoryListActivity != null) {
                         categoryListActivity.finish();
                     }
                     finish();
@@ -855,7 +870,7 @@ public class DocentActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        prev_beacon="";
+        prev_beacon = "";
         Log.d("check1", "onPause");
         Log.d("check1", "onPause_getScanning : " + Application.getInstance().getScanning());
         Log.d("check1", "onPause_getToogleState" + Application.getInstance().getToggleState());

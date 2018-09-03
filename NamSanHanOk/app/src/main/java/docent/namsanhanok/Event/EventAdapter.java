@@ -56,7 +56,6 @@ public class EventAdapter extends RecyclerView.Adapter<EventViewHolder>{
             holder.VH_complete_background.setBackgroundResource(R.drawable.round_shape_complete);
         }
 
-
     }
 
     @Override
