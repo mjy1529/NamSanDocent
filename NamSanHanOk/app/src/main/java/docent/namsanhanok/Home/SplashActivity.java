@@ -95,7 +95,13 @@ public class SplashActivity extends AppCompatActivity {
             @Override
             protected void onPostExecute(String s) {
                 super.onPostExecute(s);
-                checkVersion();
+//                checkVersion();
+                try{
+                    checkVersion();
+                }catch(IndexOutOfBoundsException e){
+                    e.printStackTrace();
+                    showAlertDataDialog();
+                }
             }
         }.execute();
     }
@@ -164,13 +170,7 @@ public class SplashActivity extends AppCompatActivity {
                         new PrettyDialogCallback() {
                             @Override
                             public void onClick() {
-                                if (checkInternet()) {
-                                    requestDialog.dismiss();
-                                    networking();
-                                } else {
-                                    requestDialog.dismiss();
-                                    onBackPressed();
-                                }
+                                finish();
                             }
                         }
                 )
