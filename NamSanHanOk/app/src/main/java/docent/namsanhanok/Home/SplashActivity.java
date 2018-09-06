@@ -99,7 +99,7 @@ public class SplashActivity extends AppCompatActivity {
                 try{
                     checkVersion();
                 }catch(IndexOutOfBoundsException e){
-                    e.printStackTrace();
+//                    e.printStackTrace();
                     showAlertDataDialog();
                 }
             }

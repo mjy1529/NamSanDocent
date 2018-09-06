@@ -7,6 +7,7 @@ import android.content.pm.ActivityInfo;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -51,6 +52,7 @@ import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
+import com.google.android.exoplayer2.upstream.HttpDataSource;
 import com.google.android.exoplayer2.util.Util;
 import com.minew.beacon.BeaconValueIndex;
 import com.minew.beacon.BluetoothState;
@@ -62,7 +64,15 @@ import com.tsengvn.typekit.TypekitContextWrapper;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.InetSocketAddress;
+import java.net.Socket;
+import java.net.SocketAddress;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -83,6 +93,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.http.HEAD;
 
+import static com.google.android.exoplayer2.upstream.HttpDataSource.*;
 import static com.minew.beacon.BluetoothState.BluetoothStatePowerOn;
 import static docent.namsanhanok.AppUtility.AppUtility.deepClone;
 
@@ -160,6 +171,12 @@ public class DocentActivity extends AppCompatActivity {
     Animation topDownAnimation;
     CategoryListActivity categoryListActivity;
 
+    //서버연결확인
+    Socket socket;
+    BufferedWriter networkWriter;
+    BufferedReader networkReader;
+    boolean isOnServer;
+
     public DocentActivity() {
 
     }
@@ -169,7 +186,6 @@ public class DocentActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_docent);
 
-        categoryListActivity = (CategoryListActivity) CategoryListActivity.categoryListActivity;
         init();
 
         if (newDocent == true) {
@@ -208,6 +224,9 @@ public class DocentActivity extends AppCompatActivity {
 
         docentImage.setFocusableInTouchMode(true);
         docentImage.requestFocus();
+
+        categoryListActivity = (CategoryListActivity) CategoryListActivity.categoryListActivity;
+
         newDocent = false;
     }
 
@@ -237,19 +256,22 @@ public class DocentActivity extends AppCompatActivity {
         video_url = docentObject.docent_vod_url;
 
         // *** 09/03 추가 *** //
-        if (audio_url.equals("")) {
+        if (audio_url.equals("") || isOnServer==false) {
             audioBtn.setBackgroundResource(R.drawable.no_headphones);
             audioPlayer = null;
         } else {
             setAudioPlayer();
         }
 
-//        Video 오류 처리시 주석 해제하기
-//        if (video_url.equals("")) {
-//            docentVideo_Layout.setVisibility(View.GONE);
-//        } else {
-//            setVideoPlayer();
-//        }
+        setSocket();
+        Log.d("check1", "isOnServer : " + isOnServer);
+        //        Video 오류 처리시 주석 해제하기
+        if (video_url.equals("") || isOnServer==false) {
+            docentVideo_Layout.setVisibility(View.GONE);
+        } else {
+            setVideoPlayer();
+
+        }
         // ***************** //
 
         docent_id = docentObject.docent_id;
@@ -495,47 +517,120 @@ public class DocentActivity extends AppCompatActivity {
         recyclerView.setAdapter(docentAdpater);
     }
 
-    public void setVideoPlayer() {
-        //Create a default TrackSelector
-        BandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
-        TrackSelection.Factory videoTrackSelectionFactory = new AdaptiveTrackSelection.Factory(bandwidthMeter);
-        TrackSelector trackSelector = new DefaultTrackSelector(videoTrackSelectionFactory);
 
-        //Create the player
-        videoPlayer = ExoPlayerFactory.newSimpleInstance(this, trackSelector);
+    public class ServerAsyncTask extends AsyncTask<String, String, String> {
 
-        //Attaching the player to a view
-        playerView.setPlayer(videoPlayer);
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
 
-        //Preparing the player
-        String videoUrl = video_url;
-        DefaultBandwidthMeter defaultBandwidthMeter = new DefaultBandwidthMeter();
-        DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(DocentActivity.this,
-                Util.getUserAgent(DocentActivity.this, "NamsanHanokDocent"), defaultBandwidthMeter);
-        MediaSource videoSource = new ExtractorMediaSource.Factory(dataSourceFactory)
-                .createMediaSource(Uri.parse(videoUrl));
-        videoPlayer.prepare(videoSource);
-
-        exo_play.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (videoPlayer.getCurrentPosition() == 0 && !videoPlayer.getPlayWhenReady()) { //썸네일
-                    exo_thumbnail.setVisibility(View.GONE);
-                }
-                videoPlayer.setPlayWhenReady(true);
-                if (audioPlayer != null && audioPlayer.isPlaying()) { //비디오 재생시 오디오 일시정지
-                    audioPlayer.pause();
-                    playAudioBtn.setBackgroundResource(R.drawable.ic_play_arrow_black_48dp);
-                }
+        @Override
+        protected String doInBackground(String... params) {
+            SocketAddress adr = new InetSocketAddress("175.123.135.125", 8070);
+            try {
+                socket.connect(adr, 1000);
+            }catch (IOException e){
+                e.printStackTrace();
             }
+             return null;
+        }
 
-        });
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            try {
+                socket = new Socket();
+                networkWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+                networkReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                isOnServer = true;
+            } catch (IOException e) {
+                isOnServer = false;
+            }
+        }
+    }
 
-        initFullscreenDialog();
-        initFullscreenButton();
+
+    private void setSocket() {
+            ServerAsyncTask.execute(new Runnable() {
+                @Override
+                public void run() {
+
+                }
+            });
+    }
+//        socket = new Socket(ip, port);
+//        socket = new Socket();
+//        SocketAddress adr = new InetSocketAddress("175.123.135.125", 8070);
+//
+//        Log.d("check1", "socket adr : " + adr);
+//        try {
+
+//            socket.connect(adr,1000);
+//            networkWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+//            networkReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+//            isOnServer = true;
+//        }
+//        catch(IOException e){
+//            Toast.makeText(getApplicationContext(), "Connection problem", Toast.LENGTH_SHORT).show();
+//            isOnServer = false;
+//        }
+
+
+
+
+    public void setVideoPlayer() {
+
+            //Create a default TrackSelector
+            BandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
+            TrackSelection.Factory videoTrackSelectionFactory = new AdaptiveTrackSelection.Factory(bandwidthMeter);
+            TrackSelector trackSelector = new DefaultTrackSelector(videoTrackSelectionFactory);
+
+            //Create the player
+            videoPlayer = ExoPlayerFactory.newSimpleInstance(this, trackSelector);
+
+            //Attaching the player to a view
+            playerView.setPlayer(videoPlayer);
+
+            //Preparing the player
+            String videoUrl = video_url;
+            DefaultBandwidthMeter defaultBandwidthMeter = new DefaultBandwidthMeter();
+            DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(DocentActivity.this,
+                    Util.getUserAgent(DocentActivity.this, "NamsanHanokDocent"), defaultBandwidthMeter);
+            MediaSource videoSource = new ExtractorMediaSource.Factory(dataSourceFactory)
+                    .createMediaSource(Uri.parse(videoUrl));
+
+            videoPlayer.prepare(videoSource);
+
+
+
+
+
+            exo_play.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (videoPlayer.getCurrentPosition() == 0 && !videoPlayer.getPlayWhenReady()) { //썸네일
+                        exo_thumbnail.setVisibility(View.GONE);
+                    }
+                    videoPlayer.setPlayWhenReady(true);
+                    if (audioPlayer != null && audioPlayer.isPlaying()) { //비디오 재생시 오디오 일시정지
+                        audioPlayer.pause();
+                        playAudioBtn.setBackgroundResource(R.drawable.ic_play_arrow_black_48dp);
+                    }
+                }
+
+            });
+
+            initFullscreenDialog();
+            initFullscreenButton();
+
+//            videoPlayer.setPlayWhenReady(true);
+
+
     }
 
     public void setAudioPlayer() {
+
         try {
 //            audioPlayer = MediaPlayer.create(this, Uri.parse(audio_url));
             audioPlayer = new MediaPlayer();
@@ -574,11 +669,47 @@ public class DocentActivity extends AppCompatActivity {
                 public void onStopTrackingTouch(SeekBar seekBar) {
                 }
             });
-
+        }catch (FileNotFoundException e){
+            audioBtn.setBackgroundResource(R.drawable.no_headphones);
+            audioPlayer = null;
         } catch (IOException e) {
             audioBtn.setBackgroundResource(R.drawable.no_headphones);
             audioPlayer = null;
         }
+
+//            audioPlayer = MediaPlayer.create(this, Uri.parse(audio_url));
+//            audioPlayer.setLooping(true); //무한 반복
+//            audioPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() { //총길이 세팅
+//                @Override
+//                public void onPrepared(MediaPlayer music) {
+//                    String minute = String.format("%2d", ((music.getDuration()) / 1000 / 60) % 60);
+//                    String second = String.format("%2d", ((music.getDuration()) / 1000) % 60);
+//                    audioTotalTime.setText(minute + ":" + second); //총 재생시간
+//                    audioCurrentTime.setText("0:00"); //현재 재생시간
+//                }
+//            });
+//
+//            seekbar.setMax(audioPlayer.getDuration()); //seekbar의 총길이를 audioPlayer의 총길이로 설정
+//            seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+//                @Override
+//                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+//                    //사용자가 seekbar를 움직여서 값이 변했다면 true, 재생위치를 바꿈 (seekTo)
+//                    if (fromUser) {
+//                        audioPlayer.seekTo(progress);
+//                        String currentTime = String.format("%d:%02d", (audioPlayer.getCurrentPosition() / 1000 / 60) % 60, (audioPlayer.getCurrentPosition() / 1000) % 60);
+//                        audioCurrentTime.setText(currentTime);
+//                    }
+//                }
+//
+//                @Override
+//                public void onStartTrackingTouch(SeekBar seekBar) {
+//                }
+//
+//                @Override
+//                public void onStopTrackingTouch(SeekBar seekBar) {
+//                }
+//            });
+
     }
 
     public void onClick(View v) {
