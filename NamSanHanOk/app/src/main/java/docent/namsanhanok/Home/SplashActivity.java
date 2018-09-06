@@ -8,6 +8,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
@@ -21,12 +22,14 @@ import com.tsengvn.typekit.TypekitContextWrapper;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
 import docent.namsanhanok.Application;
 import docent.namsanhanok.NetworkService;
 import docent.namsanhanok.R;
+import docent.namsanhanok.ServerConnected;
 import libs.mjn.prettydialog.PrettyDialog;
 import libs.mjn.prettydialog.PrettyDialogCallback;
 import retrofit2.Call;
@@ -51,6 +54,9 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
+        ServerConnected serverConnected = new ServerConnected();
+        serverConnected.ServerConneted();
+        Log.d("check1", "Server is ON? : " + Application.getInstance().getOnServer());
         init();
 
         handler.postDelayed(new Runnable() {
@@ -81,29 +87,66 @@ public class SplashActivity extends AppCompatActivity {
         new AsyncTask<Void, Void, String>() {
             @Override
             protected String doInBackground(Void... voids) {
-                NetworkService service = Application.getInstance().getNetworkService();
-                Call<PackageResult> request = service.getPackageResult(jsonToString());
-                try {
-                    PackageResult packageResult = request.execute().body();
-                    packageList = packageResult.package_info;
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                return null;
+                    NetworkService service = Application.getInstance().getNetworkService();
+                    Call<PackageResult> request = service.getPackageResult(jsonToString());
+                    try {
+                        PackageResult packageResult = request.execute().body();
+                        packageList = packageResult.package_info;
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    return null;
+
             }
 
             @Override
             protected void onPostExecute(String s) {
                 super.onPostExecute(s);
-//                checkVersion();
-                try{
-                    checkVersion();
-                }catch(IndexOutOfBoundsException e){
-//                    e.printStackTrace();
-                    showAlertDataDialog();
+                if(Application.getInstance().getOnServer()){ //서버 연결
+                    if(checkFolder()){ //폴더가 있을 때
+                        try {
+                            checkVersion();
+                        }catch (IndexOutOfBoundsException e){ //wifi로그인 안되어있을 때
+                            showAlertDataDialog();
+                        }
+                    }
+                    else{ //폴더가 없을 때
+                        startDownloading();
+                    }
                 }
+                else{
+                    if(checkFolder()){
+                        activityFinish();
+                    }
+                    else{
+                        showAlertServerDialog();
+                    }
+                }
+//                checkVersion();
+//                try{
+//                    checkVersion();
+//                }catch(IndexOutOfBoundsException e){
+////                    e.printStackTrace();
+//                    //로그인 해야되는 WIFI시 로그인 안되어 있을 때
+//                    showAlertDataDialog();
+//                }
             }
         }.execute();
+    }
+
+    public boolean checkFolder() {
+        //폴더가 삭제되었는지 확인
+        PackageData packageData = packageList.get(0);
+        String savePath = Environment.getExternalStorageDirectory() + File.separator + packageData.package_title + "/";
+
+        File dir = new File(savePath);
+
+        if (dir.exists()) { //상위 디렉토리가 존재할 경우
+            return true;
+        }
+        else{ //존재하지 않을 경우
+            return false;
+        }
     }
 
     public void checkVersion() {
@@ -113,9 +156,17 @@ public class SplashActivity extends AppCompatActivity {
 
         if (!curVersion.equals(dbVersion)) {
             startDownloading();
-        } else {
+        }
+        else{ //homeActivity로 가라
             activityFinish();
         }
+
+
+//        if (!curVersion.equals(dbVersion)) {
+//            startDownloading();
+//        } else {
+//            activityFinish();
+//        }
     }
 
     public void startDownloading() {
@@ -177,6 +228,25 @@ public class SplashActivity extends AppCompatActivity {
                 .show();
     }
 
+    public void showAlertServerDialog() {
+        final PrettyDialog requestDialog = new PrettyDialog(SplashActivity.this);
+        requestDialog
+                .setMessage(getResources().getString(R.string.serverConnected))
+                .setIcon(R.drawable.pdlg_icon_info)
+                .setIconTint(R.color.dark_blue)
+                .addButton("확인",
+                        R.color.pdlg_color_white,
+                        R.color.dark_blue,
+                        new PrettyDialogCallback() {
+                            @Override
+                            public void onClick() {
+                                finish();
+                            }
+                        }
+                )
+                .show();
+    }
+
     public void activityFinish() {
         Intent intent = new Intent(SplashActivity.this, HomeActivity.class);
         startActivity(intent);
@@ -195,6 +265,7 @@ public class SplashActivity extends AppCompatActivity {
             return false;
         }
     }
+
 
     public String jsonToString() {
         String jsonStr = "";

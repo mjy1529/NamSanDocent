@@ -88,6 +88,7 @@ import docent.namsanhanok.Manager.DocentMemList;
 import docent.namsanhanok.Manager.IDInfoData;
 import docent.namsanhanok.NetworkService;
 import docent.namsanhanok.R;
+import docent.namsanhanok.ServerConnected;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -97,7 +98,7 @@ import static com.google.android.exoplayer2.upstream.HttpDataSource.*;
 import static com.minew.beacon.BluetoothState.BluetoothStatePowerOn;
 import static docent.namsanhanok.AppUtility.AppUtility.deepClone;
 
-public class DocentActivity extends AppCompatActivity {
+public class DocentActivity extends AppCompatActivity implements MediaPlayer.OnPreparedListener {
 
     ImageButton homeBtn;
     TextView docentName;
@@ -172,10 +173,10 @@ public class DocentActivity extends AppCompatActivity {
     CategoryListActivity categoryListActivity;
 
     //서버연결확인
-    Socket socket;
-    BufferedWriter networkWriter;
-    BufferedReader networkReader;
-    boolean isOnServer;
+//    Socket socket;
+//    BufferedWriter networkWriter;
+//    BufferedReader networkReader;
+//    boolean isOnServer;
 
     public DocentActivity() {
 
@@ -255,24 +256,28 @@ public class DocentActivity extends AppCompatActivity {
         audio_url = docentObject.docent_audio_url;
         video_url = docentObject.docent_vod_url;
 
+//        ServerConneted();
+
+        Log.d("check1", "isOnServer : " + Application.getInstance().getOnServer());
+
         // *** 09/03 추가 *** //
-        if (audio_url.equals("") || isOnServer==false) {
+        if (audio_url.equals("") || Application.getInstance().getOnServer() == false) {
             audioBtn.setBackgroundResource(R.drawable.no_headphones);
             audioPlayer = null;
         } else {
             setAudioPlayer();
         }
 
-        setSocket();
-        Log.d("check1", "isOnServer : " + isOnServer);
+
+
         //        Video 오류 처리시 주석 해제하기
-        if (video_url.equals("") || isOnServer==false) {
+        if (video_url.equals("") || Application.getInstance().getOnServer() == false) {
             docentVideo_Layout.setVisibility(View.GONE);
         } else {
             setVideoPlayer();
-
         }
         // ***************** //
+
 
         docent_id = docentObject.docent_id;
 
@@ -280,6 +285,7 @@ public class DocentActivity extends AppCompatActivity {
                 .load(Environment.getExternalStorageDirectory() + docentObject.docent_image_url)
                 .apply(new RequestOptions().centerCrop())
                 .into(exo_thumbnail);
+
     }
 
     //docent detail list
@@ -518,111 +524,90 @@ public class DocentActivity extends AppCompatActivity {
     }
 
 
-    public class ServerAsyncTask extends AsyncTask<String, String, String> {
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected String doInBackground(String... params) {
-            SocketAddress adr = new InetSocketAddress("175.123.135.125", 8070);
-            try {
-                socket.connect(adr, 1000);
-            }catch (IOException e){
-                e.printStackTrace();
-            }
-             return null;
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            super.onPostExecute(result);
-            try {
-                socket = new Socket();
-                networkWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-                networkReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                isOnServer = true;
-            } catch (IOException e) {
-                isOnServer = false;
-            }
-        }
-    }
-
-
-    private void setSocket() {
-            ServerAsyncTask.execute(new Runnable() {
-                @Override
-                public void run() {
-
-                }
-            });
-    }
-//        socket = new Socket(ip, port);
-//        socket = new Socket();
-//        SocketAddress adr = new InetSocketAddress("175.123.135.125", 8070);
+//    public class ServerAsyncTask extends AsyncTask<String, String, String> {
 //
-//        Log.d("check1", "socket adr : " + adr);
-//        try {
+//        @Override
+//        protected void onPreExecute() {
+//            super.onPreExecute();
+//        }
+//
+//        @Override
+//        protected String doInBackground(String... params) {
+//            SocketAddress adr = new InetSocketAddress("175.123.135.125", 8070);
+//            try {
+//                socket.connect(adr, 1000);
+//            }catch (IOException e){
+//                e.printStackTrace();
+//            }
+//             return null;
+//        }
+//
+//        @Override
+//        protected void onPostExecute(String result) {
+//            super.onPostExecute(result);
+//            try {
+//                socket = new Socket();
+//                networkWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+//                networkReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+//                isOnServer = true;
+//            } catch (IOException e) {
+//                isOnServer = false;
+//            }
+//        }
+//    }
 
-//            socket.connect(adr,1000);
-//            networkWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-//            networkReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-//            isOnServer = true;
-//        }
-//        catch(IOException e){
-//            Toast.makeText(getApplicationContext(), "Connection problem", Toast.LENGTH_SHORT).show();
-//            isOnServer = false;
-//        }
+
+//    private void ServerConneted() {
+//            ServerAsyncTask.execute(new Runnable() {
+//                @Override
+//                public void run() {
+//                }
+//            });
+//    }
 
 
 
 
     public void setVideoPlayer() {
 
-            //Create a default TrackSelector
-            BandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
-            TrackSelection.Factory videoTrackSelectionFactory = new AdaptiveTrackSelection.Factory(bandwidthMeter);
-            TrackSelector trackSelector = new DefaultTrackSelector(videoTrackSelectionFactory);
+        //Create a default TrackSelector
+        BandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
+        TrackSelection.Factory videoTrackSelectionFactory = new AdaptiveTrackSelection.Factory(bandwidthMeter);
+        TrackSelector trackSelector = new DefaultTrackSelector(videoTrackSelectionFactory);
 
-            //Create the player
-            videoPlayer = ExoPlayerFactory.newSimpleInstance(this, trackSelector);
+        //Create the player
+        videoPlayer = ExoPlayerFactory.newSimpleInstance(this, trackSelector);
 
-            //Attaching the player to a view
-            playerView.setPlayer(videoPlayer);
+        //Attaching the player to a view
+        playerView.setPlayer(videoPlayer);
 
-            //Preparing the player
-            String videoUrl = video_url;
-            DefaultBandwidthMeter defaultBandwidthMeter = new DefaultBandwidthMeter();
-            DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(DocentActivity.this,
-                    Util.getUserAgent(DocentActivity.this, "NamsanHanokDocent"), defaultBandwidthMeter);
-            MediaSource videoSource = new ExtractorMediaSource.Factory(dataSourceFactory)
-                    .createMediaSource(Uri.parse(videoUrl));
+        //Preparing the player
+        String videoUrl = video_url;
+        DefaultBandwidthMeter defaultBandwidthMeter = new DefaultBandwidthMeter();
+        DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(DocentActivity.this,
+                Util.getUserAgent(DocentActivity.this, "NamsanHanokDocent"), defaultBandwidthMeter);
+        MediaSource videoSource = new ExtractorMediaSource.Factory(dataSourceFactory)
+                .createMediaSource(Uri.parse(videoUrl));
 
-            videoPlayer.prepare(videoSource);
+        videoPlayer.prepare(videoSource);
 
-
-
-
-
-            exo_play.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (videoPlayer.getCurrentPosition() == 0 && !videoPlayer.getPlayWhenReady()) { //썸네일
-                        exo_thumbnail.setVisibility(View.GONE);
-                    }
-                    videoPlayer.setPlayWhenReady(true);
-                    if (audioPlayer != null && audioPlayer.isPlaying()) { //비디오 재생시 오디오 일시정지
-                        audioPlayer.pause();
-                        playAudioBtn.setBackgroundResource(R.drawable.ic_play_arrow_black_48dp);
-                    }
+        exo_play.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (videoPlayer.getCurrentPosition() == 0 && !videoPlayer.getPlayWhenReady()) { //썸네일
+                    exo_thumbnail.setVisibility(View.GONE);
                 }
+                videoPlayer.setPlayWhenReady(true);
+                if (audioPlayer != null && audioPlayer.isPlaying()) { //비디오 재생시 오디오 일시정지
+                    audioPlayer.pause();
+                    playAudioBtn.setBackgroundResource(R.drawable.ic_play_arrow_black_48dp);
+                }
+            }
 
-            });
+        });
 
-            initFullscreenDialog();
-            initFullscreenButton();
+        initFullscreenDialog();
+        initFullscreenButton();
 
 //            videoPlayer.setPlayWhenReady(true);
 
@@ -631,51 +616,17 @@ public class DocentActivity extends AppCompatActivity {
 
     public void setAudioPlayer() {
 
-        try {
+            try {
 //            audioPlayer = MediaPlayer.create(this, Uri.parse(audio_url));
-            audioPlayer = new MediaPlayer();
-            audioPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-            audioPlayer.setDataSource(audio_url);
-            audioPlayer.prepare();
+                audioPlayer = new MediaPlayer();
+                audioPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+                audioPlayer.setDataSource(audio_url);
+//            audioPlayer.prepare();
+                audioPlayer.prepareAsync();
 
-            audioPlayer.setLooping(true); //무한 반복
-            audioPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() { //총길이 세팅
-                @Override
-                public void onPrepared(MediaPlayer music) {
-                    String minute = String.format("%2d", ((music.getDuration()) / 1000 / 60) % 60);
-                    String second = String.format("%2d", ((music.getDuration()) / 1000) % 60);
-                    audioTotalTime.setText(minute + ":" + second); //총 재생시간
-                    audioCurrentTime.setText("0:00"); //현재 재생시간
-                }
-            });
+            } catch (IOException e) {
 
-            seekbar.setMax(audioPlayer.getDuration()); //seekbar의 총길이를 audioPlayer의 총길이로 설정
-            seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-                @Override
-                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                    //사용자가 seekbar를 움직여서 값이 변했다면 true, 재생위치를 바꿈 (seekTo)
-                    if (fromUser) {
-                        audioPlayer.seekTo(progress);
-                        String currentTime = String.format("%d:%02d", (audioPlayer.getCurrentPosition() / 1000 / 60) % 60, (audioPlayer.getCurrentPosition() / 1000) % 60);
-                        audioCurrentTime.setText(currentTime);
-                    }
-                }
-
-                @Override
-                public void onStartTrackingTouch(SeekBar seekBar) {
-                }
-
-                @Override
-                public void onStopTrackingTouch(SeekBar seekBar) {
-                }
-            });
-        }catch (FileNotFoundException e){
-            audioBtn.setBackgroundResource(R.drawable.no_headphones);
-            audioPlayer = null;
-        } catch (IOException e) {
-            audioBtn.setBackgroundResource(R.drawable.no_headphones);
-            audioPlayer = null;
-        }
+            }
 
 //            audioPlayer = MediaPlayer.create(this, Uri.parse(audio_url));
 //            audioPlayer.setLooping(true); //무한 반복
@@ -994,8 +945,6 @@ public class DocentActivity extends AppCompatActivity {
             audioPlayer.pause();
             playAudioBtn.setBackgroundResource(R.drawable.ic_play_arrow_black_48dp);
         }
-
-
     }
 
     @Override
@@ -1013,9 +962,7 @@ public class DocentActivity extends AppCompatActivity {
         if (handler1 != null) {
             handler1.removeMessages(0);
         }
-
     }
-
 
     @Override
     protected void onDestroy() {
@@ -1026,6 +973,7 @@ public class DocentActivity extends AppCompatActivity {
         if (handler1 != null) {
             handler1.removeMessages(0);
         }
+        if(audioPlayer != null ) audioPlayer.release();
     }
 
     @Override
@@ -1050,5 +998,42 @@ public class DocentActivity extends AppCompatActivity {
 
         Log.d("check1", "docent_detail 정보요청 : " + json);
         return json;
+    }
+
+    @Override
+    public void onPrepared(final MediaPlayer audioPlayer) {
+
+        audioPlayer.setLooping(true);
+        audioPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() { //총길이 세팅
+            @Override
+            public void onPrepared(MediaPlayer music) {
+                String minute = String.format("%2d", ((music.getDuration()) / 1000 / 60) % 60);
+                String second = String.format("%2d", ((music.getDuration()) / 1000) % 60);
+                audioTotalTime.setText(minute + ":" + second); //총 재생시간
+                audioCurrentTime.setText("0:00"); //현재 재생시간
+            }
+        });
+
+        seekbar.setMax(audioPlayer.getDuration()); //seekbar의 총길이를 audioPlayer의 총길이로 설정
+        seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                //사용자가 seekbar를 움직여서 값이 변했다면 true, 재생위치를 바꿈 (seekTo)
+                if (fromUser) {
+                    audioPlayer.seekTo(progress);
+                    String currentTime = String.format("%d:%02d", (audioPlayer.getCurrentPosition() / 1000 / 60) % 60, (audioPlayer.getCurrentPosition() / 1000) % 60);
+                    audioCurrentTime.setText(currentTime);
+                }
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+            }
+        });
+
     }
 }

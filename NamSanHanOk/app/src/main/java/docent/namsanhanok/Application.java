@@ -17,6 +17,8 @@ public class Application extends android.app.Application {
     public boolean isScanning;
     public boolean isToggleOn;
     LabeledSwitch toggleBtn;
+    public boolean isOnServer;
+
 
     private static Application instance;
     private static String baseUrl = "http://222.122.30.58:3200";
@@ -42,6 +44,8 @@ public class Application extends android.app.Application {
         isScanning = scanState.getScanning();
         isToggleOn = scanState.getToggleState();
 
+        isOnServer = true;
+
         Typekit.getInstance()
                 .addNormal(Typekit.createFromAsset(this, "SeoulHangangB.ttf"))
                 .addBold(Typekit.createFromAsset(this, "SeoulHangangEB.ttf"));
@@ -49,6 +53,9 @@ public class Application extends android.app.Application {
         Application.instance = this;
         buildService();
     }
+
+    public void setOnServer(boolean isOnServer) { this.isOnServer = isOnServer; }
+    public boolean getOnServer(){ return isOnServer;}
 
     public void setScanning(boolean isScanning) {
         this.isScanning = isScanning;

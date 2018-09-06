@@ -65,5 +65,7 @@
 
     <!-- data connect -->
     <string name="request"> 인터넷이 연결되어 있지 않습니다. </string>
+    <string name="serverConnected">서버 통신에 문제가 발생하였습니다.</string>
+
 
 </resources>
