@@ -611,7 +611,6 @@ public class DocentActivity extends AppCompatActivity {
             audioPlayer.prepare();
 //            audioPlayer.prepareAsync();
 
-            audioPlayer = MediaPlayer.create(this, Uri.parse(audio_url));
             audioPlayer.setLooping(true); //무한 반복
             audioPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() { //총길이 세팅
                 @Override
