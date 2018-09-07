@@ -1,7 +1,5 @@
 package docent.namsanhanok.Home;
 
-import android.content.Context;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Environment;
 import android.util.Log;
@@ -20,10 +18,11 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.ArrayList;
+
 
 import docent.namsanhanok.R;
 
+import static android.content.Context.MODE_PRIVATE;
 
 public class DB_Async extends AsyncTask<String, String, String> {
     final String TAG = "DB_ASync";
@@ -83,16 +82,13 @@ public class DB_Async extends AsyncTask<String, String, String> {
             Log.d(TAG, "savePath : " + savePath_);
 
             //String DownloadURL = "http://175.123.138.125:8070/down/ko/namsangol_v1.0.0.zip";
-
 //            InputStream inputStream = new URL(DownloadURL).openStream();
 
-            // **** 추가 **** //
             URL url = new URL(packageData_.package_url);
             URLConnection connection = url.openConnection();
             connection.connect();
             int sizeOfFile = connection.getContentLength();
             InputStream inputStream = new BufferedInputStream(url.openStream());
-            // ************* //
 
             Log.d(TAG, "http check ok : ");
             file = new File(fileName_);

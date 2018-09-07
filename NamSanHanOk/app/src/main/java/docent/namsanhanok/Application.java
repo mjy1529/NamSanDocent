@@ -1,14 +1,7 @@
 package docent.namsanhanok;
 
-import android.graphics.Typeface;
-import android.util.Log;
-
 import com.github.angads25.toggle.LabeledSwitch;
 import com.tsengvn.typekit.Typekit;
-
-import java.lang.reflect.Type;
-
-import docent.namsanhanok.Manager.DocentMemList;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
@@ -37,6 +30,7 @@ public class Application extends android.app.Application {
      * Application onCreate() 메서드가 만들어 진다고 나와 있습니다.
      * by. Developer 사이트
      */
+
     @Override
     public void onCreate() {
         super.onCreate();
