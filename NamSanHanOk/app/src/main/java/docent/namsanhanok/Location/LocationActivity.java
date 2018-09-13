@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -24,6 +25,7 @@ import java.util.ArrayList;
 import docent.namsanhanok.Application;
 import docent.namsanhanok.Docent.DocentData;
 import docent.namsanhanok.NetworkService;
+import uk.co.senab.photoview.PhotoView;
 import uk.co.senab.photoview.PhotoViewAttacher;
 
 import docent.namsanhanok.R;
@@ -34,8 +36,7 @@ public class LocationActivity extends AppCompatActivity {
     TextView toolbar_title;
     String locationTitle;
 
-    ImageView map;
-    PhotoViewAttacher mAttacher;
+    PhotoView map;
 
     NetworkService service;
     ArrayList<DocentData> docentDataList;
@@ -54,44 +55,37 @@ public class LocationActivity extends AppCompatActivity {
 
         init();
         setLocationContent();
-
-        }
+    }
 
     public void setLocationContent(){
         Glide.with(getApplicationContext())
                 .load(Environment.getExternalStorageDirectory() + docentData.docent_location)
                 .apply(new RequestOptions().fitCenter())
                 .into(map);
-
-
-        mAttacher = new PhotoViewAttacher(map);
     }
 
-
-
     public void init() {
-        cancelBtn = (ImageButton) findViewById(R.id.location_cancelBtn);
         Toolbar questionRegisterToolbar = (Toolbar)findViewById(R.id.location_toolbar);
         questionRegisterToolbar.bringToFront();
 
+        cancelBtn = (ImageButton) findViewById(R.id.location_cancelBtn);
         toolbar_title = (TextView) findViewById(R.id.location_toolbar_title);
         toolbar_title.setText(locationTitle);
 
-        map = (ImageView) findViewById(R.id.location_imageView);
-
+        map = (PhotoView) findViewById(R.id.location_imageView);
     }
+
     public void onClick(View v) {
         switch (v.getId()) {
             case  R.id.location_cancelBtn :
                 finish();
                 break;
-
         }
     }
-
 
     @Override
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(TypekitContextWrapper.wrap(newBase));
     }
+
 }

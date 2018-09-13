@@ -97,7 +97,7 @@ import static com.google.android.exoplayer2.upstream.HttpDataSource.*;
 import static com.minew.beacon.BluetoothState.BluetoothStatePowerOn;
 import static docent.namsanhanok.AppUtility.AppUtility.deepClone;
 
-public class DocentActivity extends AppCompatActivity implements MediaPlayer.OnPreparedListener {
+public class DocentActivity extends AppCompatActivity {
 
     ImageButton homeBtn;
     TextView docentName;
@@ -108,6 +108,7 @@ public class DocentActivity extends AppCompatActivity implements MediaPlayer.OnP
     TextView audioTxt;
     TextView locaTxt;
     TextView docentTitle;
+    TextView docentDetails;
 
     //videoPlayer
     SimpleExoPlayer videoPlayer;
@@ -215,11 +216,10 @@ public class DocentActivity extends AppCompatActivity implements MediaPlayer.OnP
             docentObject = (DocentData) docentObjectIntent.getSerializableExtra("docentObject");
         }
         setDocentObject(docentObject);
+        networking4();
 
         initBeaconManager();
         initBeaconListenerManager();
-
-        networking4();
 //        setRecyclerView();
 
         docentImage.setFocusableInTouchMode(true);
@@ -259,23 +259,18 @@ public class DocentActivity extends AppCompatActivity implements MediaPlayer.OnP
 
         Log.d("check1", "isOnServer : " + Application.getInstance().getOnServer());
 
-        // *** 09/03 추가 *** //
-        if (audio_url.equals("") || Application.getInstance().getOnServer() == false) {
+        if (audio_url.equals("") || !Application.getInstance().getOnServer()) {
             audioBtn.setBackgroundResource(R.drawable.no_headphones);
             audioPlayer = null;
         } else {
             setAudioPlayer();
         }
 
-
-
-        //        Video 오류 처리시 주석 해제하기
-        if (video_url.equals("") || Application.getInstance().getOnServer() == false) {
+        if (video_url.equals("") || !Application.getInstance().getOnServer()) {
             docentVideo_Layout.setVisibility(View.GONE);
         } else {
             setVideoPlayer();
         }
-        // ***************** //
 
         docent_id = docentObject.docent_id;
 
@@ -295,7 +290,7 @@ public class DocentActivity extends AppCompatActivity implements MediaPlayer.OnP
                 if (response.isSuccessful()) {
                     docentDetailDataList = response.body().docent_detail_info;
 
-                    if (docentDetailDataList.size() == 0) {
+                    if (docentDetailDataList.isEmpty()) {
                         docentDetails_Layout.setVisibility(View.GONE);
                     } else {
                         setRecyclerView();
@@ -522,7 +517,6 @@ public class DocentActivity extends AppCompatActivity implements MediaPlayer.OnP
     }
 
 
-
     public void setVideoPlayer() {
 
         //Create a default TrackSelector
@@ -563,59 +557,53 @@ public class DocentActivity extends AppCompatActivity implements MediaPlayer.OnP
 
         initFullscreenDialog();
         initFullscreenButton();
-
 //            videoPlayer.setPlayWhenReady(true);
-
-
     }
 
     public void setAudioPlayer() {
-
-            try {
+        try {
 //            audioPlayer = MediaPlayer.create(this, Uri.parse(audio_url));
-                audioPlayer = new MediaPlayer();
-                audioPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-                audioPlayer.setDataSource(audio_url);
-//            audioPlayer.prepare();
-                audioPlayer.prepareAsync();
+            audioPlayer = new MediaPlayer();
+            audioPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+            audioPlayer.setDataSource(audio_url);
+            audioPlayer.prepare();
+//            audioPlayer.prepareAsync();
 
-            } catch (IOException e) {
+            audioPlayer.setLooping(true); //무한 반복
+            audioPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() { //총길이 세팅
+                @Override
+                public void onPrepared(MediaPlayer music) {
+                    String minute = String.format("%2d", ((music.getDuration()) / 1000 / 60) % 60);
+                    String second = String.format("%2d", ((music.getDuration()) / 1000) % 60);
+                    audioTotalTime.setText(minute + ":" + second); //총 재생시간
+                    audioCurrentTime.setText("0:00"); //현재 재생시간
+                }
+            });
 
-            }
+            seekbar.setMax(audioPlayer.getDuration()); //seekbar의 총길이를 audioPlayer의 총길이로 설정
+            seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                @Override
+                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                    //사용자가 seekbar를 움직여서 값이 변했다면 true, 재생위치를 바꿈 (seekTo)
+                    if (fromUser) {
+                        audioPlayer.seekTo(progress);
+                        String currentTime = String.format("%d:%02d", (audioPlayer.getCurrentPosition() / 1000 / 60) % 60, (audioPlayer.getCurrentPosition() / 1000) % 60);
+                        audioCurrentTime.setText(currentTime);
+                    }
+                }
 
-//            audioPlayer = MediaPlayer.create(this, Uri.parse(audio_url));
-//            audioPlayer.setLooping(true); //무한 반복
-//            audioPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() { //총길이 세팅
-//                @Override
-//                public void onPrepared(MediaPlayer music) {
-//                    String minute = String.format("%2d", ((music.getDuration()) / 1000 / 60) % 60);
-//                    String second = String.format("%2d", ((music.getDuration()) / 1000) % 60);
-//                    audioTotalTime.setText(minute + ":" + second); //총 재생시간
-//                    audioCurrentTime.setText("0:00"); //현재 재생시간
-//                }
-//            });
-//
-//            seekbar.setMax(audioPlayer.getDuration()); //seekbar의 총길이를 audioPlayer의 총길이로 설정
-//            seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-//                @Override
-//                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-//                    //사용자가 seekbar를 움직여서 값이 변했다면 true, 재생위치를 바꿈 (seekTo)
-//                    if (fromUser) {
-//                        audioPlayer.seekTo(progress);
-//                        String currentTime = String.format("%d:%02d", (audioPlayer.getCurrentPosition() / 1000 / 60) % 60, (audioPlayer.getCurrentPosition() / 1000) % 60);
-//                        audioCurrentTime.setText(currentTime);
-//                    }
-//                }
-//
-//                @Override
-//                public void onStartTrackingTouch(SeekBar seekBar) {
-//                }
-//
-//                @Override
-//                public void onStopTrackingTouch(SeekBar seekBar) {
-//                }
-//            });
+                @Override
+                public void onStartTrackingTouch(SeekBar seekBar) {
+                }
 
+                @Override
+                public void onStopTrackingTouch(SeekBar seekBar) {
+                }
+            });
+
+        } catch (IOException e) {
+
+        }
     }
 
     public void onClick(View v) {
@@ -759,6 +747,7 @@ public class DocentActivity extends AppCompatActivity implements MediaPlayer.OnP
         audioCurrentTime = (TextView) findViewById(R.id.audioCurrentTime);
         docentTitle = (TextView) findViewById(R.id.docentTitle);
         exo_thumbnail = (ImageView) findViewById(R.id.exo_thumbnail);
+        docentDetails = (TextView) findViewById(R.id.docentDetails);
 
         audioTxt = (TextView) findViewById(R.id.audioTxt);
         locaTxt = (TextView) findViewById(R.id.locationTxt);
@@ -928,7 +917,7 @@ public class DocentActivity extends AppCompatActivity implements MediaPlayer.OnP
         if (handler1 != null) {
             handler1.removeMessages(0);
         }
-        if(audioPlayer != null ) audioPlayer.release();
+        if (audioPlayer != null) audioPlayer.release();
     }
 
     @Override
@@ -955,40 +944,39 @@ public class DocentActivity extends AppCompatActivity implements MediaPlayer.OnP
         return json;
     }
 
-    @Override
-    public void onPrepared(final MediaPlayer audioPlayer) {
-
-        audioPlayer.setLooping(true);
-        audioPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() { //총길이 세팅
-            @Override
-            public void onPrepared(MediaPlayer music) {
-                String minute = String.format("%2d", ((music.getDuration()) / 1000 / 60) % 60);
-                String second = String.format("%2d", ((music.getDuration()) / 1000) % 60);
-                audioTotalTime.setText(minute + ":" + second); //총 재생시간
-                audioCurrentTime.setText("0:00"); //현재 재생시간
-            }
-        });
-
-        seekbar.setMax(audioPlayer.getDuration()); //seekbar의 총길이를 audioPlayer의 총길이로 설정
-        seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                //사용자가 seekbar를 움직여서 값이 변했다면 true, 재생위치를 바꿈 (seekTo)
-                if (fromUser) {
-                    audioPlayer.seekTo(progress);
-                    String currentTime = String.format("%d:%02d", (audioPlayer.getCurrentPosition() / 1000 / 60) % 60, (audioPlayer.getCurrentPosition() / 1000) % 60);
-                    audioCurrentTime.setText(currentTime);
-                }
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-            }
-        });
-
-    }
+//    @Override
+//    public void onPrepared(final MediaPlayer audioPlayer) {
+//
+//        audioPlayer.setLooping(true);
+//        audioPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() { //총길이 세팅
+//            @Override
+//            public void onPrepared(MediaPlayer music) {
+//                String minute = String.format("%2d", ((music.getDuration()) / 1000 / 60) % 60);
+//                String second = String.format("%2d", ((music.getDuration()) / 1000) % 60);
+//                audioTotalTime.setText(minute + ":" + second); //총 재생시간
+//                audioCurrentTime.setText("0:00"); //현재 재생시간
+//            }
+//        });
+//
+//        seekbar.setMax(audioPlayer.getDuration()); //seekbar의 총길이를 audioPlayer의 총길이로 설정
+//        seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+//            @Override
+//            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+//                //사용자가 seekbar를 움직여서 값이 변했다면 true, 재생위치를 바꿈 (seekTo)
+//                if (fromUser) {
+//                    audioPlayer.seekTo(progress);
+//                    String currentTime = String.format("%d:%02d", (audioPlayer.getCurrentPosition() / 1000 / 60) % 60, (audioPlayer.getCurrentPosition() / 1000) % 60);
+//                    audioCurrentTime.setText(currentTime);
+//                }
+//            }
+//
+//            @Override
+//            public void onStartTrackingTouch(SeekBar seekBar) {
+//            }
+//
+//            @Override
+//            public void onStopTrackingTouch(SeekBar seekBar) {
+//            }
+//        });
+//    }
 }
