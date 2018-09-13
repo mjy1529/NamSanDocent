@@ -35,8 +35,11 @@ public class InfoActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_info);
+        apply((ViewGroup) findViewById(R.id.tabs));
 
         init();
+
+        changeTabsFont();
     }
 
     public void init() {
@@ -55,8 +58,6 @@ public class InfoActivity extends AppCompatActivity {
 
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
-
-        //changeTabsFont();
     }
 
     public void onClick(View view) {
@@ -139,17 +140,28 @@ public class InfoActivity extends AppCompatActivity {
         super.attachBaseContext(TypekitContextWrapper.wrap(newBase));
     }
 
+    protected void apply(ViewGroup vg) {
+        Typeface typeface = Typeface.createFromAsset(getApplicationContext().getAssets(), "SeoulHangangB.ttf");
+
+        for(int i=0; i<vg.getChildCount(); i++) {
+            View v = vg.getChildAt(i);
+            if(v instanceof TextView)
+                ((TextView) v).setTypeface(typeface);
+        }
+    }
+
     private void changeTabsFont() {
-        Typeface font = Typeface.createFromAsset(getApplicationContext().getAssets(), "SeoulHangangB.ttf");
-        ViewGroup vg = (ViewGroup)tabLayout.getChildAt(0);
+        Typeface typeface = Typeface.createFromAsset(getApplicationContext().getAssets(), "SeoulHangangB.ttf");
+        
+        ViewGroup vg = (ViewGroup) tabLayout.getChildAt(0);
         int tabsCount = vg.getChildCount();
-        for(int i=0; i<tabsCount; i++) {
-            ViewGroup vgTab = (ViewGroup)vg.getChildAt(i);
+        for (int j = 0; j < tabsCount; j++) {
+            ViewGroup vgTab = (ViewGroup) vg.getChildAt(j);
             int tabChildsCount = vgTab.getChildCount();
-            for(int j=0; j<tabChildsCount; i++) {
+            for (int i = 0; i < tabChildsCount; i++) {
                 View tabViewChild = vgTab.getChildAt(i);
-                if(tabViewChild instanceof TextView) {
-                    ((TextView) tabViewChild).setTypeface(font);
+                if (tabViewChild instanceof TextView) {
+                    ((TextView) tabViewChild).setTypeface(typeface);
                 }
             }
         }
