@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">NamSanHanOk</string>
+    <string name="app_name">남산골한옥마을</string>
 
     <string-array name="languages_array">
         <item>한국어</item>
