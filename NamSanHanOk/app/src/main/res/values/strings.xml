@@ -66,6 +66,16 @@
     <!-- data connect -->
     <string name="request"> 인터넷이 연결되어 있지 않습니다. </string>
     <string name="serverConnected">서버 통신에 문제가 발생하였습니다.</string>
+    <string name="title_activity_info">InfoActivity</string>
+
+    <!-- info -->
+    <string name="tab_text_1">이용안내</string>
+    <string name="tab_text_2">오시는길</string>
+    <string name="action_settings">Settings</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
 </resources>

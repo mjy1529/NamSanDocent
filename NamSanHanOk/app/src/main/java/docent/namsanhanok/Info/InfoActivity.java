@@ -1,26 +1,30 @@
 package docent.namsanhanok.Info;
 
-import android.content.Context;
 import android.content.Intent;
-import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
-
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
-import com.tsengvn.typekit.TypekitContextWrapper;
+import android.view.ViewGroup;
 
 import docent.namsanhanok.Home.HomeActivity;
 import docent.namsanhanok.R;
 
-public class InfoActivity extends AppCompatActivity implements OnMapReadyCallback {
+public class InfoActivity extends AppCompatActivity {
+
+
+    private SectionsPagerAdapter mSectionsPagerAdapter;
+
+    private ViewPager mViewPager;
+    TabLayout tabLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +32,26 @@ public class InfoActivity extends AppCompatActivity implements OnMapReadyCallbac
         setContentView(R.layout.activity_info);
 
         init();
+
+    }
+
+
+    public void init() {
+        Toolbar infoToolbar = (Toolbar)findViewById(R.id.infoToolbar);
+        setSupportActionBar(infoToolbar);
+
+        // Create the adapter that will return a fragment for each of the two
+        // primary sections of the activity.
+        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+
+        // Set up the ViewPager with the sections adapter.
+        mViewPager = (ViewPager) findViewById(R.id.container);
+        mViewPager.setAdapter(mSectionsPagerAdapter);
+
+        tabLayout = (TabLayout) findViewById(R.id.tabs);
+
+        mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+        tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
     }
 
     public void onClick(View view) {
@@ -40,33 +64,71 @@ public class InfoActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
     }
 
-    public void init() {
-        Toolbar infoToolbar = (Toolbar)findViewById(R.id.infoToolbar);
-        setSupportActionBar(infoToolbar);
 
-        android.app.FragmentManager fragmentManager = getFragmentManager();
-        MapFragment mapFragment = (MapFragment)fragmentManager.findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
+    /**
+     * A placeholder fragment containing a simple view.
+     */
+    public static class PlaceholderFragment extends Fragment {
+        /**
+         * The fragment argument representing the section number for this
+         * fragment.
+         */
+        private static final String ARG_SECTION_NUMBER = "section_number";
 
+        public PlaceholderFragment() {
+        }
+
+        /**
+         * Returns a new instance of this fragment for the given section
+         * number.
+         */
+        public static PlaceholderFragment newInstance(int sectionNumber) {
+            PlaceholderFragment fragment = new PlaceholderFragment();
+            Bundle args = new Bundle();
+            args.putInt(ARG_SECTION_NUMBER, sectionNumber);
+            fragment.setArguments(args);
+            return fragment;
+        }
+
+
+
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                                 Bundle savedInstanceState) {
+            View rootView = inflater.inflate(R.layout.fragment_info, container, false);
+            return rootView;
+        }
     }
 
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-        LatLng NamsanHanok = new LatLng(37.55883879999999, 126.99407270000006);
-        MarkerOptions markerOptions = new MarkerOptions();
-        markerOptions.position(NamsanHanok).title("남산골 한옥마을");
+    /**
+     * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
+     * one of the sections/tabs/pages.
+     */
+    public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
-        Marker marker = googleMap.addMarker(markerOptions);
-        marker.showInfoWindow();
+        public SectionsPagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
 
-        googleMap.getUiSettings().setZoomControlsEnabled(true);
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(NamsanHanok));
-        googleMap.animateCamera(CameraUpdateFactory.newLatLng(NamsanHanok));
-        googleMap.setMinZoomPreference(13.5f);
-    }
+        @Override
+        public Fragment getItem(int position) {
+            // getItem is called to instantiate the fragment for the given page.
+            // Return a PlaceholderFragment (defined as a static inner class below).
+            //position에 따라 fragment생성
+            switch (position){
+                case 0:
+                    return new FirstInfoFragment();
+                case 1:
+                    return new SecondInfoFragement();
+            }
 
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(TypekitContextWrapper.wrap(newBase));
+            return null;
+        }
+
+        @Override
+        public int getCount() {
+            // Show 2 total pages.
+            return 2;
+        }
     }
 }

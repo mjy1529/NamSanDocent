@@ -76,7 +76,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".Notice.NoticeActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Notice.NoticeReadActivity"
             android:screenOrientation="portrait" />
