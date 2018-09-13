@@ -1,6 +1,5 @@
 package docent.namsanhanok.Home;
 
-import android.accessibilityservice.AccessibilityService;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -24,12 +23,12 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.Socket;
 import java.util.ArrayList;
 
 import docent.namsanhanok.Application;
 import docent.namsanhanok.NetworkService;
 import docent.namsanhanok.R;
-import docent.namsanhanok.ServerConnected;
 import libs.mjn.prettydialog.PrettyDialog;
 import libs.mjn.prettydialog.PrettyDialogCallback;
 import retrofit2.Call;
@@ -44,20 +43,23 @@ public class SplashActivity extends AppCompatActivity {
     public static TextView downloadStatus;
     static String dbVersion;
     boolean isFirstRun;
+    boolean isOnServer_;
 
     public static Context mContext;
 
     PrettyDialog downloadDialog;
+    PrettyDialog requestDataDialog;
+    PrettyDialog ServerDialog;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        ServerConnected serverConnected = new ServerConnected();
-        serverConnected.ServerConneted();
-        Log.d("check1", "Server is ON? : " + Application.getInstance().getOnServer());
+        Log.d("check1", "SplashAct_onCreate : " + Application.getInstance().getOnServer());
         init();
+        isServerConnected();
 
         handler.postDelayed(new Runnable() {
             @Override
@@ -70,6 +72,23 @@ public class SplashActivity extends AppCompatActivity {
 
             }
         }, 3000);
+    }
+
+    public void isServerConnected(){
+        new Thread() {
+            public void run(){
+                try{
+                    Socket socket = new Socket("175.123.138.125", 8070);
+                    isOnServer_ = socket.isConnected();
+                    Application.getInstance().setOnServer(isOnServer_);
+                    Log.d("check1", "SC.Sever is On? : " + Application.getInstance().getOnServer());
+                } catch (IOException e){
+                    e.printStackTrace();
+                    Application.getInstance().setOnServer(false);
+                    Log.d("check1", "IOException_SC.Sever is On? : " + Application.getInstance().getOnServer());
+                }
+            }
+        }.start();
     }
 
     public void init() {
@@ -87,15 +106,16 @@ public class SplashActivity extends AppCompatActivity {
         new AsyncTask<Void, Void, String>() {
             @Override
             protected String doInBackground(Void... voids) {
-                    NetworkService service = Application.getInstance().getNetworkService();
-                    Call<PackageResult> request = service.getPackageResult(jsonToString());
-                    try {
-                        PackageResult packageResult = request.execute().body();
-                        packageList = packageResult.package_info;
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    return null;
+                NetworkService service = Application.getInstance().getNetworkService();
+                Call<PackageResult> request = service.getPackageResult(jsonToString());
+                try {
+                    PackageResult packageResult = request.execute().body();
+                    packageList = packageResult.package_info;
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                return null;
 
             }
 
@@ -160,13 +180,6 @@ public class SplashActivity extends AppCompatActivity {
         else{ //homeActivity로 가라
             activityFinish();
         }
-
-
-//        if (!curVersion.equals(dbVersion)) {
-//            startDownloading();
-//        } else {
-//            activityFinish();
-//        }
     }
 
     public void startDownloading() {
@@ -210,8 +223,8 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     public void showAlertDataDialog() {
-        final PrettyDialog requestDialog = new PrettyDialog(SplashActivity.this);
-        requestDialog
+        requestDataDialog = new PrettyDialog(SplashActivity.this);
+        requestDataDialog
                 .setMessage(getResources().getString(R.string.request))
                 .setIcon(R.drawable.pdlg_icon_info)
                 .setIconTint(R.color.dark_blue)
@@ -221,6 +234,7 @@ public class SplashActivity extends AppCompatActivity {
                         new PrettyDialogCallback() {
                             @Override
                             public void onClick() {
+                                requestDataDialog.dismiss();
                                 finish();
                             }
                         }
@@ -229,8 +243,8 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     public void showAlertServerDialog() {
-        final PrettyDialog requestDialog = new PrettyDialog(SplashActivity.this);
-        requestDialog
+        ServerDialog = new PrettyDialog(SplashActivity.this);
+        ServerDialog
                 .setMessage(getResources().getString(R.string.serverConnected))
                 .setIcon(R.drawable.pdlg_icon_info)
                 .setIconTint(R.color.dark_blue)
@@ -240,6 +254,7 @@ public class SplashActivity extends AppCompatActivity {
                         new PrettyDialogCallback() {
                             @Override
                             public void onClick() {
+                                ServerDialog.dismiss();
                                 finish();
                             }
                         }

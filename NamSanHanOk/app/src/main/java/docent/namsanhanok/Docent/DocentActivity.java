@@ -88,7 +88,6 @@ import docent.namsanhanok.Manager.DocentMemList;
 import docent.namsanhanok.Manager.IDInfoData;
 import docent.namsanhanok.NetworkService;
 import docent.namsanhanok.R;
-import docent.namsanhanok.ServerConnected;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -277,7 +276,6 @@ public class DocentActivity extends AppCompatActivity implements MediaPlayer.OnP
             setVideoPlayer();
         }
         // ***************** //
-
 
         docent_id = docentObject.docent_id;
 
@@ -522,49 +520,6 @@ public class DocentActivity extends AppCompatActivity implements MediaPlayer.OnP
         docentAdpater = new DocentAdapter(getApplicationContext(), docentDetailDataList);
         recyclerView.setAdapter(docentAdpater);
     }
-
-
-//    public class ServerAsyncTask extends AsyncTask<String, String, String> {
-//
-//        @Override
-//        protected void onPreExecute() {
-//            super.onPreExecute();
-//        }
-//
-//        @Override
-//        protected String doInBackground(String... params) {
-//            SocketAddress adr = new InetSocketAddress("175.123.135.125", 8070);
-//            try {
-//                socket.connect(adr, 1000);
-//            }catch (IOException e){
-//                e.printStackTrace();
-//            }
-//             return null;
-//        }
-//
-//        @Override
-//        protected void onPostExecute(String result) {
-//            super.onPostExecute(result);
-//            try {
-//                socket = new Socket();
-//                networkWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-//                networkReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-//                isOnServer = true;
-//            } catch (IOException e) {
-//                isOnServer = false;
-//            }
-//        }
-//    }
-
-
-//    private void ServerConneted() {
-//            ServerAsyncTask.execute(new Runnable() {
-//                @Override
-//                public void run() {
-//                }
-//            });
-//    }
-
 
 
 

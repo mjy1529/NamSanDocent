@@ -1,6 +1,7 @@
 package docent.namsanhanok;
 
 import android.graphics.Typeface;
+import android.os.AsyncTask;
 import android.util.Log;
 
 import com.github.angads25.toggle.LabeledSwitch;
@@ -43,8 +44,7 @@ public class Application extends android.app.Application {
         Application scanState = ((Application) getApplicationContext());
         isScanning = scanState.getScanning();
         isToggleOn = scanState.getToggleState();
-
-        isOnServer = true;
+        isOnServer = scanState.getOnServer();
 
         Typekit.getInstance()
                 .addNormal(Typekit.createFromAsset(this, "SeoulHangangB.ttf"))
@@ -60,7 +60,6 @@ public class Application extends android.app.Application {
     public void setScanning(boolean isScanning) {
         this.isScanning = isScanning;
     }
-
     public boolean getScanning() {
         return isScanning;
     }
