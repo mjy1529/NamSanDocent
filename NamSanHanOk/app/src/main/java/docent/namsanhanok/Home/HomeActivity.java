@@ -51,7 +51,6 @@ import docent.namsanhanok.Docent.DocentData;
 import docent.namsanhanok.Docent.DocentResult;
 import docent.namsanhanok.Event.EventActivity;
 import docent.namsanhanok.Info.InfoActivity;
-//import docent.namsanhanok.Info.pre_InfoActivity;
 //import docent.namsanhanok.IntentService;
 import docent.namsanhanok.Manager.DocentMemList;
 import docent.namsanhanok.Manager.IDInfoData;

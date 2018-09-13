@@ -1,7 +1,10 @@
 package docent.namsanhanok.Info;
 
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.design.widget.TabItem;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -14,12 +17,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
+import com.tsengvn.typekit.TypekitContextWrapper;
 
 import docent.namsanhanok.Home.HomeActivity;
 import docent.namsanhanok.R;
 
 public class InfoActivity extends AppCompatActivity {
-
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
 
@@ -32,9 +37,7 @@ public class InfoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_info);
 
         init();
-
     }
-
 
     public void init() {
         Toolbar infoToolbar = (Toolbar)findViewById(R.id.infoToolbar);
@@ -52,6 +55,8 @@ public class InfoActivity extends AppCompatActivity {
 
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
+
+        //changeTabsFont();
     }
 
     public void onClick(View view) {
@@ -63,7 +68,6 @@ public class InfoActivity extends AppCompatActivity {
                 break;
         }
     }
-
 
     /**
      * A placeholder fragment containing a simple view.
@@ -89,8 +93,6 @@ public class InfoActivity extends AppCompatActivity {
             fragment.setArguments(args);
             return fragment;
         }
-
-
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -131,4 +133,26 @@ public class InfoActivity extends AppCompatActivity {
             return 2;
         }
     }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(TypekitContextWrapper.wrap(newBase));
+    }
+
+    private void changeTabsFont() {
+        Typeface font = Typeface.createFromAsset(getApplicationContext().getAssets(), "SeoulHangangB.ttf");
+        ViewGroup vg = (ViewGroup)tabLayout.getChildAt(0);
+        int tabsCount = vg.getChildCount();
+        for(int i=0; i<tabsCount; i++) {
+            ViewGroup vgTab = (ViewGroup)vg.getChildAt(i);
+            int tabChildsCount = vgTab.getChildCount();
+            for(int j=0; j<tabChildsCount; i++) {
+                View tabViewChild = vgTab.getChildAt(i);
+                if(tabViewChild instanceof TextView) {
+                    ((TextView) tabViewChild).setTypeface(font);
+                }
+            }
+        }
+    }
+
 }
