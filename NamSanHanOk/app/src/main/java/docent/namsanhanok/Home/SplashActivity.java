@@ -142,14 +142,6 @@ public class SplashActivity extends AppCompatActivity {
                         showAlertServerDialog();
                     }
                 }
-//                checkVersion();
-//                try{
-//                    checkVersion();
-//                }catch(IndexOutOfBoundsException e){
-////                    e.printStackTrace();
-//                    //로그인 해야되는 WIFI시 로그인 안되어 있을 때
-//                    showAlertDataDialog();
-//                }
             }
         }.execute();
     }
