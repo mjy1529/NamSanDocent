@@ -152,7 +152,7 @@ public class InfoActivity extends AppCompatActivity {
 
     private void changeTabsFont() {
         Typeface typeface = Typeface.createFromAsset(getApplicationContext().getAssets(), "SeoulHangangB.ttf");
-        
+
         ViewGroup vg = (ViewGroup) tabLayout.getChildAt(0);
         int tabsCount = vg.getChildCount();
         for (int j = 0; j < tabsCount; j++) {
