@@ -91,6 +91,8 @@
                     android:onClick="onClick" />
 
                 <TextView
+                    android:id="@+id/menuTxt1"
+                    android:onClick="onClick"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/menuBtn1"
@@ -117,6 +119,8 @@
                     android:onClick="onClick" />
 
                 <TextView
+                    android:id="@+id/menuTxt2"
+                    android:onClick="onClick"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/menuBtn2"
@@ -152,6 +156,8 @@
                     android:onClick="onClick" />
 
                 <TextView
+                    android:id="@+id/menuTxt3"
+                    android:onClick="onClick"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/menuBtn3"
@@ -178,6 +184,8 @@
                     android:onClick="onClick" />
 
                 <TextView
+                    android:id="@+id/menuTxt4"
+                    android:onClick="onClick"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/menuBtn4"
@@ -204,6 +212,8 @@
                     android:onClick="onClick" />
 
                 <TextView
+                    android:id="@+id/menuTxt5"
+                    android:onClick="onClick"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/menuBtn5"

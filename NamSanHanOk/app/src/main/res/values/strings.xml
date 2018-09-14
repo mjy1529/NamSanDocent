@@ -33,7 +33,10 @@
     <string name="inputEmail">1. 이메일을 입력해주세요.</string>
     <string name="hintEmail">docent@docent.com</string>
     <string name="inputPhone">2. 전화번호를 입력해주세요.(ex.01012345678)</string>
-    <string name="hintPhone">01012345678</string>
+    <string name="dash">-</string>
+    <string name="hintPhone1">010</string>
+    <string name="hintPhone2">1234</string>
+    <string name="hintPhone3">5678</string>
     <string name="inputName">3. 성함을 입력해주세요.</string>
     <string name="hintName">홍길동</string>
     <string name="inputTitleContent">4. 제목과 내용을 입력해주세요.</string>

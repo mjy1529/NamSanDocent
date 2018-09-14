@@ -73,6 +73,7 @@ public class HomeActivity extends AppCompatActivity {
 
     ImageButton settingBtn;
     ImageView menuBtn1, menuBtn2, menuBtn3, menuBtn4, menuBtn5;
+    TextView menuTxt1, menuTxt2, menuTxt3, menuTxt4, menuTxt5;
     LabeledSwitch toggleBtn;
     BeaconDialog newItemDialog = null;
 
@@ -325,30 +326,35 @@ public class HomeActivity extends AppCompatActivity {
                 break;
 
             case R.id.menuBtn1: //마을 둘러보기
+            case R.id.menuTxt1:
                 intent = new Intent(HomeActivity.this, CategoryActivity.class);
                 intent.putExtra("category_title", homeData.getCategory_title());
                 startActivity(intent);
                 break;
 
             case R.id.menuBtn2: //세시/행사
+            case R.id.menuTxt2:
                 intent = new Intent(getApplicationContext(), EventActivity.class);
                 intent.putExtra("event_title", homeData.getEvent_title());
                 startActivity(intent);
                 break;
 
             case R.id.menuBtn3: //알리는 말씀
+            case R.id.menuTxt3:
                 intent = new Intent(HomeActivity.this, NoticeActivity.class);
                 intent.putExtra("notice_title", homeData.getNotice_title());
                 startActivity(intent);
                 break;
 
             case R.id.menuBtn4: //문의하기
+            case R.id.menuTxt4:
                 intent = new Intent(HomeActivity.this, QuestionWriteActivity.class);
                 intent.putExtra("question_title", homeData.getQuestion_title());
                 startActivity(intent);
                 break;
 
-            case R.id.menuBtn5: //이용안내
+            case R.id.menuBtn5://이용안내
+            case R.id.menuTxt5:
                 intent = new Intent(HomeActivity.this, InfoActivity.class);
                 intent.putExtra("operationguide_title", homeData.getOperationguide_title());
                 startActivity(intent);
@@ -377,6 +383,11 @@ public class HomeActivity extends AppCompatActivity {
         menuBtn3 = (ImageView) findViewById(R.id.menuBtn3);
         menuBtn4 = (ImageView) findViewById(R.id.menuBtn4);
         menuBtn5 = (ImageView) findViewById(R.id.menuBtn5);
+        menuTxt1 = (TextView) findViewById(R.id.menuTxt1);
+        menuTxt2 = (TextView) findViewById(R.id.menuTxt2);
+        menuTxt3 = (TextView) findViewById(R.id.menuTxt3);
+        menuTxt4 = (TextView) findViewById(R.id.menuTxt4);
+        menuTxt5 = (TextView) findViewById(R.id.menuTxt5);
         toggleBtn = (LabeledSwitch) findViewById(R.id.toggleBtn);
 
         toggleBtn.setOn(Application.getInstance().getToggleState());

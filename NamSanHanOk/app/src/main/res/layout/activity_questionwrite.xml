@@ -75,8 +75,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
-
-                >
+                android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -94,18 +93,73 @@
                         android:text="@string/inputPhone"
                         android:textColor="#000000" />
 
-                    <EditText
-                        android:id="@+id/question_phone_number"
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="50dp"
+                        android:orientation="horizontal"
                         android:layout_marginEnd="25dp"
-                        android:layout_marginStart="25dp"
-                        android:background="@drawable/rectangle_edge_all"
-                        android:hint="@string/hintPhone"
-                        android:inputType="phone"
-                        android:paddingEnd="7dp"
-                        android:paddingStart="20dp"
-                        android:textSize="15sp" />
+                        android:layout_marginStart="25dp">
+
+                        <EditText
+                            android:id="@+id/question_phone_number"
+                            android:layout_weight="1.1"
+                            android:gravity="center"
+                            android:maxLength="3"
+                            android:nextFocusDown="@id/question_phone_number2"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/rectangle_edge_all"
+                            android:hint="@string/hintPhone1"
+                            android:inputType="phone"
+                            android:textSize="15sp" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1.4"
+                            android:text="@string/dash"
+                            android:gravity="center"
+                            android:textSize="20sp"
+                            />
+
+                        <EditText
+                            android:id="@+id/question_phone_number2"
+                            android:nextFocusDown="@id/question_phone_number3"
+                            android:layout_weight="1.1"
+                            android:gravity="center"
+                            android:maxLength="4"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/rectangle_edge_all"
+                            android:hint="@string/hintPhone2"
+                            android:inputType="phone"
+                            android:textSize="15sp" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_weight="1.4"
+                            android:text="@string/dash"
+                            android:gravity="center"
+                            android:textSize="20sp"
+                            android:layout_height="match_parent" />
+
+                        <EditText
+                            android:id="@+id/question_phone_number3"
+                            android:nextFocusDown="@id/question_username"
+                            android:layout_weight="1.1"
+                            android:maxLength="4"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:background="@drawable/rectangle_edge_all"
+                            android:hint="@string/hintPhone3"
+                            android:inputType="phone"
+                            android:textSize="15sp" />
+
+                    </LinearLayout>
+
+
+
                 </LinearLayout>
 
             </LinearLayout>
@@ -201,6 +255,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="@null"
+                        android:minLines="4"
                         android:baselineAligned="false"
                         android:gravity="top"
                         android:hint="@string/hintContent"

@@ -12,7 +12,6 @@ public class Application extends android.app.Application {
     LabeledSwitch toggleBtn;
     public boolean isOnServer;
 
-
     private static Application instance;
     private static String baseUrl = "http://222.122.30.58:3200";
     private NetworkService networkService;
@@ -38,6 +37,7 @@ public class Application extends android.app.Application {
         isScanning = scanState.getScanning();
         isToggleOn = scanState.getToggleState();
         isOnServer = scanState.getOnServer();
+
 
         Typekit.getInstance()
                 .addNormal(Typekit.createFromAsset(this, "SeoulHangangB.ttf"))

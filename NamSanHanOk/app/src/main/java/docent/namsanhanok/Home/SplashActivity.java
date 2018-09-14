@@ -91,6 +91,7 @@ public class SplashActivity extends AppCompatActivity {
         }.start();
     }
 
+
     public void init() {
         mContext = this;
 
@@ -131,7 +132,11 @@ public class SplashActivity extends AppCompatActivity {
                         }
                     }
                     else{ //폴더가 없을 때
-                        startDownloading();
+                        if(packageList.size()==0){
+                            showAlertServerDialog();
+                        }else{
+                            startDownloading();
+                        }
                     }
                 }
                 else{
@@ -145,21 +150,38 @@ public class SplashActivity extends AppCompatActivity {
             }
         }.execute();
     }
-
     public boolean checkFolder() {
-        //폴더가 삭제되었는지 확인
-        PackageData packageData = packageList.get(0);
-        String savePath = Environment.getExternalStorageDirectory() + File.separator + packageData.package_title + "/";
+        if(packageList.size()!=0) {
+            //폴더가 삭제되었는지 확인
+            PackageData packageData = packageList.get(0);
+            String savePath = Environment.getExternalStorageDirectory() + File.separator + packageData.package_title + "/";
 
-        File dir = new File(savePath);
+            File dir = new File(savePath);
 
-        if (dir.exists()) { //상위 디렉토리가 존재할 경우
-            return true;
-        }
-        else{ //존재하지 않을 경우
+            if (dir.exists()) { //상위 디렉토리가 존재할 경우
+                return true;
+            } else { //존재하지 않을 경우
+                return false;
+            }
+        }else{
             return false;
         }
     }
+
+//    public boolean checkFolder() {
+//            //폴더가 삭제되었는지 확인
+//            PackageData packageData = packageList.get(0);
+//            String savePath = Environment.getExternalStorageDirectory() + File.separator + packageData.package_title + "/";
+//
+//            File dir = new File(savePath);
+//
+//            if (dir.exists()) { //상위 디렉토리가 존재할 경우
+//                return true;
+//            } else { //존재하지 않을 경우
+//                return false;
+//            }
+//
+//    }
 
     public void checkVersion() {
         dbVersion = packageList.get(0).package_version; // ko 버전은 0
