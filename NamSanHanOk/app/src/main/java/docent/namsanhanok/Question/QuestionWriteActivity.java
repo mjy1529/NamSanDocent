@@ -33,14 +33,17 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class QuestionWriteActivity extends AppCompatActivity implements EditText.OnFocusChangeListener {
-    ImageButton post_register_Btn;
+    ImageButton question_register_Btn;
     ImageButton cancelBtn;
 
     //WriteDoneAcitivy에서 현재 Activity 종료
     public static AppCompatActivity writeActivity;
 
     EditText email_first_address;
-    EditText phone_number;
+    String phone_number;
+    EditText phone_number1;
+    EditText phone_number2;
+    EditText phone_number3;
     EditText username;
     EditText title;
     EditText content;
@@ -72,11 +75,14 @@ public class QuestionWriteActivity extends AppCompatActivity implements EditText
         TextView question_register_title = (TextView) findViewById(R.id.question_register_title);
         question_register_title.setText(intent.getStringExtra("question_title"));
 
-        post_register_Btn = (ImageButton) findViewById(R.id.question_register_Btn);
+        question_register_Btn = (ImageButton) findViewById(R.id.question_register_Btn);
         cancelBtn = (ImageButton) findViewById(R.id.question_register_cancelBtn);
 
         email_first_address = (EditText) findViewById(R.id.question_email_first_address);
-        phone_number = (EditText) findViewById(R.id.question_phone_number);
+//        phone_number = (EditText) findViewById(R.id.question_phone_number);
+        phone_number1 = (EditText) findViewById(R.id.question_phone_number);
+        phone_number2 = (EditText) findViewById(R.id.question_phone_number2);
+        phone_number3 = (EditText) findViewById(R.id.question_phone_number3);
         username = (EditText) findViewById(R.id.question_username);
 
         title = (EditText) findViewById(R.id.question_title);
@@ -85,7 +91,9 @@ public class QuestionWriteActivity extends AppCompatActivity implements EditText
 
         //Focus가 변할 때, line color 변경
         email_first_address.setOnFocusChangeListener(this);
-        phone_number.setOnFocusChangeListener(this);
+        phone_number1.setOnFocusChangeListener(this);
+        phone_number2.setOnFocusChangeListener(this);
+        phone_number3.setOnFocusChangeListener(this);
         username.setOnFocusChangeListener(this);
         title.setOnFocusChangeListener(this);
         content.setOnFocusChangeListener(this);
@@ -105,9 +113,25 @@ public class QuestionWriteActivity extends AppCompatActivity implements EditText
                 break;
 
             case R.id.question_phone_number:
-                phone_number.setBackgroundResource(R.drawable.rectangle_edge_all_selected);
-                if (getCurrentFocus() != phone_number) {
-                    phone_number.setBackgroundResource(R.drawable.rectangle_edge_all);
+                phone_number1.setBackgroundResource(R.drawable.rectangle_edge_all_selected);
+                if (getCurrentFocus() != phone_number1) {
+                    phone_number1.setBackgroundResource(R.drawable.rectangle_edge_all);
+                }
+
+                break;
+
+            case R.id.question_phone_number2:
+                phone_number2.setBackgroundResource(R.drawable.rectangle_edge_all_selected);
+                if (getCurrentFocus() != phone_number2) {
+                    phone_number2.setBackgroundResource(R.drawable.rectangle_edge_all);
+                }
+
+                break;
+
+            case R.id.question_phone_number3:
+                phone_number3.setBackgroundResource(R.drawable.rectangle_edge_all_selected);
+                if (getCurrentFocus() != phone_number3) {
+                    phone_number3.setBackgroundResource(R.drawable.rectangle_edge_all);
                 }
 
                 break;
@@ -160,10 +184,20 @@ public class QuestionWriteActivity extends AppCompatActivity implements EditText
             username.requestFocus();
             username.setText(null);
         }
-        if (phone_number.getText().toString().replace(" ", "").equals("")) {
+        if (phone_number3.getText().toString().replace(" ", "").equals("")) {
             nullValue.add("전화번호를 입력해주세요");
-            phone_number.requestFocus();
-            phone_number.setText(null);
+            phone_number3.requestFocus();
+            phone_number3.setText(null);
+        }
+        if (phone_number2.getText().toString().replace(" ", "").equals("")) {
+            nullValue.add("전화번호를 입력해주세요");
+            phone_number2.requestFocus();
+            phone_number2.setText(null);
+        }
+        if (phone_number1.getText().toString().replace(" ", "").equals("")) {
+            nullValue.add("전화번호를 입력해주세요");
+            phone_number1.requestFocus();
+            phone_number1.setText(null);
         }
         if (email_first_address.getText().toString().replace(" ", "").equals("")) {
 
@@ -184,12 +218,10 @@ public class QuestionWriteActivity extends AppCompatActivity implements EditText
     public void onClick(View v) throws InterruptedException {
         switch (v.getId()) {
             case R.id.question_register_Btn:
-
                 //에러 유무에 따라 activity 넘김
                 if (!detectError()) {//빈칸이 없으면
                     sendQuestionData();
                 } else { //빈칸이 있으면
-
                     if (getCurrentFocus() == content) {
                         scrollView.setScrollY(scrollView.getScrollY());
 
@@ -209,9 +241,14 @@ public class QuestionWriteActivity extends AppCompatActivity implements EditText
     }
 
     public void sendQuestionData() {
+        phone_number = phone_number1.getText().toString()
+                +phone_number2.getText().toString()
+                +phone_number3.getText().toString();
+        Log.d("check", "phone_number : " + phone_number);
         QuestionData questionData = new QuestionData();
         questionData.setQuestion_email(email_first_address.getText().toString());
-        questionData.setQuestion_phone(phone_number.getText().toString());
+//        questionData.setQuestion_phone(phone_number.getText().toString());
+        questionData.setQuestion_phone(phone_number);
         questionData.setQuestion_username(username.getText().toString());
         questionData.setQuestion_title(title.getText().toString());
         questionData.setQuestion_content(content.getText().toString());
