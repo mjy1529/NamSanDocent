@@ -185,7 +185,7 @@ public class SplashActivity extends AppCompatActivity {
 //    }
 
     public void checkVersion() {
-        dbVersion = packageList.get(0).package_version; // ko 버전은 0
+        dbVersion = packageList.get(0).package_version;
         String curVersion = prefs.getString("curVersion", "0.0.0");
         isFirstRun = prefs.getBoolean("isFirstRun", true);
 

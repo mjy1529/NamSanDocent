@@ -96,6 +96,7 @@ public class CategoryActivity extends AppCompatActivity {
 
             categoryDataList.add(categoryData);
         }
+
     }
 
 
