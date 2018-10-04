@@ -12,6 +12,7 @@ import net.lingala.zip4j.progress.ProgressMonitor;
 
 import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -29,6 +30,7 @@ public class DB_Async extends AsyncTask<String, String, String> {
     private String fileName_;
     private String savePath_;
     File file;
+
 
     ProgressBar downloadBar;
     TextView curPercent;
@@ -85,17 +87,31 @@ public class DB_Async extends AsyncTask<String, String, String> {
 //            InputStream inputStream = new URL(DownloadURL).openStream();
 
             URL url = new URL(packageData_.package_url);
+//            URLConnection connection = url.openConnection();
+//            connection.connect();
+//            int sizeOfFile = connection.getContentLength();
+//            InputStream inputStream = new BufferedInputStream(url.openStream());
+            InputStream inputStream = null;
+
             URLConnection connection = url.openConnection();
             connection.connect();
             int sizeOfFile = connection.getContentLength();
-            InputStream inputStream = new BufferedInputStream(url.openStream());
-
+            try{
+                inputStream = new BufferedInputStream(url.openStream());
+            }catch (FileNotFoundException e){
+                Log.d("check3", "DB_FileNotFoundException");
+                e.printStackTrace();
+            }
             Log.d(TAG, "http check ok : ");
             file = new File(fileName_);
+
             OutputStream out = new FileOutputStream(file);
             saveRemoteFile(inputStream, out, sizeOfFile);
 
             out.close();
+
+
+
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -124,19 +140,25 @@ public class DB_Async extends AsyncTask<String, String, String> {
 
         try {
             ZipFile zipFile = new ZipFile(source);
-            zipFile.extractAll(destination);
 
+            zipFile.extractAll(destination);
             if (zipFile.getProgressMonitor().getResult() == ProgressMonitor.RESULT_SUCCESS) {
                 ((SplashActivity) SplashActivity.mContext).activityFinish();
                 Log.d(TAG, "Result_Success");
                 file.delete();
             }
 
+            downloadStatus.setText(R.string.downloadComplete);
+            SplashActivity.prefs.edit().putString("curVersion", SplashActivity.dbVersion).apply();
+
         } catch (ZipException e) {
             e.printStackTrace();
+            //zip file size == 0
+            file.delete();
+            ((SplashActivity)SplashActivity.mContext).showAlertServerDialog();
         }
-        downloadStatus.setText(R.string.downloadComplete);
-        SplashActivity.prefs.edit().putString("curVersion", SplashActivity.dbVersion).apply();
+
+
     }
 
     @Override
@@ -146,4 +168,6 @@ public class DB_Async extends AsyncTask<String, String, String> {
         downloadBar.setProgress(Integer.parseInt(values[0]));
         curPercent.setText(values[0] + "%");
     }
+
+
 }

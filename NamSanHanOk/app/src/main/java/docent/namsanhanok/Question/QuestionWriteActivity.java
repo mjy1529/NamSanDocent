@@ -3,6 +3,7 @@ package docent.namsanhanok.Question;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -23,7 +24,9 @@ import com.tsengvn.typekit.TypekitContextWrapper;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import docent.namsanhanok.Application;
 import docent.namsanhanok.NetworkService;
@@ -47,6 +50,7 @@ public class QuestionWriteActivity extends AppCompatActivity implements EditText
     EditText username;
     EditText title;
     EditText content;
+    String time;
     LinearLayout content_layout;
 
     ArrayList<String> nullValue;
@@ -55,6 +59,11 @@ public class QuestionWriteActivity extends AppCompatActivity implements EditText
     NestedScrollView scrollView;
 
     String responseStr; //서버 응답
+
+    long mNow;
+    Date mDate;
+    SimpleDateFormat mFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -240,11 +249,22 @@ public class QuestionWriteActivity extends AppCompatActivity implements EditText
         }
     }
 
+    private String getTime(){
+        mNow = System.currentTimeMillis();
+        mDate = new Date(mNow);
+        return mFormat.format(mDate);
+    }
+
     public void sendQuestionData() {
         phone_number = phone_number1.getText().toString()
                 +phone_number2.getText().toString()
                 +phone_number3.getText().toString();
+
+        time = getTime();
+
         Log.d("check", "phone_number : " + phone_number);
+        Log.d("check", "phone_time : " + time);
+
         QuestionData questionData = new QuestionData();
         questionData.setQuestion_email(email_first_address.getText().toString());
 //        questionData.setQuestion_phone(phone_number.getText().toString());
@@ -252,6 +272,7 @@ public class QuestionWriteActivity extends AppCompatActivity implements EditText
         questionData.setQuestion_username(username.getText().toString());
         questionData.setQuestion_title(title.getText().toString());
         questionData.setQuestion_content(content.getText().toString());
+        questionData.setQuestion_time(time);
 
 
         NetworkService service = Application.getInstance().getNetworkService();
@@ -289,10 +310,13 @@ public class QuestionWriteActivity extends AppCompatActivity implements EditText
             data.put("question_email", questionData.getQuestion_email());
             data.put("question_phone", questionData.getQuestion_phone());
             data.put("question_username", questionData.getQuestion_username());
+            data.put("question_time", questionData.getQuestion_time());
 
             JSONObject root = new JSONObject();
             root.put("question_info", data);
             jsonStr = root.toString();
+
+            Log.d("check2", "정보 : " + jsonStr);
         } catch (JSONException e) {
             e.printStackTrace();
         }
