@@ -232,18 +232,18 @@ public class DocentActivity extends AppCompatActivity {
 
     public void setDocentObject(DocentData docentObject) {
         String category_title = "";
-        switch (docentObject.category_id) {
-            case "1":
-                category_title = "한옥";
-                break;
-            case "2":
-                category_title = "정원";
-                break;
-            case "3":
-                category_title = "타임캡슐광장";
-                break;
-        }
-        docentTitle.setText(category_title);
+//        switch (docentObject.category_id) {
+//            case "1":
+//                category_title = docentObject.docent_title;
+//                break;
+//            case "2":
+//                category_title = "정원";
+//                break;
+//            case "3":
+//                category_title = "타임캡슐광장";
+//                break;
+//        }
+        docentTitle.setText(docentObject.docent_title);
 
         Glide.with(getApplicationContext())
                 .load(Environment.getExternalStorageDirectory() + docentObject.docent_image_url)
