@@ -184,6 +184,10 @@ public class SplashActivity extends AppCompatActivity {
 //
 //    }
 
+    //software version check
+    //public void sw_checkVersion() {}
+
+    //package version check
     public void checkVersion() {
         dbVersion = packageList.get(0).package_version;
         String curVersion = prefs.getString("curVersion", "0.0.0");
