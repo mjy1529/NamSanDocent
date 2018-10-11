@@ -37,7 +37,10 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.android.exoplayer2.C;
+import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlayerFactory;
+import com.google.android.exoplayer2.LoadControl;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
@@ -49,6 +52,7 @@ import com.google.android.exoplayer2.ui.PlaybackControlView;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.BandwidthMeter;
 import com.google.android.exoplayer2.upstream.DataSource;
+import com.google.android.exoplayer2.upstream.DefaultAllocator;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
@@ -513,6 +517,26 @@ public class DocentActivity extends AppCompatActivity {
         TrackSelection.Factory videoTrackSelectionFactory = new AdaptiveTrackSelection.Factory(bandwidthMeter);
         TrackSelector trackSelector = new DefaultTrackSelector(videoTrackSelectionFactory);
 
+        //LoadControl
+//        DefaultAllocator allocator = new DefaultAllocator(true, C.DEFAULT_BUFFER_SEGMENT_SIZE);
+
+//        DefaultLoadControl loadControl = new DefaultLoadControl(allocator,
+//                360000,
+//                600000,
+//                2500,
+//                5000,
+//                -1,
+//                true);
+
+//        LoadControl loadControl = new DefaultLoadControl(
+//                allocator,
+//                360000,
+//                450000,
+//                1500,
+//                1000,
+//                C.LENGTH_UNSET,
+//                false);
+
         //Create the player
         videoPlayer = ExoPlayerFactory.newSimpleInstance(this, trackSelector);
 
@@ -532,7 +556,10 @@ public class DocentActivity extends AppCompatActivity {
         exo_play.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (videoPlayer.getCurrentPosition() == 0 && !videoPlayer.getPlayWhenReady()) { //썸네일
+//                if (videoPlayer.getCurrentPosition() == 0 && !videoPlayer.getPlayWhenReady()) { //썸네일
+//                    exo_thumbnail.setVisibility(View.GONE);
+//                }
+                if (!videoPlayer.getPlayWhenReady() && exo_thumbnail.getVisibility() != View.GONE) {
                     exo_thumbnail.setVisibility(View.GONE);
                 }
                 videoPlayer.setPlayWhenReady(true);
