@@ -35,6 +35,7 @@ public class EventActivity extends AppCompatActivity {
     private LinearLayoutManager linearLayoutManager;
     private EventAdapter eventAdapter;
     ArrayList<EventData> eventList = new ArrayList<>();
+    ArrayList<EventData> eventSortList = new ArrayList<>();
     TextView event_toolbar_title;
     ImageButton homeBtn;
 
@@ -56,6 +57,18 @@ public class EventActivity extends AppCompatActivity {
                 if(response.isSuccessful()) {
                     EventResult eventResult = response.body();
                     eventList = eventResult.event_info;
+
+                    for(int i = 0; i<eventList.size(); i++) {
+                        if(eventList.get(i).getEvent_complete().equals("진행중")){
+                            eventSortList.add(eventList.get(i));
+                        }
+                    }
+
+                    for(int i = 0; i<eventList.size(); i++){
+                        if(eventList.get(i).getEvent_complete().equals("마감")){
+                            eventSortList.add(eventList.get(i));
+                        }
+                    }
                     setRecyclerView();
                 }
             }
@@ -68,7 +81,7 @@ public class EventActivity extends AppCompatActivity {
     }
 
     public void setRecyclerView() {
-        eventAdapter = new EventAdapter(this, eventList);
+        eventAdapter = new EventAdapter(this, eventSortList);
         linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
 
