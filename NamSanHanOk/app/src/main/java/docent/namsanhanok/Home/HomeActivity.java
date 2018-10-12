@@ -18,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -327,23 +328,38 @@ public class HomeActivity extends AppCompatActivity {
 
             case R.id.menuBtn1: //마을 둘러보기
             case R.id.menuTxt1:
-                intent = new Intent(HomeActivity.this, CategoryActivity.class);
-                intent.putExtra("category_title", homeData.getCategory_title());
-                startActivity(intent);
+                if(Application.getInstance().checkInternet()) {
+                    intent = new Intent(HomeActivity.this, CategoryActivity.class);
+                    intent.putExtra("category_title", homeData.getCategory_title());
+                    startActivity(intent);
+                }
+                else{
+                    Toast.makeText(getApplicationContext(), R.string.wifi_disconnect, Toast.LENGTH_LONG).show();
+                }
                 break;
 
             case R.id.menuBtn2: //세시/행사
             case R.id.menuTxt2:
-                intent = new Intent(getApplicationContext(), EventActivity.class);
-                intent.putExtra("event_title", homeData.getEvent_title());
-                startActivity(intent);
+                if(Application.getInstance().checkInternet()) {
+                    intent = new Intent(getApplicationContext(), EventActivity.class);
+                    intent.putExtra("event_title", homeData.getEvent_title());
+                    startActivity(intent);
+                }
+                else{
+                    Toast.makeText(getApplicationContext(), R.string.wifi_disconnect, Toast.LENGTH_LONG).show();
+                }
                 break;
 
             case R.id.menuBtn3: //알리는 말씀
             case R.id.menuTxt3:
-                intent = new Intent(HomeActivity.this, NoticeActivity.class);
-                intent.putExtra("notice_title", homeData.getNotice_title());
-                startActivity(intent);
+                if(Application.getInstance().checkInternet()) {
+                    intent = new Intent(HomeActivity.this, NoticeActivity.class);
+                    intent.putExtra("notice_title", homeData.getNotice_title());
+                    startActivity(intent);
+                }
+                else{
+                    Toast.makeText(getApplicationContext(), R.string.wifi_disconnect, Toast.LENGTH_LONG).show();
+                }
                 break;
 
             case R.id.menuBtn4: //문의하기
@@ -351,6 +367,7 @@ public class HomeActivity extends AppCompatActivity {
                 intent = new Intent(HomeActivity.this, QuestionWriteActivity.class);
                 intent.putExtra("question_title", homeData.getQuestion_title());
                 startActivity(intent);
+
                 break;
 
             case R.id.menuBtn5://이용안내

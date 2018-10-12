@@ -1,5 +1,9 @@
 package docent.namsanhanok;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+
 import com.github.angads25.toggle.LabeledSwitch;
 import com.tsengvn.typekit.Typekit;
 import retrofit2.Retrofit;
@@ -65,6 +69,7 @@ public class Application extends android.app.Application {
         return isToggleOn;
     }
 
+
     public void buildService() {
         Retrofit.Builder builder = new Retrofit.Builder();
         Retrofit retrofit = builder
@@ -74,5 +79,18 @@ public class Application extends android.app.Application {
                 .build();
 
         networkService = retrofit.create(NetworkService.class);
+    }
+
+    public boolean checkInternet() {
+        ConnectivityManager manager =
+                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo mobile = manager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+        NetworkInfo wifi = manager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+
+        if (mobile.isConnected() || wifi.isConnected()) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

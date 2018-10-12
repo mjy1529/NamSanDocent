@@ -65,7 +65,7 @@ public class SplashActivity extends AppCompatActivity {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                if (checkInternet()) {
+                if (Application.getInstance().checkInternet()) {
                     networking();
                 } else {
                     showAlertDataDialog();
@@ -288,18 +288,6 @@ public class SplashActivity extends AppCompatActivity {
         finish();
     }
 
-    public boolean checkInternet() {
-        ConnectivityManager manager =
-                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo mobile = manager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
-        NetworkInfo wifi = manager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-
-        if (mobile.isConnected() || wifi.isConnected()) {
-            return true;
-        } else {
-            return false;
-        }
-    }
 
 
     public String jsonToString() {

@@ -3,9 +3,12 @@ package docent.namsanhanok.Docent;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.ActivityInfo;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -95,6 +98,7 @@ import docent.namsanhanok.Manager.DocentMemList;
 import docent.namsanhanok.Manager.IDInfoData;
 import docent.namsanhanok.NetworkService;
 import docent.namsanhanok.R;
+import docent.namsanhanok.ShowWiFiMonitor;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -178,8 +182,6 @@ public class DocentActivity extends AppCompatActivity {
     Animation bottomUpAnimation;
     Animation topDownAnimation;
     CategoryListActivity categoryListActivity;
-
-//    MediaSource videoSource;
 
     //서버연결확인
 //    Socket socket;
@@ -536,26 +538,6 @@ public class DocentActivity extends AppCompatActivity {
                 true);
 
 
-        //LoadControl
-//        DefaultAllocator allocator = new DefaultAllocator(true, C.DEFAULT_BUFFER_SEGMENT_SIZE);
-
-//        DefaultLoadControl loadControl = new DefaultLoadControl(allocator,
-//                360000,
-//                600000,
-//                2500,
-//                5000,
-//                -1,
-//                true);
-
-//        LoadControl loadControl = new DefaultLoadControl(
-//                allocator,
-//                360000,
-//                450000,
-//                1500,
-//                1000,
-//                C.LENGTH_UNSET,
-//                false);
-
         //Create the player
         videoPlayer = ExoPlayerFactory.newSimpleInstance(this, trackSelector, loadControl);
 //        videoPlayer = ExoPlayerFactory.newSimpleInstance(this, trackSelector);
@@ -578,13 +560,15 @@ public class DocentActivity extends AppCompatActivity {
         exo_play.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                if (videoPlayer.getCurrentPosition() == 0 && !videoPlayer.getPlayWhenReady()) { //썸네일
-//                    exo_thumbnail.setVisibility(View.GONE);
-//                }
-                if (!videoPlayer.getPlayWhenReady() && exo_thumbnail.getVisibility() != View.GONE) {
-                    exo_thumbnail.setVisibility(View.GONE);
+                if(Application.getInstance().checkInternet()) {
+                    if (!videoPlayer.getPlayWhenReady() && exo_thumbnail.getVisibility() != View.GONE) {
+                        exo_thumbnail.setVisibility(View.GONE);
+                    }
+                    videoPlayer.setPlayWhenReady(true);
                 }
-                videoPlayer.setPlayWhenReady(true);
+                else{
+                    Toast.makeText(getApplicationContext(), R.string.wifi_disconnect, Toast.LENGTH_LONG).show();
+                }
                 if (audioPlayer != null && audioPlayer.isPlaying()) { //비디오 재생시 오디오 일시정지
                     audioPlayer.pause();
                     playAudioBtn.setBackgroundResource(R.drawable.ic_play_arrow_black_48dp);
@@ -647,94 +631,111 @@ public class DocentActivity extends AppCompatActivity {
 
     public void onClick(View v) {
         Intent intent;
-        switch (v.getId()) {
-            case R.id.playAudioBtn:
-                if (audioPlayer.isPlaying()) {
-                    audioPlayer.pause();
-                    playAudioBtn.setBackgroundResource(R.drawable.ic_play_arrow_black_48dp);
+            switch (v.getId()) {
+                case R.id.playAudioBtn:
+                    if (audioPlayer.isPlaying()) {
+                        audioPlayer.pause();
+                        playAudioBtn.setBackgroundResource(R.drawable.ic_play_arrow_black_48dp);
 
-                } else {
-                    audioPlayer.start();
-                    playAudioBtn.setBackgroundResource(R.drawable.ic_pause_black_24dp);
+                    } else {
+                        audioPlayer.start();
+                        playAudioBtn.setBackgroundResource(R.drawable.ic_pause_black_24dp);
 
-                    if (videoPlayer != null && videoPlayer.getPlayWhenReady()) { //영상이 play 상태라면
-                        videoPlayer.setPlayWhenReady(false); //영상 일시정지
+                        if (videoPlayer != null && videoPlayer.getPlayWhenReady()) { //영상이 play 상태라면
+                            videoPlayer.setPlayWhenReady(false); //영상 일시정지
+                        }
+
+                        Thread();
                     }
+                    break;
 
-                    Thread();
-                }
-                break;
+                case R.id.audioBtn: //오디오 이미지버튼을 클릭했을 때 오디오 레이아웃 보이기
+                case R.id.audioTxt:
+                        if (audioPlayer != null) {
+                            if(Application.getInstance().checkInternet()) {
+                                if (bottom_audio_layout.getVisibility() == View.GONE) {
+                                    Log.d("check4", "audio_visible");
+                                    bottom_audio_layout.setVisibility(View.VISIBLE);
+                                    bottom_audio_layout.startAnimation(bottomUpAnimation);
+                                } else if (bottom_audio_layout.getVisibility() == View.VISIBLE) {
+                                    Log.d("check4", "audio_gone");
+                                    bottom_audio_layout.startAnimation(topDownAnimation);
+                                }
+                            }
+                            else{
+                                Log.d("check4", "인터넷 연결안되있고, 오디오 null아니니?");
+                                Toast.makeText(getApplicationContext(), R.string.wifi_disconnect, Toast.LENGTH_LONG).show();
+                            }
+                        }
+                        break;
 
-            case R.id.audioBtn: //오디오 이미지버튼을 클릭했을 때 오디오 레이아웃 보이기
-            case R.id.audioTxt:
-                if (audioPlayer != null) {
-                    if (bottom_audio_layout.getVisibility() == View.GONE) {
-                        Log.d("check4", "audio_visible");
-                        bottom_audio_layout.setVisibility(View.VISIBLE);
-                        bottom_audio_layout.startAnimation(bottomUpAnimation);
-                    } else if (bottom_audio_layout.getVisibility() == View.VISIBLE) {
-                        Log.d("check4", "audio_gone");
-                        bottom_audio_layout.startAnimation(topDownAnimation);
-                    }
-                }
-                break;
 
-            case R.id.locationBtn:
-            case R.id.locationTxt:
-                intent = new Intent(getApplicationContext(), LocationActivity.class);
-                intent.putExtra("docentData", docentObject);
-                startActivity(intent);
-                break;
 
-            case R.id.homeBtn:
-                intent = new Intent(DocentActivity.this, HomeActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
-                finish();
-                break;
-
-            case R.id.confirm_go_new_docent:
-                Log.d("check3", "case_docent_id : " + lastIDinfoData.docent_id);
-                Log.d("check3", "case_category_id : " + lastIDinfoData.category_id);
-
-                if (lastIDinfoData.docent_id.equals("")) { //카테고리리스트액티비티
-                    Log.d("check3", "categoryList로 가자");
-
-                    intent = new Intent(getApplicationContext(), CategoryListActivity.class);
-                    CategoryData categoryData = new CategoryData();
-                    docentMemList.get_category_info(lastIDinfoData.category_id, categoryData);
-                    intent.putExtra("category", categoryData);
-                    if (categoryListActivity != null) {
-                        categoryListActivity.finish();
-                    }
-                    finish();
+                case R.id.locationBtn:
+                case R.id.locationTxt:
+                    intent = new Intent(getApplicationContext(), LocationActivity.class);
+                    intent.putExtra("docentData", docentObject);
                     startActivity(intent);
+                    break;
 
-                } else if (!lastIDinfoData.docent_id.equals("") && !lastIDinfoData.category_id.equals("")) {
-                    Log.d("check3", "docent_id로 가자");
+                case R.id.homeBtn:
+                    if(Application.getInstance().checkInternet()) {
+                        intent = new Intent(DocentActivity.this, HomeActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
+                        finish();
+                    }
+                    else{
+                        Toast.makeText(getApplicationContext(), R.string.wifi_disconnect, Toast.LENGTH_LONG).show();
+                    }
+                    break;
 
-                    intent = new Intent(getApplicationContext(), DocentActivity.class);
-                    HashMap<String, DocentData> map = new HashMap<>();
-                    docentMemList.get_docent_info(lastIDinfoData.category_id, map);
-                    DocentData docentData = new DocentData();
-                    docentData = map.get(lastIDinfoData.docent_id);
-                    intent.putExtra("docentObject", docentData);
-                    intent.putExtra("beaconNumber", docentData.beacon_number);
+                case R.id.confirm_go_new_docent:
+                    Log.d("check3", "case_docent_id : " + lastIDinfoData.docent_id);
+                    Log.d("check3", "case_category_id : " + lastIDinfoData.category_id);
 
-                    newDocent = true;
-                    finish();
-                    startActivity(intent);
-                }
+                    if(Application.getInstance().checkInternet()) {
+                        if (lastIDinfoData.docent_id.equals("")) { //카테고리리스트액티비티
+                            Log.d("check3", "categoryList로 가자");
 
-                go_new_docent_layout.setVisibility(View.GONE);
-                bottom_audio_layout.setVisibility(View.GONE);
+                            intent = new Intent(getApplicationContext(), CategoryListActivity.class);
+                            CategoryData categoryData = new CategoryData();
+                            docentMemList.get_category_info(lastIDinfoData.category_id, categoryData);
+                            intent.putExtra("category", categoryData);
+                            if (categoryListActivity != null) {
+                                categoryListActivity.finish();
+                            }
+                            finish();
+                            startActivity(intent);
 
-                mMinewBeaconManager.stopScan();
-                Application.getInstance().setScanning(false);
+                        } else if (!lastIDinfoData.docent_id.equals("") && !lastIDinfoData.category_id.equals("")) {
+                            Log.d("check3", "docent_id로 가자");
 
-                break;
-        }
+                            intent = new Intent(getApplicationContext(), DocentActivity.class);
+                            HashMap<String, DocentData> map = new HashMap<>();
+                            docentMemList.get_docent_info(lastIDinfoData.category_id, map);
+                            DocentData docentData = new DocentData();
+                            docentData = map.get(lastIDinfoData.docent_id);
+                            intent.putExtra("docentObject", docentData);
+                            intent.putExtra("beaconNumber", docentData.beacon_number);
+
+                            newDocent = true;
+                            finish();
+                            startActivity(intent);
+                        }
+
+                        go_new_docent_layout.setVisibility(View.GONE);
+                        bottom_audio_layout.setVisibility(View.GONE);
+
+                        mMinewBeaconManager.stopScan();
+                        Application.getInstance().setScanning(false);
+                    }
+                    else{
+                        Toast.makeText(getApplicationContext(), R.string.wifi_disconnect, Toast.LENGTH_LONG).show();
+                    }
+                    break;
+            }
     }
 
     final Handler handler = new Handler() {
@@ -982,6 +983,7 @@ public class DocentActivity extends AppCompatActivity {
         Log.d("check1", "docent_detail 정보요청 : " + json);
         return json;
     }
+
 
 //    @Override
 //    public void onPrepared(final MediaPlayer audioPlayer) {

@@ -229,7 +229,12 @@ public class QuestionWriteActivity extends AppCompatActivity implements EditText
             case R.id.question_register_Btn:
                 //에러 유무에 따라 activity 넘김
                 if (!detectError()) {//빈칸이 없으면
-                    sendQuestionData();
+                    if(Application.getInstance().checkInternet()) {
+                        sendQuestionData();
+                    }
+                    else{
+                        Toast.makeText(getApplicationContext(), R.string.wifi_disconnect, Toast.LENGTH_LONG).show();
+                    }
                 } else { //빈칸이 있으면
                     if (getCurrentFocus() == content) {
                         scrollView.setScrollY(scrollView.getScrollY());
@@ -286,6 +291,7 @@ public class QuestionWriteActivity extends AppCompatActivity implements EditText
                     Intent intent = new Intent(getApplicationContext(), QuestionWriteDoneActivity.class);
                     intent.putExtra("responseResult", responseStr);
                     startActivity(intent);
+
                 }
             }
 

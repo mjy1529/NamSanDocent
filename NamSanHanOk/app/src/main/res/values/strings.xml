@@ -70,6 +70,7 @@
     <string name="request"> 인터넷이 연결되어 있지 않습니다. </string>
     <string name="serverConnected">서버 통신에 문제가 발생하였습니다.</string>
     <string name="title_activity_info">InfoActivity</string>
+    <string name="wifi_disconnect">네트워크 연결 상태를 확인해 주시기 바랍니다.</string>
 
     <!-- info -->
     <string name="tab_text_1">관람안내</string>

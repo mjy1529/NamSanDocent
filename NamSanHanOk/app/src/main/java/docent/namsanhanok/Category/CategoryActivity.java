@@ -2,51 +2,32 @@ package docent.namsanhanok.Category;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffColorFilter;
-import android.graphics.drawable.Drawable;
-import android.os.Build;
-import android.os.Environment;
-import android.os.Handler;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
+import android.net.wifi.WifiManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
-import com.bumptech.glide.request.target.SimpleTarget;
-import com.bumptech.glide.request.transition.Transition;
-import com.google.gson.JsonObject;
-import com.squareup.picasso.Picasso;
 import com.tsengvn.typekit.TypekitContextWrapper;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 
+import docent.namsanhanok.Home.SplashActivity;
+import docent.namsanhanok.ShowWiFiMonitor;
 import docent.namsanhanok.Application;
-import docent.namsanhanok.Docent.DocentActivity;
-import docent.namsanhanok.Docent.DocentData;
 import docent.namsanhanok.Home.HomeActivity;
 import docent.namsanhanok.Manager.DocentMemList;
 import docent.namsanhanok.NetworkService;
 import docent.namsanhanok.R;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import libs.mjn.prettydialog.PrettyDialog;
+import libs.mjn.prettydialog.PrettyDialogCallback;
 
 public class CategoryActivity extends AppCompatActivity {
     ImageButton homeBtn;
@@ -63,6 +44,7 @@ public class CategoryActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category);
 
@@ -70,6 +52,7 @@ public class CategoryActivity extends AppCompatActivity {
         setContent();
         initRecyclerView();
     }
+
 
     public void init() {
         Toolbar categoryToolbar = (Toolbar) findViewById(R.id.categoryToolbar);
@@ -134,6 +117,8 @@ public class CategoryActivity extends AppCompatActivity {
         super.onResume();
 
     }
+
+
 
     @Override
     public void onPause() {

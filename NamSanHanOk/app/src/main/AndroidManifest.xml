@@ -3,6 +3,7 @@
     package="docent.namsanhanok">
 
     <!-- 서버에서 가져오기 -->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -96,6 +97,11 @@
         <receiver android:name="com.minew.beacon.BluetoothChangedReceiver">
             <intent-filter>
                 <action android:name="android.bluetooth.adapter.action.STATE_CHANGED" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name = ".ShowWiFiMonitor">
+            <intent-filter>
+                <action android:name="android.net.conn.BACKGROUND_DATA_SETTING_CHANGED"/>
             </intent-filter>
         </receiver>
 

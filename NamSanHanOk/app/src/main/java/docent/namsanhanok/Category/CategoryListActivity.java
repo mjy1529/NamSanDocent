@@ -4,6 +4,10 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -42,8 +46,7 @@ import docent.namsanhanok.Home.UserRssi;
 import docent.namsanhanok.Manager.DocentMemList;
 import docent.namsanhanok.Manager.IDInfoData;
 import docent.namsanhanok.R;
-import libs.mjn.prettydialog.PrettyDialog;
-import retrofit2.http.HEAD;
+
 
 import static com.minew.beacon.BluetoothState.BluetoothStatePowerOn;
 
@@ -74,6 +77,7 @@ public class CategoryListActivity extends AppCompatActivity {
     UserRssi comp = new UserRssi();
     Handler handler = null;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,8 +85,6 @@ public class CategoryListActivity extends AppCompatActivity {
 
         Intent secondIntent = getIntent();
         categoryData = (CategoryData) secondIntent.getSerializableExtra("category");
-
-
         categoryListActivity = CategoryListActivity.this;
 
         init();
@@ -91,6 +93,7 @@ public class CategoryListActivity extends AppCompatActivity {
         setDocentList(categoryData);
         initRecyclerView();
     }
+
 
     public void initBeaconManager() {
         mMinewBeaconManager = new MinewBeaconManager();
@@ -379,4 +382,5 @@ public class CategoryListActivity extends AppCompatActivity {
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(TypekitContextWrapper.wrap(newBase));
     }
+    
 }
