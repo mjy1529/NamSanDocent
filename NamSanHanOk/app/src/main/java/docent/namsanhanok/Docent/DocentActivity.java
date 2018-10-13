@@ -98,6 +98,7 @@ import docent.namsanhanok.Manager.DocentMemList;
 import docent.namsanhanok.Manager.IDInfoData;
 import docent.namsanhanok.NetworkService;
 import docent.namsanhanok.R;
+import docent.namsanhanok.ShowWiFiMonitor;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -188,6 +189,7 @@ public class DocentActivity extends AppCompatActivity {
 //    BufferedReader networkReader;
 //    boolean isOnServer;
 
+    ShowWiFiMonitor receiver;
     public DocentActivity() {
 
     }
@@ -198,6 +200,10 @@ public class DocentActivity extends AppCompatActivity {
         setContentView(R.layout.activity_docent);
 
         init();
+
+        IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        receiver = new ShowWiFiMonitor(this);
+        registerReceiver(receiver, filter);
 
         if (newDocent == true) {
             Intent intent = getIntent();
@@ -952,6 +958,7 @@ public class DocentActivity extends AppCompatActivity {
     protected void onDestroy() {
         Log.d("check1", "onDestroy");
 
+        unregisterReceiver(receiver);
         beaconArrayList.clear();
         super.onDestroy();
         if (handler1 != null) {
@@ -983,6 +990,8 @@ public class DocentActivity extends AppCompatActivity {
         Log.d("check1", "docent_detail 정보요청 : " + json);
         return json;
     }
+
+
 
 
 //    @Override
