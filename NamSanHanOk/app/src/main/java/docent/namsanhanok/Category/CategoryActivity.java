@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import docent.namsanhanok.Home.SplashActivity;
-import docent.namsanhanok.ShowWiFiMonitor;
 import docent.namsanhanok.Application;
 import docent.namsanhanok.Home.HomeActivity;
 import docent.namsanhanok.Manager.DocentMemList;

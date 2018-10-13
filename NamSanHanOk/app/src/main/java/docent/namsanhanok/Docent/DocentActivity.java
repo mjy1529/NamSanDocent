@@ -98,7 +98,6 @@ import docent.namsanhanok.Manager.DocentMemList;
 import docent.namsanhanok.Manager.IDInfoData;
 import docent.namsanhanok.NetworkService;
 import docent.namsanhanok.R;
-import docent.namsanhanok.ShowWiFiMonitor;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -652,7 +651,8 @@ public class DocentActivity extends AppCompatActivity {
                 case R.id.audioBtn: //오디오 이미지버튼을 클릭했을 때 오디오 레이아웃 보이기
                 case R.id.audioTxt:
                         if (audioPlayer != null) {
-                            if(Application.getInstance().checkInternet()) {
+                            if(Application.getInstance().checkInternet() || bottom_audio_layout.getVisibility()==View.VISIBLE
+                                    || audioPlayer.isPlaying()) {
                                 if (bottom_audio_layout.getVisibility() == View.GONE) {
                                     Log.d("check4", "audio_visible");
                                     bottom_audio_layout.setVisibility(View.VISIBLE);

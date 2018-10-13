@@ -23,7 +23,6 @@ import docent.namsanhanok.Docent.DocentActivity;
 import docent.namsanhanok.Docent.DocentData;
 import docent.namsanhanok.Manager.DocentMemList;
 import docent.namsanhanok.R;
-import docent.namsanhanok.ShowWiFiMonitor;
 
 public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListViewHolder> {
     private Context context;
