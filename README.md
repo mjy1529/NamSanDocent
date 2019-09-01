@@ -11,7 +11,7 @@ JAVA (Android)
     <td><img src="https://user-images.githubusercontent.com/25261296/64071778-79269380-ccbc-11e9-9845-e6fbe4626857.jpg" width="200"></td>
   </tr>
   <tr>
-    <td colspan="2">자동전시안내 활성화 시 감지된 비콘으로 작품 알림 (by mjy1529)</td>
+    <td colspan="2">자동전시안내 활성화 시 감지된 비콘으로 작품 알림 (by mjy1529)<br>(상세보기 클릭 시 작품 상세화면으로 이동 가능)</td>
   </tr>
 </table>
 
@@ -21,14 +21,15 @@ JAVA (Android)
     <td><img src="https://user-images.githubusercontent.com/25261296/64071867-d4598580-ccbe-11e9-9b0d-63ecebd74a3d.jpg" width="200"></td>
     <td><img src="https://user-images.githubusercontent.com/25261296/64071874-f94df880-ccbe-11e9-97cc-c719624700dc.jpg" width="200"></td>
     <td><img src="https://user-images.githubusercontent.com/25261296/64071875-00750680-ccbf-11e9-9a92-f51cf2708a37.jpg" width="200"></td>
-    <td><img src="https://user-images.githubusercontent.com/25261296/64072805-02939100-ccd0-11e9-833f-3e0d4ca3a120.jpg" width="200"></td>
+    <td><img src="https://user-images.githubusercontent.com/25261296/64073343-640b2e00-ccd7-11e9-9678-11b4856575ab.jpg" width="200"></td>
   </tr>
   <tr>
     <td colspan="4">
+      - 자동전시안내 활성화 시 감지된 비콘으로 작품 알림 (by mjy1529) <br>
       - 자동전시안내 비활성화 시 수동으로 카테고리별 작품을 찾을 수 있음 (by Quantata)<br>
       - 작품 설명과 오디오 및 관련 영상을 통해 작품 안내 (오디오, 영상 by mjy1529 / 설명 by Quantata) <br>
       - Location 탭을 통해 안내 지도를 볼 수 있음 (by Quantata) <br>
-      - 상세보기를 통해 작품에 속한 다른 작품들에 대한 정보 제공 (by Quantata) <br>
+      - 상세보기를 통해 해당 작품에 속한 다른 작품들에 대한 정보 제공 (by Quantata) <br>
     </td>
   </tr>
 </table>
