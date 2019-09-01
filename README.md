@@ -1,6 +1,9 @@
-# NamSanDocent
-## Using JAVA, Android
-### 스마트폰 블루투스를 이용해 비콘을 탐지하여 작품 설명 제공
+# Smart Docent Application
+#### 프로젝트 내용
+스마트폰 블루투스를 이용해 비콘을 탐지하여 작품 설명 제공<br>
+#### 개발 언어
+JAVA (Android)
+
 * 마을 둘러보기
   - 해당 탭을 통해 테마별로 수동으로 찾을 수 있음(by Quantata)
   - 오디오, 영상, 글을 통해 작품의 정보 전달(영상, 오디오 by mjy1529 / 글 by Quantata)
