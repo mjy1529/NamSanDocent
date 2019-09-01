@@ -11,7 +11,7 @@ JAVA (Android)
     <td><img src="https://user-images.githubusercontent.com/25261296/64071778-79269380-ccbc-11e9-9845-e6fbe4626857.jpg" width="200"></td>
   </tr>
   <tr>
-    <td colspan="2">자동전시안내 활성화 시 감지된 비콘으로 작품 알림</td>
+    <td colspan="2">자동전시안내 활성화 시 감지된 비콘으로 작품 알림 (by mjy1529)</td>
   </tr>
 </table>
 
@@ -21,38 +21,39 @@ JAVA (Android)
     <td><img src="https://user-images.githubusercontent.com/25261296/64071867-d4598580-ccbe-11e9-9b0d-63ecebd74a3d.jpg" width="200"></td>
     <td><img src="https://user-images.githubusercontent.com/25261296/64071874-f94df880-ccbe-11e9-97cc-c719624700dc.jpg" width="200"></td>
     <td><img src="https://user-images.githubusercontent.com/25261296/64071875-00750680-ccbf-11e9-9a92-f51cf2708a37.jpg" width="200"></td>
-    <td><img src="https://user-images.githubusercontent.com/25261296/64071908-06b7b280-ccc0-11e9-8e65-87bbf0d3503b.jpg" width="200"></td>
+    <td><img src="https://user-images.githubusercontent.com/25261296/64072805-02939100-ccd0-11e9-833f-3e0d4ca3a120.jpg" width="200"></td>
   </tr>
   <tr>
     <td colspan="4">
-      - 해당 탭을 통해 테마별로 수동으로 찾을 수 있음(by Quantata)<br>
-      - 오디오, 영상, 글을 통해 작품의 정보 전달(영상, 오디오 by mjy1529 / 글 by Quantata) <br>
-      - Location 탭을 통해 안내 지도를 볼 수 있음(by Quantata) <br>
-      - 상세보기를 통해 해당 작품에 속한 다른 작품들에 대한 정보 얻을 수 있음(by Quantata) <br>
+      - 자동전시안내 비활성화 시 수동으로 카테고리별 작품을 찾을 수 있음 (by Quantata)<br>
+      - 작품 설명과 오디오 및 관련 영상을 통해 작품 안내 (오디오, 영상 by mjy1529 / 설명 by Quantata) <br>
+      - Location 탭을 통해 안내 지도를 볼 수 있음 (by Quantata) <br>
+      - 상세보기를 통해 작품에 속한 다른 작품들에 대한 정보 제공 (by Quantata) <br>
     </td>
   </tr>
 </table>
-  
+
 * 세시/ 행사, 알리는 말씀
 <table>
   <tr>
-    <td width="220"><img src="https://user-images.githubusercontent.com/25261296/64071909-0a4b3980-ccc0-11e9-9907-733398d9c667.jpg" width="200"></td>
-    <td width="220"><img src="https://user-images.githubusercontent.com/25261296/64071910-0c14fd00-ccc0-11e9-9d1d-5834a2cff058.jpg" width="200"></td>
+    <td align="center"><img src="https://user-images.githubusercontent.com/25261296/64071909-0a4b3980-ccc0-11e9-9907-733398d9c667.jpg" width="200"></td>
+    <td><img src="https://user-images.githubusercontent.com/25261296/64071910-0c14fd00-ccc0-11e9-9d1d-5834a2cff058.jpg" width="200"></td>
   </tr>
   <tr>
-    <td width="220">전시관에서 진행되는 행사에 대한 정보 제공</td>
-    <td width="220">전시관 공지사항 제공</td>
+    <td>진행되는 행사에 대한 정보 제공 (by Quantata)</td>
+    <td>공지사항 제공 (by mjy1529)</td>
   </tr>
 </table>
 
 * 문의하기, 이용안내
 <table>
   <tr>
-    <td width="220"><img src="https://user-images.githubusercontent.com/25261296/64071971-37e4b280-ccc1-11e9-92aa-0b7312f08710.jpg" width="200"></td>
-    <td width="220"><img src="https://user-images.githubusercontent.com/25261296/64071972-37e4b280-ccc1-11e9-807e-03a629cacb21.jpg" width="200"></td>
+    <td><img src="https://user-images.githubusercontent.com/25261296/64071971-37e4b280-ccc1-11e9-92aa-0b7312f08710.jpg" width="200"></td>
+    <td><img src="https://user-images.githubusercontent.com/25261296/64071972-37e4b280-ccc1-11e9-807e-03a629cacb21.jpg" width="200"></td>
+    <td><img src="https://user-images.githubusercontent.com/25261296/64073185-6076a780-ccd5-11e9-9ff7-1d3007f4f0ff.jpg" width="200"></td>
   </tr>
   <tr>
-    <td width="220">문의사항을 작성할 수 있음</td>
-    <td width="220">전시관 이용안내 정보 제공(관람안내, 오시는길)</td>
+    <td>문의사항 작성 (by Quantata)</td>
+    <td colspan="2">전시관 이용안내 정보 제공(관람안내, 오시는길) (by mjy1529)</td>
   </tr>
 </table>
