@@ -42,7 +42,7 @@ JAVA (Android)
   </tr>
   <tr>
     <td>진행되는 행사에 대한 정보 제공 (by Quantata)</td>
-    <td>공지사항 제공 (by mjy1529)</td>
+    <td>공지사항 안내 (by mjy1529)</td>
   </tr>
 </table>
 
