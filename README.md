@@ -1,6 +1,6 @@
 # Smart Docent Application
 #### 프로젝트 내용
-스마트폰 블루투스를 이용하여 인식된 비콘의 작품 설명 제공<br>
+스마트폰 블루투스로 비콘을 인식하여 자동으로 작품 안내를 해주는 스마트 도슨트 앱<br>
 #### 개발 언어
 JAVA (Android)
 #### Screen Shot
